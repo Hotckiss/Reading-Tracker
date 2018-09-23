@@ -6,7 +6,13 @@ target 'Reading Tracker' do
   use_frameworks!
 
   pod 'PureLayout'
-	
+  pod 'RxSwift'
+  pod 'Firebase/Core'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Storage'
+  pod 'Firebase/Database'
+  pod 'Firebase/Crash'
+
   target 'Reading TrackerTests' do
     inherit! :search_paths
     # Pods for testing
