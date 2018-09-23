@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MainViewController.swift
 //  Reading Tracker
 //
 //  Created by Andrei Kirilenko on 23.09.2018.
@@ -11,12 +11,16 @@ import PureLayout
 import RxSwift
 import Firebase
 
-class ViewController: UIViewController {
-
+class MainViewController: UIViewController {
+    private var isAuthorized: Bool = false
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         title = "Reading Tracker"
         view.backgroundColor = .white
+        
         
         let label = UILabel(frame: .zero)
         label.textColor = .blue
@@ -25,6 +29,12 @@ class ViewController: UIViewController {
         label.autoCenterInSuperview()
     }
 
-
+    override func viewWillAppear(_ animated: Bool) {
+        if !isAuthorized {
+            let vc = AuthorizationViewController()
+            
+            navigationController?.pushViewController(vc, animated: false)
+        }
+    }
 }
 
