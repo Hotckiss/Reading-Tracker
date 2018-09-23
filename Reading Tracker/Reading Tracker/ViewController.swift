@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PureLayout
 
 class ViewController: UIViewController {
 
@@ -15,10 +16,11 @@ class ViewController: UIViewController {
         title = "Reading Tracker"
         view.backgroundColor = .white
         
-        let label = UILabel(frame: CGRect(x: 50, y: 50, width: 100, height: 100))
+        let label = UILabel(frame: .zero)
         label.textColor = .blue
         label.text = "testLabel"
         view.addSubview(label)
+        label.autoCenterInSuperview()
     }
 
 
