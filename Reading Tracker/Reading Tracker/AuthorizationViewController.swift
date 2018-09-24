@@ -12,31 +12,99 @@ import RxSwift
 import Firebase
 
 class AuthorizationViewController: UIViewController {
-
+    private var greetingLabel: UILabel?
+    private var authorizationForm: UIStackView?
+    private var loginButton: UIButton?
+    private var loginTextField: RTTextField?
+    private var passwordTextField: RTTextField?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupSubviews()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: ({
+            UIView.animate(withDuration: 0.3, animations: ({ [weak self] in
+                self?.greetingLabel?.alpha = 1
+            }), completion: ({ _ in
+                UIView.animate(withDuration: 0.3, animations: ({ [weak self] in
+                    self?.authorizationForm?.alpha = 1
+                }), completion: ({ _ in
+                    UIView.animate(withDuration: 0.3, animations: ({ [weak self] in
+                        self?.loginButton?.alpha = 1
+                    }))
+                }))
+            }))
+        }))
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = true
-        view.backgroundColor = .white
+        view.backgroundColor = .orange
     }
     
     private func setupSubviews() {
         setupGreeting()
+        setupLoginButton()
+        setupAuthorizationForm()
+    }
+    
+    private func setupGreeting() {
+        let greetingLabel = UILabel(forAutoLayout: ())
+        greetingLabel.numberOfLines = 0
+        greetingLabel.textAlignment = .center
+        let greetingText = "Welcome to\nReading Tracker!"
+        
+        let textAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x1f1f1f),
+            NSAttributedString.Key.font : UIFont(name: "Chalkduster", size: 27.0)!]
+            as [NSAttributedString.Key : Any]
+        
+        greetingLabel.attributedText = NSAttributedString(string: greetingText, attributes: textAttributes)
+        greetingLabel.alpha = 0
+        
+        view.addSubview(greetingLabel)
+        greetingLabel.autoAlignAxis(toSuperviewAxis: .vertical)
+        greetingLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 128)
+        
+        self.greetingLabel = greetingLabel
+    }
+    
+    private func setupLoginButton() {
+        let loginButton = UIButton(forAutoLayout: ())
+        
+        let buttonTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x1f1f1f),
+            NSAttributedString.Key.font : UIFont(name: "AvenirNext-Bold", size: 27.0)!]
+            as [NSAttributedString.Key : Any]
+        
+        loginButton.setAttributedTitle(NSAttributedString(string: "Войти", attributes: buttonTextAttributes), for: .normal)
+        loginButton.backgroundColor = UIColor(rgb: 0x75ff75)
+        loginButton.layer.cornerRadius = 8
+        loginButton.layer.shadowColor = UIColor.lightGray.cgColor
+        loginButton.layer.shadowRadius = 1
+        loginButton.layer.shadowOpacity = 0.6;
+        view.addSubview(loginButton)
+        loginButton.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 16, bottom: 16, right: 16), excludingEdge: .top)
+        loginButton.autoSetDimension(.height, toSize: 56)
+        loginButton.alpha = 0
+        
+        self.loginButton = loginButton
+    }
+    
+    private func setupAuthorizationForm() {
+        let formTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor.black,
+            NSAttributedString.Key.font : UIFont(name: "Georgia-BoldItalic", size: 19.0)!]
+            as [NSAttributedString.Key : Any]
         
         let loginLabel = UILabel(forAutoLayout: ())
-        loginLabel.textColor = .blue
-        loginLabel.text = "Логин"
+        loginLabel.attributedText = NSAttributedString(string: "Логин", attributes: formTextAttributes)
         
         let loginTextField = RTTextField()
         loginTextField.placeholder = "логин"
-        loginTextField.layer.borderWidth = 1
-        loginTextField.layer.cornerRadius = 4
-        loginTextField.layer.borderColor = UIColor.darkGray.cgColor
-        loginTextField.backgroundColor = UIColor(rgb: 0xe5e5e5)
+        loginTextField.layer.cornerRadius = 8
+        loginTextField.backgroundColor = UIColor(rgb: 0xad5205)
         loginTextField.autocorrectionType = .no
         
         let loginStackView = UIStackView(arrangedSubviews: [loginLabel, loginTextField])
@@ -44,15 +112,12 @@ class AuthorizationViewController: UIViewController {
         loginStackView.axis = .horizontal
         
         let passwordLabel = UILabel(forAutoLayout: ())
-        passwordLabel.textColor = .blue
-        passwordLabel.text = "Пароль"
+        passwordLabel.attributedText = NSAttributedString(string: "Пароль", attributes: formTextAttributes)
         
         let passwordTextField = RTTextField()
         passwordTextField.placeholder = "пароль"
-        passwordTextField.layer.borderWidth = 1
-        passwordTextField.layer.cornerRadius = 4
-        passwordTextField.layer.borderColor = UIColor.darkGray.cgColor
-        passwordTextField.backgroundColor = UIColor(rgb: 0xe5e5e5)
+        passwordTextField.layer.cornerRadius = 8
+        passwordTextField.backgroundColor = UIColor(rgb: 0xad5205)
         passwordTextField.autocorrectionType = .no
         passwordTextField.isSecureTextEntry = true
         
@@ -66,49 +131,12 @@ class AuthorizationViewController: UIViewController {
         authorizationStackView.alpha = 0
         view.addSubview(authorizationStackView)
         
-        loginTextField.autoSetDimensions(to: CGSize(width: 196, height: 32))
-        passwordTextField.autoSetDimensions(to: CGSize(width: 196, height: 32))
+        loginTextField.autoSetDimensions(to: CGSize(width: 192, height: 32))
+        passwordTextField.autoSetDimensions(to: CGSize(width: 192, height: 32))
         authorizationStackView.autoCenterInSuperview()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: ({
-            UIView.animate(withDuration: 0.5, animations: ({
-                authorizationStackView.alpha = 1
-            }))
-        }))
-        
-        let loginButton = UIButton(forAutoLayout: ())
-        
-        let buttonTextAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x1f1f1f),
-            NSAttributedString.Key.font : UIFont(name: "AvenirNext-Bold", size: 24.0)!]
-            as [NSAttributedString.Key : Any]
-        
-        loginButton.setAttributedTitle(NSAttributedString(string: "Войти", attributes: buttonTextAttributes), for: .normal)
-        loginButton.backgroundColor = UIColor(rgb: 0x75ff75)
-        loginButton.layer.borderColor = UIColor.blue.cgColor
-        loginButton.layer.cornerRadius = 8
-        loginButton.layer.borderWidth = 1
-        view.addSubview(loginButton)
-        loginButton.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 16, bottom: 16, right: 16), excludingEdge: .top)
-        loginButton.autoSetDimension(.height, toSize: 56)
-    }
-    
-    private func setupGreeting() {
-        let greetingLabel = UILabel(forAutoLayout: ())
-        greetingLabel.numberOfLines = 0
-        greetingLabel.textAlignment = .center
-        let greetingText = "Welcome to\nReading Tracker!"
-        
-        let textAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x1f1f1f),
-            NSAttributedString.Key.font : UIFont(name: "Chalkduster", size: 24.0)!]
-            as [NSAttributedString.Key : Any]
-        
-        greetingLabel.attributedText = NSAttributedString(string: greetingText, attributes: textAttributes)
-        
-        
-        view.addSubview(greetingLabel)
-        greetingLabel.autoAlignAxis(toSuperviewAxis: .vertical)
-        greetingLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 128)
+        self.loginTextField = loginTextField
+        self.passwordTextField = passwordTextField
+        self.authorizationForm = authorizationStackView
     }
 }
