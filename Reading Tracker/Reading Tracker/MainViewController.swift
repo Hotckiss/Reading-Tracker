@@ -12,8 +12,10 @@ import RxSwift
 import Firebase
 
 class MainViewController: UIViewController {
-    private var isAuthorized: Bool = false
+    private let disposeBag = DisposeBag()
     
+    private var isAuthorized: Bool = false
+    private var label: UILabel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,15 +29,25 @@ class MainViewController: UIViewController {
         label.text = "testLabel"
         view.addSubview(label)
         label.autoCenterInSuperview()
+        self.label = label
     }
 
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = false
         if !isAuthorized {
             let vc = AuthorizationViewController()
+            let interactor = AuthorizationInteractor()
+            vc.interactor = interactor
+            interactor.viewController = vc
+            
+            interactor.authorization.subscribe(onNext: ({ [weak self] user in
+                self?.label?.text = user.user.email ?? "Username login"
+                self?.navigationController?.popViewController(animated: true)
+                self?.isAuthorized = true
+            })).disposed(by: disposeBag)
             
             navigationController?.pushViewController(vc, animated: false)
-            isAuthorized = true
+            
         }
     }
 }
