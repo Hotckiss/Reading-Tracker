@@ -10,6 +10,10 @@
 		2F1891D9215832210043BDCC /* AuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1891D8215832210043BDCC /* AuthorizationViewController.swift */; };
 		2F1891DC2158B9760043BDCC /* UIColor+RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1891DB2158B9760043BDCC /* UIColor+RGB.swift */; };
 		2F1891DF2158BCC10043BDCC /* RTTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1891DE2158BCC10043BDCC /* RTTextView.swift */; };
+		2F1891E22158EF2E0043BDCC /* AuthorizationInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1891E12158EF2E0043BDCC /* AuthorizationInteractor.swift */; };
+		2F1891E421590A680043BDCC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F1891E321590A670043BDCC /* GoogleService-Info.plist */; };
+		2F1891E521590A680043BDCC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F1891E321590A670043BDCC /* GoogleService-Info.plist */; };
+		2F1891E621590A680043BDCC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F1891E321590A670043BDCC /* GoogleService-Info.plist */; };
 		2FE6C5A321581BDE005A7A68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6C5A221581BDE005A7A68 /* AppDelegate.swift */; };
 		2FE6C5A521581BDE005A7A68 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6C5A421581BDE005A7A68 /* MainViewController.swift */; };
 		2FE6C5A821581BDE005A7A68 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FE6C5A621581BDE005A7A68 /* Main.storyboard */; };
@@ -44,6 +48,8 @@
 		2F1891D8215832210043BDCC /* AuthorizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationViewController.swift; sourceTree = "<group>"; };
 		2F1891DB2158B9760043BDCC /* UIColor+RGB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+RGB.swift"; sourceTree = "<group>"; };
 		2F1891DE2158BCC10043BDCC /* RTTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTTextView.swift; sourceTree = "<group>"; };
+		2F1891E12158EF2E0043BDCC /* AuthorizationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationInteractor.swift; sourceTree = "<group>"; };
+		2F1891E321590A670043BDCC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2FE6C59F21581BDE005A7A68 /* Reading Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reading Tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FE6C5A221581BDE005A7A68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2FE6C5A421581BDE005A7A68 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -109,6 +115,15 @@
 			path = SharedUI;
 			sourceTree = "<group>";
 		};
+		2F1891E02158EE870043BDCC /* Authorization */ = {
+			isa = PBXGroup;
+			children = (
+				2F1891D8215832210043BDCC /* AuthorizationViewController.swift */,
+				2F1891E12158EF2E0043BDCC /* AuthorizationInteractor.swift */,
+			);
+			path = Authorization;
+			sourceTree = "<group>";
+		};
 		2FE6C59621581BDE005A7A68 = {
 			isa = PBXGroup;
 			children = (
@@ -136,12 +151,13 @@
 			children = (
 				2F1891DD2158BCA00043BDCC /* SharedUI */,
 				2F1891DA2158B9550043BDCC /* Utils */,
+				2F1891E02158EE870043BDCC /* Authorization */,
 				2FE6C5A221581BDE005A7A68 /* AppDelegate.swift */,
 				2FE6C5A421581BDE005A7A68 /* MainViewController.swift */,
-				2F1891D8215832210043BDCC /* AuthorizationViewController.swift */,
 				2FE6C5A621581BDE005A7A68 /* Main.storyboard */,
 				2FE6C5A921581BDF005A7A68 /* Assets.xcassets */,
 				2FE6C5AE21581BDF005A7A68 /* Info.plist */,
+				2F1891E321590A670043BDCC /* GoogleService-Info.plist */,
 			);
 			path = "Reading Tracker";
 			sourceTree = "<group>";
@@ -297,6 +313,7 @@
 			files = (
 				2FE6C5AA21581BDF005A7A68 /* Assets.xcassets in Resources */,
 				2FE6C5A821581BDE005A7A68 /* Main.storyboard in Resources */,
+				2F1891E421590A680043BDCC /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,6 +321,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F1891E521590A680043BDCC /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,6 +329,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F1891E621590A680043BDCC /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,6 +431,7 @@
 			files = (
 				2F1891D9215832210043BDCC /* AuthorizationViewController.swift in Sources */,
 				2F1891DF2158BCC10043BDCC /* RTTextView.swift in Sources */,
+				2F1891E22158EF2E0043BDCC /* AuthorizationInteractor.swift in Sources */,
 				2FE6C5A521581BDE005A7A68 /* MainViewController.swift in Sources */,
 				2FE6C5A321581BDE005A7A68 /* AppDelegate.swift in Sources */,
 				2F1891DC2158B9760043BDCC /* UIColor+RGB.swift in Sources */,

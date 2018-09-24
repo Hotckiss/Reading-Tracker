@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,6 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         //TODO: authorization
+        FirebaseApp.configure()
+        
         let mainViewController = MainViewController()
         let navController = UINavigationController(rootViewController: mainViewController)
         navController.navigationBar.isTranslucent = false
