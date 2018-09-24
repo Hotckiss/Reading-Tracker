@@ -30,10 +30,12 @@ class MainViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
         if !isAuthorized {
             let vc = AuthorizationViewController()
             
             navigationController?.pushViewController(vc, animated: false)
+            isAuthorized = true
         }
     }
 }

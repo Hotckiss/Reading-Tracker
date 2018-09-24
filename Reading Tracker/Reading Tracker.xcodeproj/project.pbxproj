@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2F1891D9215832210043BDCC /* AuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1891D8215832210043BDCC /* AuthorizationViewController.swift */; };
+		2F1891DC2158B9760043BDCC /* UIColor+RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1891DB2158B9760043BDCC /* UIColor+RGB.swift */; };
+		2F1891DF2158BCC10043BDCC /* RTTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1891DE2158BCC10043BDCC /* RTTextView.swift */; };
 		2FE6C5A321581BDE005A7A68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6C5A221581BDE005A7A68 /* AppDelegate.swift */; };
 		2FE6C5A521581BDE005A7A68 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6C5A421581BDE005A7A68 /* MainViewController.swift */; };
 		2FE6C5A821581BDE005A7A68 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FE6C5A621581BDE005A7A68 /* Main.storyboard */; };
@@ -40,6 +42,8 @@
 		1867B49C98F22DAF02008586 /* Pods_Reading_Tracker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Reading_Tracker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28AEB30CF38345261F42D491 /* Pods_Reading_TrackerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Reading_TrackerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F1891D8215832210043BDCC /* AuthorizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationViewController.swift; sourceTree = "<group>"; };
+		2F1891DB2158B9760043BDCC /* UIColor+RGB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+RGB.swift"; sourceTree = "<group>"; };
+		2F1891DE2158BCC10043BDCC /* RTTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTTextView.swift; sourceTree = "<group>"; };
 		2FE6C59F21581BDE005A7A68 /* Reading Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reading Tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FE6C5A221581BDE005A7A68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2FE6C5A421581BDE005A7A68 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -89,6 +93,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2F1891DA2158B9550043BDCC /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				2F1891DB2158B9760043BDCC /* UIColor+RGB.swift */,
+				2F1891DE2158BCC10043BDCC /* RTTextView.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		2F1891DD2158BCA00043BDCC /* SharedUI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SharedUI;
+			sourceTree = "<group>";
+		};
 		2FE6C59621581BDE005A7A68 = {
 			isa = PBXGroup;
 			children = (
@@ -114,6 +134,8 @@
 		2FE6C5A121581BDE005A7A68 /* Reading Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				2F1891DD2158BCA00043BDCC /* SharedUI */,
+				2F1891DA2158B9550043BDCC /* Utils */,
 				2FE6C5A221581BDE005A7A68 /* AppDelegate.swift */,
 				2FE6C5A421581BDE005A7A68 /* MainViewController.swift */,
 				2F1891D8215832210043BDCC /* AuthorizationViewController.swift */,
@@ -389,8 +411,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				2F1891D9215832210043BDCC /* AuthorizationViewController.swift in Sources */,
+				2F1891DF2158BCC10043BDCC /* RTTextView.swift in Sources */,
 				2FE6C5A521581BDE005A7A68 /* MainViewController.swift in Sources */,
 				2FE6C5A321581BDE005A7A68 /* AppDelegate.swift in Sources */,
+				2F1891DC2158B9760043BDCC /* UIColor+RGB.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
