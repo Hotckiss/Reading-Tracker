@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F07446F215D59C4006ACE72 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F07446E215D59C4006ACE72 /* RegistrationViewController.swift */; };
+		2F074471215D59D7006ACE72 /* RegistrationInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F074470215D59D7006ACE72 /* RegistrationInteractor.swift */; };
 		2F1891D9215832210043BDCC /* AuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1891D8215832210043BDCC /* AuthorizationViewController.swift */; };
 		2F1891DC2158B9760043BDCC /* UIColor+RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1891DB2158B9760043BDCC /* UIColor+RGB.swift */; };
 		2F1891DF2158BCC10043BDCC /* RTTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1891DE2158BCC10043BDCC /* RTTextView.swift */; };
@@ -45,6 +47,8 @@
 /* Begin PBXFileReference section */
 		1867B49C98F22DAF02008586 /* Pods_Reading_Tracker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Reading_Tracker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28AEB30CF38345261F42D491 /* Pods_Reading_TrackerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Reading_TrackerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F07446E215D59C4006ACE72 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
+		2F074470215D59D7006ACE72 /* RegistrationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationInteractor.swift; sourceTree = "<group>"; };
 		2F1891D8215832210043BDCC /* AuthorizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationViewController.swift; sourceTree = "<group>"; };
 		2F1891DB2158B9760043BDCC /* UIColor+RGB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+RGB.swift"; sourceTree = "<group>"; };
 		2F1891DE2158BCC10043BDCC /* RTTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTTextView.swift; sourceTree = "<group>"; };
@@ -99,6 +103,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2F07446D215D599A006ACE72 /* Registration */ = {
+			isa = PBXGroup;
+			children = (
+				2F07446E215D59C4006ACE72 /* RegistrationViewController.swift */,
+				2F074470215D59D7006ACE72 /* RegistrationInteractor.swift */,
+			);
+			path = Registration;
+			sourceTree = "<group>";
+		};
 		2F1891DA2158B9550043BDCC /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -152,6 +165,7 @@
 				2F1891DD2158BCA00043BDCC /* SharedUI */,
 				2F1891DA2158B9550043BDCC /* Utils */,
 				2F1891E02158EE870043BDCC /* Authorization */,
+				2F07446D215D599A006ACE72 /* Registration */,
 				2FE6C5A221581BDE005A7A68 /* AppDelegate.swift */,
 				2FE6C5A421581BDE005A7A68 /* MainViewController.swift */,
 				2FE6C5A621581BDE005A7A68 /* Main.storyboard */,
@@ -433,6 +447,8 @@
 				2F1891DF2158BCC10043BDCC /* RTTextView.swift in Sources */,
 				2F1891E22158EF2E0043BDCC /* AuthorizationInteractor.swift in Sources */,
 				2FE6C5A521581BDE005A7A68 /* MainViewController.swift in Sources */,
+				2F07446F215D59C4006ACE72 /* RegistrationViewController.swift in Sources */,
+				2F074471215D59D7006ACE72 /* RegistrationInteractor.swift in Sources */,
 				2FE6C5A321581BDE005A7A68 /* AppDelegate.swift in Sources */,
 				2F1891DC2158B9760043BDCC /* UIColor+RGB.swift in Sources */,
 			);

@@ -122,9 +122,6 @@ class AuthorizationViewController: UIViewController {
         loginButton.setAttributedTitle(NSAttributedString(string: "Войти", attributes: buttonTextAttributes), for: .normal)
         loginButton.backgroundColor = UIColor(rgb: 0x75ff75)
         loginButton.layer.cornerRadius = 8
-        loginButton.layer.shadowColor = UIColor.lightGray.cgColor
-        loginButton.layer.shadowRadius = 1
-        loginButton.layer.shadowOpacity = 0.6
         loginButton.alpha = 0
         loginButton.addTarget(self, action: #selector(onLoginButtonTapped), for: .touchUpInside)
         
@@ -218,11 +215,13 @@ class AuthorizationViewController: UIViewController {
     }
     
     @objc private func onRegisterButtonTapped() {
+        navigationController?.pushViewController(RegistrationViewController(), animated: true)
         //TODO: register view
         /*Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
          print(error)
          guard let user = authResult?.user else { return }
          }*/
+        //Auth.auth().currentUser?.createProfileChangeRequest().commitChanges(completion: nil)
     }
     
     private func tryLogin() {
