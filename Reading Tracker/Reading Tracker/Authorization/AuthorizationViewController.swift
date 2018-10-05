@@ -45,6 +45,7 @@ class AuthorizationViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = true
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         view.backgroundColor = .orange
     }
     
@@ -122,9 +123,6 @@ class AuthorizationViewController: UIViewController {
         loginButton.setAttributedTitle(NSAttributedString(string: "Войти", attributes: buttonTextAttributes), for: .normal)
         loginButton.backgroundColor = UIColor(rgb: 0x75ff75)
         loginButton.layer.cornerRadius = 8
-        loginButton.layer.shadowColor = UIColor.lightGray.cgColor
-        loginButton.layer.shadowRadius = 1
-        loginButton.layer.shadowOpacity = 0.6
         loginButton.alpha = 0
         loginButton.addTarget(self, action: #selector(onLoginButtonTapped), for: .touchUpInside)
         
@@ -218,11 +216,7 @@ class AuthorizationViewController: UIViewController {
     }
     
     @objc private func onRegisterButtonTapped() {
-        //TODO: register view
-        /*Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
-         print(error)
-         guard let user = authResult?.user else { return }
-         }*/
+        navigationController?.pushViewController(RegistrationViewController(), animated: true)
     }
     
     private func tryLogin() {
