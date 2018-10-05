@@ -45,6 +45,7 @@ class AuthorizationViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = true
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         view.backgroundColor = .orange
     }
     
@@ -216,12 +217,6 @@ class AuthorizationViewController: UIViewController {
     
     @objc private func onRegisterButtonTapped() {
         navigationController?.pushViewController(RegistrationViewController(), animated: true)
-        //TODO: register view
-        /*Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
-         print(error)
-         guard let user = authResult?.user else { return }
-         }*/
-        //Auth.auth().currentUser?.createProfileChangeRequest().commitChanges(completion: nil)
     }
     
     private func tryLogin() {
