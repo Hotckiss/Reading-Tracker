@@ -12,7 +12,7 @@ import Firebase
 
 class RegistrationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    let fields: [String] = ["Логин", "Пароль", "Подтверждение пароля", "ФИО", "Пол", "Дата рождения", "Образование", "Любимые авторы/книги", "Семейное положение", "Любимый формат книги"]
+    let fields: [String] = ["Логин", "Пароль", "Подтверждение пароля", "ФИО", "Пол", "Образование", "Направление образования", "Род занятий", "Любимые авторы/книги", "Любимый формат книги"]
     var fieldValue: [Int: String] = [:]
     var tableView: UITableView!
     var finishButton: UIButton?
@@ -66,6 +66,14 @@ class RegistrationViewController: UIViewController, UITableViewDelegate, UITable
         let login = fieldValue[0] ?? ""
         let password = fieldValue[1] ?? ""
         
+        let name = fieldValue[3] ?? ""
+        let gender = fieldValue[4] ?? ""
+        let degree = fieldValue[5] ?? ""
+        let major = fieldValue[6] ?? ""
+        let occupation = fieldValue[7] ?? ""
+        let favouriteBooks = fieldValue[8] ?? ""
+        let favouriteFormat = fieldValue[9] ?? ""
+
         Auth.auth().createUser(withEmail: login, password: password) { (authResult, errorRaw) in
             let errorClosure = { (text: String) in
                 let alert = UIAlertController(title: "Ошибка!", message: text, preferredStyle: .alert)
@@ -77,14 +85,16 @@ class RegistrationViewController: UIViewController, UITableViewDelegate, UITable
                 return
             }
             
-            guard let uid = authResult?.user.uid else {
-                errorClosure("Auth error occurred")
-                return
-            }
-            
-            //let db = Firestore.firestore()
+            let user = UserModel(name: name,
+                                 birthDate: "",
+                                 gender: gender,
+                                 degree: degree,
+                                 major: major,
+                                 occupation: occupation,
+                                 favouriteBooks: favouriteBooks,
+                                 favouriteFormat: favouriteFormat)
+            FirestoreManager.DBManager.registerUser(user: user)
          }
-        //Auth.auth().currentUser?.createProfileChangeRequest().commitChanges(completion: nil)
     }
     
     private func validateFields() -> Bool {
@@ -99,13 +109,13 @@ class RegistrationViewController: UIViewController, UITableViewDelegate, UITable
             return false
         }
         
-        /*for index in 0..<fields.count {
+        for index in 0..<fields.count {
             if let value = fieldValue[index],
                 value.isEmpty {
                 errorClosure("Не все поля заполнены")
                 return false
             }
-        }*/
+        }
         
         if let password = fieldValue[1],
            let confirm = fieldValue[2],

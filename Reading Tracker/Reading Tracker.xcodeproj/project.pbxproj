@@ -22,6 +22,8 @@
 		2FE6C5AA21581BDF005A7A68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FE6C5A921581BDF005A7A68 /* Assets.xcassets */; };
 		2FE6C5B821581BDF005A7A68 /* Reading_TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6C5B721581BDF005A7A68 /* Reading_TrackerTests.swift */; };
 		2FE6C5C321581BDF005A7A68 /* Reading_TrackerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6C5C221581BDF005A7A68 /* Reading_TrackerUITests.swift */; };
+		2FFE218A21679AB4001BBE90 /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFE218921679AB4001BBE90 /* FirestoreManager.swift */; };
+		2FFE218E21679BE6001BBE90 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFE218D21679BE6001BBE90 /* UserModel.swift */; };
 		8413CA9FBA8C4435319EA738 /* Pods_Reading_Tracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1867B49C98F22DAF02008586 /* Pods_Reading_Tracker.framework */; };
 		BD40D3DF34BA48F9264F3AED /* Pods_Reading_TrackerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF27A7D84E2FC8B489662B62 /* Pods_Reading_TrackerTests.framework */; };
 		C879D96F1AE76DC770716C59 /* Pods_Reading_TrackerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28AEB30CF38345261F42D491 /* Pods_Reading_TrackerUITests.framework */; };
@@ -66,6 +68,8 @@
 		2FE6C5BE21581BDF005A7A68 /* Reading TrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Reading TrackerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FE6C5C221581BDF005A7A68 /* Reading_TrackerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reading_TrackerUITests.swift; sourceTree = "<group>"; };
 		2FE6C5C421581BDF005A7A68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2FFE218921679AB4001BBE90 /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
+		2FFE218D21679BE6001BBE90 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		313F5C1E1E03318C17C7BEA9 /* Pods-Reading TrackerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Reading TrackerUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Reading TrackerUITests/Pods-Reading TrackerUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		44F4631DB73E71E33749C614 /* Pods-Reading Tracker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Reading Tracker.release.xcconfig"; path = "Pods/Target Support Files/Pods-Reading Tracker/Pods-Reading Tracker.release.xcconfig"; sourceTree = "<group>"; };
 		5219C806254E349FA2B2E5B9 /* Pods-Reading Tracker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Reading Tracker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Reading Tracker/Pods-Reading Tracker.debug.xcconfig"; sourceTree = "<group>"; };
@@ -162,6 +166,7 @@
 		2FE6C5A121581BDE005A7A68 /* Reading Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				2FFE218C21679BD8001BBE90 /* Models */,
 				2F1891DD2158BCA00043BDCC /* SharedUI */,
 				2F1891DA2158B9550043BDCC /* Utils */,
 				2F1891E02158EE870043BDCC /* Authorization */,
@@ -172,6 +177,7 @@
 				2FE6C5A921581BDF005A7A68 /* Assets.xcassets */,
 				2FE6C5AE21581BDF005A7A68 /* Info.plist */,
 				2F1891E321590A670043BDCC /* GoogleService-Info.plist */,
+				2FFE218921679AB4001BBE90 /* FirestoreManager.swift */,
 			);
 			path = "Reading Tracker";
 			sourceTree = "<group>";
@@ -192,6 +198,14 @@
 				2FE6C5C421581BDF005A7A68 /* Info.plist */,
 			);
 			path = "Reading TrackerUITests";
+			sourceTree = "<group>";
+		};
+		2FFE218C21679BD8001BBE90 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2FFE218D21679BE6001BBE90 /* UserModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		52D57B4FA22D3E218CD207D9 /* Frameworks */ = {
@@ -460,6 +474,8 @@
 				2F07446F215D59C4006ACE72 /* RegistrationViewController.swift in Sources */,
 				2F074471215D59D7006ACE72 /* RegistrationInteractor.swift in Sources */,
 				2FE6C5A321581BDE005A7A68 /* AppDelegate.swift in Sources */,
+				2FFE218A21679AB4001BBE90 /* FirestoreManager.swift in Sources */,
+				2FFE218E21679BE6001BBE90 /* UserModel.swift in Sources */,
 				2F1891DC2158B9760043BDCC /* UIColor+RGB.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
