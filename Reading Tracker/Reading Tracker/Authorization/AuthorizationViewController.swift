@@ -216,7 +216,7 @@ class AuthorizationViewController: UIViewController {
     }
     
     @objc private func onRegisterButtonTapped() {
-        navigationController?.pushViewController(RegistrationViewController(), animated: true)
+        navigationController?.pushViewController(RegistrationLoginViewController(), animated: true)
     }
     
     private func tryLogin() {
