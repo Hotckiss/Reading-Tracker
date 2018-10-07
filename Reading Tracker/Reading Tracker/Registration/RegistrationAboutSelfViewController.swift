@@ -209,15 +209,18 @@ class RegistrationAboutSelfViewController: UIViewController {
         guard let firstName = firstNameTextField?.text else {
             finishButton?.layer.borderWidth = 2
             finishButton?.backgroundColor = .clear
+            finishButton?.isUserInteractionEnabled = false
             return
         }
         
         if !firstName.isEmpty {
             finishButton?.layer.borderWidth = 0
             finishButton?.backgroundColor = UIColor(rgb: 0x75ff75)
+            finishButton?.isUserInteractionEnabled = true
         } else {
             finishButton?.layer.borderWidth = 2
             finishButton?.backgroundColor = .clear
+            finishButton?.isUserInteractionEnabled = false
         }
     }
 

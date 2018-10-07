@@ -19,6 +19,9 @@ public class RegistrationDraft {
         static let majorKey = "major"
         static let occupationKey = "occupation"
         static let educationKey = "education"
+        static let favoriteBooksKey = "favoriteBooks"
+        static let favoriteAuthorsKey = "favoriteAuthors"
+        static let favoriteFormatKey = "favoriteFormat"
     }
     
     private init() {
@@ -78,5 +81,29 @@ public class RegistrationDraft {
     
     public func getOccupation() -> String {
         return (UserDefaults.standard.object(forKey: Consts.occupationKey) as? String) ?? ""
+    }
+    
+    public func setFavoriteBooks(books: String) {
+        UserDefaults.standard.set(books, forKey: Consts.favoriteBooksKey)
+    }
+    
+    public func getFavoriteBooks() -> String {
+        return (UserDefaults.standard.object(forKey: Consts.favoriteBooksKey) as? String) ?? ""
+    }
+    
+    public func setFavoriteAuthors(authors: String) {
+        UserDefaults.standard.set(authors, forKey: Consts.favoriteAuthorsKey)
+    }
+    
+    public func getFavoriteAuthors() -> String {
+        return (UserDefaults.standard.object(forKey: Consts.favoriteAuthorsKey) as? String) ?? ""
+    }
+    
+    public func setFavoriteFormat(format: String) {
+        UserDefaults.standard.set(format, forKey: Consts.favoriteFormatKey)
+    }
+    
+    public func getFavoriteFormat() -> String {
+        return (UserDefaults.standard.object(forKey: Consts.favoriteFormatKey) as? String) ?? ""
     }
 }

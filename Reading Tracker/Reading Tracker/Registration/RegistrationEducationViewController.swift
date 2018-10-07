@@ -142,7 +142,7 @@ class RegistrationEducationViewController: UIViewController {
     }
     
     @objc private func onFinishButtonTapped() {
-        
+        navigationController?.pushViewController(RegistrationFavoritesViewController(), animated: true)
     }
     
     @objc func educationTextFieldDidChange(_ textField: UITextField) {
@@ -164,15 +164,18 @@ class RegistrationEducationViewController: UIViewController {
               let education = educationTextField?.text else {
             finishButton?.layer.borderWidth = 2
             finishButton?.backgroundColor = .clear
+                finishButton?.isUserInteractionEnabled = false
             return
         }
         
         if !occupation.isEmpty && !education.isEmpty {
             finishButton?.layer.borderWidth = 0
             finishButton?.backgroundColor = UIColor(rgb: 0x75ff75)
+            finishButton?.isUserInteractionEnabled = true
         } else {
             finishButton?.layer.borderWidth = 2
             finishButton?.backgroundColor = .clear
+            finishButton?.isUserInteractionEnabled = false
         }
     }
     
