@@ -146,7 +146,7 @@ class AuthorizationViewController: UIViewController {
         let loginTextField = RTTextField()
         loginTextField.placeholder = "логин"
         loginTextField.layer.cornerRadius = 8
-        loginTextField.backgroundColor = UIColor(rgb: 0xad5205)
+        loginTextField.backgroundColor = UIColor(rgb: 0xad5205).withAlphaComponent(0.3)
         loginTextField.autocorrectionType = .no
         loginTextField.delegate = loginTextFieldDelegate
         loginTextField.returnKeyType = .continue
@@ -161,7 +161,7 @@ class AuthorizationViewController: UIViewController {
         let passwordTextField = RTTextField()
         passwordTextField.placeholder = "пароль"
         passwordTextField.layer.cornerRadius = 8
-        passwordTextField.backgroundColor = UIColor(rgb: 0xad5205)
+        passwordTextField.backgroundColor = UIColor(rgb: 0xad5205).withAlphaComponent(0.3)
         passwordTextField.autocorrectionType = .no
         passwordTextField.isSecureTextEntry = true
         passwordTextField.delegate = passwordTextFieldDelegate

@@ -13,13 +13,13 @@ import Firebase
 class RegistrationAboutSelfViewController: UIViewController {
     private var firstNameTextField: RTTextField?
     private var lastNameTextField: RTTextField?
-    private var sexTextField: RTTextField?
+    private var maleButton: UIButton?
+    private var femaleButton: UIButton?
     private var finishButton: UIButton?
     private var finishButtonBottomConstraint: NSLayoutConstraint?
     
     private let firstNameTextFieldDelegate = IntermediateTextFieldDelegate()
-    private let lastNameTextFieldDelegate = IntermediateTextFieldDelegate()
-    private let sexTextFieldDelegate = FinishTextFieldDelegate()
+    private let lastNameTextFieldDelegate = FinishTextFieldDelegate()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,22 +61,13 @@ class RegistrationAboutSelfViewController: UIViewController {
         lastNameTextField.backgroundColor = UIColor(rgb: 0xad5205).withAlphaComponent(0.3)
         lastNameTextField.autocorrectionType = .no
         lastNameTextField.delegate = lastNameTextFieldDelegate
-        lastNameTextField.returnKeyType = .continue
+        lastNameTextField.returnKeyType = .done
         lastNameTextField.text = RegistrationDraft.registrationDraftInstance.getLastName()
         firstNameTextFieldDelegate.nextField = lastNameTextField
-        
-        let sexTextField = RTTextField()
-        sexTextField.placeholder = "пол"
-        sexTextField.backgroundColor = UIColor(rgb: 0xad5205).withAlphaComponent(0.3)
-        sexTextField.autocorrectionType = .no
-        sexTextField.delegate = sexTextFieldDelegate
-        sexTextField.returnKeyType = .done
-        lastNameTextFieldDelegate.nextField = sexTextField
         
         view.addSubview(navBar)
         view.addSubview(firstNameTextField)
         view.addSubview(lastNameTextField)
-        view.addSubview(sexTextField)
         
         navBar.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: UIApplication.shared.statusBarFrame.height, left: 0, bottom: 0, right: 0), excludingEdge: .bottom)
         
@@ -90,18 +81,56 @@ class RegistrationAboutSelfViewController: UIViewController {
         lastNameTextField.autoPinEdge(.top, to: .bottom, of: firstNameTextField, withOffset: 24)
         lastNameTextField.autoSetDimension(.height, toSize: 48)
         
-        sexTextField.autoPinEdge(toSuperviewEdge: .left)
-        sexTextField.autoPinEdge(toSuperviewEdge: .right)
-        sexTextField.autoPinEdge(.top, to: .bottom, of: lastNameTextField, withOffset: 24)
-        sexTextField.autoSetDimension(.height, toSize: 48)
+        let sexLabel = UILabel(frame: .zero)
+        let sexTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor.black,
+            NSAttributedString.Key.font : UIFont(name: "Georgia-BoldItalic", size: 19.0)!]
+            as [NSAttributedString.Key : Any]
         
+        sexLabel.attributedText = NSAttributedString(string: "Пол", attributes: sexTextAttributes)
+        view.addSubview(sexLabel)
+        sexLabel.autoPinEdge(.top, to: .bottom, of: lastNameTextField, withOffset: 24)
+        sexLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 8)
+        sexLabel.autoSetDimension(.height, toSize: 48)
+        
+        let buttonTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x1f1f1f),
+            NSAttributedString.Key.font : UIFont(name: "AvenirNext-Bold", size: 19.0)!]
+            as [NSAttributedString.Key : Any]
+        
+        let maleButton = UIButton(frame: .zero)
+        maleButton.layer.cornerRadius = 24
+        maleButton.backgroundColor = .green
+        maleButton.setAttributedTitle(NSAttributedString(string: "М", attributes: buttonTextAttributes), for: [])
+        
+        let femaleButton = UIButton(frame: .zero)
+        
+        femaleButton.setAttributedTitle(NSAttributedString(string: "Ж", attributes: buttonTextAttributes), for: [])
+        femaleButton.layer.cornerRadius = 24
+        femaleButton.backgroundColor = UIColor(rgb: 0xad5205).withAlphaComponent(0.3)
+        
+        view.addSubview(maleButton)
+        view.addSubview(femaleButton)
+        
+        maleButton.autoSetDimensions(to: CGSize(width: 48, height: 48))
+        maleButton.autoPinEdge(toSuperviewEdge: .right, withInset: 32 + 48 + 16)
+        maleButton.autoPinEdge(.top, to: .bottom, of: lastNameTextField, withOffset: 24)
+        
+        femaleButton.autoSetDimensions(to: CGSize(width: 48, height: 48))
+        femaleButton.autoPinEdge(toSuperviewEdge: .right, withInset: 32)
+        femaleButton.autoPinEdge(.top, to: .bottom, of: lastNameTextField, withOffset: 24)
+        
+        self.maleButton = maleButton
+        self.femaleButton = femaleButton
         self.firstNameTextField = firstNameTextField
         self.lastNameTextField = lastNameTextField
-        self.sexTextField = sexTextField
+        
+        updateSex(sex: RegistrationDraft.registrationDraftInstance.getSex())
+        maleButton.addTarget(self, action: #selector(maleButtonPressed), for: .touchUpInside)
+        femaleButton.addTarget(self, action: #selector(femaleButtonPressed), for: .touchUpInside)
         
         firstNameTextField.addTarget(self, action: #selector(firstNameTextFieldDidChange(_:)), for: .editingChanged)
         lastNameTextField.addTarget(self, action: #selector(lastNameTextFieldDidChange(_:)), for: .editingChanged)
-        sexTextField.addTarget(self, action: #selector(sexTextFieldDidChange(_:)), for: .editingChanged)
     }
     
     private func setupFinishButton() {
@@ -128,6 +157,26 @@ class RegistrationAboutSelfViewController: UIViewController {
     }
     
     
+    @objc private func maleButtonPressed() {
+        updateSex(sex: false)
+    }
+    
+    @objc private func femaleButtonPressed() {
+        updateSex(sex: true)
+    }
+    
+    private func updateSex(sex: Bool) {
+        if sex {
+            femaleButton?.backgroundColor = .green
+            maleButton?.backgroundColor = UIColor(rgb: 0xad5205).withAlphaComponent(0.3)
+            RegistrationDraft.registrationDraftInstance.setSex(sex: true)
+        } else {
+            maleButton?.backgroundColor = .green
+            femaleButton?.backgroundColor = UIColor(rgb: 0xad5205).withAlphaComponent(0.3)
+            RegistrationDraft.registrationDraftInstance.setSex(sex: false)
+        }
+    }
+    
     @objc func keyboardWillShow(notification: Notification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             if let conatant = finishButtonBottomConstraint?.constant,
@@ -143,7 +192,7 @@ class RegistrationAboutSelfViewController: UIViewController {
     }
     
     @objc private func onFinishButtonTapped() {
-        
+        navigationController?.pushViewController(RegistrationEducationViewController(), animated: true)
     }
     
     @objc func firstNameTextFieldDidChange(_ textField: UITextField) {
@@ -153,10 +202,6 @@ class RegistrationAboutSelfViewController: UIViewController {
     
     @objc func lastNameTextFieldDidChange(_ textField: UITextField) {
         RegistrationDraft.registrationDraftInstance.setLastName(lastName: textField.text ?? "")
-        updateFinishButton()
-    }
-    
-    @objc func sexTextFieldDidChange(_ textField: UITextField) {
         updateFinishButton()
     }
     

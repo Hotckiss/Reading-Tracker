@@ -19,6 +19,7 @@
 		2FAA8FB6216A21920011F59D /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FB5216A21920011F59D /* NavigationBar.swift */; };
 		2FAA8FB8216A32310011F59D /* RegistrationDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FB7216A32310011F59D /* RegistrationDraft.swift */; };
 		2FAA8FBA216A34650011F59D /* RegistrationAboutSelfViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FB9216A34650011F59D /* RegistrationAboutSelfViewController.swift */; };
+		2FAA8FBC216A6E430011F59D /* RegistrationEducationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FBB216A6E430011F59D /* RegistrationEducationViewController.swift */; };
 		2FE6C5A321581BDE005A7A68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6C5A221581BDE005A7A68 /* AppDelegate.swift */; };
 		2FE6C5A521581BDE005A7A68 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6C5A421581BDE005A7A68 /* MainViewController.swift */; };
 		2FE6C5A821581BDE005A7A68 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FE6C5A621581BDE005A7A68 /* Main.storyboard */; };
@@ -62,6 +63,7 @@
 		2FAA8FB5216A21920011F59D /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		2FAA8FB7216A32310011F59D /* RegistrationDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationDraft.swift; sourceTree = "<group>"; };
 		2FAA8FB9216A34650011F59D /* RegistrationAboutSelfViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationAboutSelfViewController.swift; sourceTree = "<group>"; };
+		2FAA8FBB216A6E430011F59D /* RegistrationEducationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationEducationViewController.swift; sourceTree = "<group>"; };
 		2FE6C59F21581BDE005A7A68 /* Reading Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reading Tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FE6C5A221581BDE005A7A68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2FE6C5A421581BDE005A7A68 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				2FAA8FB2216A152C0011F59D /* RegistrationLoginViewController.swift */,
 				2FAA8FB7216A32310011F59D /* RegistrationDraft.swift */,
 				2FAA8FB9216A34650011F59D /* RegistrationAboutSelfViewController.swift */,
+				2FAA8FBB216A6E430011F59D /* RegistrationEducationViewController.swift */,
 			);
 			path = Registration;
 			sourceTree = "<group>";
@@ -486,6 +489,7 @@
 			files = (
 				2F1891D9215832210043BDCC /* AuthorizationViewController.swift in Sources */,
 				2FAA8FB3216A152C0011F59D /* RegistrationLoginViewController.swift in Sources */,
+				2FAA8FBC216A6E430011F59D /* RegistrationEducationViewController.swift in Sources */,
 				2F1891DF2158BCC10043BDCC /* RTTextView.swift in Sources */,
 				2FAA8FBA216A34650011F59D /* RegistrationAboutSelfViewController.swift in Sources */,
 				2F1891E22158EF2E0043BDCC /* AuthorizationInteractor.swift in Sources */,
