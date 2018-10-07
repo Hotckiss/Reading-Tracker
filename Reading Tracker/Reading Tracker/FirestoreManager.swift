@@ -23,12 +23,15 @@ final class FirestoreManager {
         }
         
         db.collection("users").document(uid).setData([
-            "gender": user.gender,
+            "firstName": user.firstName,
+            "lastName": user.lastName,
+            "gender": (user.gender ? "Ж" : "М"),
             "degree": user.degree,
             "major": user.major,
             "occupation": user.occupation,
-            "favorite books and authors": user.favouriteBooks,
-            "favorite book format": user.favouriteFormat,
+            "favorite books": user.favoriteBooks,
+            "favorite authors": user.favoriteAuthors,
+            "favorite book format": user.favoriteFormat,
             ], merge: true) { error in
             if let error = error {
                 print("Error writing document: \(error)")
