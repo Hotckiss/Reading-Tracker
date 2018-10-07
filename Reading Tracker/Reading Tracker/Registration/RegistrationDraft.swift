@@ -13,6 +13,7 @@ public class RegistrationDraft {
     
     private enum Consts {
         static let loginKey = "login"
+        static let passwordKey = "password"
         static let firstNameKey = "firstName"
         static let lastNameKey = "lastName"
         static let sexKey = "sex"
@@ -33,6 +34,14 @@ public class RegistrationDraft {
     
     public func getLogin() -> String {
         return (UserDefaults.standard.object(forKey: Consts.loginKey) as? String) ?? ""
+    }
+    
+    public func setPassword(password: String) {
+        UserDefaults.standard.set(password, forKey: Consts.passwordKey)
+    }
+    
+    public func getPassword() -> String {
+        return (UserDefaults.standard.object(forKey: Consts.passwordKey) as? String) ?? ""
     }
     
     public func setFirstName(firstName: String) {

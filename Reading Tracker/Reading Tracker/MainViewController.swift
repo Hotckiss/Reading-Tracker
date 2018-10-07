@@ -14,7 +14,6 @@ import Firebase
 class MainViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
-    private var isAuthorized: Bool = false
     private var label: UILabel?
     
     override func viewDidLoad() {
@@ -31,10 +30,10 @@ class MainViewController: UIViewController {
         label.autoCenterInSuperview()
         self.label = label
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.navigationBar.isHidden = false
-        if !isAuthorized {
+        let currentUser = Auth.auth().currentUser
+        if currentUser == nil {
             let vc = AuthorizationViewController()
             let interactor = AuthorizationInteractor()
             vc.interactor = interactor
@@ -43,11 +42,11 @@ class MainViewController: UIViewController {
             interactor.authorization.subscribe(onNext: ({ [weak self] user in
                 self?.label?.text = user.user.email ?? "Username login"
                 self?.navigationController?.popViewController(animated: true)
-                self?.isAuthorized = true
             })).disposed(by: disposeBag)
             
             navigationController?.pushViewController(vc, animated: false)
-            
+        } else {
+            label?.text = currentUser?.email ?? ""
         }
     }
 }

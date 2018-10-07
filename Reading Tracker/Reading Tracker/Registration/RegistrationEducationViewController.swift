@@ -11,6 +11,8 @@ import UIKit
 import Firebase
 
 class RegistrationEducationViewController: UIViewController {
+    var interactor: RegistrationInteractor?
+    
     private var educationTextField: RTTextField?
     private var majorTextField: RTTextField?
     private var occupationTextField: RTTextField?
@@ -40,12 +42,21 @@ class RegistrationEducationViewController: UIViewController {
         let navBar = NavigationBar(frame: .zero)
         navBar.configure(model: NavigationBarModel(title: "Образование",
                                                    backButtonText: "Назад",
-                                                   frontButtonText: "Справка",
+                                                   frontButtonText: "Сбросить",
                                                    onBackButtonPressed: ({ [weak self] in
                                                     self?.navigationController?.popViewController(animated: true)
                                                    }),                                        onFrontButtonPressed: ({
-                                                    let alert = UIAlertController(title: "Справка", message: "Введите информацию о себе", preferredStyle: .alert)
-                                                    alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+                                                    let alert = UIAlertController(title: "Сбросить", message: "Очистить поля?", preferredStyle: .alert)
+                                                    alert.addAction(UIAlertAction(title: "Отмена", style: .default, handler: nil))
+                                                    alert.addAction(UIAlertAction(title: "Да", style: .destructive, handler: ({ _ in
+                                                        RegistrationDraft.registrationDraftInstance.setEducation(education: "")
+                                                        RegistrationDraft.registrationDraftInstance.setMajor(major: "")
+                                                        RegistrationDraft.registrationDraftInstance.setOccupation(occupation: "")
+                                                        self.educationTextField?.text = ""
+                                                        self.majorTextField?.text = ""
+                                                        self.occupationTextField?.text = ""
+                                                        self.updateFinishButton()
+                                                    })))
                                                     self.present(alert, animated: true, completion: nil)
                                                    })))
         let educationTextField = RTTextField()
@@ -142,7 +153,9 @@ class RegistrationEducationViewController: UIViewController {
     }
     
     @objc private func onFinishButtonTapped() {
-        navigationController?.pushViewController(RegistrationFavoritesViewController(), animated: true)
+        let vc = RegistrationFavoritesViewController()
+        vc.interactor = interactor
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func educationTextFieldDidChange(_ textField: UITextField) {

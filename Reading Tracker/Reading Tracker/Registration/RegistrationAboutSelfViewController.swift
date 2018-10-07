@@ -11,6 +11,8 @@ import UIKit
 import Firebase
 
 class RegistrationAboutSelfViewController: UIViewController {
+    var interactor: RegistrationInteractor?
+    
     private var firstNameTextField: RTTextField?
     private var lastNameTextField: RTTextField?
     private var maleButton: UIButton?
@@ -39,12 +41,21 @@ class RegistrationAboutSelfViewController: UIViewController {
         let navBar = NavigationBar(frame: .zero)
         navBar.configure(model: NavigationBarModel(title: "О себе",
                                                    backButtonText: "Назад",
-                                                   frontButtonText: "Справка",
+                                                   frontButtonText: "Сбросить",
                                                    onBackButtonPressed: ({ [weak self] in
                                                     self?.navigationController?.popViewController(animated: true)
                                                    }),                                        onFrontButtonPressed: ({
-                                                    let alert = UIAlertController(title: "Справка", message: "Введите информацию о себе", preferredStyle: .alert)
-                                                    alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+                                                    let alert = UIAlertController(title: "Сбросить", message: "Очистить поля?", preferredStyle: .alert)
+                                                    alert.addAction(UIAlertAction(title: "Отмена", style: .default, handler: nil))
+                                                    alert.addAction(UIAlertAction(title: "Да", style: .destructive, handler: ({ _ in
+                                                        RegistrationDraft.registrationDraftInstance.setFirstName(firstName: "")
+                                                        RegistrationDraft.registrationDraftInstance.setLastName(lastName: "")
+                                                        RegistrationDraft.registrationDraftInstance.setSex(sex: false)
+                                                        self.firstNameTextField?.text = ""
+                                                        self.lastNameTextField?.text = ""
+                                                        self.updateSex(sex: false)
+                                                        self.updateFinishButton()
+                                                    })))
                                                     self.present(alert, animated: true, completion: nil)
                                                    })))
         
@@ -192,7 +203,9 @@ class RegistrationAboutSelfViewController: UIViewController {
     }
     
     @objc private func onFinishButtonTapped() {
-        navigationController?.pushViewController(RegistrationEducationViewController(), animated: true)
+        let vc = RegistrationEducationViewController()
+        vc.interactor = interactor
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func firstNameTextFieldDidChange(_ textField: UITextField) {

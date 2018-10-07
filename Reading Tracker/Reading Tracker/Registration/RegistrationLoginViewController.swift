@@ -11,6 +11,8 @@ import UIKit
 import Firebase
 
 class RegistrationLoginViewController: UIViewController {
+    var interactor: RegistrationInteractor?
+    
     private var loginTextField: RTTextField?
     private var passwordTextField: RTTextField?
     private var confirmTextField: RTTextField?
@@ -39,12 +41,20 @@ class RegistrationLoginViewController: UIViewController {
         let navBar = NavigationBar(frame: .zero)
         navBar.configure(model: NavigationBarModel(title: "Регистрация",
                                                    backButtonText: "Назад",
-                                                   frontButtonText: "Справка",
+                                                   frontButtonText: "Сбросить",
                                                    onBackButtonPressed: ({ [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }),                                        onFrontButtonPressed: ({
-            let alert = UIAlertController(title: "Справка", message: "Для продолжения пароли должны совпадать", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+            let alert = UIAlertController(title: "Сбросить", message: "Очистить поля?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Отмена", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "Да", style: .destructive, handler: ({ _ in
+                RegistrationDraft.registrationDraftInstance.setLogin(login: "")
+                RegistrationDraft.registrationDraftInstance.setPassword(password: "")
+                self.loginTextField?.text = ""
+                self.passwordTextField?.text = ""
+                self.confirmTextField?.text = ""
+                self.updateFinishButton()
+            })))
             self.present(alert, animated: true, completion: nil)
         })))
         
@@ -145,7 +155,9 @@ class RegistrationLoginViewController: UIViewController {
     }
     
     @objc private func onFinishButtonTapped() {
-        navigationController?.pushViewController(RegistrationAboutSelfViewController(), animated: true)
+        let vc = RegistrationAboutSelfViewController()
+        vc.interactor = interactor
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func loginTextFieldDidChange(_ textField: UITextField) {
@@ -153,6 +165,7 @@ class RegistrationLoginViewController: UIViewController {
     }
     
     @objc func passwordTextFieldDidChange(_ textField: UITextField) {
+        RegistrationDraft.registrationDraftInstance.setPassword(password: textField.text ?? "")
         updateFinishButton()
     }
     

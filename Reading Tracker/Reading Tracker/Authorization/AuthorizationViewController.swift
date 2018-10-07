@@ -12,6 +12,9 @@ import RxSwift
 import Firebase
 
 class AuthorizationViewController: UIViewController {
+    private let disposeBag = DisposeBag()
+    
+    private var spinner: UIActivityIndicatorView?
     private var greetingLabel: UILabel?
     private var authorizationForm: UIStackView?
     private var loginButton: UIButton?
@@ -63,6 +66,16 @@ class AuthorizationViewController: UIViewController {
         setupLoginButton()
         setupAuthorizationForm()
         setupRegisterButton()
+        
+        let spinner = UIActivityIndicatorView()
+        
+        view.addSubview(spinner)
+        
+        spinner.autoCenterInSuperview()
+        spinner.backgroundColor = UIColor(rgb: 0xad5205).withAlphaComponent(0.7)
+        spinner.layer.cornerRadius = 8
+        spinner.autoSetDimensions(to: CGSize(width: 64, height: 64))
+        self.spinner = spinner
     }
     
     private func setupRegisterButton() {
@@ -212,11 +225,19 @@ class AuthorizationViewController: UIViewController {
     }
     
     @objc private func onLoginButtonTapped() {
+        spinner?.startAnimating()
         tryLogin()
     }
     
     @objc private func onRegisterButtonTapped() {
-        navigationController?.pushViewController(RegistrationLoginViewController(), animated: true)
+        let registrationInteractor = RegistrationInteractor()
+        let vc = RegistrationLoginViewController()
+        vc.interactor = registrationInteractor
+        
+        registrationInteractor.registration.subscribe(onNext: ({ user in
+            self.interactor?.onLogin(result: user)
+        })).disposed(by: disposeBag)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     private func tryLogin() {
@@ -225,6 +246,8 @@ class AuthorizationViewController: UIViewController {
                 return
         }
         
-        interactor?.loginButtonTapped(login: loginText, password: passwordText)
+        interactor?.loginButtonTapped(login: loginText, password: passwordText, onCompleted: ({
+            self.spinner?.stopAnimating()
+        }))
     }
 }

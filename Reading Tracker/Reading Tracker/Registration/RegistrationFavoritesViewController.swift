@@ -11,9 +11,12 @@ import UIKit
 import Firebase
 
 class RegistrationFavoritesViewController: UIViewController {
+    var interactor: RegistrationInteractor?
+    
     private var favoriteBooksTextField: RTTextField?
     private var favoriteAuthorsTextField: RTTextField?
     private var favoriteFormatTextField: RTTextField?
+    private var spinner: UIActivityIndicatorView?
     private var finishButton: UIButton?
     private var finishButtonBottomConstraint: NSLayoutConstraint?
     
@@ -31,6 +34,15 @@ class RegistrationFavoritesViewController: UIViewController {
         view.backgroundColor = .orange
         setupSubviews()
         setupFinishButton()
+        let spinner = UIActivityIndicatorView()
+        
+        view.addSubview(spinner)
+        
+        spinner.autoCenterInSuperview()
+        spinner.backgroundColor = UIColor(rgb: 0xad5205).withAlphaComponent(0.7)
+        spinner.layer.cornerRadius = 8
+        spinner.autoSetDimensions(to: CGSize(width: 64, height: 64))
+        self.spinner = spinner
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -40,12 +52,21 @@ class RegistrationFavoritesViewController: UIViewController {
         let navBar = NavigationBar(frame: .zero)
         navBar.configure(model: NavigationBarModel(title: "Предпочтения",
                                                    backButtonText: "Назад",
-                                                   frontButtonText: "Справка",
+                                                   frontButtonText: "Сбросить",
                                                    onBackButtonPressed: ({ [weak self] in
                                                     self?.navigationController?.popViewController(animated: true)
                                                    }),                                        onFrontButtonPressed: ({
-                                                    let alert = UIAlertController(title: "Справка", message: "Введите Ваши предпочтения", preferredStyle: .alert)
-                                                    alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+                                                    let alert = UIAlertController(title: "Сбросить", message: "Очистить поля?", preferredStyle: .alert)
+                                                    alert.addAction(UIAlertAction(title: "Отмена", style: .default, handler: nil))
+                                                    alert.addAction(UIAlertAction(title: "Да", style: .destructive, handler: ({ _ in
+                                                        RegistrationDraft.registrationDraftInstance.setFavoriteBooks(books: "")
+                                                        RegistrationDraft.registrationDraftInstance.setFavoriteAuthors(authors: "")
+                                                        RegistrationDraft.registrationDraftInstance.setFavoriteFormat(format: "")
+                                                        self.favoriteBooksTextField?.text = ""
+                                                        self.favoriteAuthorsTextField?.text = ""
+                                                        self.favoriteFormatTextField?.text = ""
+                                                        self.updateFinishButton()
+                                                    })))
                                                     self.present(alert, animated: true, completion: nil)
                                                    })))
         let favoriteBooksTextField = RTTextField()
@@ -142,7 +163,51 @@ class RegistrationFavoritesViewController: UIViewController {
     }
     
     @objc private func onFinishButtonTapped() {
-        print("sdvsavaasv")
+        spinner?.startAnimating()
+        let login = RegistrationDraft.registrationDraftInstance.getLogin()
+        let password = RegistrationDraft.registrationDraftInstance.getLogin()
+        
+        let firstName = RegistrationDraft.registrationDraftInstance.getFirstName()
+        let lastName = RegistrationDraft.registrationDraftInstance.getLastName()
+        let sex = RegistrationDraft.registrationDraftInstance.getSex()
+        
+        let education = RegistrationDraft.registrationDraftInstance.getEducation()
+        let major = RegistrationDraft.registrationDraftInstance.getMajor()
+        let occupation = RegistrationDraft.registrationDraftInstance.getOccupation()
+        
+        let favoriteBooks = RegistrationDraft.registrationDraftInstance.getFavoriteBooks()
+        let favoriteAuthors = RegistrationDraft.registrationDraftInstance.getFavoriteAuthors()
+        let favoriteFormat  = RegistrationDraft.registrationDraftInstance.getFavoriteFormat()
+        
+        Auth.auth().createUser(withEmail: login, password: password) { (authResult, errorRaw) in
+            let errorClosure = { (text: String) in
+                let alert = UIAlertController(title: "Ошибка!", message: text, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+            
+            self.spinner?.stopAnimating()
+            if let error = errorRaw {
+                errorClosure(error.localizedDescription)
+                return
+            }
+            
+            let user = UserModel(firstName: firstName,
+                                 lastName: lastName,
+                                 birthDate: "",
+                                 gender: sex,
+                                 degree: education,
+                                 major: major,
+                                 occupation: occupation,
+                                 favoriteBooks: favoriteBooks,
+                                 favoriteAuthors: favoriteAuthors,
+                                 favoriteFormat: favoriteFormat)
+            FirestoreManager.DBManager.registerUser(user: user)
+            if let user = authResult {
+                self.interactor?.onRegistered(user)
+                self.navigationController?.popToRootViewController(animated: false)
+            }
+        }
     }
     
     @objc func favoriteBooksTextFieldDidChange(_ textField: UITextField) {
