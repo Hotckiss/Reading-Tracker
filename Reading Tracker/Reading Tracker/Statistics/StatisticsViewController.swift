@@ -16,7 +16,19 @@ final class StatisticsViewController: UIViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .orange
+        setupNavigationBar()
         setupSpinner()
+    }
+    
+    private func setupNavigationBar() {
+        let navBar = NavigationBar()
+        
+        navBar.configure(model: NavigationBarModel(title: "Статистика", backButtonText: "назад", onBackButtonPressed: ({ [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        })))
+        
+        view.addSubview(navBar)
+        navBar.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: UIApplication.shared.statusBarFrame.height, left: 0, bottom: 0, right: 0), excludingEdge: .bottom)
     }
     
     private func setupSpinner() {
@@ -29,7 +41,6 @@ final class StatisticsViewController: UIViewController {
         spinner.layer.cornerRadius = 8
         spinner.autoSetDimensions(to: CGSize(width: 64, height: 64))
         self.spinner = spinner
-        spinner.startAnimating()
     }
     
     override func viewWillAppear(_ animated: Bool) {

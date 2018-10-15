@@ -176,6 +176,12 @@ final class MainViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let name = interactor?.userData?.firstName,
+            !name.isEmpty {
+            return
+        }
+        
         interactor?.checkLogin(onStartLoad: ({ [weak self] in
             self?.spinner?.startAnimating()
         }), onFinishLoad: ({ [weak self] in

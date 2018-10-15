@@ -16,7 +16,19 @@ final class SessionViewController: UIViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .orange
+        setupNavigationBar()
         setupSpinner()
+    }
+    
+    private func setupNavigationBar() {
+        let navBar = NavigationBar()
+        
+        navBar.configure(model: NavigationBarModel(title: "Сессия", backButtonText: "назад", onBackButtonPressed: ({ [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        })))
+        
+        view.addSubview(navBar)
+        navBar.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: UIApplication.shared.statusBarFrame.height, left: 0, bottom: 0, right: 0), excludingEdge: .bottom)
     }
     
     private func setupSpinner() {
