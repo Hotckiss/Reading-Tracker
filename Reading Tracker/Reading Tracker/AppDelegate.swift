@@ -21,6 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //TODO: authorization
         FirebaseApp.configure()
         let mainViewController = MainViewController()
+        let interactor = MainInteractor()
+        
+        mainViewController.interactor = interactor
+        interactor.viewController = mainViewController
         let navController = UINavigationController(rootViewController: mainViewController)
         navController.navigationBar.isTranslucent = false
         

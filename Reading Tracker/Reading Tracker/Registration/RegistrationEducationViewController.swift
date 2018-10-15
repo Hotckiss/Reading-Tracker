@@ -30,7 +30,7 @@ class RegistrationEducationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .orange
+        view.backgroundColor = UIColor(rgb: 0x232f6d)
         setupSubviews()
         setupFinishButton()
         

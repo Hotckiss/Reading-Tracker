@@ -21,12 +21,17 @@
 		2FAA8FBC216A6E430011F59D /* RegistrationEducationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FBB216A6E430011F59D /* RegistrationEducationViewController.swift */; };
 		2FAA8FBE216A792A0011F59D /* RegistrationFavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FBD216A792A0011F59D /* RegistrationFavoritesViewController.swift */; };
 		2FAA8FC0216A8B4A0011F59D /* RegistrationInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FBF216A8B4A0011F59D /* RegistrationInteractor.swift */; };
+		2FE450C1216FA53E008B2F22 /* MainInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE450C0216FA53E008B2F22 /* MainInteractor.swift */; };
 		2FE6C5A321581BDE005A7A68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6C5A221581BDE005A7A68 /* AppDelegate.swift */; };
 		2FE6C5A521581BDE005A7A68 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6C5A421581BDE005A7A68 /* MainViewController.swift */; };
 		2FE6C5A821581BDE005A7A68 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FE6C5A621581BDE005A7A68 /* Main.storyboard */; };
 		2FE6C5AA21581BDF005A7A68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FE6C5A921581BDF005A7A68 /* Assets.xcassets */; };
 		2FE6C5B821581BDF005A7A68 /* Reading_TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6C5B721581BDF005A7A68 /* Reading_TrackerTests.swift */; };
 		2FE6C5C321581BDF005A7A68 /* Reading_TrackerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6C5C221581BDF005A7A68 /* Reading_TrackerUITests.swift */; };
+		2FED199B21748F4A00AFFF99 /* AddBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FED199A21748F4A00AFFF99 /* AddBookViewController.swift */; };
+		2FED199D21748FB000AFFF99 /* MyBooksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FED199C21748FB000AFFF99 /* MyBooksViewController.swift */; };
+		2FED199F21748FC900AFFF99 /* SessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FED199E21748FC900AFFF99 /* SessionViewController.swift */; };
+		2FED19A121748FE300AFFF99 /* StatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FED19A021748FE300AFFF99 /* StatisticsViewController.swift */; };
 		2FFE218A21679AB4001BBE90 /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFE218921679AB4001BBE90 /* FirestoreManager.swift */; };
 		2FFE218E21679BE6001BBE90 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFE218D21679BE6001BBE90 /* UserModel.swift */; };
 		8413CA9FBA8C4435319EA738 /* Pods_Reading_Tracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1867B49C98F22DAF02008586 /* Pods_Reading_Tracker.framework */; };
@@ -66,6 +71,7 @@
 		2FAA8FBB216A6E430011F59D /* RegistrationEducationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationEducationViewController.swift; sourceTree = "<group>"; };
 		2FAA8FBD216A792A0011F59D /* RegistrationFavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationFavoritesViewController.swift; sourceTree = "<group>"; };
 		2FAA8FBF216A8B4A0011F59D /* RegistrationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationInteractor.swift; sourceTree = "<group>"; };
+		2FE450C0216FA53E008B2F22 /* MainInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainInteractor.swift; sourceTree = "<group>"; };
 		2FE6C59F21581BDE005A7A68 /* Reading Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reading Tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FE6C5A221581BDE005A7A68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2FE6C5A421581BDE005A7A68 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -78,6 +84,10 @@
 		2FE6C5BE21581BDF005A7A68 /* Reading TrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Reading TrackerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FE6C5C221581BDF005A7A68 /* Reading_TrackerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reading_TrackerUITests.swift; sourceTree = "<group>"; };
 		2FE6C5C421581BDF005A7A68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2FED199A21748F4A00AFFF99 /* AddBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBookViewController.swift; sourceTree = "<group>"; };
+		2FED199C21748FB000AFFF99 /* MyBooksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBooksViewController.swift; sourceTree = "<group>"; };
+		2FED199E21748FC900AFFF99 /* SessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionViewController.swift; sourceTree = "<group>"; };
+		2FED19A021748FE300AFFF99 /* StatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewController.swift; sourceTree = "<group>"; };
 		2FFE218921679AB4001BBE90 /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
 		2FFE218D21679BE6001BBE90 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		313F5C1E1E03318C17C7BEA9 /* Pods-Reading TrackerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Reading TrackerUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Reading TrackerUITests/Pods-Reading TrackerUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -188,6 +198,9 @@
 		2FE6C5A121581BDE005A7A68 /* Reading Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				2FED199921748F2900AFFF99 /* Library */,
+				2FED199821748F2100AFFF99 /* Session */,
+				2FED199721748F1200AFFF99 /* Statistics */,
 				2FAA8FB4216A217E0011F59D /* NavigationBar */,
 				2FFE218C21679BD8001BBE90 /* Models */,
 				2F1891DD2158BCA00043BDCC /* SharedUI */,
@@ -201,6 +214,7 @@
 				2FE6C5AE21581BDF005A7A68 /* Info.plist */,
 				2F1891E321590A670043BDCC /* GoogleService-Info.plist */,
 				2FFE218921679AB4001BBE90 /* FirestoreManager.swift */,
+				2FE450C0216FA53E008B2F22 /* MainInteractor.swift */,
 			);
 			path = "Reading Tracker";
 			sourceTree = "<group>";
@@ -221,6 +235,31 @@
 				2FE6C5C421581BDF005A7A68 /* Info.plist */,
 			);
 			path = "Reading TrackerUITests";
+			sourceTree = "<group>";
+		};
+		2FED199721748F1200AFFF99 /* Statistics */ = {
+			isa = PBXGroup;
+			children = (
+				2FED19A021748FE300AFFF99 /* StatisticsViewController.swift */,
+			);
+			path = Statistics;
+			sourceTree = "<group>";
+		};
+		2FED199821748F2100AFFF99 /* Session */ = {
+			isa = PBXGroup;
+			children = (
+				2FED199E21748FC900AFFF99 /* SessionViewController.swift */,
+			);
+			path = Session;
+			sourceTree = "<group>";
+		};
+		2FED199921748F2900AFFF99 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				2FED199A21748F4A00AFFF99 /* AddBookViewController.swift */,
+				2FED199C21748FB000AFFF99 /* MyBooksViewController.swift */,
+			);
+			path = Library;
 			sourceTree = "<group>";
 		};
 		2FFE218C21679BD8001BBE90 /* Models */ = {
@@ -499,12 +538,17 @@
 				2FAA8FC0216A8B4A0011F59D /* RegistrationInteractor.swift in Sources */,
 				2FAA8FBE216A792A0011F59D /* RegistrationFavoritesViewController.swift in Sources */,
 				2FE6C5A521581BDE005A7A68 /* MainViewController.swift in Sources */,
+				2FED199D21748FB000AFFF99 /* MyBooksViewController.swift in Sources */,
 				2FAA8FB6216A21920011F59D /* NavigationBar.swift in Sources */,
+				2FED19A121748FE300AFFF99 /* StatisticsViewController.swift in Sources */,
 				2FE6C5A321581BDE005A7A68 /* AppDelegate.swift in Sources */,
 				2FFE218A21679AB4001BBE90 /* FirestoreManager.swift in Sources */,
+				2FED199F21748FC900AFFF99 /* SessionViewController.swift in Sources */,
+				2FED199B21748F4A00AFFF99 /* AddBookViewController.swift in Sources */,
 				2FFE218E21679BE6001BBE90 /* UserModel.swift in Sources */,
 				2FAA8FB8216A32310011F59D /* RegistrationDraft.swift in Sources */,
 				2F1891DC2158B9760043BDCC /* UIColor+RGB.swift in Sources */,
+				2FE450C1216FA53E008B2F22 /* MainInteractor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
