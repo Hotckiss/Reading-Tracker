@@ -41,8 +41,10 @@ final class MainInteractor {
     }
     
     public func loadUserData(onComplete: (() -> Void)?) {
-        FirestoreManager.DBManager.loadUserProfile().subscribe(onNext: ({ user in
-            self.userData = user
+        FirestoreManager.DBManager.loadUserProfile().subscribe(onNext: ({ [weak self] user in
+            self?.userData = user
+
+            self?.viewController?.configureGreeting(text: "Добро пожловать, \(user.firstName) \(user.lastName)!")
             onComplete?()
         })).disposed(by: disposeBag)
     }
