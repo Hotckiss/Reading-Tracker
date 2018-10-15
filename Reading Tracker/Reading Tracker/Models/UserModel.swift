@@ -41,4 +41,17 @@ public struct UserModel {
         self.favoriteAuthors = favoriteAuthors
         self.favoriteFormat = favoriteFormat
     }
+    
+    public init() {
+        self.init(firstName: "",
+                  lastName: "",
+                  birthDate: "",
+                  gender: false,
+                  degree: "",
+                  major: "",
+                  occupation: "",
+                  favoriteBooks: "",
+                  favoriteAuthors: "",
+                  favoriteFormat: "")
+    }
 }

@@ -11,17 +11,17 @@ import PureLayout
 import RxSwift
 import Firebase
 
-class MainViewController: UIViewController {
-    private let disposeBag = DisposeBag()
-    
+final class MainViewController: UIViewController {
     private var label: UILabel?
+    private var spinner: UIActivityIndicatorView?
+    
+    var interactor: MainInteractor?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        title = "Reading Tracker"
+        navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .white
-        
+        setupSpinner()
         
         let label = UILabel(frame: .zero)
         label.textColor = .blue
@@ -31,23 +31,24 @@ class MainViewController: UIViewController {
         self.label = label
     }
     
+    private func setupSpinner() {
+        let spinner = UIActivityIndicatorView()
+        view.addSubview(spinner)
+        
+        view.bringSubviewToFront(spinner)
+        spinner.autoCenterInSuperview()
+        spinner.backgroundColor = UIColor(rgb: 0x555555).withAlphaComponent(0.7)
+        spinner.layer.cornerRadius = 8
+        spinner.autoSetDimensions(to: CGSize(width: 64, height: 64))
+        self.spinner = spinner
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
-        let currentUser = Auth.auth().currentUser
-        if currentUser == nil {
-            let vc = AuthorizationViewController()
-            let interactor = AuthorizationInteractor()
-            vc.interactor = interactor
-            interactor.viewController = vc
-            
-            interactor.authorization.subscribe(onNext: ({ [weak self] user in
-                self?.label?.text = user.user.email ?? "Username login"
-                self?.navigationController?.popViewController(animated: true)
-            })).disposed(by: disposeBag)
-            
-            navigationController?.pushViewController(vc, animated: false)
-        } else {
-            label?.text = currentUser?.email ?? ""
-        }
+        interactor?.checkLogin(onStartLoad: ({ [weak self] in
+            self?.spinner?.startAnimating()
+        }), onFinishLoad: ({ [weak self] in
+            self?.spinner?.stopAnimating()
+        }))
     }
 }
 
