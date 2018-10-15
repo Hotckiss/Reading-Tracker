@@ -130,19 +130,23 @@ final class MainViewController: UIViewController {
     }
     
     @objc private func addNewButtonAction() {
-        print("1")
+        let vc = AddBookViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func statisticsButtonAction() {
-        print("2")
+        let vc = StatisticsViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func libraryButtonAction() {
-        print("3")
+        let vc = MyBooksViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func sessionButtonAction() {
-        print("4")
+        let vc = SessionViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func exitButtonAction() {
