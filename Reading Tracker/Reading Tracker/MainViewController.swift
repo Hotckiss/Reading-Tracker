@@ -20,14 +20,14 @@ final class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.isHidden = true
-        view.backgroundColor = .orange
+        view.backgroundColor = UIColor(rgb: 0x232f6d)
         setupSubviews()
         setupSpinner()
     }
     
     func configureGreeting(text: String) {
         let textAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x1f1f1f),
+            NSAttributedString.Key.foregroundColor : UIColor.white,
             NSAttributedString.Key.font : UIFont(name: "AvenirNext-Bold", size: 19.0)!]
             as [NSAttributedString.Key : Any]
         
@@ -38,7 +38,7 @@ final class MainViewController: UIViewController {
     private func setupSubviews() {
         let greetingLabel = UILabel(forAutoLayout: ())
         let textAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x1f1f1f),
+            NSAttributedString.Key.foregroundColor : UIColor.white,
             NSAttributedString.Key.font : UIFont(name: "AvenirNext-Bold", size: 19.0)!]
             as [NSAttributedString.Key : Any]
         
@@ -47,86 +47,106 @@ final class MainViewController: UIViewController {
         greetingLabel.alpha = 0
         greetingLabel.textAlignment = .center
         view.addSubview(greetingLabel)
-        greetingLabel.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: UIApplication.shared.statusBarFrame.height + 32, left: 32, bottom: 0, right: 32), excludingEdge: .bottom)
+        greetingLabel.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: UIApplication.shared.statusBarFrame.height + 32, left: 16, bottom: 0, right: 16), excludingEdge: .bottom)
         self.greetingLabel = greetingLabel
         
         let newBookButton = UIButton(forAutoLayout: ())
         let buttonTextAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x1f1f1f),
+            NSAttributedString.Key.foregroundColor : UIColor.white,
             NSAttributedString.Key.font : UIFont(name: "AvenirNext-Bold", size: 21.0)!]
             as [NSAttributedString.Key : Any]
         
         newBookButton.setAttributedTitle(NSAttributedString(string: "Добавить книгу", attributes: buttonTextAttributes), for: [])
-        newBookButton.backgroundColor = UIColor(rgb: 0x75ff75)
-        newBookButton.layer.borderColor = UIColor(rgb: 0x1f1f1f).cgColor
-        newBookButton.layer.borderWidth = 2
-        newBookButton.layer.cornerRadius = 8
+        newBookButton.backgroundColor = .clear
+        //newBookButton.layer.borderColor = UIColor.white.cgColor
+        //newBookButton.layer.borderWidth = 2
+        //newBookButton.layer.backgroundColor = UIColor.clear.cgColor
+        addButtonBorder(button: newBookButton)
         newBookButton.addTarget(self, action: #selector(addNewButtonAction), for: .touchUpInside)
         
         view.addSubview(newBookButton)
         newBookButton.autoPinEdge(.top, to: .bottom, of: greetingLabel, withOffset: 32)
-        newBookButton.autoPinEdge(toSuperviewEdge: .left, withInset: 32)
-        newBookButton.autoPinEdge(toSuperviewEdge: .right, withInset: 32)
+        newBookButton.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        newBookButton.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         newBookButton.autoSetDimension(.height, toSize: 56)
         
         
         let statisticsButton = UIButton(forAutoLayout: ())
         
         statisticsButton.setAttributedTitle(NSAttributedString(string: "Статистика чтения", attributes: buttonTextAttributes), for: [])
-        statisticsButton.backgroundColor = UIColor(rgb: 0x75ff75)
-        statisticsButton.layer.borderColor = UIColor(rgb: 0x1f1f1f).cgColor
-        statisticsButton.layer.borderWidth = 2
-        statisticsButton.layer.cornerRadius = 8
+        statisticsButton.backgroundColor = .clear
+        //statisticsButton.layer.borderColor = UIColor.white.cgColor
+        //statisticsButton.layer.borderWidth = 2
+        //statisticsButton.layer.cornerRadius = 28
+        addButtonBorder(button: statisticsButton)
         statisticsButton.addTarget(self, action: #selector(statisticsButtonAction), for: .touchUpInside)
         
         view.addSubview(statisticsButton)
         statisticsButton.autoPinEdge(.top, to: .bottom, of: newBookButton, withOffset: 16)
-        statisticsButton.autoPinEdge(toSuperviewEdge: .left, withInset: 32)
-        statisticsButton.autoPinEdge(toSuperviewEdge: .right, withInset: 32)
+        statisticsButton.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        statisticsButton.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         statisticsButton.autoSetDimension(.height, toSize: 56)
         
         let libraryButton = UIButton(forAutoLayout: ())
         
         libraryButton.setAttributedTitle(NSAttributedString(string: "Мои книги", attributes: buttonTextAttributes), for: [])
-        libraryButton.backgroundColor = UIColor(rgb: 0x75ff75)
-        libraryButton.layer.borderColor = UIColor(rgb: 0x1f1f1f).cgColor
-        libraryButton.layer.borderWidth = 2
-        libraryButton.layer.cornerRadius = 8
+        libraryButton.backgroundColor = .clear
+        //libraryButton.layer.borderColor = UIColor.white.cgColor
+        //libraryButton.layer.borderWidth = 2
+        //libraryButton.layer.cornerRadius = 28
+        addButtonBorder(button: libraryButton)
         libraryButton.addTarget(self, action: #selector(libraryButtonAction), for: .touchUpInside)
         
         view.addSubview(libraryButton)
         libraryButton.autoPinEdge(.top, to: .bottom, of: statisticsButton, withOffset: 16)
-        libraryButton.autoPinEdge(toSuperviewEdge: .left, withInset: 32)
-        libraryButton.autoPinEdge(toSuperviewEdge: .right, withInset: 32)
+        libraryButton.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        libraryButton.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         libraryButton.autoSetDimension(.height, toSize: 56)
         
         let sessionButton = UIButton(forAutoLayout: ())
         
         sessionButton.setAttributedTitle(NSAttributedString(string: "Читать!", attributes: buttonTextAttributes), for: [])
-        sessionButton.backgroundColor = UIColor(rgb: 0x75ff75)
-        sessionButton.layer.borderColor = UIColor(rgb: 0x1f1f1f).cgColor
-        sessionButton.layer.borderWidth = 2
-        sessionButton.layer.cornerRadius = 8
+        sessionButton.backgroundColor = .clear
+        //sessionButton.layer.borderColor = UIColor.white.cgColor
+        //sessionButton.layer.borderWidth = 2
+        //sessionButton.layer.cornerRadius = 28
+        addButtonBorder(button: sessionButton)
         sessionButton.addTarget(self, action: #selector(sessionButtonAction), for: .touchUpInside)
         
         view.addSubview(sessionButton)
         sessionButton.autoPinEdge(.top, to: .bottom, of: libraryButton, withOffset: 16)
-        sessionButton.autoPinEdge(toSuperviewEdge: .left, withInset: 32)
-        sessionButton.autoPinEdge(toSuperviewEdge: .right, withInset: 32)
+        sessionButton.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        sessionButton.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         sessionButton.autoSetDimension(.height, toSize: 56)
         
         let exitButton = UIButton(forAutoLayout: ())
         
         exitButton.setAttributedTitle(NSAttributedString(string: "Выход", attributes: buttonTextAttributes), for: [])
         exitButton.backgroundColor = UIColor(rgb: 0xff7575)
-        exitButton.layer.borderColor = UIColor(rgb: 0x1f1f1f).cgColor
-        exitButton.layer.borderWidth = 2
-        exitButton.layer.cornerRadius = 8
+        //exitButton.layer.borderColor = UIColor.white.cgColor
+        //exitButton.layer.borderWidth = 2
+        exitButton.layer.cornerRadius = 28
+        addButtonBorder(button: exitButton)
         exitButton.addTarget(self, action: #selector(exitButtonAction), for: .touchUpInside)
         
         view.addSubview(exitButton)
-        exitButton.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 32, bottom: 16, right: 32), excludingEdge: .top)
+        exitButton.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 16, bottom: 16, right: 16), excludingEdge: .top)
         exitButton.autoSetDimension(.height, toSize: 56)
+    }
+    
+    private func addButtonBorder(button: UIButton) {
+        let gradient = CAGradientLayer()
+        gradient.frame =  CGRect(origin: .zero, size: CGSize(width: view.bounds.width - 2 * 16, height: 56))
+        gradient.colors = [UIColor.white.cgColor, UIColor(rgb: 0x7c0421).cgColor, UIColor(rgb: 0x63c87a).cgColor, UIColor.gray.cgColor, UIColor.white.cgColor]
+        let shape = CAShapeLayer()
+        shape.lineWidth = 3
+        shape.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: view.bounds.width - 2 * 16, height: 56), cornerRadius: 28).cgPath
+        shape.cornerRadius = 28
+        shape.strokeColor = UIColor.black.cgColor
+        shape.fillColor = UIColor.clear.cgColor
+        gradient.mask = shape
+        gradient.cornerRadius = 28
+        button.layer.addSublayer(gradient)
     }
     
     @objc private func addNewButtonAction() {

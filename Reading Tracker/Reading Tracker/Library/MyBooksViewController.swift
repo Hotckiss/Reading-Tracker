@@ -15,7 +15,7 @@ final class MyBooksViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.isHidden = true
-        view.backgroundColor = .orange
+        view.backgroundColor = UIColor(rgb: 0x232f6d)
         setupNavigationBar()
         setupSpinner()
     }

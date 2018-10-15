@@ -49,7 +49,7 @@ class AuthorizationViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = true
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-        view.backgroundColor = .orange
+        view.backgroundColor = UIColor(rgb: 0x232f6d)
     }
     
     func alertError(description: String) {
