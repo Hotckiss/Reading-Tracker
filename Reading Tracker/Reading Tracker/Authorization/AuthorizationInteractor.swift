@@ -29,7 +29,7 @@ class AuthorizationInteractor {
         Auth.auth().signIn(withEmail: login, password: password) { [weak self] (rawUser, rawError) in
             onCompleted?()
             if let error = rawError {
-                self?.viewController?.alertError(description: error.localizedDescription)
+                //self?.viewController?.alertError(description: error.localizedDescription)
             } else if let user = rawUser {
                 self?.authorizationSubject.onNext(user)
             }
