@@ -103,9 +103,22 @@ class LoginPasswordRegistrationViewController: UIViewController {
         passwordTextField.delegate = emailTextFieldDelegate
         passwordTextField.returnKeyType = .done
         emailTextFieldDelegate.nextField = passwordTextField
+        passwordTextField.isSecureTextEntry = true
         view.addSubview(passwordTextField)
         passwordTextField.autoAlignAxis(toSuperviewAxis: .vertical)
-        passwordTextField.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 150 + 84, left: 16, bottom: 0, right: 0), excludingEdge: .bottom)
+        passwordTextField.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 150 + 84, left: 16, bottom: 0, right: 16 + 22), excludingEdge: .bottom)
+        
+        let eyeButton = UIButton(forAutoLayout: ())
+        eyeButton.setImage(UIImage(named: "eye"), for: [])
+        eyeButton.addTarget(self, action: #selector(onEyeButtonPressed), for: UIControl.Event.touchDown)
+        
+        eyeButton.addTarget(self, action: #selector(onEyeButtonUnpressed), for: UIControl.Event.touchUpInside)
+        view.addSubview(eyeButton)
+        
+        eyeButton.autoSetDimensions(to: CGSize(width: 22, height: 19))
+        eyeButton.autoPinEdge(.left, to: .right, of: passwordTextField, withOffset: 2)
+        eyeButton.autoPinEdge(.top, to: .top, of: passwordTextField, withOffset: 4)
+        eyeButton.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         
         self.passwordTextField = passwordTextField
         
@@ -140,11 +153,37 @@ class LoginPasswordRegistrationViewController: UIViewController {
         
     }
     
+    @objc private func onEyeButtonPressed() {
+        passwordTextField?.isSecureTextEntry = false
+    }
+    @objc private func onEyeButtonUnpressed() {
+        passwordTextField?.isSecureTextEntry = true
+    }
     @objc private func onActivateButtonTapped() {
-        //todo: activation
-        let code = emailTextField?.text ?? ""
-        print("EMail: \(code)")
-        navigationController?.popViewController(animated: true)
+        let email = emailTextField?.text ?? ""
+        let password = passwordTextField?.text ?? ""
+        self.spinner?.startAnimating()
+        
+        Auth.auth().createUser(withEmail: email, password: password) { (authResult, errorRaw) in
+            let errorClosure = { (text: String) in
+                let alert = UIAlertController(title: "Ошибка!", message: text, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+            
+            
+            if let error = errorRaw {
+                self.spinner?.stopAnimating()
+                errorClosure(error.localizedDescription)
+                return
+            }
+            
+            if let user = authResult {
+                //todo: upload ALL info
+                self.spinner?.stopAnimating()
+                self.navigationController?.popToRootViewController(animated: false)
+            }
+        }
     }
     
     private class IntermediateTextFieldDelegate: NSObject, UITextFieldDelegate {

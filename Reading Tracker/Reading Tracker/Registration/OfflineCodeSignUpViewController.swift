@@ -120,6 +120,7 @@ class OfflineCodeSignUpViewController: UIViewController {
     
     @objc private func onActivateButtonTapped() {
         //todo: activation
+        //todo: upload ALL info
         let code = codeTextField?.text ?? ""
         print("Code: \(code)")
         navigationController?.popViewController(animated: true)
