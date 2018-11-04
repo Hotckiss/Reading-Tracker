@@ -13,6 +13,7 @@ target 'Reading Tracker' do
   pod 'Firebase/Database'
   pod 'Firebase/Crash'
   pod 'Firebase/Firestore'
+  pod 'GoogleSignIn'
 
   target 'Reading TrackerTests' do
     inherit! :search_paths
