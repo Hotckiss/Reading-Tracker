@@ -184,7 +184,9 @@ class LoginPasswordRegistrationViewController: UIViewController {
             if let user = authResult {
                 //todo: upload ALL info
                 self.spinner?.stopAnimating()
-                self.navigationController?.popToRootViewController(animated: false)
+                self.navigationController?.popViewController(animated: false)
+                self.navigationController?.popViewController(animated: false)
+                self.navigationController?.popViewController(animated: false)
             }
         }
     }

@@ -17,7 +17,7 @@ public struct NavigationBarModel {
     public var onFrontButtonPressed: (() -> Void)?
     
     init(title: String = "",
-         backButtonText: String = "Back",
+         backButtonText: String = "",
          frontButtonText: String = "",
          onBackButtonPressed: (() -> Void)? = nil,
          onFrontButtonPressed: (() -> Void)? = nil) {

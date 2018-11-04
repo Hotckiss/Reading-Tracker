@@ -55,8 +55,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
                                                        accessToken: authentication.accessToken)
         
-        OnLiginStuff.tryLogin(credential: credential, completion: ({ [weak self] result in
-            self?.mainVC.navigationController?.popToRootViewController(animated: false)
+        OnLiginStuff.tryLogin(credential: credential, completion: ({ result in
+            self.mainVC.navigationController?.popViewController(animated: false)
+            self.mainVC.navigationController?.popViewController(animated: false)
         }))
     }
     

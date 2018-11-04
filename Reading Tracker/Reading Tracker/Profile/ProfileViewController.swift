@@ -1,15 +1,15 @@
 //
-//  MyBooksViewController.swift
+//  ProfileViewController.swift
 //  Reading Tracker
 //
-//  Created by Andrei Kirilenko on 15.10.2018.
+//  Created by Andrei Kirilenko on 05/11/2018.
 //  Copyright © 2018 Andrei Kirilenko. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-final class MyBooksViewController: UIViewController {
+final class ProfileViewController: UIViewController {
     private var spinner: UIActivityIndicatorView?
     
     override func viewDidLoad() {
@@ -23,7 +23,7 @@ final class MyBooksViewController: UIViewController {
     private func setupNavigationBar() {
         let navBar = NavigationBar()
         
-        navBar.configure(model: NavigationBarModel(title: "Выберите книгу"))
+        navBar.configure(model: NavigationBarModel(title: "Профиль читателя"))
         navBar.backgroundColor = UIColor(rgb: 0xedaf97)
         
         view.addSubview(navBar)
@@ -45,3 +45,4 @@ final class MyBooksViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
     }
 }
+

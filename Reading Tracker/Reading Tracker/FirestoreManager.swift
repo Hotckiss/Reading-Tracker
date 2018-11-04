@@ -100,7 +100,10 @@ final class FirestoreManager {
                 
                 resultSubject.onNext(user)
             } else {
+                //todo: no user
+                resultSubject.onNext(UserModel())
                 print("Document does not exist")
+                
             }
         }
         
