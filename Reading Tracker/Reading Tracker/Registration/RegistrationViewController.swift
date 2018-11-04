@@ -11,15 +11,17 @@ import PureLayout
 import RxSwift
 import Firebase
 import GoogleSignIn
+import FBSDKLoginKit
+import TwitterKit
 
-class RegistrationViewController: UIViewController, GIDSignInUIDelegate {
+class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLoginButtonDelegate {
     private let disposeBag = DisposeBag()
     
     private var spinner: UIActivityIndicatorView?
     private var greetingLabel: UILabel?
     private var loginButton: UIButton?
     private var codeButton: UIButton?
-    
+    private var stackView: UIStackView?
     override func viewDidLoad() {
         super.viewDidLoad()
         GIDSignIn.sharedInstance().uiDelegate = self
@@ -34,9 +36,10 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate {
     
     private func setupSubviews() {
         setupGreeting()
+        setupSignInButtons()
         setupRegisterButton()
         setupLoginButton()
-        setupSignInButtons()
+        
         
         let spinner = UIActivityIndicatorView()
         
@@ -55,19 +58,63 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate {
         }
         
         let signInButtonGoogle: GIDSignInButton = GIDSignInButton(forAutoLayout: ())
-        signInButtonGoogle.style = GIDSignInButtonStyle.iconOnly
+        //signInButtonGoogle.style = GIDSignInButtonStyle.iconOnly
         
-        let stackView = UIStackView(arrangedSubviews: [signInButtonGoogle])
-        stackView.spacing = 20
-        stackView.axis = .horizontal
+        let signInButtonFB = FBSDKLoginButton()
+        signInButtonFB.delegate = self
+        
+        let signInButtonTWT = TWTRLogInButton(logInCompletion: { session, error in
+            if let error = error {
+                print("Error in twitter auth: \(error.localizedDescription)")
+                return
+            }
+            guard let session = session else {
+                print("Error in twitter auth: session is nil")
+                return
+            }
+            
+            let authToken = session.authToken
+            let authTokenSecret = session.authTokenSecret
+            
+            let credential = TwitterAuthProvider.credential(withToken: authToken, secret: authTokenSecret)
+            
+            OnLiginStuff.tryLogin(credential: credential, completion: ({ [weak self] result in
+                //...
+            }))
+        })
+        
+        let stackView = UIStackView(arrangedSubviews: [signInButtonGoogle, signInButtonFB, signInButtonTWT])
+        stackView.spacing = 8
+        stackView.axis = .vertical
         view.addSubview(stackView)
         
         stackView.autoAlignAxis(toSuperviewAxis: .vertical)
+        stackView.autoresizingMask = [.flexibleWidth]
         stackView.autoPinEdge(.top, to: .bottom, of: greetingLabel, withOffset: 77)
+        
+        self.stackView = stackView
     }
     
+    func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
+        if let error = error {
+            print(error.localizedDescription)
+            return
+        }
+        
+        let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
+        
+        OnLiginStuff.tryLogin(credential: credential, completion: ({ [weak self] result in
+            //...
+        }))
+    }
+    
+    func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
+        // log out...
+    }
+    
+    
     private func setupRegisterButton() {
-        guard let greetingLabel = greetingLabel else {
+        guard let stackView = stackView else {
             return
         }
         
@@ -84,7 +131,7 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate {
         codeButton.addTarget(self, action: #selector(onRegisterButtonTapped), for: .touchUpInside)
         
         view.addSubview(codeButton)
-        codeButton.autoPinEdge(.top, to: .bottom, of: greetingLabel, withOffset: 170)
+        codeButton.autoPinEdge(.top, to: .bottom, of: stackView, withOffset: 40)
         codeButton.autoSetDimensions(to: CGSize(width: 223, height: 64))
         codeButton.autoAlignAxis(toSuperviewAxis: .vertical)
         

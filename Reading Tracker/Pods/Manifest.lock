@@ -1,10 +1,22 @@
 PODS:
+  - Bolts (1.9.0):
+    - Bolts/AppLinks (= 1.9.0)
+    - Bolts/Tasks (= 1.9.0)
+  - Bolts/AppLinks (1.9.0):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.9.0)
   - BoringSSL (10.0.6):
     - BoringSSL/Implementation (= 10.0.6)
     - BoringSSL/Interface (= 10.0.6)
   - BoringSSL/Implementation (10.0.6):
     - BoringSSL/Interface (= 10.0.6)
   - BoringSSL/Interface (10.0.6)
+  - FBSDKCoreKit (4.36.0):
+    - Bolts (~> 1.7)
+  - FBSDKLoginKit (4.36.0):
+    - FBSDKCoreKit
+  - FBSDKShareKit (4.36.0):
+    - FBSDKCoreKit (~> 4.36.0)
   - Firebase/Auth (5.7.0):
     - Firebase/CoreOnly
     - FirebaseAuth (= 5.0.3)
@@ -148,8 +160,14 @@ PODS:
   - Protobuf (3.6.1)
   - PureLayout (3.1.2)
   - RxSwift (4.2.0)
+  - TwitterCore (3.2.0)
+  - TwitterKit (3.4.0):
+    - TwitterCore (>= 3.1.0)
 
 DEPENDENCIES:
+  - FBSDKCoreKit
+  - FBSDKLoginKit
+  - FBSDKShareKit
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Crash
@@ -159,10 +177,15 @@ DEPENDENCIES:
   - GoogleSignIn
   - PureLayout
   - RxSwift
+  - TwitterKit
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - Bolts
     - BoringSSL
+    - FBSDKCoreKit
+    - FBSDKLoginKit
+    - FBSDKShareKit
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -188,9 +211,15 @@ SPEC REPOS:
     - Protobuf
     - PureLayout
     - RxSwift
+    - TwitterCore
+    - TwitterKit
 
 SPEC CHECKSUMS:
+  Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   BoringSSL: e10f92a27043805c01071fe815a5cd98ae8212e7
+  FBSDKCoreKit: 3b8e6570eedb443f9fc4af196a7bf39f18e3a3d8
+  FBSDKLoginKit: 8bccb6064708ab2f4251a7fc4e3b6d8d00ad91ba
+  FBSDKShareKit: 7090fdd55c39b03941efddb64c83a64ff6b3949f
   Firebase: 734a4f92957aa6c40e7ae3fda3d9359e1890aa87
   FirebaseAnalytics: 993577e91157feb40945abedd6ab346d8a4b6ac8
   FirebaseAuth: 657a25e4be044d2d333663ebf515a861c5a59cd7
@@ -216,7 +245,9 @@ SPEC CHECKSUMS:
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
   PureLayout: 4634d0b61e3b5021166e8ec7c18e9e0ca0720c8b
   RxSwift: 99e10317ddfcc7fbe01356aafd118fde4a0be104
+  TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
+  TwitterKit: bc7bd086b9b724a1d888745a054e1d0b1ecc4f3f
 
-PODFILE CHECKSUM: 6feee89d66fa64fcb1c8455a61f08ce52a06672e
+PODFILE CHECKSUM: a1ba991c23dfa2460bdcd0ba438eb24429175784
 
 COCOAPODS: 1.5.3

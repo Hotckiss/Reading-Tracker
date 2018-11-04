@@ -15,6 +15,7 @@
 		2F1891E521590A680043BDCC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F1891E321590A670043BDCC /* GoogleService-Info.plist */; };
 		2F1891E621590A680043BDCC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F1891E321590A670043BDCC /* GoogleService-Info.plist */; };
 		2F71B324218EFAFF00E4E80F /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B323218EFAFF00E4E80F /* RegistrationViewController.swift */; };
+		2F71B326218F3A2700E4E80F /* OnLiginStuff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B325218F3A2700E4E80F /* OnLiginStuff.swift */; };
 		2FAA8FB3216A152C0011F59D /* RegistrationLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FB2216A152C0011F59D /* RegistrationLoginViewController.swift */; };
 		2FAA8FB6216A21920011F59D /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FB5216A21920011F59D /* NavigationBar.swift */; };
 		2FAA8FB8216A32310011F59D /* RegistrationDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FB7216A32310011F59D /* RegistrationDraft.swift */; };
@@ -66,6 +67,7 @@
 		2F1891E12158EF2E0043BDCC /* AuthorizationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationInteractor.swift; sourceTree = "<group>"; };
 		2F1891E321590A670043BDCC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2F71B323218EFAFF00E4E80F /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
+		2F71B325218F3A2700E4E80F /* OnLiginStuff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnLiginStuff.swift; sourceTree = "<group>"; };
 		2FAA8FB2216A152C0011F59D /* RegistrationLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationLoginViewController.swift; sourceTree = "<group>"; };
 		2FAA8FB5216A21920011F59D /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		2FAA8FB7216A32310011F59D /* RegistrationDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationDraft.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 			children = (
 				2F1891DB2158B9760043BDCC /* UIColor+RGB.swift */,
 				2F1891DE2158BCC10043BDCC /* RTTextView.swift */,
+				2F71B325218F3A2700E4E80F /* OnLiginStuff.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -482,10 +485,12 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Reading Tracker/Pods-Reading Tracker-resources.sh",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/TwitterKitResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TwitterKitResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -517,7 +522,11 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Reading Tracker/Pods-Reading Tracker-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
@@ -525,6 +534,8 @@
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/PureLayout/PureLayout.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${PODS_ROOT}/TwitterCore/iOS/TwitterCore.framework",
+				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
@@ -534,7 +545,11 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
@@ -542,6 +557,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PureLayout.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TwitterCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TwitterKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
@@ -564,6 +581,7 @@
 				2F1891D9215832210043BDCC /* AuthorizationViewController.swift in Sources */,
 				2FAA8FB3216A152C0011F59D /* RegistrationLoginViewController.swift in Sources */,
 				2FAA8FBC216A6E430011F59D /* RegistrationEducationViewController.swift in Sources */,
+				2F71B326218F3A2700E4E80F /* OnLiginStuff.swift in Sources */,
 				2F1891DF2158BCC10043BDCC /* RTTextView.swift in Sources */,
 				2FAA8FBA216A34650011F59D /* RegistrationAboutSelfViewController.swift in Sources */,
 				2F1891E22158EF2E0043BDCC /* AuthorizationInteractor.swift in Sources */,

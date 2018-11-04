@@ -13,7 +13,7 @@ import GoogleSignIn
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     var window: UIWindow?
-
+    var mainVC: MainViewController!
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         
         let mainViewController = MainViewController()
         let interactor = MainInteractor()
-        
+        mainVC = mainViewController
         mainViewController.interactor = interactor
         interactor.viewController = mainViewController
         let navController = UINavigationController(rootViewController: mainViewController)
@@ -55,14 +55,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
                                                        accessToken: authentication.accessToken)
         
-        Auth.auth().signInAndRetrieveData(with: credential) { (authResult, error) in
-            if let error = error {
-                print("Error during Google Auth: \(error.localizedDescription)")
-                return
-            }
-            // User is signed in
-            // ...
-        }
+        OnLiginStuff.tryLogin(credential: credential, completion: ({ result in
+            //...
+        }))
     }
     
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
