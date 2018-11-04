@@ -106,8 +106,11 @@ class OfflineCodeSignUpViewController: UIViewController {
         activateButton.setAttributedTitle(NSAttributedString(string: "Активировать код", attributes: buttonTextAttributes), for: .normal)
         activateButton.backgroundColor = UIColor(rgb: 0x2f5870)
         activateButton.layer.cornerRadius = 32
+        activateButton.layer.shadowRadius = 4
+        activateButton.layer.shadowColor = UIColor(rgb: 0x2f5870).cgColor
+        activateButton.layer.shadowOpacity = 0.33
+        activateButton.layer.shadowOffset = CGSize(width: 0.0, height: 4.0)
         activateButton.addTarget(self, action: #selector(onActivateButtonTapped), for: .touchUpInside)
-        
         view.addSubview(activateButton)
         codeButtonBottomConstraint = activateButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 100)
         activateButton.autoSetDimensions(to: CGSize(width: 274, height: 64))
