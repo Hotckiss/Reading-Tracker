@@ -1,5 +1,5 @@
 //
-//  LoginPasswordRegistrationViewController.swift
+//  LoginPasswordAuthorizationViewController.swift
 //  Reading Tracker
 //
 //  Created by Andrei Kirilenko on 04/11/2018.
@@ -11,7 +11,7 @@ import PureLayout
 import RxSwift
 import Firebase
 
-class LoginPasswordRegistrationViewController: UIViewController {
+class LoginPasswordAuthorizationViewController: UIViewController {
     private var spinner: UIActivityIndicatorView?
     private var emailTextField: RTTextField?
     private var passwordTextField: RTTextField?
@@ -51,7 +51,7 @@ class LoginPasswordRegistrationViewController: UIViewController {
     
     private func setupSubviews() {
         let navBar = NavigationBar(frame: .zero)
-        navBar.configure(model: NavigationBarModel(title: "Регистрация",
+        navBar.configure(model: NavigationBarModel(title: "Вход",
                                                    backButtonText: "Назад",
                                                    onBackButtonPressed: ({ [weak self] in
                                                     self?.navigationController?.popViewController(animated: true)
@@ -139,7 +139,7 @@ class LoginPasswordRegistrationViewController: UIViewController {
             NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
             as [NSAttributedString.Key : Any]
         
-        activateButton.setAttributedTitle(NSAttributedString(string: "Зарегистрироваться", attributes: buttonTextAttributes), for: .normal)
+        activateButton.setAttributedTitle(NSAttributedString(string: "Войти", attributes: buttonTextAttributes), for: .normal)
         activateButton.backgroundColor = UIColor(rgb: 0x2f5870)
         activateButton.layer.cornerRadius = 32
         activateButton.layer.shadowRadius = 4
@@ -167,7 +167,7 @@ class LoginPasswordRegistrationViewController: UIViewController {
         let password = passwordTextField?.text ?? ""
         self.spinner?.startAnimating()
         
-        Auth.auth().createUser(withEmail: email, password: password) { (authResult, errorRaw) in
+        Auth.auth().signIn(withEmail: email, password: password) { (authResult, errorRaw) in
             let errorClosure = { (text: String) in
                 let alert = UIAlertController(title: "Ошибка!", message: text, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
@@ -205,5 +205,6 @@ class LoginPasswordRegistrationViewController: UIViewController {
         }
     }
 }
+
 
 

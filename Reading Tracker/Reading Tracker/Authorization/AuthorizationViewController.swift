@@ -215,23 +215,12 @@ class AuthorizationViewController: UIViewController {
     }*/
     
     @objc private func onLoginButtonTapped() {
-        spinner?.startAnimating()
-        tryLogin()
+        let vc = LoginPasswordAuthorizationViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func onRegisterButtonTapped() {
         let vc = RegistrationViewController()
         navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    private func tryLogin() {
-        /*guard let loginText = loginTextField?.text,
-            let passwordText = passwordTextField?.text else {
-                return
-        }
-        
-        interactor?.loginButtonTapped(login: loginText, password: passwordText, onCompleted: ({
-            self.spinner?.stopAnimating()
-        }))*/
     }
 }

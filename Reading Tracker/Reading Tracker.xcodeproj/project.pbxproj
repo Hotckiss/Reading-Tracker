@@ -18,6 +18,7 @@
 		2F71B326218F3A2700E4E80F /* OnLiginStuff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B325218F3A2700E4E80F /* OnLiginStuff.swift */; };
 		2F71B328218F3FFE00E4E80F /* OfflineCodeSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B327218F3FFE00E4E80F /* OfflineCodeSignUpViewController.swift */; };
 		2F71B32A218F5CF000E4E80F /* LoginPasswordRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B329218F5CEF00E4E80F /* LoginPasswordRegistrationViewController.swift */; };
+		2F71B32C218F684900E4E80F /* LoginPasswordAuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B32B218F684900E4E80F /* LoginPasswordAuthorizationViewController.swift */; };
 		2FAA8FB3216A152C0011F59D /* RegistrationLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FB2216A152C0011F59D /* RegistrationLoginViewController.swift */; };
 		2FAA8FB6216A21920011F59D /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FB5216A21920011F59D /* NavigationBar.swift */; };
 		2FAA8FB8216A32310011F59D /* RegistrationDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FB7216A32310011F59D /* RegistrationDraft.swift */; };
@@ -72,6 +73,7 @@
 		2F71B325218F3A2700E4E80F /* OnLiginStuff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnLiginStuff.swift; sourceTree = "<group>"; };
 		2F71B327218F3FFE00E4E80F /* OfflineCodeSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineCodeSignUpViewController.swift; sourceTree = "<group>"; };
 		2F71B329218F5CEF00E4E80F /* LoginPasswordRegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPasswordRegistrationViewController.swift; sourceTree = "<group>"; };
+		2F71B32B218F684900E4E80F /* LoginPasswordAuthorizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPasswordAuthorizationViewController.swift; sourceTree = "<group>"; };
 		2FAA8FB2216A152C0011F59D /* RegistrationLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationLoginViewController.swift; sourceTree = "<group>"; };
 		2FAA8FB5216A21920011F59D /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		2FAA8FB7216A32310011F59D /* RegistrationDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationDraft.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 			children = (
 				2F1891D8215832210043BDCC /* AuthorizationViewController.swift */,
 				2F1891E12158EF2E0043BDCC /* AuthorizationInteractor.swift */,
+				2F71B32B218F684900E4E80F /* LoginPasswordAuthorizationViewController.swift */,
 			);
 			path = Authorization;
 			sourceTree = "<group>";
@@ -598,6 +601,7 @@
 				2FAA8FBE216A792A0011F59D /* RegistrationFavoritesViewController.swift in Sources */,
 				2FE6C5A521581BDE005A7A68 /* MainViewController.swift in Sources */,
 				2FED199D21748FB000AFFF99 /* MyBooksViewController.swift in Sources */,
+				2F71B32C218F684900E4E80F /* LoginPasswordAuthorizationViewController.swift in Sources */,
 				2FAA8FB6216A21920011F59D /* NavigationBar.swift in Sources */,
 				2FED19A121748FE300AFFF99 /* StatisticsViewController.swift in Sources */,
 				2F71B32A218F5CF000E4E80F /* LoginPasswordRegistrationViewController.swift in Sources */,
