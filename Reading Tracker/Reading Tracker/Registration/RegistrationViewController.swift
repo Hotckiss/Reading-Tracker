@@ -66,6 +66,7 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLo
         }
         
         let signInButtonGoogle: GIDSignInButton = GIDSignInButton(forAutoLayout: ())
+        signInButtonGoogle.style = .iconOnly
         
         let signInButtonFB = FBSDKLoginButton()
         signInButtonFB.delegate = self
@@ -91,7 +92,8 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLo
             }))
         })
         
-        let stackView = UIStackView(arrangedSubviews: [signInButtonGoogle, signInButtonFB, signInButtonTWT])
+        // todo: unlock buttons
+        let stackView = UIStackView(arrangedSubviews: [signInButtonGoogle/*, signInButtonFB, signInButtonTWT*/])
         stackView.spacing = 8
         stackView.axis = .vertical
         view.addSubview(stackView)
