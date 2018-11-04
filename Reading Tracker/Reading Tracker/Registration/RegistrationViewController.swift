@@ -189,6 +189,8 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLo
     }
     
     @objc private func onLoginButtonTapped() {
+        let vc = LoginPasswordRegistrationViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func onCodeButtonTapped() {

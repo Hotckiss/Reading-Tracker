@@ -17,6 +17,7 @@
 		2F71B324218EFAFF00E4E80F /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B323218EFAFF00E4E80F /* RegistrationViewController.swift */; };
 		2F71B326218F3A2700E4E80F /* OnLiginStuff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B325218F3A2700E4E80F /* OnLiginStuff.swift */; };
 		2F71B328218F3FFE00E4E80F /* OfflineCodeSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B327218F3FFE00E4E80F /* OfflineCodeSignUpViewController.swift */; };
+		2F71B32A218F5CF000E4E80F /* LoginPasswordRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B329218F5CEF00E4E80F /* LoginPasswordRegistrationViewController.swift */; };
 		2FAA8FB3216A152C0011F59D /* RegistrationLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FB2216A152C0011F59D /* RegistrationLoginViewController.swift */; };
 		2FAA8FB6216A21920011F59D /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FB5216A21920011F59D /* NavigationBar.swift */; };
 		2FAA8FB8216A32310011F59D /* RegistrationDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FB7216A32310011F59D /* RegistrationDraft.swift */; };
@@ -70,6 +71,7 @@
 		2F71B323218EFAFF00E4E80F /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		2F71B325218F3A2700E4E80F /* OnLiginStuff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnLiginStuff.swift; sourceTree = "<group>"; };
 		2F71B327218F3FFE00E4E80F /* OfflineCodeSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineCodeSignUpViewController.swift; sourceTree = "<group>"; };
+		2F71B329218F5CEF00E4E80F /* LoginPasswordRegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPasswordRegistrationViewController.swift; sourceTree = "<group>"; };
 		2FAA8FB2216A152C0011F59D /* RegistrationLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationLoginViewController.swift; sourceTree = "<group>"; };
 		2FAA8FB5216A21920011F59D /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		2FAA8FB7216A32310011F59D /* RegistrationDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationDraft.swift; sourceTree = "<group>"; };
@@ -176,6 +178,8 @@
 			isa = PBXGroup;
 			children = (
 				2F71B323218EFAFF00E4E80F /* RegistrationViewController.swift */,
+				2F71B327218F3FFE00E4E80F /* OfflineCodeSignUpViewController.swift */,
+				2F71B329218F5CEF00E4E80F /* LoginPasswordRegistrationViewController.swift */,
 			);
 			path = Registration;
 			sourceTree = "<group>";
@@ -223,7 +227,6 @@
 				2F71B322218EFACD00E4E80F /* Registration */,
 				2F1891E02158EE870043BDCC /* Authorization */,
 				2F07446D215D599A006ACE72 /* Registration-old */,
-				2F71B327218F3FFE00E4E80F /* OfflineCodeSignUpViewController.swift */,
 				2FE6C5A221581BDE005A7A68 /* AppDelegate.swift */,
 				2FE6C5A421581BDE005A7A68 /* MainViewController.swift */,
 				2FE6C5A621581BDE005A7A68 /* Main.storyboard */,
@@ -597,6 +600,7 @@
 				2FED199D21748FB000AFFF99 /* MyBooksViewController.swift in Sources */,
 				2FAA8FB6216A21920011F59D /* NavigationBar.swift in Sources */,
 				2FED19A121748FE300AFFF99 /* StatisticsViewController.swift in Sources */,
+				2F71B32A218F5CF000E4E80F /* LoginPasswordRegistrationViewController.swift in Sources */,
 				2FE6C5A321581BDE005A7A68 /* AppDelegate.swift in Sources */,
 				2FFE218A21679AB4001BBE90 /* FirestoreManager.swift in Sources */,
 				2FED199F21748FC900AFFF99 /* SessionViewController.swift in Sources */,

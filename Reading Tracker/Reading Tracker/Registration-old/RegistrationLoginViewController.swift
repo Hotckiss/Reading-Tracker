@@ -189,6 +189,7 @@ class RegistrationLoginViewController: UIViewController {
             finishButton?.isUserInteractionEnabled = false
         }
     }
+    
     private class IntermediateTextFieldDelegate: NSObject, UITextFieldDelegate {
         var nextField: UITextField?
         
