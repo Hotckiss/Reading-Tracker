@@ -43,7 +43,7 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLo
                                                    })
                                                    ))
         view.addSubview(navBar)
-        navBar.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: UIApplication.shared.statusBarFrame.height, left: 0, bottom: 0, right: 0), excludingEdge: .bottom)
+        navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
         setupGreeting()
         setupSignInButtons()
         setupRegisterButton()
@@ -136,7 +136,7 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLo
         codeButton.setAttributedTitle(NSAttributedString(string: "Код участника", attributes: buttonTextAttributes), for: .normal)
         codeButton.backgroundColor = .white
         codeButton.layer.cornerRadius = 32
-        codeButton.addTarget(self, action: #selector(onRegisterButtonTapped), for: .touchUpInside)
+        codeButton.addTarget(self, action: #selector(onCodeButtonTapped), for: .touchUpInside)
         
         view.addSubview(codeButton)
         codeButton.autoPinEdge(.top, to: .bottom, of: stackView, withOffset: 40)
@@ -195,6 +195,8 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLo
     @objc private func onLoginButtonTapped() {
     }
     
-    @objc private func onRegisterButtonTapped() {
+    @objc private func onCodeButtonTapped() {
+        let vc = OfflineCodeSignUpViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

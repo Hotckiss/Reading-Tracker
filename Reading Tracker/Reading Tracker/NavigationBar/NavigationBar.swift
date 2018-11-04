@@ -42,12 +42,14 @@ public class NavigationBar: UIView {
     }
     
     private func setupSubviews() {
+        let statusBarHeight = UIApplication.shared.statusBarFrame.height
+        
         let backButton = UIButton(frame: .zero)
         backButton.setTitle(model.backButtonText, for: [])
         backButton.addTarget(self, action: #selector(onBack), for: .touchUpInside)
         addSubview(backButton)
         backButton.autoSetDimension(.height, toSize: 32)
-        backButton.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 0), excludingEdge: .right)
+        backButton.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: statusBarHeight + 4, left: 16, bottom: 4, right: 0), excludingEdge: .right)
         self.backButton = backButton
         
         let frontButton = UIButton(frame: .zero)
@@ -55,14 +57,15 @@ public class NavigationBar: UIView {
         frontButton.addTarget(self, action: #selector(onFront), for: .touchUpInside)
         addSubview(frontButton)
         frontButton.autoSetDimension(.height, toSize: 32)
-        frontButton.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 16), excludingEdge: .left)
+        frontButton.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: statusBarHeight + 4, left: 0, bottom: 4, right: 16), excludingEdge: .left)
         self.frontButton = frontButton
         
         let titleLabel = UILabel(frame: .zero)
         titleLabel.text = model.title
         titleLabel.textColor = .white
         addSubview(titleLabel)
-        titleLabel.autoCenterInSuperview()
+        titleLabel.autoPinEdge(toSuperviewEdge: .top, withInset: statusBarHeight + 4 + 5)
+        titleLabel.autoAlignAxis(toSuperviewAxis: .vertical)
         self.titleLabel = titleLabel
     }
     
