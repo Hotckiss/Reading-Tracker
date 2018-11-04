@@ -18,7 +18,7 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLo
     private let disposeBag = DisposeBag()
     
     private var spinner: UIActivityIndicatorView?
-    private var greetingLabel: UILabel?
+    private var greetingImage: UIImageView?
     private var loginButton: UIButton?
     private var codeButton: UIButton?
     private var stackView: UIStackView?
@@ -61,7 +61,7 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLo
     }
     
     private func setupSignInButtons() {
-        guard let greetingLabel = greetingLabel else {
+        guard let greetingImage = greetingImage else {
             return
         }
         
@@ -98,7 +98,7 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLo
         
         stackView.autoAlignAxis(toSuperviewAxis: .vertical)
         stackView.autoresizingMask = [.flexibleWidth]
-        stackView.autoPinEdge(.top, to: .bottom, of: greetingLabel, withOffset: 77)
+        stackView.autoPinEdge(.top, to: .bottom, of: greetingImage, withOffset: 77)
         
         self.stackView = stackView
     }
@@ -147,22 +147,16 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLo
     }
     
     private func setupGreeting() {
-        let greetingLabel = UILabel(forAutoLayout: ())
-        greetingLabel.numberOfLines = 0
-        greetingLabel.textAlignment = .center
-        let greetingText = "Дневник\nчитателя"
+        let greetingImage = UIImageView(forAutoLayout: ())
+        greetingImage.image = UIImage(named: "titleImage")
         
-        let textAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor.white,
-            NSAttributedString.Key.font : UIFont(name: "BradleyHandITCTT-Bold", size: 64.0)!]
-            as [NSAttributedString.Key : Any]
+        view.addSubview(greetingImage)
+        greetingImage.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        greetingImage.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+        greetingImage.autoSetDimension(.height, toSize: 161)
+        greetingImage.autoPinEdge(toSuperviewEdge: .top, withInset: 70)
         
-        greetingLabel.attributedText = NSAttributedString(string: greetingText, attributes: textAttributes)
-        view.addSubview(greetingLabel)
-        greetingLabel.autoAlignAxis(toSuperviewAxis: .vertical)
-        greetingLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 70)
-        
-        self.greetingLabel = greetingLabel
+        self.greetingImage = greetingImage
     }
     
     private func setupLoginButton() {
