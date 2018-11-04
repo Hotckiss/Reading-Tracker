@@ -35,11 +35,19 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLo
     }
     
     private func setupSubviews() {
+        let navBar = NavigationBar(frame: .zero)
+        navBar.configure(model: NavigationBarModel(title: "",
+                                                   backButtonText: "Назад",
+                                                   onBackButtonPressed: ({ [weak self] in
+                                                    self?.navigationController?.popViewController(animated: true)
+                                                   })
+                                                   ))
+        view.addSubview(navBar)
+        navBar.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: UIApplication.shared.statusBarFrame.height, left: 0, bottom: 0, right: 0), excludingEdge: .bottom)
         setupGreeting()
         setupSignInButtons()
         setupRegisterButton()
         setupLoginButton()
-        
         
         let spinner = UIActivityIndicatorView()
         
@@ -58,7 +66,6 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLo
         }
         
         let signInButtonGoogle: GIDSignInButton = GIDSignInButton(forAutoLayout: ())
-        //signInButtonGoogle.style = GIDSignInButtonStyle.iconOnly
         
         let signInButtonFB = FBSDKLoginButton()
         signInButtonFB.delegate = self
@@ -79,6 +86,7 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLo
             let credential = TwitterAuthProvider.credential(withToken: authToken, secret: authTokenSecret)
             
             OnLiginStuff.tryLogin(credential: credential, completion: ({ [weak self] result in
+                self?.navigationController?.popToRootViewController(animated: false)
                 //...
             }))
         })
@@ -104,6 +112,7 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLo
         let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
         
         OnLiginStuff.tryLogin(credential: credential, completion: ({ [weak self] result in
+            self?.navigationController?.popToRootViewController(animated: false)
             //...
         }))
     }
@@ -111,7 +120,6 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLo
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
         // log out...
     }
-    
     
     private func setupRegisterButton() {
         guard let stackView = stackView else {

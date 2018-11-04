@@ -60,6 +60,7 @@ public class NavigationBar: UIView {
         
         let titleLabel = UILabel(frame: .zero)
         titleLabel.text = model.title
+        titleLabel.textColor = .white
         addSubview(titleLabel)
         titleLabel.autoCenterInSuperview()
         self.titleLabel = titleLabel

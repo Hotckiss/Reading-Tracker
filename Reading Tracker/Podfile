@@ -18,7 +18,7 @@ target 'Reading Tracker' do
   pod 'FBSDKLoginKit'
   pod 'FBSDKShareKit'
   pod 'TwitterKit'
-
+  pod 'VK-ios-sdk'
   target 'Reading TrackerTests' do
     inherit! :search_paths
     # Pods for testing

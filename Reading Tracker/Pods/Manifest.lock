@@ -163,6 +163,7 @@ PODS:
   - TwitterCore (3.2.0)
   - TwitterKit (3.4.0):
     - TwitterCore (>= 3.1.0)
+  - VK-ios-sdk (1.4.6)
 
 DEPENDENCIES:
   - FBSDKCoreKit
@@ -178,6 +179,7 @@ DEPENDENCIES:
   - PureLayout
   - RxSwift
   - TwitterKit
+  - VK-ios-sdk
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -213,6 +215,7 @@ SPEC REPOS:
     - RxSwift
     - TwitterCore
     - TwitterKit
+    - VK-ios-sdk
 
 SPEC CHECKSUMS:
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
@@ -247,7 +250,8 @@ SPEC CHECKSUMS:
   RxSwift: 99e10317ddfcc7fbe01356aafd118fde4a0be104
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: bc7bd086b9b724a1d888745a054e1d0b1ecc4f3f
+  VK-ios-sdk: 7fd48bc5aaa6b96c3197c1987eb6593f2ea67331
 
-PODFILE CHECKSUM: a1ba991c23dfa2460bdcd0ba438eb24429175784
+PODFILE CHECKSUM: afd61d35d007226df9a0a2850086f202536ca013
 
 COCOAPODS: 1.5.3
