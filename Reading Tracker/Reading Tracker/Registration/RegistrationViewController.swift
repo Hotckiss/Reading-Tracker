@@ -12,16 +12,17 @@ import RxSwift
 import Firebase
 import GoogleSignIn
 
-class RegistrationViewController: UIViewController {
+class RegistrationViewController: UIViewController, GIDSignInUIDelegate {
     private let disposeBag = DisposeBag()
     
     private var spinner: UIActivityIndicatorView?
     private var greetingLabel: UILabel?
     private var loginButton: UIButton?
-    private var registerButton: UIButton?
+    private var codeButton: UIButton?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        GIDSignIn.sharedInstance().uiDelegate = self
         setupSubviews()
     }
     
@@ -31,19 +32,11 @@ class RegistrationViewController: UIViewController {
         view.backgroundColor = UIColor(rgb: 0x2f5870)
     }
     
-    /*func alertError(description: String) {
-        let alert = UIAlertController(title: "Ошибка!", message: description, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Повторить", style: .default, handler: ({ [weak self] _ in
-            self?.tryLogin()
-        })))
-        alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-    }*/
-    
     private func setupSubviews() {
         setupGreeting()
         setupRegisterButton()
         setupLoginButton()
+        setupSignInButtons()
         
         let spinner = UIActivityIndicatorView()
         
@@ -56,29 +49,46 @@ class RegistrationViewController: UIViewController {
         self.spinner = spinner
     }
     
+    private func setupSignInButtons() {
+        guard let greetingLabel = greetingLabel else {
+            return
+        }
+        
+        let signInButtonGoogle: GIDSignInButton = GIDSignInButton(forAutoLayout: ())
+        signInButtonGoogle.style = GIDSignInButtonStyle.iconOnly
+        
+        let stackView = UIStackView(arrangedSubviews: [signInButtonGoogle])
+        stackView.spacing = 20
+        stackView.axis = .horizontal
+        view.addSubview(stackView)
+        
+        stackView.autoAlignAxis(toSuperviewAxis: .vertical)
+        stackView.autoPinEdge(.top, to: .bottom, of: greetingLabel, withOffset: 77)
+    }
+    
     private func setupRegisterButton() {
         guard let greetingLabel = greetingLabel else {
             return
         }
         
-        let registerButton = UIButton(forAutoLayout: ())
+        let codeButton = UIButton(forAutoLayout: ())
         
         let buttonTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
             NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 24.0)!]
             as [NSAttributedString.Key : Any]
         
-        registerButton.setAttributedTitle(NSAttributedString(string: "Код участника", attributes: buttonTextAttributes), for: .normal)
-        registerButton.backgroundColor = .white
-        registerButton.layer.cornerRadius = 32
-        registerButton.addTarget(self, action: #selector(onRegisterButtonTapped), for: .touchUpInside)
+        codeButton.setAttributedTitle(NSAttributedString(string: "Код участника", attributes: buttonTextAttributes), for: .normal)
+        codeButton.backgroundColor = .white
+        codeButton.layer.cornerRadius = 32
+        codeButton.addTarget(self, action: #selector(onRegisterButtonTapped), for: .touchUpInside)
         
-        view.addSubview(registerButton)
-        registerButton.autoPinEdge(.top, to: .bottom, of: greetingLabel, withOffset: 170)
-        registerButton.autoSetDimensions(to: CGSize(width: 223, height: 64))
-        registerButton.autoAlignAxis(toSuperviewAxis: .vertical)
+        view.addSubview(codeButton)
+        codeButton.autoPinEdge(.top, to: .bottom, of: greetingLabel, withOffset: 170)
+        codeButton.autoSetDimensions(to: CGSize(width: 223, height: 64))
+        codeButton.autoAlignAxis(toSuperviewAxis: .vertical)
         
-        self.registerButton = registerButton
+        self.codeButton = codeButton
     }
     
     private func setupGreeting() {
@@ -101,7 +111,7 @@ class RegistrationViewController: UIViewController {
     }
     
     private func setupLoginButton() {
-        guard let registerButton = registerButton else {
+        guard let codeButton = codeButton else {
             return
         }
         
@@ -120,7 +130,7 @@ class RegistrationViewController: UIViewController {
         loginButton.addTarget(self, action: #selector(onLoginButtonTapped), for: .touchUpInside)
         
         view.addSubview(loginButton)
-        loginButton.autoPinEdge(.top, to: .bottom, of: registerButton, withOffset: 40)
+        loginButton.autoPinEdge(.top, to: .bottom, of: codeButton, withOffset: 40)
         loginButton.autoSetDimensions(to: CGSize(width: 225, height: 64))
         loginButton.autoAlignAxis(toSuperviewAxis: .vertical)
         
