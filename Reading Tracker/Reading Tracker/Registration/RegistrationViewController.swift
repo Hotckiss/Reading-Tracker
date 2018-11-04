@@ -10,6 +10,7 @@ import UIKit
 import PureLayout
 import RxSwift
 import Firebase
+import GoogleSignIn
 
 class RegistrationViewController: UIViewController {
     private let disposeBag = DisposeBag()
