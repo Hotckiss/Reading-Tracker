@@ -15,9 +15,18 @@ class OfflineCodeSignUpViewController: UIViewController {
     private var spinner: UIActivityIndicatorView?
     private var codeTextField: RTTextField?
     private let codeTextFieldDelegate = FinishTextFieldDelegate()
+    private var codeButtonBottomConstraint: NSLayoutConstraint?
+    
+    deinit {
+        NotificationCenter.default.removeObserver(UIResponder.keyboardWillShowNotification)
+        NotificationCenter.default.removeObserver(UIResponder.keyboardWillHideNotification)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
         setupSubviews()
     }
     
@@ -25,6 +34,17 @@ class OfflineCodeSignUpViewController: UIViewController {
         navigationController?.navigationBar.isHidden = true
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         view.backgroundColor = .white
+    }
+    
+    @objc func keyboardWillShow(notification: Notification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            codeButtonBottomConstraint?.constant = -(keyboardSize.height + 16)
+        }
+        
+    }
+    
+    @objc func keyboardWillHide(notification: Notification) {
+        codeButtonBottomConstraint?.constant = -100
     }
     
     private func setupSubviews() {
@@ -89,7 +109,7 @@ class OfflineCodeSignUpViewController: UIViewController {
         activateButton.addTarget(self, action: #selector(onActivateButtonTapped), for: .touchUpInside)
         
         view.addSubview(activateButton)
-        activateButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 100)
+        codeButtonBottomConstraint = activateButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 100)
         activateButton.autoSetDimensions(to: CGSize(width: 274, height: 64))
         activateButton.autoAlignAxis(toSuperviewAxis: .vertical)
         
