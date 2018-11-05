@@ -62,6 +62,7 @@ public class NavigationBar: UIView {
         
         let titleLabel = UILabel(frame: .zero)
         titleLabel.text = model.title
+        titleLabel.numberOfLines = 0
         titleLabel.textColor = .white
         addSubview(titleLabel)
         titleLabel.autoPinEdge(toSuperviewEdge: .top, withInset: statusBarHeight + 4 + 5)

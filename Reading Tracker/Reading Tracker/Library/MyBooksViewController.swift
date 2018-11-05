@@ -25,8 +25,12 @@ public struct BookModel {
 
 final class MyBooksViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     private var spinner: UIActivityIndicatorView?
-    private var books: [BookModel] = [BookModel(title: "Биоцентризм. Как жизнь создает вселенную", author: "Роберт Ланца"),
-                                       BookModel(title: "Фату-Хива: возврат к природе", author: "Тур Хейердал")]
+    private var navBar: NavigationBar?
+    private var emptyNavBar: UIView?
+    private var books: [BookModel] = []
+    private var tableViewTopConstraint: NSLayoutConstraint?
+    //BookModel(title: "Биоцентризм. Как жизнь создает вселенную", author: "Роберт Ланца"),
+    //BookModel(title: "Фату-Хива: возврат к природе", author: "Тур Хейердал")
     private var tableView: UITableView!
     
     override func viewDidLoad() {
@@ -38,7 +42,7 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         
         tableView = UITableView(forAutoLayout: ())
         view.addSubview(tableView)
-        tableView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: UIApplication.shared.statusBarFrame.height + 4 + 32, left: 0, bottom: 0, right: 0))
+        tableViewTopConstraint = tableView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: UIApplication.shared.statusBarFrame.height + 4 + 32 + 4, left: 0, bottom: 0, right: 0))[0]
         tableView.register(BookCell.self, forCellReuseIdentifier: "bookCell")
         tableView.tableFooterView = UIView()
         tableView.delegate = self
@@ -46,16 +50,65 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         tableView.backgroundColor = .white
         tableView.separatorInset = .zero
         tableView.separatorColor = UIColor(rgb: 0x2f5870)
+        
+        update(booksList: [])
+        
+        /*DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+            self.update(booksList: [BookModel(title: "Биоцентризм. Как жизнь создает вселенную", author: "Роберт Ланца")])
+        })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 6, execute: {
+            self.update(booksList: [])
+        })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 9, execute: {
+            self.update(booksList: [BookModel(title: "Биоцентризм. Как жизнь создает вселенную", author: "Роберт Ланца")])
+        })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 12, execute: {
+            self.update(booksList: [])
+        })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 15, execute: {
+            self.update(booksList: [BookModel(title: "Биоцентризм. Как жизнь создает вселенную", author: "Роберт Ланца")])
+        })*/
+    }
+    
+    public func update(booksList: [BookModel]) {
+        if booksList.isEmpty {
+            navBar?.isHidden = true
+            emptyNavBar?.isHidden = false
+            tableView.isHidden = true
+            tableViewTopConstraint?.constant = emptyNavBar?.frame.height ?? 97
+        } else {
+            navBar?.isHidden = false
+            emptyNavBar?.isHidden = true
+            tableView.isHidden = false
+            tableViewTopConstraint?.constant = 60
+        }
+        books = booksList
+        tableView.reloadData()
     }
     
     private func setupNavigationBar() {
         let navBar = NavigationBar()
-        
         navBar.configure(model: NavigationBarModel(title: "Выберите книгу"))
         navBar.backgroundColor = UIColor(rgb: 0xedaf97)
-        
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
+        self.navBar = navBar
+        
+        let emptyNavBar = UIView(forAutoLayout: ())
+        let titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor.white,
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 24.0)!]
+            as [NSAttributedString.Key : Any]
+        let emptyLabel = UILabel(forAutoLayout: ())
+        emptyLabel.numberOfLines = 0
+        emptyLabel.textAlignment = .center
+        emptyLabel.attributedText = NSAttributedString(string: "Для начала, добавьте книги, которые сейчас читаете", attributes: titleTextAttributes)
+        emptyNavBar.addSubview(emptyLabel)
+        emptyNavBar.backgroundColor = UIColor(rgb: 0xedaf97)
+        view.addSubview(emptyNavBar)
+        emptyNavBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
+        emptyLabel.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 28, left: 16, bottom: 12, right: 16))
+        self.emptyNavBar = emptyNavBar
     }
     
     private func setupSpinner() {
