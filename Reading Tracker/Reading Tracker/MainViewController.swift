@@ -39,6 +39,7 @@ final class MainViewController: UIViewController {
     private func setupSubviews() {
         
         let profileVC = ProfileViewController()
+        profileVC.onExit = exitAction
         let libraryVC = MyBooksViewController()
         let statsVC = StatisticsViewController()
         
@@ -58,7 +59,7 @@ final class MainViewController: UIViewController {
         navigationController?.pushViewController(mainTabBarController, animated: false)
     }
     
-    @objc private func exitButtonAction() {
+    private func exitAction() {
         do {
             try Auth.auth().signOut()
         } catch {

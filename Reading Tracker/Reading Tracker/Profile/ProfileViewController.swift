@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Firebase
 
 public struct ProfileOption {
     public let title: String
@@ -21,6 +22,7 @@ public struct ProfileOption {
 }
 
 final class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    public var onExit: (() -> Void)? = nil
     private var spinner: UIActivityIndicatorView?
     private var profileOptions: [ProfileOption] = [ProfileOption(title: "Анкета участника исследования", subtitle: "Заполняя анкету, вы учавствуете в научном исследовании читателей и их интересов"),
                                                    ProfileOption(title: "Настройки"),
@@ -83,6 +85,9 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 2 {
+            onExit?()
+        }
     }
     
     private class ProfileCell: UITableViewCell {
