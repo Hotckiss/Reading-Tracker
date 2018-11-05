@@ -109,4 +109,27 @@ final class FirestoreManager {
         
         return resultSubject.asObservable()
     }
+    
+    public func addBook(book: BookModel) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        db.collection("books")
+            .document(uid)
+            .collection(book.icbn)
+            .document("info").setData([
+            "title": book.title,
+            "author": book.author,
+            "last updated": formatter.string(from: book.lastUpdated)
+            ], merge: true) { error in
+                if let error = error {
+                    print("Error writing document: \(error.localizedDescription)")
+                } else {
+                    print("Document successfully written!")
+                }
+        }
+    }
 }

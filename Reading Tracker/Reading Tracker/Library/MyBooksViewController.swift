@@ -8,14 +8,16 @@
 
 import Foundation
 import UIKit
-
+import Firebase
 public struct BookModel {
+    public var icbn: String
     public var title: String
     public var author: String
     public var image: UIImage
     public var lastUpdated: Date
     
-    init(title: String, author: String, image: UIImage? = nil, lastUpdated: Date = Date.distantPast) {
+    init(icbn: String = "226611156", title: String, author: String, image: UIImage? = nil, lastUpdated: Date = Date.distantPast) {
+        self.icbn = icbn
         self.title = title
         self.author = author
         self.image = (image ?? UIImage(named: "bookPlaceholder")) ?? UIImage()
@@ -30,8 +32,6 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
     private var books: [BookModel] = []
     private var tableViewTopConstraint: NSLayoutConstraint?
     private var addButton: UIButton?
-    //BookModel(title: "Биоцентризм. Как жизнь создает вселенную", author: "Роберт Ланца"),
-    //BookModel(title: "Фату-Хива: возврат к природе", author: "Тур Хейердал")
     private var tableView: UITableView!
     
     override func viewDidLoad() {
@@ -70,7 +70,9 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         addButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16 + 49)
         self.addButton = addButton
         
-        update(booksList: [])
+        //todo: удалить мусор
+        update(booksList: [BookModel(icbn: "1", title: "Биоцентризм. Как жизнь создает вселенную", author: "Роберт Ланца"),
+                           BookModel(icbn: "2", title: "Фату-Хива: возврат к природе", author: "Тур Хейердал")])
     }
     
     public func update(booksList: [BookModel]) {
@@ -90,9 +92,12 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     @objc private func addBook() {
-        let alert = UIAlertController(title: "Ошибка!", message: "Не готово:(", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ок...", style: .default, handler: nil))
+        let alert = UIAlertController(title: "Ошибка!", message: "TODO: форма добавления", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
+        
+        // уже работает
+        //FirestoreManager.DBManager.addBook(book: BookModel(icbn: "1113", title: "Биоцентризм. Как жизнь создает вселенную", author: "Роберт Ланца"))
     }
     
     private func setupNavigationBar() {
