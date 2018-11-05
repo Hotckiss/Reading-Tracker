@@ -29,6 +29,7 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
     private var emptyNavBar: UIView?
     private var books: [BookModel] = []
     private var tableViewTopConstraint: NSLayoutConstraint?
+    private var addButton: UIButton?
     //BookModel(title: "Биоцентризм. Как жизнь создает вселенную", author: "Роберт Ланца"),
     //BookModel(title: "Фату-Хива: возврат к природе", author: "Тур Хейердал")
     private var tableView: UITableView!
@@ -51,23 +52,25 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         tableView.separatorInset = .zero
         tableView.separatorColor = UIColor(rgb: 0x2f5870)
         
-        update(booksList: [])
+        let addButton = UIButton(forAutoLayout: ())
         
-        /*DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-            self.update(booksList: [BookModel(title: "Биоцентризм. Как жизнь создает вселенную", author: "Роберт Ланца")])
-        })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 6, execute: {
-            self.update(booksList: [])
-        })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 9, execute: {
-            self.update(booksList: [BookModel(title: "Биоцентризм. Как жизнь создает вселенную", author: "Роберт Ланца")])
-        })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 12, execute: {
-            self.update(booksList: [])
-        })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 15, execute: {
-            self.update(booksList: [BookModel(title: "Биоцентризм. Как жизнь создает вселенную", author: "Роберт Ланца")])
-        })*/
+        addButton.backgroundColor = UIColor(rgb: 0xedaf97)
+        let icon = UIImage(named: "plus")
+        addButton.imageEdgeInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        addButton.setImage(icon, for: [])
+        addButton.addTarget(self, action: #selector(addBook), for: .touchUpInside)
+        addButton.layer.cornerRadius = 30
+        addButton.layer.shadowColor = UIColor.black.cgColor
+        addButton.layer.shadowOpacity = 0.2
+        addButton.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        view.addSubview(addButton)
+        view.bringSubviewToFront(addButton)
+        addButton.autoSetDimensions(to: CGSize(width: 60, height: 60))
+        addButton.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+        addButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16 + 49)
+        self.addButton = addButton
+        
+        update(booksList: [])
     }
     
     public func update(booksList: [BookModel]) {
@@ -84,6 +87,12 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         }
         books = booksList
         tableView.reloadData()
+    }
+    
+    @objc private func addBook() {
+        let alert = UIAlertController(title: "Ошибка!", message: "Не готово:(", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ок...", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     private func setupNavigationBar() {
