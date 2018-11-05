@@ -33,10 +33,15 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
     private var books: [BookModel] = []
     private var tableViewTopConstraint: NSLayoutConstraint?
     private var addButton: UIButton?
+    private var line: CAShapeLayer?
     private var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        var bottomSpace: CGFloat = 0
+        if #available(iOS 11.0, *) {
+            bottomSpace = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
+        }
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .white
         setupNavigationBar()
@@ -68,9 +73,29 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         view.bringSubviewToFront(addButton)
         addButton.autoSetDimensions(to: CGSize(width: 60, height: 60))
         addButton.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
-        addButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16 + 49)
+        addButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16 + 49 + bottomSpace)
         self.addButton = addButton
         
+        let line = CAShapeLayer()
+        let linePath = UIBezierPath()
+        let width = UIScreen.main.bounds.width
+        let height = UIScreen.main.bounds.height
+        let start = CGPoint(x: width / 3, y: ((width == 320) ? 138.5 : 106))
+        let end = CGPoint(x: width - 16 - 30, y: height - 16 - 49 - 60 - 8 - bottomSpace)
+        linePath.move(to: end)
+        linePath.addLine(to: end)
+        let dy = end.y - start.y
+        linePath.addCurve(to: start,
+                          controlPoint1: CGPoint(x: start.x + width, y: start.y + dy / 5),
+                          controlPoint2: CGPoint(x: end.x - width, y: end.y - dy / 5))
+        
+        line.path = linePath.cgPath
+        line.strokeColor = UIColor(rgb: 0xedaf97).cgColor
+        line.fillColor = UIColor.white.cgColor
+        line.lineWidth = 3.0
+        view.layer.addSublayer(line)
+        
+        self.line = line
         //todo: удалить мусор
         update(booksList: [BookModel(icbn: "1", title: "Биоцентризм. Как жизнь создает вселенную", author: "Роберт Ланца"),
                            BookModel(icbn: "2", title: "Фату-Хива: возврат к природе", author: "Тур Хейердал")])
@@ -81,11 +106,13 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
             navBar?.isHidden = true
             emptyNavBar?.isHidden = false
             tableView.isHidden = true
+            line?.isHidden = false
             tableViewTopConstraint?.constant = emptyNavBar?.frame.height ?? 97
         } else {
             navBar?.isHidden = false
             emptyNavBar?.isHidden = true
             tableView.isHidden = false
+            line?.isHidden = true
             tableViewTopConstraint?.constant = 60
         }
         books = booksList
