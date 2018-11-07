@@ -20,6 +20,7 @@
 		2F71B32A218F5CF000E4E80F /* LoginPasswordRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B329218F5CEF00E4E80F /* LoginPasswordRegistrationViewController.swift */; };
 		2F71B32C218F684900E4E80F /* LoginPasswordAuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B32B218F684900E4E80F /* LoginPasswordAuthorizationViewController.swift */; };
 		2F71B32F218F965000E4E80F /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B32E218F965000E4E80F /* ProfileViewController.swift */; };
+		2F7CE0642193892C00CFE6CF /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7CE0632193892C00CFE6CF /* Spinner.swift */; };
 		2FAA8FB3216A152C0011F59D /* RegistrationLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FB2216A152C0011F59D /* RegistrationLoginViewController.swift */; };
 		2FAA8FB6216A21920011F59D /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FB5216A21920011F59D /* NavigationBar.swift */; };
 		2FAA8FB8216A32310011F59D /* RegistrationDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FB7216A32310011F59D /* RegistrationDraft.swift */; };
@@ -76,6 +77,7 @@
 		2F71B329218F5CEF00E4E80F /* LoginPasswordRegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPasswordRegistrationViewController.swift; sourceTree = "<group>"; };
 		2F71B32B218F684900E4E80F /* LoginPasswordAuthorizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPasswordAuthorizationViewController.swift; sourceTree = "<group>"; };
 		2F71B32E218F965000E4E80F /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		2F7CE0632193892C00CFE6CF /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		2FAA8FB2216A152C0011F59D /* RegistrationLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationLoginViewController.swift; sourceTree = "<group>"; };
 		2FAA8FB5216A21920011F59D /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		2FAA8FB7216A32310011F59D /* RegistrationDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationDraft.swift; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 				2F1891DB2158B9760043BDCC /* UIColor+RGB.swift */,
 				2F1891DE2158BCC10043BDCC /* RTTextView.swift */,
 				2F71B325218F3A2700E4E80F /* OnLiginStuff.swift */,
+				2F7CE0632193892C00CFE6CF /* Spinner.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -601,6 +604,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2F1891D9215832210043BDCC /* AuthorizationViewController.swift in Sources */,
+				2F7CE0642193892C00CFE6CF /* Spinner.swift in Sources */,
 				2F71B328218F3FFE00E4E80F /* OfflineCodeSignUpViewController.swift in Sources */,
 				2FAA8FB3216A152C0011F59D /* RegistrationLoginViewController.swift in Sources */,
 				2FAA8FBC216A6E430011F59D /* RegistrationEducationViewController.swift in Sources */,
