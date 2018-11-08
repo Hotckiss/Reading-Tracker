@@ -41,16 +41,16 @@ final class MainViewController: UIViewController {
         let profileVC = ProfileViewController()
         profileVC.onExit = exitAction
         let libraryVC = MyBooksViewController()
-        let statsVC = StatisticsViewController()
+        let sessionVC = SessionViewController()
         
-        profileVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "profileUnselected"), selectedImage: UIImage(named: "profileSelected"))
+        profileVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "profileSelected"), selectedImage: UIImage(named: "profileSelected"))
         profileVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
-        libraryVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "libraryUnselected"), selectedImage: UIImage(named: "librarySelected"))
+        libraryVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "librarySelected"), selectedImage: UIImage(named: "librarySelected"))
         libraryVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
-        statsVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "statsUnselected"), selectedImage: UIImage(named: "statsSelected"))
-        statsVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
+        sessionVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "sessionMenuSelected"), selectedImage: UIImage(named: "sessionMenuSelected"))
+        sessionVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         
-        let controllers = [profileVC, libraryVC, statsVC]
+        let controllers = [profileVC, libraryVC, sessionVC]
         
         mainTabBarController.viewControllers = controllers.map{ UINavigationController.init(rootViewController: $0)}
         

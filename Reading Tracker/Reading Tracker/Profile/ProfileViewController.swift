@@ -25,6 +25,7 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
     public var onExit: (() -> Void)? = nil
     private var spinner: UIActivityIndicatorView?
     private var profileOptions: [ProfileOption] = [ProfileOption(title: "Анкета участника исследования", subtitle: "Заполняя анкету, вы учавствуете в научном исследовании читателей и их интересов"),
+                                                   ProfileOption(title: "Статистика"),
                                                    ProfileOption(title: "Настройки"),
                                                    ProfileOption(title: "Выход")]
     private var tableView: UITableView!
