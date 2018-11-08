@@ -10,22 +10,25 @@ import Foundation
 import UIKit
 
 public final class SessionTimerButton: UIButton {
-    public var onStart: (() -> Void)?
-    public var onPause: (() -> Void)?
-    public var onContinue: (() -> Void)?
-    private var circleImageView: UIImageView?
+    //public var onStart: (() -> Void)?
+    //public var onPause: (() -> Void)?
+    //public var onContinue: (() -> Void)?
     private var shapes: [CAShapeLayer] = []
     private var innerButtonImageView: UIImageView?
+    private var titleView: UILabel?
+    private var timerView: UILabel?
+    private var timer: Timer!
+    private var time: Int = 0
     
     public var buttonState: ButtonState = .start {
         didSet {
             setupInnerButton()
+            setupTimer()
         }
     }
     
-    public var isTappable: Bool = false {
-        didSet {
-        }
+    public var isTappable: Bool = true {
+        didSet {}
     }
     
     override public init(frame: CGRect) {
@@ -38,6 +41,77 @@ public final class SessionTimerButton: UIButton {
         innerButtonImageView.autoSetDimensions(to: CGSize(width: 155, height: 155))
         self.innerButtonImageView = innerButtonImageView
         setupInnerButton()
+        
+        let titleView = UILabel(forAutoLayout: ())
+        titleView.numberOfLines = 0
+        let titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 42.0)!]
+            as [NSAttributedString.Key : Any]
+        titleView.textAlignment = .center
+        titleView.attributedText = NSAttributedString(string: "Начать\nчтение", attributes: titleTextAttributes)
+        
+        addSubview(titleView)
+        titleView.autoCenterInSuperview()
+        self.titleView = titleView
+        
+        let timerView = UILabel(forAutoLayout: ())
+        timerView.numberOfLines = 0
+        timerView.textAlignment = .center
+        let timerTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 64.0)!]
+            as [NSAttributedString.Key : Any]
+        
+        let text = NSMutableAttributedString(string: "00", attributes: timerTextAttributes)
+        text.addAttribute(NSAttributedString.Key.font, value: UIFont(name: "Avenir-Light", size: 32.0)!, range: NSRange(location: 1, length: 1))
+        text.addAttribute(NSAttributedString.Key.baselineOffset, value: UIFont(name: "Avenir-Light", size: 64.0)!.xHeight - UIFont(name: "Avenir-Light", size: 32.0)!.xHeight, range: NSRange(location: 1, length: 1))
+        timerView.attributedText = text
+        
+        addSubview(timerView)
+        timerView.autoCenterInSuperview()
+        self.timerView = timerView
+        
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(onTick), userInfo: nil, repeats: true)
+        timer.invalidate()
+        setupTimer()
+    }
+    
+    @objc private func onTick() {
+        if buttonState != .start {
+            time += 1
+        }
+        
+        let timerTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 64.0)!]
+            as [NSAttributedString.Key : Any]
+        
+        let mins = time / 60
+        let secs = time % 60
+        let text = NSMutableAttributedString(string: "\(mins)\(secs)", attributes: timerTextAttributes)
+        text.addAttribute(NSAttributedString.Key.font, value: UIFont(name: "Avenir-Light", size: 32.0)!, range: NSRange(location: String(mins).count, length: String(secs).count))
+        text.addAttribute(NSAttributedString.Key.baselineOffset, value: UIFont(name: "Avenir-Light", size: 64.0)!.xHeight - UIFont(name: "Avenir-Light", size: 32.0)!.xHeight, range: NSRange(location: String(mins).count, length: String(secs).count))
+        timerView?.attributedText = text
+    }
+    
+    private func setupTimer() {
+        switch buttonState {
+        case .start:
+            timerView?.isHidden = true
+            titleView?.isHidden = false
+            timer.invalidate()
+            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(onTick), userInfo: nil, repeats: true)
+        case .pause:
+            timerView?.isHidden = false
+            titleView?.isHidden = true
+            timer.invalidate()
+        case .play:
+            timerView?.isHidden = false
+            titleView?.isHidden = true
+            timer.invalidate()
+            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(onTick), userInfo: nil, repeats: true)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
