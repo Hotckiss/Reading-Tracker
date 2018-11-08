@@ -11,6 +11,7 @@ import UIKit
 
 final class SessionViewController: UIViewController {
     private var spinner: UIActivityIndicatorView?
+    private var sessionButton: SessionTimerButton?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,8 +19,29 @@ final class SessionViewController: UIViewController {
         view.backgroundColor = .white
         setupNavigationBar()
         setupSpinner()
+        
+        let s = SessionTimerButton(frame: .zero)
+        view.addSubview(s)
+        
+        s.autoPinEdge(toSuperviewEdge: .bottom, withInset: 100)
+        s.autoAlignAxis(toSuperviewAxis: .vertical)
+        s.autoSetDimensions(to: CGSize(width: 230, height: 230))
+        s.addTarget(self, action: #selector(onSessionButtonTap), for: .touchUpInside)
+        s.buttonState = .start
+        sessionButton = s
     }
     
+    @objc private func onSessionButtonTap() {
+        guard let sessionButton = sessionButton else {
+            return
+        }
+        
+        if sessionButton.buttonState == .play {
+            sessionButton.buttonState = .pause
+        } else {
+            sessionButton.buttonState = .play
+        }
+    }
     private func setupNavigationBar() {
         let navBar = NavigationBar()
         

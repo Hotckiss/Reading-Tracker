@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "profileUnselected.png",
+      "filename" : "sessionSelected.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "profileUnselected-1.png",
+      "filename" : "sessionSelected-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "profileUnselected-2.png",
+      "filename" : "sessionSelected-2.png",
       "scale" : "3x"
     }
   ],
