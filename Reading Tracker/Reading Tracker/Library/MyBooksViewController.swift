@@ -60,7 +60,7 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         
         let addButton = UIButton(forAutoLayout: ())
         
-        addButton.backgroundColor = UIColor(rgb: 0xedaf97)
+        addButton.backgroundColor = UIColor(rgb: 0x2f5870)
         let icon = UIImage(named: "plus")
         addButton.imageEdgeInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         addButton.setImage(icon, for: [])
@@ -90,7 +90,7 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
                           controlPoint2: CGPoint(x: end.x - width, y: end.y - dy / 5))
         
         line.path = linePath.cgPath
-        line.strokeColor = UIColor(rgb: 0xedaf97).cgColor
+        line.strokeColor = UIColor(rgb: 0x2f5870).cgColor
         line.fillColor = UIColor.white.cgColor
         line.lineWidth = 3.0
         view.layer.addSublayer(line)
@@ -131,7 +131,7 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
     private func setupNavigationBar() {
         let navBar = NavigationBar()
         navBar.configure(model: NavigationBarModel(title: "Выберите книгу"))
-        navBar.backgroundColor = UIColor(rgb: 0xedaf97)
+        navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
         self.navBar = navBar
@@ -146,7 +146,7 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         emptyLabel.textAlignment = .center
         emptyLabel.attributedText = NSAttributedString(string: "Для начала, добавьте книги, которые сейчас читаете", attributes: titleTextAttributes)
         emptyNavBar.addSubview(emptyLabel)
-        emptyNavBar.backgroundColor = UIColor(rgb: 0xedaf97)
+        emptyNavBar.backgroundColor = UIColor(rgb: 0x2f5870)
         view.addSubview(emptyNavBar)
         emptyNavBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
         emptyLabel.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 28, left: 16, bottom: 12, right: 16))

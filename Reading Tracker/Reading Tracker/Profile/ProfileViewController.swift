@@ -42,7 +42,7 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         let navBar = NavigationBar()
         
         navBar.configure(model: NavigationBarModel(title: "Профиль читателя"))
-        navBar.backgroundColor = UIColor(rgb: 0xedaf97)
+        navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)

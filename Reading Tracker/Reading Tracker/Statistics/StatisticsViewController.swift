@@ -24,7 +24,7 @@ final class StatisticsViewController: UIViewController {
         let navBar = NavigationBar()
         
         navBar.configure(model: NavigationBarModel(title: "Статистика"))
-        navBar.backgroundColor = UIColor(rgb: 0xedaf97)
+        navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
