@@ -122,7 +122,10 @@ final class SessionViewController: UIViewController {
         bookEmptyCell.autoPinEdge(toSuperviewEdge: .left)
         bookEmptyCell.autoPinEdge(toSuperviewEdge: .right)
         bookEmptyCell.autoPinEdge(.top, to: .bottom, of: navBar)
-        
+        bookEmptyCell.onAdd = { [weak self] in
+            let vc = AddBookViewController()
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
         let startPageTextField = PageTextField(frame: .zero)
         startPageTextField.configure(placeholder: "Начальная\nстраница")
         
