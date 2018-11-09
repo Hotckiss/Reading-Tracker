@@ -27,8 +27,38 @@ public final class SessionTimerButton: UIButton {
         }
     }
     
-    public var isTappable: Bool = true {
-        didSet {}
+    public var isPlaceholder: Bool = false {
+        didSet {
+            isUserInteractionEnabled = !isPlaceholder
+            let titleTextAttributes = [
+                NSAttributedString.Key.foregroundColor : isPlaceholder ? UIColor(rgb: 0xbdbdbd) : UIColor(rgb: 0xedaf97),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 42.0)!]
+                as [NSAttributedString.Key : Any]
+            titleView?.attributedText = NSAttributedString(string: "Начать\nчтение", attributes: titleTextAttributes)
+            
+            if isPlaceholder {
+                for shape in shapes {
+                    shape.strokeColor = UIColor(rgb: 0xbdbdbd).cgColor
+                }
+                
+                if !shapes.isEmpty {
+                    shapes[shapes.count - 1].fillColor = UIColor(rgb: 0xeeeeee).cgColor
+                }
+                timerView?.isHidden = true
+                titleView?.isHidden = false
+            } else {
+                for shape in shapes {
+                    shape.strokeColor = UIColor(rgb: 0xedaf97).cgColor
+                }
+                
+                if !shapes.isEmpty {
+                    shapes[shapes.count - 1].fillColor = UIColor(rgb: 0xedaf97).withAlphaComponent(0.2).cgColor
+                }
+                timerView?.isHidden = (buttonState == .start)
+                titleView?.isHidden = (buttonState != .start)
+            }
+            
+        }
     }
     
     override public init(frame: CGRect) {

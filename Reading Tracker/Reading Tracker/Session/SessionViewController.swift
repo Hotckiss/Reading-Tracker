@@ -12,6 +12,29 @@ import UIKit
 final class SessionViewController: UIViewController {
     private var spinner: UIActivityIndicatorView?
     private var sessionButton: SessionTimerButton?
+    private var bookEmptyCell: BookEmptyCell?
+    private var bookCell: BookFilledCell?
+    private var startPageTextField: PageTextField?
+    private var finishPageTextField: PageTextField?
+    private var handTimeInputButton: UIButton?
+    
+    private var hasBook: Bool = false {
+        didSet {
+            bookEmptyCell?.isHidden = hasBook
+            bookCell?.isHidden = !hasBook
+            sessionButton?.isPlaceholder = !hasBook
+            startPageTextField?.isUserInteractionEnabled = hasBook
+            finishPageTextField?.isUserInteractionEnabled = hasBook
+            handTimeInputButton?.isUserInteractionEnabled = hasBook
+            handTimeInputButton?.isHidden = !hasBook
+            startPageTextField?.disable(disable: !hasBook)
+            finishPageTextField?.disable(disable: !hasBook)
+            
+            if !hasBook {
+                finishPageTextField?.isHidden = true
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,15 +48,15 @@ final class SessionViewController: UIViewController {
             bottomSpace += UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
         }
         
-        let s = SessionTimerButton(frame: .zero)
-        view.addSubview(s)
+        let sessionButton = SessionTimerButton(frame: .zero)
+        view.addSubview(sessionButton)
         
-        s.autoPinEdge(toSuperviewEdge: .bottom, withInset: 82 + bottomSpace)
-        s.autoAlignAxis(toSuperviewAxis: .vertical)
-        s.autoSetDimensions(to: CGSize(width: 230, height: 230))
-        s.addTarget(self, action: #selector(onSessionButtonTap), for: .touchUpInside)
-        s.buttonState = .start
-        sessionButton = s
+        sessionButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 82 + bottomSpace)
+        sessionButton.autoAlignAxis(toSuperviewAxis: .vertical)
+        sessionButton.autoSetDimensions(to: CGSize(width: 230, height: 230))
+        sessionButton.addTarget(self, action: #selector(onSessionButtonTap), for: .touchUpInside)
+        sessionButton.buttonState = .start
+        self.sessionButton = sessionButton
         
         let handTimeInputButton = UIButton(forAutoLayout: ())
         let handTimeInputButtonTextAttributes = [
@@ -46,6 +69,10 @@ final class SessionViewController: UIViewController {
         view.addSubview(handTimeInputButton)
         handTimeInputButton.autoAlignAxis(toSuperviewAxis: .vertical)
         handTimeInputButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: bottomSpace + 30)
+        
+        self.handTimeInputButton = handTimeInputButton
+        
+        hasBook = false
     }
     
     @objc private func onHandTimeTap() {
@@ -65,6 +92,7 @@ final class SessionViewController: UIViewController {
             sessionButton.buttonState = .play
         }
     }
+    
     private func setupNavigationBarAndBookCell() {
         let navBar = NavigationBar()
         
@@ -88,6 +116,13 @@ final class SessionViewController: UIViewController {
         bookCell.autoPinEdge(toSuperviewEdge: .right)
         bookCell.autoPinEdge(.top, to: .bottom, of: navBar)
         
+        let bookEmptyCell = BookEmptyCell(frame: .zero)
+        
+        view.addSubview(bookEmptyCell)
+        bookEmptyCell.autoPinEdge(toSuperviewEdge: .left)
+        bookEmptyCell.autoPinEdge(toSuperviewEdge: .right)
+        bookEmptyCell.autoPinEdge(.top, to: .bottom, of: navBar)
+        
         let startPageTextField = PageTextField(frame: .zero)
         startPageTextField.configure(placeholder: "Начальная\nстраница")
         
@@ -104,6 +139,10 @@ final class SessionViewController: UIViewController {
         finishPageTextField.autoPinEdge(.top, to: .bottom, of: bookCell, withOffset: 20)
         finishPageTextField.autoSetDimensions(to: CGSize(width: 86, height: 92))
         
+        self.bookEmptyCell = bookEmptyCell
+        self.bookCell = bookCell
+        self.finishPageTextField = finishPageTextField
+        self.startPageTextField = startPageTextField
     }
     
     private func setupSpinner() {
@@ -119,6 +158,64 @@ final class SessionViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+    }
+    
+    private class BookEmptyCell: UIView {
+        var onAdd: (() -> Void)?
+        
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            backgroundColor = .white
+            layer.shadowColor = UIColor.black.cgColor
+            layer.shadowOpacity = 0.2
+            layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+            setupSubviews()
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        private func setupSubviews() {
+            let titleTextLabel = UILabel(forAutoLayout: ())
+            
+            let titleTextAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+                as [NSAttributedString.Key : Any]
+            
+            titleTextLabel.attributedText = NSAttributedString(string: "Для начала добавьте книгу, которую сейчас читаете", attributes: titleTextAttributes)
+            titleTextLabel.numberOfLines = 0
+            
+            let addButton = UIButton(forAutoLayout: ())
+            
+            addButton.backgroundColor = UIColor(rgb: 0x2f5870)
+            let icon = UIImage(named: "plus")
+            addButton.imageEdgeInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+            addButton.setImage(icon, for: [])
+            addButton.addTarget(self, action: #selector(addBook), for: .touchUpInside)
+            addButton.layer.cornerRadius = 30
+            addButton.layer.shadowColor = UIColor.black.cgColor
+            addButton.layer.shadowOpacity = 0.2
+            addButton.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+            
+            addSubview(titleTextLabel)
+            
+            titleTextLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+            titleTextLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16 + 70 + 16)
+            titleTextLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 20)
+            titleTextLabel.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16)
+            
+            addSubview(addButton)
+            
+            addButton.autoSetDimensions(to: CGSize(width: 60, height: 60))
+            addButton.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+            addButton.autoAlignAxis(toSuperviewAxis: .horizontal)
+        }
+        
+        @objc private func addBook() {
+            onAdd?()
+        }
     }
     
     private class BookFilledCell: UIButton {
@@ -227,7 +324,6 @@ final class SessionViewController: UIViewController {
             emptyPlaceholder.attributedText = NSAttributedString(string: "Начальная\nстраница", attributes: placeholderTextAttributes)
             
             let textField = RTTextField(frame: .zero)
-            //textField.def
             textField.defaultTextAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
                 NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
@@ -292,6 +388,10 @@ final class SessionViewController: UIViewController {
         
         required init?(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
+        }
+        
+        func disable(disable: Bool) {
+            textField.isEnabled = !disable
         }
     }
 }
