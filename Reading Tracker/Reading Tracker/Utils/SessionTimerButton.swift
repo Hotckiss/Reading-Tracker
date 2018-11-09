@@ -38,7 +38,7 @@ public final class SessionTimerButton: UIButton {
         let innerButtonImageView = UIImageView(forAutoLayout: ())
         addSubview(innerButtonImageView)
         innerButtonImageView.autoCenterInSuperview()
-        innerButtonImageView.autoSetDimensions(to: CGSize(width: 155, height: 155))
+        innerButtonImageView.autoSetDimensions(to: CGSize(width: 47, height: 63))
         self.innerButtonImageView = innerButtonImageView
         setupInnerButton()
         
@@ -123,14 +123,14 @@ public final class SessionTimerButton: UIButton {
         layer.cornerRadius = radius
         addCircle(radius: radius, width: 7, totalSize: 2 * radius)
         addCircle(radius: radius - 13, width: 1, totalSize: 2 * radius)
-        
+        addCircle(radius: radius - 37, width: 0, totalSize: 2 * radius, fillColor: UIColor(rgb: 0xedaf97).withAlphaComponent(0.2).cgColor)
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOpacity = 0.2
         layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
         
     }
     
-    private func addCircle(radius: CGFloat, width: CGFloat, totalSize: CGFloat) {
+    private func addCircle(radius: CGFloat, width: CGFloat, totalSize: CGFloat, fillColor: CGColor? = nil) {
         let circle: CAShapeLayer = CAShapeLayer()
         let path: UIBezierPath = UIBezierPath()
         
@@ -139,7 +139,7 @@ public final class SessionTimerButton: UIButton {
                          startAngle: -(.pi / 2),
                          endAngle: .pi + .pi / 2,
                          clockwise: true)
-        circle.fillColor = nil
+        circle.fillColor = fillColor
         circle.strokeColor = UIColor(rgb: 0xedaf97).cgColor
         circle.lineWidth = width
         
