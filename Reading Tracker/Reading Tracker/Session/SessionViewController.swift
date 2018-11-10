@@ -97,10 +97,7 @@ final class SessionViewController: UIViewController {
         let navBar = NavigationBar()
         
         navBar.configure(model: NavigationBarModel(title: "Новая запись о чтении",
-                                                   backButtonText: "Назад",
-                                                   frontButtonText: "Ок",
-                                                   onBackButtonPressed: ({
-                                                   }),
+                                                   frontButtonText: "",
                                                    onFrontButtonPressed: ({
                                                    })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
