@@ -65,6 +65,14 @@ final class AddBookViewController: UIViewController {
         lineView2.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         lineView2.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         lineView2.autoSetDimension(.height, toSize: 1)
+        
+        let bookTypes =  ["Медиа", "Бумажная книга", "Элекронная книга", "Смартфон"]
+        let mediaDropdown = DropdownMenu(frame: .zero, optionsList: bookTypes)
+        view.addSubview(mediaDropdown)
+        mediaDropdown.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        mediaDropdown.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+        mediaDropdown.autoPinEdge(.top, to: .bottom, of: lineView2, withOffset: 59)
+        mediaDropdown.autoSetDimension(.height, toSize: 32 * CGFloat(bookTypes.count))
     }
     
     private func setupNavigationBar() {
@@ -93,5 +101,108 @@ final class AddBookViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+    }
+    
+    private class DropdownMenu: UIView {
+        var selectedIndex: Int
+        private var optionsList: [String]
+        private var mainOptionIndex: Int
+        private var buttons: [UIButton] = []
+        private var isExpanded = false
+        init(frame: CGRect, optionsList: [String], mainOptionIndex: Int = 0) {
+            self.optionsList = optionsList
+            self.mainOptionIndex = mainOptionIndex
+            self.selectedIndex = mainOptionIndex
+            super.init(frame: frame)
+            
+            setupSubviews()
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        private func setupSubviews() {
+            let mainTextAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
+                as [NSAttributedString.Key : Any]
+            
+            let textAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+                as [NSAttributedString.Key : Any]
+            
+            let mainButton = UIButton(forAutoLayout: ())
+            mainButton.setAttributedTitle(NSAttributedString(string: optionsList[mainOptionIndex], attributes: mainTextAttributes), for: [])
+            mainButton.contentHorizontalAlignment = .left
+            addSubview(mainButton)
+            mainButton.autoSetDimension(.height, toSize: 32)
+            mainButton.autoPinEdge(toSuperviewEdge: .left)
+            mainButton.autoPinEdge(toSuperviewEdge: .right)
+            mainButton.autoPinEdge(toSuperviewEdge: .top)
+            
+            mainButton.addTarget(self, action: #selector(mainButtonTap), for: .touchUpInside)
+            
+            let arrowImageView = UIImageView(image: UIImage(named: "down"))
+            mainButton.addSubview(arrowImageView)
+            arrowImageView.autoSetDimensions(to: CGSize(width: 10, height: 5))
+            arrowImageView.autoAlignAxis(toSuperviewAxis: .horizontal)
+            arrowImageView.autoPinEdge(toSuperviewEdge: .right)
+            
+            var lastButton = mainButton
+            
+            buttons.append(mainButton)
+            for i in 1..<optionsList.count {
+                let button = IndexedButton(frame: .zero, index: i)
+                button.setAttributedTitle(NSAttributedString(string: optionsList[i], attributes: textAttributes), for: [])
+                button.contentHorizontalAlignment = .left
+                addSubview(button)
+                button.autoSetDimension(.height, toSize: 32)
+                button.autoPinEdge(toSuperviewEdge: .left)
+                button.autoPinEdge(toSuperviewEdge: .right)
+                button.autoPinEdge(.top, to: .bottom, of: lastButton)
+                button.isHidden = !isExpanded
+                button.addTarget(self, action: #selector(buttonTap(_:)), for: .touchUpInside)
+                buttons.append(button)
+                lastButton = button
+            }
+        }
+        
+        @objc private func buttonTap(_ sender: IndexedButton) {
+            let textAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+                as [NSAttributedString.Key : Any]
+            buttons[mainOptionIndex].setAttributedTitle(NSAttributedString(string: optionsList[sender.index], attributes: textAttributes), for: [])
+            isExpanded = false
+            selectedIndex = sender.index
+            updateExpand()
+        }
+        
+        @objc private func mainButtonTap() {
+            isExpanded = !isExpanded
+            updateExpand()
+        }
+        
+        private func updateExpand() {
+            for i in 0..<buttons.count {
+                if i != mainOptionIndex {
+                    buttons[i].isHidden = !isExpanded
+                }
+            }
+        }
+        
+        private class IndexedButton: UIButton {
+            let index: Int
+            init(frame: CGRect, index: Int) {
+                self.index = index
+                super.init(frame: frame)
+            }
+            
+            required init?(coder aDecoder: NSCoder) {
+                fatalError("init(coder:) has not been implemented")
+            }
+        }
     }
 }
