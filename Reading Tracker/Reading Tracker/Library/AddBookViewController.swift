@@ -9,12 +9,12 @@
 import Foundation
 import UIKit
 
-final class AddBookViewController: UIViewController {
+final class AddBookViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     private var spinner: UIActivityIndicatorView?
     private var navBar: NavigationBar?
     private var bookStub: AddBookView?
     private var addedBookStub: AddedBookView?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -101,9 +101,42 @@ final class AddBookViewController: UIViewController {
     }
     
     @objc private func onAddCover() {
-        let alert = UIAlertController(title: "Ошибка!", message: "TODO: фото обложки", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+        let alert = UIAlertController(title: "Добавить фото обложки книги?", message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Галерея", style: .default, handler: ({ [weak self] _ in
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = .savedPhotosAlbum;
+            imagePicker.allowsEditing = false
+            if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum) {
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                strongSelf.present(imagePicker, animated: true, completion: nil)
+            }
+        })))
+        alert.addAction(UIAlertAction(title: "Камера", style: .default, handler: ({ [weak self] _ in
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = .camera;
+            imagePicker.allowsEditing = false
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                strongSelf.present(imagePicker, animated: true, completion: nil)
+            }
+        })))
+        alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true, completion: nil)
+        let image = info[.originalImage] as? UIImage
+        updateCover(hasBook: true)
+        addedBookStub?.imageStub?.image = image
     }
     
     private func setupNavigationBar() {
@@ -281,6 +314,8 @@ final class AddBookViewController: UIViewController {
     }
     
     private class AddedBookView: UIButton {
+        var imageStub: UIImageView?
+        
         init(frame: CGRect, image: UIImage?) {
             super.init(frame: frame)
             
@@ -299,12 +334,13 @@ final class AddBookViewController: UIViewController {
             titleView.autoPinEdge(toSuperviewEdge: .top)
             
             let imageStub = UIImageView(image: image)
-            
+            //imageStub.contentMode = .scaleAspectFit
             addSubview(imageStub)
             
             imageStub.autoAlignAxis(toSuperviewAxis: .vertical)
             imageStub.autoPinEdge(.top, to: .bottom, of: titleView, withOffset: 4)
             imageStub.autoSetDimensions(to: CGSize(width: 155, height: 222))
+            self.imageStub = imageStub
         }
         
         required init?(coder aDecoder: NSCoder) {
