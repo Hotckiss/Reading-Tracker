@@ -12,7 +12,9 @@ import UIKit
 final class AddBookViewController: UIViewController {
     private var spinner: UIActivityIndicatorView?
     private var navBar: NavigationBar?
-    
+    private var bookStub: AddBookView?
+    private var addedBookStub: AddedBookView?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -66,13 +68,42 @@ final class AddBookViewController: UIViewController {
         lineView2.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         lineView2.autoSetDimension(.height, toSize: 1)
         
-        let bookTypes =  ["Медиа", "Бумажная книга", "Элекронная книга", "Смартфон"]
+        let bookTypes =  ["Медиа", "Бумажная книга", "Элекронная книга", "Смартфон", "Планшет"]
         let mediaDropdown = DropdownMenu(frame: .zero, optionsList: bookTypes)
         view.addSubview(mediaDropdown)
         mediaDropdown.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         mediaDropdown.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         mediaDropdown.autoPinEdge(.top, to: .bottom, of: lineView2, withOffset: 59)
-        mediaDropdown.autoSetDimension(.height, toSize: 32 * CGFloat(bookTypes.count))
+        mediaDropdown.autoSetDimension(.height, toSize: 32 * CGFloat(bookTypes.count) + 9)
+        
+        let bookStub = AddBookView(frame: .zero)
+        view.addSubview(bookStub)
+        bookStub.autoAlignAxis(toSuperviewAxis: .vertical)
+        bookStub.autoPinEdge(.top, to: .bottom, of: lineView2, withOffset: 59 + 32 + 9 + 58)
+        bookStub.autoSetDimensions(to: CGSize(width: 84, height: 101))
+        bookStub.addTarget(self, action: #selector(onAddCover), for: .touchUpInside)
+        self.bookStub = bookStub
+        
+        let addedBookStub = AddedBookView(frame: .zero, image: nil)
+        view.addSubview(addedBookStub)
+        addedBookStub.autoAlignAxis(toSuperviewAxis: .vertical)
+        addedBookStub.autoPinEdge(.top, to: .bottom, of: lineView2, withOffset: 59 + 32 + 9 + 32)
+        addedBookStub.autoSetDimensions(to: CGSize(width: 155, height: 255))
+        addedBookStub.addTarget(self, action: #selector(onAddCover), for: .touchUpInside)
+        self.addedBookStub = addedBookStub
+        
+        updateCover(hasBook: false)
+    }
+    
+    private func updateCover(hasBook: Bool) {
+        bookStub?.isHidden = hasBook
+        addedBookStub?.isHidden = !hasBook
+    }
+    
+    @objc private func onAddCover() {
+        let alert = UIAlertController(title: "Ошибка!", message: "TODO: фото обложки", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     private func setupNavigationBar() {
@@ -109,6 +140,8 @@ final class AddBookViewController: UIViewController {
         private var mainOptionIndex: Int
         private var buttons: [UIButton] = []
         private var isExpanded = false
+        private var mainButtonLine: UIView?
+        
         init(frame: CGRect, optionsList: [String], mainOptionIndex: Int = 0) {
             self.optionsList = optionsList
             self.mainOptionIndex = mainOptionIndex
@@ -150,13 +183,22 @@ final class AddBookViewController: UIViewController {
             arrowImageView.autoAlignAxis(toSuperviewAxis: .horizontal)
             arrowImageView.autoPinEdge(toSuperviewEdge: .right)
             
-            var lastButton = mainButton
+            let mainButtonLine = UIView(forAutoLayout: ())
+            mainButtonLine.backgroundColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
+            addSubview(mainButtonLine)
+            mainButtonLine.autoSetDimension(.height, toSize: 1)
+            mainButtonLine.autoPinEdge(toSuperviewEdge: .left)
+            mainButtonLine.autoPinEdge(toSuperviewEdge: .right)
+            mainButtonLine.autoPinEdge(.top, to: .bottom, of: mainButton, withOffset: 8)
+            self.mainButtonLine = mainButtonLine
+            var lastButton: UIView = mainButtonLine
             
             buttons.append(mainButton)
             for i in 1..<optionsList.count {
                 let button = IndexedButton(frame: .zero, index: i)
                 button.setAttributedTitle(NSAttributedString(string: optionsList[i], attributes: textAttributes), for: [])
                 button.contentHorizontalAlignment = .left
+                button.backgroundColor = .white
                 addSubview(button)
                 button.autoSetDimension(.height, toSize: 32)
                 button.autoPinEdge(toSuperviewEdge: .left)
@@ -186,6 +228,7 @@ final class AddBookViewController: UIViewController {
         }
         
         private func updateExpand() {
+            mainButtonLine?.isHidden = isExpanded
             for i in 0..<buttons.count {
                 if i != mainOptionIndex {
                     buttons[i].isHidden = !isExpanded
@@ -203,6 +246,69 @@ final class AddBookViewController: UIViewController {
             required init?(coder aDecoder: NSCoder) {
                 fatalError("init(coder:) has not been implemented")
             }
+        }
+    }
+    
+    private class AddBookView: UIButton {
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            
+            let titleView = UILabel(forAutoLayout: ())
+            let textAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
+                as [NSAttributedString.Key : Any]
+            titleView.numberOfLines = 0
+            titleView.textAlignment = .center
+            titleView.attributedText = NSAttributedString(string: "Обложка", attributes: textAttributes)
+            
+            addSubview(titleView)
+            
+            titleView.autoAlignAxis(toSuperviewAxis: .vertical)
+            titleView.autoPinEdge(toSuperviewEdge: .top)
+            
+            let imageStub = UIImageView(image: UIImage(named: "addBookStub"))
+            
+            addSubview(imageStub)
+            
+            imageStub.autoAlignAxis(toSuperviewAxis: .vertical)
+            imageStub.autoPinEdge(.top, to: .bottom, of: titleView, withOffset: 4)
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+    }
+    
+    private class AddedBookView: UIButton {
+        init(frame: CGRect, image: UIImage?) {
+            super.init(frame: frame)
+            
+            let titleView = UILabel(forAutoLayout: ())
+            let textAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!]
+                as [NSAttributedString.Key : Any]
+            titleView.numberOfLines = 0
+            titleView.textAlignment = .center
+            titleView.attributedText = NSAttributedString(string: "Обложка", attributes: textAttributes)
+            
+            addSubview(titleView)
+            
+            titleView.autoAlignAxis(toSuperviewAxis: .vertical)
+            titleView.autoPinEdge(toSuperviewEdge: .top)
+            
+            let imageStub = UIImageView(image: image)
+            
+            addSubview(imageStub)
+            
+            imageStub.autoAlignAxis(toSuperviewAxis: .vertical)
+            imageStub.autoPinEdge(.top, to: .bottom, of: titleView, withOffset: 4)
+            imageStub.autoSetDimensions(to: CGSize(width: 155, height: 222))
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
         }
     }
 }
