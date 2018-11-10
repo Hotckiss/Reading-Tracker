@@ -9,11 +9,24 @@
 import Foundation
 import UIKit
 
+public enum BookType {
+    case paper
+    case smartphone
+    case tab
+    case ebook
+}
+
 final class AddBookViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    var onCompleted: ((BookModel, BookType) -> Void)?
     private var spinner: UIActivityIndicatorView?
     private var navBar: NavigationBar?
     private var bookStub: AddBookView?
     private var addedBookStub: AddedBookView?
+    private var nameTextField: RTTextField?
+    private var authorTextField: RTTextField?
+    private var nameTextFieldDelegate = IntermediateTextFieldDelegate()
+    private var authorTextFieldDelegate = FinishTextFieldDelegate()
+    private var mediaDropdown: DropdownMenu?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,8 +43,9 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
         nameTextField.attributedPlaceholder = NSAttributedString(string: "Название книги", attributes: placeholderTextAttributes)
         nameTextField.backgroundColor = .clear
         nameTextField.autocorrectionType = .no
-        //nameTextField.delegate = nil
         nameTextField.returnKeyType = .continue
+        nameTextField.delegate = nameTextFieldDelegate
+        self.nameTextField = nameTextField
         
         view.addSubview(nameTextField)
         nameTextField.autoAlignAxis(toSuperviewAxis: .vertical)
@@ -50,8 +64,10 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
         authorTextField.attributedPlaceholder = NSAttributedString(string: "Автор", attributes: placeholderTextAttributes)
         authorTextField.backgroundColor = .clear
         authorTextField.autocorrectionType = .no
-        //authorTextField.delegate = nil
-        authorTextField.returnKeyType = .continue
+        authorTextField.returnKeyType = .done
+        authorTextField.delegate = authorTextFieldDelegate
+        nameTextFieldDelegate.nextField = authorTextField
+        self.authorTextField = authorTextField
         
         view.addSubview(authorTextField)
         authorTextField.autoAlignAxis(toSuperviewAxis: .vertical)
@@ -75,6 +91,7 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
         mediaDropdown.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         mediaDropdown.autoPinEdge(.top, to: .bottom, of: lineView2, withOffset: 59)
         mediaDropdown.autoSetDimension(.height, toSize: 32 * CGFloat(bookTypes.count) + 9)
+        self.mediaDropdown = mediaDropdown
         
         let bookStub = AddBookView(frame: .zero)
         view.addSubview(bookStub)
@@ -144,6 +161,28 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
         navBar.configure(model: NavigationBarModel(title: "Новая книга", backButtonText: "Назад", frontButtonText: "Готово", onBackButtonPressed: ({ [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }), onFrontButtonPressed: ({ [weak self] in
+            var type: BookType = .paper
+            if let index = self?.mediaDropdown?.selectedIndex {
+                switch index {
+                case 1:
+                    type = .paper
+                case 2:
+                    type = .ebook
+                case 3:
+                    type = .smartphone
+                case 4:
+                    type = .tab
+                default:
+                    break
+                }
+            }
+            
+            self?.onCompleted?(BookModel(icbn: "TODO",
+                                   title: self?.nameTextField?.text ?? "",
+                                   author: self?.authorTextField?.text ?? "",
+                                   image: self?.addedBookStub?.imageStub?.image,
+                                   lastUpdated: Date()),
+                        type)
             self?.navigationController?.popViewController(animated: true)
         })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
@@ -345,6 +384,26 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
         
         required init?(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
+        }
+    }
+    
+    private class IntermediateTextFieldDelegate: NSObject, UITextFieldDelegate {
+        var nextField: UITextField?
+        
+        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            nextField?.becomeFirstResponder()
+            return true
+        }
+    }
+    
+    private class FinishTextFieldDelegate: NSObject, UITextFieldDelegate {
+        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            textField.resignFirstResponder()
+            return true
+        }
+        
+        func textFieldDidEndEditing(_ textField: UITextField) {
+            //TODO: check corectness
         }
     }
 }
