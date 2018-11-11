@@ -427,13 +427,14 @@ final class SessionViewController: UIViewController {
     private class HandTimerView: UIView {
         var hours = 0
         var minutes = 0
-        var timerView: UILabel!
+        var hrsView: UILabel!
+        var minsView: UILabel!
         
         override init(frame: CGRect) {
             super.init(frame: frame)
             
             let backgroundView = setupBackgroundView()
-            self.timerView = setupTimerView(backgroundView: backgroundView)
+            setupTimerView(backgroundView: backgroundView)
             let style = NSMutableParagraphStyle()
             style.alignment = NSTextAlignment.center
             
@@ -456,7 +457,7 @@ final class SessionViewController: UIViewController {
             hrsUpImageView.autoAlignAxis(.vertical, toSameAxisOf: hrsUpLabel)
             hrsUpImageView.autoPinEdge(.bottom, to: .top, of: hrsUpLabel)
             hrsUpButton.autoSetDimensions(to: CGSize(width: 22, height: 27))
-            hrsUpButton.autoPinEdge(toSuperviewEdge: .left, withInset: 56)
+            hrsUpButton.autoAlignAxis(.vertical, toSameAxisOf: hrsView)
             hrsUpButton.autoPinEdge(.bottom, to: .top, of: backgroundView, withOffset: -4)
             
             let minsUpButton = UIButton(forAutoLayout: ())
@@ -472,7 +473,7 @@ final class SessionViewController: UIViewController {
             minsUpImageView.autoAlignAxis(.vertical, toSameAxisOf: minsUpLabel)
             minsUpImageView.autoPinEdge(.bottom, to: .top, of: minsUpLabel)
             minsUpButton.autoSetDimensions(to: CGSize(width: 25, height: 27))
-            minsUpButton.autoPinEdge(toSuperviewEdge: .right, withInset: 56)
+            minsUpButton.autoAlignAxis(.vertical, toSameAxisOf: minsView)
             minsUpButton.autoPinEdge(.bottom, to: .top, of: backgroundView, withOffset: -4)
             
             let hrsDownButton = UIButton(forAutoLayout: ())
@@ -488,7 +489,7 @@ final class SessionViewController: UIViewController {
             hrsDownImageView.autoAlignAxis(.vertical, toSameAxisOf: hrsDownLabel)
             hrsDownImageView.autoPinEdge(.top, to: .bottom, of: hrsDownLabel)
             hrsDownButton.autoSetDimensions(to: CGSize(width: 22, height: 27))
-            hrsDownButton.autoPinEdge(toSuperviewEdge: .left, withInset: 56)
+            hrsDownButton.autoAlignAxis(.vertical, toSameAxisOf: hrsView)
             hrsDownButton.autoPinEdge(.top, to: .bottom, of: backgroundView, withOffset: 4)
             
             let minsDownButton = UIButton(forAutoLayout: ())
@@ -504,7 +505,7 @@ final class SessionViewController: UIViewController {
             minsDownImageView.autoAlignAxis(.vertical, toSameAxisOf: minsDownLabel)
             minsDownImageView.autoPinEdge(.top, to: .bottom, of: minsDownLabel)
             minsDownButton.autoSetDimensions(to: CGSize(width: 25, height: 27))
-            minsDownButton.autoPinEdge(toSuperviewEdge: .right, withInset: 56)
+            minsDownButton.autoAlignAxis(.vertical, toSameAxisOf: minsView)
             minsDownButton.autoPinEdge(.top, to: .bottom, of: backgroundView, withOffset: 4)
             
             hrsUpButton.addTarget(self, action: #selector(hrsUp), for: .touchUpInside)
@@ -518,7 +519,7 @@ final class SessionViewController: UIViewController {
             if hours == 24 {
                 hours = 0
             }
-            setTime(label: timerView)
+            setTime(hrsLabel: hrsView, minsLabel: minsView)
         }
         
         @objc private func hrsDown() {
@@ -526,7 +527,7 @@ final class SessionViewController: UIViewController {
             if hours == -1 {
                 hours = 23
             }
-            setTime(label: timerView)
+            setTime(hrsLabel: hrsView, minsLabel: minsView)
         }
         
         @objc private func minsUp() {
@@ -534,7 +535,7 @@ final class SessionViewController: UIViewController {
             if minutes == 60 {
                 minutes = 0
             }
-            setTime(label: timerView)
+            setTime(hrsLabel: hrsView, minsLabel: minsView)
         }
         
         @objc private func minsDown() {
@@ -542,7 +543,7 @@ final class SessionViewController: UIViewController {
             if minutes == -1 {
                 minutes = 59
             }
-            setTime(label: timerView)
+            setTime(hrsLabel: hrsView, minsLabel: minsView)
         }
         
         required init?(coder aDecoder: NSCoder) {
@@ -560,35 +561,54 @@ final class SessionViewController: UIViewController {
             backgroundView.layer.shadowRadius = 3
             
             addSubview(backgroundView)
-            backgroundView.autoSetDimensions(to: CGSize(width: 218, height: 80))
+            backgroundView.autoPinEdge(toSuperviewEdge: .left)
+            backgroundView.autoPinEdge(toSuperviewEdge: .right)
+            backgroundView.autoSetDimension(.height, toSize: 80)
             backgroundView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 27 + 4)
+            
             return backgroundView
         }
         
-        private func setupTimerView(backgroundView: UIView) -> UILabel {
-            let timerView = UILabel(forAutoLayout: ())
+        private func setupTimerView(backgroundView: UIView) {
+            let hrsView = UILabel(forAutoLayout: ())
+            let minsView = UILabel(forAutoLayout: ())
+            let dotsView = UILabel(forAutoLayout: ())
+            hrsView.textAlignment = .center
+            minsView.textAlignment = .center
+            dotsView.textAlignment = .center
             
-            //var swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(swipeDown1))
-            //swipeDown.direction = UISwipeGestureRecognizer.Direction.left
-            //timerView.addGestureRecognizer(swipeDown)
-            
-            setTime(label: timerView)
-            backgroundView.addSubview(timerView)
-            timerView.autoCenterInSuperview()
-            return timerView
-        }
-        
-        //@objc private func swipeDown1() {
-        //    print("---1")
-        //}
-        private func setTime(label: UILabel) {
             let timerTextAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
                 NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 64.0)!]
                 as [NSAttributedString.Key : Any]
             
-            let time = "\(hours) : \(minutes)"
-            label.attributedText = NSAttributedString(string: time, attributes: timerTextAttributes)
+            dotsView.attributedText = NSAttributedString(string: ":", attributes: timerTextAttributes)
+            setTime(hrsLabel: hrsView, minsLabel: minsView)
+            backgroundView.addSubview(dotsView)
+            dotsView.autoCenterInSuperview()
+            
+            backgroundView.addSubview(hrsView)
+            hrsView.autoAlignAxis(toSuperviewAxis: .horizontal)
+            hrsView.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+            hrsView.autoSetDimension(.width, toSize: 67)
+            
+            backgroundView.addSubview(minsView)
+            minsView.autoAlignAxis(toSuperviewAxis: .horizontal)
+            minsView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+            minsView.autoSetDimension(.width, toSize: 67)
+            
+            self.hrsView = hrsView
+            self.minsView = minsView
+        }
+        
+        private func setTime(hrsLabel: UILabel, minsLabel: UILabel) {
+            let timerTextAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 64.0)!]
+                as [NSAttributedString.Key : Any]
+            
+            hrsLabel.attributedText = NSAttributedString(string: "\(hours)", attributes: timerTextAttributes)
+            minsLabel.attributedText = NSAttributedString(string: "\(minutes)", attributes: timerTextAttributes)
         }
     }
 }
