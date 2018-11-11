@@ -437,11 +437,13 @@ final class SessionViewController: UIViewController {
             backgroundView.backgroundColor = .white
             backgroundView.layer.cornerRadius = 40
             backgroundView.layer.shadowOffset = CGSize(width: 0, height: 3)
-            backgroundView.layer.shadowColor = UIColor.black.withAlphaComponent(0.2).cgColor
+            backgroundView.layer.shadowColor = UIColor.black.cgColor
+            backgroundView.layer.shadowOpacity = 0.2
+            backgroundView.layer.shadowRadius = 5
             
             addSubview(backgroundView)
             backgroundView.autoSetDimensions(to: CGSize(width: 218, height: 80))
-            
+            backgroundView.autoPinEdge(toSuperviewEdge: .bottom)
             return backgroundView
         }
     }
