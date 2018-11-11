@@ -79,7 +79,7 @@ final class SessionViewController: UIViewController {
         
         handTimerView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 124 + bottomSpace)
         handTimerView.autoAlignAxis(toSuperviewAxis: .vertical)
-        handTimerView.autoSetDimensions(to: CGSize(width: 218, height: 136))
+        handTimerView.autoSetDimensions(to: CGSize(width: 218, height: 152))
         self.handTimerView = handTimerView
         
         updateTimeInput(isHand: false)
@@ -434,7 +434,6 @@ final class SessionViewController: UIViewController {
             
             let backgroundView = setupBackgroundView()
             self.timerView = setupTimerView(backgroundView: backgroundView)
-            
             let style = NSMutableParagraphStyle()
             style.alignment = NSTextAlignment.center
             
@@ -507,6 +506,43 @@ final class SessionViewController: UIViewController {
             minsDownButton.autoSetDimensions(to: CGSize(width: 25, height: 27))
             minsDownButton.autoPinEdge(toSuperviewEdge: .right, withInset: 56)
             minsDownButton.autoPinEdge(.top, to: .bottom, of: backgroundView, withOffset: 4)
+            
+            hrsUpButton.addTarget(self, action: #selector(hrsUp), for: .touchUpInside)
+            hrsDownButton.addTarget(self, action: #selector(hrsDown), for: .touchUpInside)
+            minsUpButton.addTarget(self, action: #selector(minsUp), for: .touchUpInside)
+            minsDownButton.addTarget(self, action: #selector(minsDown), for: .touchUpInside)
+        }
+        
+        @objc private func hrsUp() {
+            hours += 1
+            if hours == 24 {
+                hours = 0
+            }
+            setTime(label: timerView)
+        }
+        
+        @objc private func hrsDown() {
+            hours -= 1
+            if hours == -1 {
+                hours = 23
+            }
+            setTime(label: timerView)
+        }
+        
+        @objc private func minsUp() {
+            minutes += 1
+            if minutes == 60 {
+                minutes = 0
+            }
+            setTime(label: timerView)
+        }
+        
+        @objc private func minsDown() {
+            minutes -= 1
+            if minutes == -1 {
+                minutes = 59
+            }
+            setTime(label: timerView)
         }
         
         required init?(coder aDecoder: NSCoder) {
@@ -521,22 +557,30 @@ final class SessionViewController: UIViewController {
             backgroundView.layer.shadowOffset = CGSize(width: 0, height: 3)
             backgroundView.layer.shadowColor = UIColor.black.cgColor
             backgroundView.layer.shadowOpacity = 0.2
-            backgroundView.layer.shadowRadius = 5
+            backgroundView.layer.shadowRadius = 3
             
             addSubview(backgroundView)
             backgroundView.autoSetDimensions(to: CGSize(width: 218, height: 80))
-            backgroundView.autoPinEdge(toSuperviewEdge: .bottom)
+            backgroundView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 27 + 4)
             return backgroundView
         }
         
         private func setupTimerView(backgroundView: UIView) -> UILabel {
             let timerView = UILabel(forAutoLayout: ())
+            
+            //var swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(swipeDown1))
+            //swipeDown.direction = UISwipeGestureRecognizer.Direction.left
+            //timerView.addGestureRecognizer(swipeDown)
+            
             setTime(label: timerView)
             backgroundView.addSubview(timerView)
             timerView.autoCenterInSuperview()
             return timerView
         }
         
+        //@objc private func swipeDown1() {
+        //    print("---1")
+        //}
         private func setTime(label: UILabel) {
             let timerTextAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),

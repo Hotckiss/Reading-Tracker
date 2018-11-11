@@ -373,7 +373,7 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
             titleView.autoPinEdge(toSuperviewEdge: .top)
             
             let imageStub = UIImageView(image: image)
-            //imageStub.contentMode = .scaleAspectFit
+            imageStub.contentMode = .scaleAspectFit
             addSubview(imageStub)
             
             imageStub.autoAlignAxis(toSuperviewAxis: .vertical)
