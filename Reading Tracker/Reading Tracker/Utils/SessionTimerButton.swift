@@ -10,9 +10,7 @@ import Foundation
 import UIKit
 
 public final class SessionTimerButton: UIButton {
-    //public var onStart: (() -> Void)?
-    //public var onPause: (() -> Void)?
-    //public var onContinue: (() -> Void)?
+    public var onStateChanged: ((ButtonState) -> Void)?
     private var shapes: [CAShapeLayer] = []
     private var innerButtonImageView: UIImageView?
     private var titleView: UILabel?
@@ -24,6 +22,7 @@ public final class SessionTimerButton: UIButton {
         didSet {
             setupInnerButton()
             setupTimer()
+            onStateChanged?(buttonState)
         }
     }
     

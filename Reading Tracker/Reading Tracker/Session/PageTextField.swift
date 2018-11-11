@@ -10,6 +10,16 @@ import Foundation
 import UIKit
 
 final class PageTextField: UIView, UITextFieldDelegate {
+    var page: Int? {
+        get {
+            guard let text = textField.text,
+                let result = Int(text) else {
+                    return nil
+            }
+            return result
+        }
+    }
+    
     private var topPlaceholder: UILabel!
     private var emptyPlaceholder: UILabel!
     private var textField: RTTextField!
@@ -31,10 +41,12 @@ final class PageTextField: UIView, UITextFieldDelegate {
         emptyPlaceholder.attributedText = NSAttributedString(string: "Начальная\nстраница", attributes: placeholderTextAttributes)
         
         let textField = RTTextField(frame: .zero)
-        textField.defaultTextAttributes = [
+        let textFieldAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
             NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
             as [NSAttributedString.Key : Any]
+        
+        textField.defaultTextAttributes = textFieldAttributes
         textField.textAlignment = .center
         textField.keyboardType = .decimalPad
         let bottomLine = UIView(forAutoLayout: ())
@@ -54,6 +66,17 @@ final class PageTextField: UIView, UITextFieldDelegate {
         textField.autoPinEdge(.top, to: .bottom, of: topPlaceholder, withOffset: 4)
         textField.autoSetDimension(.height, toSize: 38)
         textField.delegate = self
+        
+        let accessoryView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 40))
+        accessoryView.backgroundColor = .white
+        let finishButton = UIButton(forAutoLayout: ())
+        finishButton.setAttributedTitle(NSAttributedString(string: "Готово", attributes: textFieldAttributes), for: [])
+        textField.inputAccessoryView = accessoryView
+        accessoryView.addSubview(finishButton)
+        finishButton.addTarget(self, action: #selector(hideKeyboard), for: .touchUpInside)
+        finishButton.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+        finishButton.autoAlignAxis(toSuperviewAxis: .horizontal)
+        
         addSubview(bottomLine)
         bottomLine.autoPinEdge(.top, to: .bottom, of: textField, withOffset: 10)
         bottomLine.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
@@ -65,6 +88,10 @@ final class PageTextField: UIView, UITextFieldDelegate {
         self.textField = textField
         self.emptyPlaceholder = emptyPlaceholder
         self.bottomLine = bottomLine
+    }
+    
+    @objc private func hideKeyboard() {
+        textField.endEditing(true)
     }
     
     func configure(placeholder: String) {

@@ -11,6 +11,7 @@ import UIKit
 
 final class SessionViewController: UIViewController {
     private var spinner: UIActivityIndicatorView?
+    private var navBar: NavigationBar?
     private var sessionButton: SessionTimerButton?
     private var bookEmptyCell: BookEmptyCell?
     private var bookCell: BookFilledCell?
@@ -57,7 +58,11 @@ final class SessionViewController: UIViewController {
         sessionButton.autoAlignAxis(toSuperviewAxis: .vertical)
         sessionButton.autoSetDimensions(to: CGSize(width: 230, height: 230))
         sessionButton.addTarget(self, action: #selector(onSessionButtonTap), for: .touchUpInside)
+        sessionButton.onStateChanged = { [weak self] state in
+            self?.finishPageTextField?.isHidden = (state != .pause)
+        }
         sessionButton.buttonState = .start
+        
         self.sessionButton = sessionButton
         
         let style = NSMutableParagraphStyle()
@@ -108,6 +113,16 @@ final class SessionViewController: UIViewController {
         handTimeInputButton?.setAttributedTitle(NSAttributedString(string: isHand ? "Вернуться к таймеру" : "Указать время вручную", attributes: handTimeInputButtonTextAttributes), for: [])
         handTimerView?.isHidden = !isHand
         sessionButton?.isHidden = isHand
+        
+        if isHand {
+            finishPageTextField?.isHidden = false
+        }
+        
+        if isHand {
+            finishPageTextField?.isHidden = false
+        } else {
+            finishPageTextField?.isHidden = ((sessionButton?.buttonState ?? .start) != .pause)
+        }
     }
     
     @objc private func onSessionButtonTap() {
@@ -126,13 +141,27 @@ final class SessionViewController: UIViewController {
         let navBar = NavigationBar()
         
         navBar.configure(model: NavigationBarModel(title: "Новая запись о чтении",
-                                                   frontButtonText: "",
-                                                   onFrontButtonPressed: ({
-                                                   })))
+                                                    frontButtonText: "Готово",
+                                                    onFrontButtonPressed: ({ [weak self] in
+                                                        //TODO: call finish if possible
+                                                        guard let strongSelf = self,
+                                                              strongSelf.hasBook,
+                                                              let start = strongSelf.startPageTextField?.page,
+                                                              let finish = strongSelf.finishPageTextField?.page,
+                                                              start < finish else {
+                                                                let alert = UIAlertController(title: "Ошибка!", message: "Не все поля заполнены", preferredStyle: .alert)
+                                                                alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+                                                                self?.present(alert, animated: true, completion: nil)
+                                                                return
+                                                        }
+                                                        
+                                                        print("TODO: call finish")
+                                                    })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
+        self.navBar = navBar
         
         let bookCell = BookFilledCell(frame: .zero)
         bookCell.configure(model: BookModel(icbn: "1", title: "Биоцентризм. Как жизнь создает вселенную", author: "Роберт Ланца"))
