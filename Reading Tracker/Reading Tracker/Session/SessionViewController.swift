@@ -421,10 +421,13 @@ final class SessionViewController: UIViewController {
     }
     
     private class HandTimerView: UIView {
+        var hours = 0
+        var minutes = 0
         override init(frame: CGRect) {
             super.init(frame: frame)
             
             let backgroundView = setupBackgroundView()
+            let timerView = setupTimerView(backgroundView: backgroundView)
         }
         
         required init?(coder aDecoder: NSCoder) {
@@ -445,6 +448,19 @@ final class SessionViewController: UIViewController {
             backgroundView.autoSetDimensions(to: CGSize(width: 218, height: 80))
             backgroundView.autoPinEdge(toSuperviewEdge: .bottom)
             return backgroundView
+        }
+        
+        private func setupTimerView(backgroundView: UIView) -> UIView {
+            let timerView = UILabel(forAutoLayout: ())
+            let timerTextAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 64.0)!]
+                as [NSAttributedString.Key : Any]
+            
+            timerView.attributedText = NSAttributedString(string: "0 : 0", attributes: timerTextAttributes)
+            backgroundView.addSubview(timerView)
+            timerView.autoCenterInSuperview()
+            return timerView
         }
     }
 }
