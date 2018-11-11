@@ -44,6 +44,7 @@
 		2FFD1D012198BC3300779459 /* BookFilledCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFD1D002198BC3300779459 /* BookFilledCell.swift */; };
 		2FFD1D032198BC6E00779459 /* PageTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFD1D022198BC6E00779459 /* PageTextField.swift */; };
 		2FFD1D052198BCA100779459 /* HandTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFD1D042198BCA100779459 /* HandTimerView.swift */; };
+		2FFD1D072198CB1500779459 /* SessionFinishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFD1D062198CB1500779459 /* SessionFinishViewController.swift */; };
 		2FFE218A21679AB4001BBE90 /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFE218921679AB4001BBE90 /* FirestoreManager.swift */; };
 		2FFE218E21679BE6001BBE90 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFE218D21679BE6001BBE90 /* UserModel.swift */; };
 		8413CA9FBA8C4435319EA738 /* Pods_Reading_Tracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1867B49C98F22DAF02008586 /* Pods_Reading_Tracker.framework */; };
@@ -112,6 +113,7 @@
 		2FFD1D002198BC3300779459 /* BookFilledCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookFilledCell.swift; sourceTree = "<group>"; };
 		2FFD1D022198BC6E00779459 /* PageTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageTextField.swift; sourceTree = "<group>"; };
 		2FFD1D042198BCA100779459 /* HandTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandTimerView.swift; sourceTree = "<group>"; };
+		2FFD1D062198CB1500779459 /* SessionFinishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionFinishViewController.swift; sourceTree = "<group>"; };
 		2FFE218921679AB4001BBE90 /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
 		2FFE218D21679BE6001BBE90 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		313F5C1E1E03318C17C7BEA9 /* Pods-Reading TrackerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Reading TrackerUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Reading TrackerUITests/Pods-Reading TrackerUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -301,6 +303,7 @@
 				2FFD1D022198BC6E00779459 /* PageTextField.swift */,
 				2FFD1D042198BCA100779459 /* HandTimerView.swift */,
 				2F7CE0652194293600CFE6CF /* SessionTimerButton.swift */,
+				2FFD1D062198CB1500779459 /* SessionFinishViewController.swift */,
 			);
 			path = Session;
 			sourceTree = "<group>";
@@ -649,6 +652,7 @@
 				2FAA8FB8216A32310011F59D /* RegistrationDraft.swift in Sources */,
 				2F71B324218EFAFF00E4E80F /* RegistrationViewController.swift in Sources */,
 				2F1891DC2158B9760043BDCC /* UIColor+RGB.swift in Sources */,
+				2FFD1D072198CB1500779459 /* SessionFinishViewController.swift in Sources */,
 				2FE450C1216FA53E008B2F22 /* MainInteractor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
