@@ -427,8 +427,12 @@ final class SessionViewController: UIViewController {
     private class HandTimerView: UIView {
         var hours = 0
         var minutes = 0
-        var hrsView: UILabel!
-        var minsView: UILabel!
+        private var hrsView: UILabel!
+        private var minsView: UILabel!
+        private var hrsUpTimer: Timer!
+        private var hrsDownTimer: Timer!
+        private var minsUpTimer: Timer!
+        private var minsDownTimer: Timer!
         
         override init(frame: CGRect) {
             super.init(frame: frame)
@@ -508,41 +512,70 @@ final class SessionViewController: UIViewController {
             minsDownButton.autoAlignAxis(.vertical, toSameAxisOf: minsView)
             minsDownButton.autoPinEdge(.top, to: .bottom, of: backgroundView, withOffset: 4)
             
-            hrsUpButton.addTarget(self, action: #selector(hrsUp), for: .touchUpInside)
-            hrsDownButton.addTarget(self, action: #selector(hrsDown), for: .touchUpInside)
-            minsUpButton.addTarget(self, action: #selector(minsUp), for: .touchUpInside)
-            minsDownButton.addTarget(self, action: #selector(minsDown), for: .touchUpInside)
+            hrsUpButton.addTarget(self, action: #selector(hrsUpStart), for: .touchDown)
+            hrsUpButton.addTarget(self, action: #selector(hrsUpEnd), for: .touchUpInside)
+            hrsDownButton.addTarget(self, action: #selector(hrsDownStart), for: .touchDown)
+            hrsDownButton.addTarget(self, action: #selector(hrsDownEnd), for: .touchUpInside)
+            
+            minsUpButton.addTarget(self, action: #selector(minsUpStart), for: .touchDown)
+            minsUpButton.addTarget(self, action: #selector(minsUpEnd), for: .touchUpInside)
+            minsDownButton.addTarget(self, action: #selector(minsDownStart), for: .touchDown)
+            minsDownButton.addTarget(self, action: #selector(minsDownEnd), for: .touchUpInside)
         }
         
-        @objc private func hrsUp() {
-            hours += 1
-            if hours == 24 {
-                hours = 0
-            }
+        @objc private func hrsUpStart() {
+            hrsUpFire()
+            hrsUpTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(hrsUpFire), userInfo: nil, repeats: true)
+        }
+        
+        @objc private func hrsUpEnd() {
+            hrsUpTimer.invalidate()
+        }
+        
+        @objc private func hrsUpFire() {
+            hours = (hours + 1) % 24
             setTime(hrsLabel: hrsView, minsLabel: minsView)
         }
         
-        @objc private func hrsDown() {
-            hours -= 1
-            if hours == -1 {
-                hours = 23
-            }
+        @objc private func hrsDownStart() {
+            hrsDownFire()
+            hrsDownTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(hrsDownFire), userInfo: nil, repeats: true)
+        }
+        
+        @objc private func hrsDownEnd() {
+            hrsDownTimer.invalidate()
+        }
+        
+        @objc private func hrsDownFire() {
+            hours = (hours + 24 - 1) % 24
             setTime(hrsLabel: hrsView, minsLabel: minsView)
         }
         
-        @objc private func minsUp() {
-            minutes += 1
-            if minutes == 60 {
-                minutes = 0
-            }
+        @objc private func minsUpStart() {
+            minsUpFire()
+            minsUpTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(minsUpFire), userInfo: nil, repeats: true)
+        }
+        
+        @objc private func minsUpEnd() {
+            minsUpTimer.invalidate()
+        }
+        
+        @objc private func minsUpFire() {
+            minutes = (minutes + 1) % 60
             setTime(hrsLabel: hrsView, minsLabel: minsView)
         }
         
-        @objc private func minsDown() {
-            minutes -= 1
-            if minutes == -1 {
-                minutes = 59
-            }
+        @objc private func minsDownStart() {
+            minsDownFire()
+            minsDownTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(minsDownFire), userInfo: nil, repeats: true)
+        }
+        
+        @objc private func minsDownEnd() {
+            minsDownTimer.invalidate()
+        }
+        
+        @objc private func minsDownFire() {
+            minutes = (minutes + 60 - 1) % 60
             setTime(hrsLabel: hrsView, minsLabel: minsView)
         }
         
