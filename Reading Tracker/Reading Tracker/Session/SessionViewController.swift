@@ -77,9 +77,9 @@ final class SessionViewController: UIViewController {
         let handTimerView = HandTimerView(frame: .zero)
         view.addSubview(handTimerView)
         
-        handTimerView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 152 + bottomSpace)
+        handTimerView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 124 + bottomSpace)
         handTimerView.autoAlignAxis(toSuperviewAxis: .vertical)
-        handTimerView.autoSetDimensions(to: CGSize(width: 218, height: 104))
+        handTimerView.autoSetDimensions(to: CGSize(width: 218, height: 136))
         self.handTimerView = handTimerView
         
         updateTimeInput(isHand: false)
@@ -93,9 +93,13 @@ final class SessionViewController: UIViewController {
     }
     
     private func updateTimeInput(isHand: Bool) {
+        let style = NSMutableParagraphStyle()
+        style.alignment = NSTextAlignment.center
+        
         let handTimeInputButtonTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!]
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!,
+            NSAttributedString.Key.paragraphStyle: style]
             as [NSAttributedString.Key : Any]
         handTimeInputButton?.setAttributedTitle(NSAttributedString(string: isHand ? "Вернуться к таймеру" : "Указать время вручную", attributes: handTimeInputButtonTextAttributes), for: [])
         handTimerView?.isHidden = !isHand
@@ -423,11 +427,86 @@ final class SessionViewController: UIViewController {
     private class HandTimerView: UIView {
         var hours = 0
         var minutes = 0
+        var timerView: UILabel!
+        
         override init(frame: CGRect) {
             super.init(frame: frame)
             
             let backgroundView = setupBackgroundView()
-            let timerView = setupTimerView(backgroundView: backgroundView)
+            self.timerView = setupTimerView(backgroundView: backgroundView)
+            
+            let style = NSMutableParagraphStyle()
+            style.alignment = NSTextAlignment.center
+            
+            let textAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!,
+                NSAttributedString.Key.paragraphStyle: style]
+                
+                as [NSAttributedString.Key : Any]
+            let hrsUpButton = UIButton(forAutoLayout: ())
+            let hrsUpLabel = UILabel(forAutoLayout: ())
+            hrsUpLabel.attributedText = NSAttributedString(string: "час", attributes: textAttributes)
+            let hrsUpImageView = UIImageView(image: UIImage(named: "timeUp"))
+            
+            hrsUpButton.addSubview(hrsUpLabel)
+            hrsUpButton.addSubview(hrsUpImageView)
+            addSubview(hrsUpButton)
+            hrsUpLabel.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
+            hrsUpImageView.autoSetDimensions(to: CGSize(width: 12, height: 7.5))
+            hrsUpImageView.autoAlignAxis(.vertical, toSameAxisOf: hrsUpLabel)
+            hrsUpImageView.autoPinEdge(.bottom, to: .top, of: hrsUpLabel)
+            hrsUpButton.autoSetDimensions(to: CGSize(width: 22, height: 27))
+            hrsUpButton.autoPinEdge(toSuperviewEdge: .left, withInset: 56)
+            hrsUpButton.autoPinEdge(.bottom, to: .top, of: backgroundView, withOffset: -4)
+            
+            let minsUpButton = UIButton(forAutoLayout: ())
+            let minsUpLabel = UILabel(forAutoLayout: ())
+            minsUpLabel.attributedText = NSAttributedString(string: "мин", attributes: textAttributes)
+            let minsUpImageView = UIImageView(image: UIImage(named: "timeUp"))
+            
+            minsUpButton.addSubview(minsUpLabel)
+            minsUpButton.addSubview(minsUpImageView)
+            addSubview(minsUpButton)
+            minsUpLabel.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
+            minsUpImageView.autoSetDimensions(to: CGSize(width: 12, height: 7.5))
+            minsUpImageView.autoAlignAxis(.vertical, toSameAxisOf: minsUpLabel)
+            minsUpImageView.autoPinEdge(.bottom, to: .top, of: minsUpLabel)
+            minsUpButton.autoSetDimensions(to: CGSize(width: 25, height: 27))
+            minsUpButton.autoPinEdge(toSuperviewEdge: .right, withInset: 56)
+            minsUpButton.autoPinEdge(.bottom, to: .top, of: backgroundView, withOffset: -4)
+            
+            let hrsDownButton = UIButton(forAutoLayout: ())
+            let hrsDownLabel = UILabel(forAutoLayout: ())
+            hrsDownLabel.attributedText = NSAttributedString(string: "час", attributes: textAttributes)
+            let hrsDownImageView = UIImageView(image: UIImage(named: "timeDown"))
+            
+            hrsDownButton.addSubview(hrsDownLabel)
+            hrsDownButton.addSubview(hrsDownImageView)
+            addSubview(hrsDownButton)
+            hrsDownLabel.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
+            hrsDownImageView.autoSetDimensions(to: CGSize(width: 12, height: 7.5))
+            hrsDownImageView.autoAlignAxis(.vertical, toSameAxisOf: hrsDownLabel)
+            hrsDownImageView.autoPinEdge(.top, to: .bottom, of: hrsDownLabel)
+            hrsDownButton.autoSetDimensions(to: CGSize(width: 22, height: 27))
+            hrsDownButton.autoPinEdge(toSuperviewEdge: .left, withInset: 56)
+            hrsDownButton.autoPinEdge(.top, to: .bottom, of: backgroundView, withOffset: 4)
+            
+            let minsDownButton = UIButton(forAutoLayout: ())
+            let minsDownLabel = UILabel(forAutoLayout: ())
+            minsDownLabel.attributedText = NSAttributedString(string: "мин", attributes: textAttributes)
+            let minsDownImageView = UIImageView(image: UIImage(named: "timeDown"))
+            
+            minsDownButton.addSubview(minsDownLabel)
+            minsDownButton.addSubview(minsDownImageView)
+            addSubview(minsDownButton)
+            minsDownLabel.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
+            minsDownImageView.autoSetDimensions(to: CGSize(width: 12, height: 7.5))
+            minsDownImageView.autoAlignAxis(.vertical, toSameAxisOf: minsDownLabel)
+            minsDownImageView.autoPinEdge(.top, to: .bottom, of: minsDownLabel)
+            minsDownButton.autoSetDimensions(to: CGSize(width: 25, height: 27))
+            minsDownButton.autoPinEdge(toSuperviewEdge: .right, withInset: 56)
+            minsDownButton.autoPinEdge(.top, to: .bottom, of: backgroundView, withOffset: 4)
         }
         
         required init?(coder aDecoder: NSCoder) {
@@ -450,17 +529,22 @@ final class SessionViewController: UIViewController {
             return backgroundView
         }
         
-        private func setupTimerView(backgroundView: UIView) -> UIView {
+        private func setupTimerView(backgroundView: UIView) -> UILabel {
             let timerView = UILabel(forAutoLayout: ())
+            setTime(label: timerView)
+            backgroundView.addSubview(timerView)
+            timerView.autoCenterInSuperview()
+            return timerView
+        }
+        
+        private func setTime(label: UILabel) {
             let timerTextAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
                 NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 64.0)!]
                 as [NSAttributedString.Key : Any]
             
-            timerView.attributedText = NSAttributedString(string: "0 : 0", attributes: timerTextAttributes)
-            backgroundView.addSubview(timerView)
-            timerView.autoCenterInSuperview()
-            return timerView
+            let time = "\(hours) : \(minutes)"
+            label.attributedText = NSAttributedString(string: time, attributes: timerTextAttributes)
         }
     }
 }
