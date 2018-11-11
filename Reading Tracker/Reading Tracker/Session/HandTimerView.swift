@@ -10,6 +10,11 @@ import Foundation
 import UIKit
 
 final class HandTimerView: UIView {
+    var time: Int {
+        get {
+            return 3600 * hours + 60 * minutes
+        }
+    }
     var hours = 0
     var minutes = 0
     private var hrsView: UILabel!

@@ -143,17 +143,29 @@ final class SessionViewController: UIViewController {
         navBar.configure(model: NavigationBarModel(title: "Новая запись о чтении",
                                                     frontButtonText: "Готово",
                                                     onFrontButtonPressed: ({ [weak self] in
-                                                        //TODO: call finish if possible
+                                                        let showError = {
+                                                            let alert = UIAlertController(title: "Ошибка!", message: "Не все поля заполнены", preferredStyle: .alert)
+                                                            alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+                                                            self?.present(alert, animated: true, completion: nil)
+                                                        }
                                                         guard let strongSelf = self,
                                                               strongSelf.hasBook,
                                                               let start = strongSelf.startPageTextField?.page,
                                                               let finish = strongSelf.finishPageTextField?.page,
-                                                              start < finish else {
-                                                                let alert = UIAlertController(title: "Ошибка!", message: "Не все поля заполнены", preferredStyle: .alert)
-                                                                alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
-                                                                self?.present(alert, animated: true, completion: nil)
+                                                              start < finish,
+                                                            
+                                                              let autoTime = strongSelf.sessionButton?.time,
+                                                              let handTime = strongSelf.handTimerView?.time,
+                                                              let state = strongSelf.sessionButton?.buttonState,
+                                                              (strongSelf.isAutomaticTimeCounterEnabled && autoTime > 0) ||
+                                                              (!strongSelf.isAutomaticTimeCounterEnabled && handTime > 0),
+                                                              (strongSelf.isAutomaticTimeCounterEnabled && (state == .pause)) ||
+                                                              (!strongSelf.isAutomaticTimeCounterEnabled) else {
+                                                                showError()
                                                                 return
                                                         }
+                                                        
+                                                        let time = strongSelf.isAutomaticTimeCounterEnabled ? autoTime : handTime
                                                         
                                                         print("TODO: call finish")
                                                     })))

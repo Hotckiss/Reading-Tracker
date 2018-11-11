@@ -171,7 +171,6 @@
 				2F1891DE2158BCC10043BDCC /* RTTextView.swift */,
 				2F71B325218F3A2700E4E80F /* OnLiginStuff.swift */,
 				2F7CE0632193892C00CFE6CF /* Spinner.swift */,
-				2F7CE0652194293600CFE6CF /* SessionTimerButton.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -301,6 +300,7 @@
 				2FFD1D002198BC3300779459 /* BookFilledCell.swift */,
 				2FFD1D022198BC6E00779459 /* PageTextField.swift */,
 				2FFD1D042198BCA100779459 /* HandTimerView.swift */,
+				2F7CE0652194293600CFE6CF /* SessionTimerButton.swift */,
 			);
 			path = Session;
 			sourceTree = "<group>";

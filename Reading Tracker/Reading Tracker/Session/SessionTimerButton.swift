@@ -10,13 +10,13 @@ import Foundation
 import UIKit
 
 public final class SessionTimerButton: UIButton {
+    public var time: Int = 0
     public var onStateChanged: ((ButtonState) -> Void)?
     private var shapes: [CAShapeLayer] = []
     private var innerButtonImageView: UIImageView?
     private var titleView: UILabel?
     private var timerView: UILabel?
     private var timer: Timer!
-    private var time: Int = 0
     
     public var buttonState: ButtonState = .start {
         didSet {
