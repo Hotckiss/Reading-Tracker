@@ -60,10 +60,14 @@ final class SessionViewController: UIViewController {
         sessionButton.buttonState = .start
         self.sessionButton = sessionButton
         
+        let style = NSMutableParagraphStyle()
+        style.alignment = NSTextAlignment.center
+        
         let handTimeInputButton = UIButton(forAutoLayout: ())
         let handTimeInputButtonTextAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!]
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!,
+            NSAttributedString.Key.paragraphStyle: style]
             as [NSAttributedString.Key : Any]
         handTimeInputButton.setAttributedTitle(NSAttributedString(string: "Указать время вручную", attributes: handTimeInputButtonTextAttributes), for: [])
         handTimeInputButton.addTarget(self, action: #selector(onHandTimeTap), for:.touchUpInside)
@@ -97,7 +101,7 @@ final class SessionViewController: UIViewController {
         style.alignment = NSTextAlignment.center
         
         let handTimeInputButtonTextAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
             NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!,
             NSAttributedString.Key.paragraphStyle: style]
             as [NSAttributedString.Key : Any]
