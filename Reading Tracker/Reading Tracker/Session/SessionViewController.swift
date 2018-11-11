@@ -20,6 +20,8 @@ final class SessionViewController: UIViewController {
     private var handTimeInputButton: UIButton?
     private var handTimerView: HandTimerView?
     private var isAutomaticTimeCounterEnabled: Bool = true
+    private var bookModel = BookModel(title: "", author: "")
+    private var bookType: BookType = .smartphone
     
     private var hasBook: Bool = false {
         didSet {
@@ -141,7 +143,11 @@ final class SessionViewController: UIViewController {
         let navBar = NavigationBar()
         
         navBar.configure(model: NavigationBarModel(title: "Новая запись о чтении",
+                                                   backButtonText: "Сброс",
                                                     frontButtonText: "Готово",
+                                                    onBackButtonPressed: ({
+                                                        //TODO: reset
+                                                    }),
                                                     onFrontButtonPressed: ({ [weak self] in
                                                         let showError = {
                                                             let alert = UIAlertController(title: "Ошибка!", message: "Не все поля заполнены", preferredStyle: .alert)
@@ -167,7 +173,14 @@ final class SessionViewController: UIViewController {
                                                         
                                                         let time = strongSelf.isAutomaticTimeCounterEnabled ? autoTime : handTime
                                                         
-                                                        print("TODO: call finish")
+                                                        let vc = SessionFinishViewController()
+                                                        vc.model = SessionFinishModel(bookInfo: strongSelf.bookModel,
+                                                                                      bookType: strongSelf.bookType,
+                                                                                      startPage: start,
+                                                                                      finishPage: finish,
+                                                                                      time: time)
+                                                        
+                                                        strongSelf.navigationController?.pushViewController(vc, animated: true)
                                                     })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         
@@ -176,7 +189,7 @@ final class SessionViewController: UIViewController {
         self.navBar = navBar
         
         let bookCell = BookFilledCell(frame: .zero)
-        bookCell.configure(model: BookModel(icbn: "1", title: "Биоцентризм. Как жизнь создает вселенную", author: "Роберт Ланца"))
+        bookCell.configure(model: bookModel)
         
         view.addSubview(bookCell)
         bookCell.autoPinEdge(toSuperviewEdge: .left)
@@ -192,6 +205,8 @@ final class SessionViewController: UIViewController {
         bookEmptyCell.onAdd = { [weak self] in
             let vc = AddBookViewController()
             vc.onCompleted = { [weak self] bookModel, bookType in
+                self?.bookModel = bookModel
+                self?.bookType = bookType
                 self?.bookCell?.configure(model: bookModel)
                 self?.hasBook = true
             }
