@@ -390,6 +390,14 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
     private class IntermediateTextFieldDelegate: NSObject, UITextFieldDelegate {
         var nextField: UITextField?
         
+        func textFieldDidBeginEditing(_ textField: UITextField) {
+            textField.typingAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Heavy", size: 20.0)!]
+                as [NSAttributedString.Key : Any]
+            
+        }
+        
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
             nextField?.becomeFirstResponder()
             return true
@@ -397,6 +405,15 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
     }
     
     private class FinishTextFieldDelegate: NSObject, UITextFieldDelegate {
+        
+        func textFieldDidBeginEditing(_ textField: UITextField) {
+            textField.typingAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Heavy", size: 20.0)!]
+                as [NSAttributedString.Key : Any]
+            
+        }
+        
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
             textField.resignFirstResponder()
             return true
