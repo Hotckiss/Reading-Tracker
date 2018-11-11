@@ -79,7 +79,7 @@ final class SessionViewController: UIViewController {
         
         handTimerView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 124 + bottomSpace)
         handTimerView.autoAlignAxis(toSuperviewAxis: .vertical)
-        handTimerView.autoSetDimensions(to: CGSize(width: 218, height: 152))
+        handTimerView.autoSetDimensions(to: CGSize(width: 218, height: 162))
         self.handTimerView = handTimerView
         
         updateTimeInput(isHand: false)
@@ -460,7 +460,7 @@ final class SessionViewController: UIViewController {
             hrsUpImageView.autoSetDimensions(to: CGSize(width: 12, height: 7.5))
             hrsUpImageView.autoAlignAxis(.vertical, toSameAxisOf: hrsUpLabel)
             hrsUpImageView.autoPinEdge(.bottom, to: .top, of: hrsUpLabel)
-            hrsUpButton.autoSetDimensions(to: CGSize(width: 22, height: 27))
+            hrsUpButton.autoSetDimensions(to: CGSize(width: 67, height: 36))
             hrsUpButton.autoAlignAxis(.vertical, toSameAxisOf: hrsView)
             hrsUpButton.autoPinEdge(.bottom, to: .top, of: backgroundView, withOffset: -4)
             
@@ -476,7 +476,7 @@ final class SessionViewController: UIViewController {
             minsUpImageView.autoSetDimensions(to: CGSize(width: 12, height: 7.5))
             minsUpImageView.autoAlignAxis(.vertical, toSameAxisOf: minsUpLabel)
             minsUpImageView.autoPinEdge(.bottom, to: .top, of: minsUpLabel)
-            minsUpButton.autoSetDimensions(to: CGSize(width: 25, height: 27))
+            minsUpButton.autoSetDimensions(to: CGSize(width: 67, height: 36))
             minsUpButton.autoAlignAxis(.vertical, toSameAxisOf: minsView)
             minsUpButton.autoPinEdge(.bottom, to: .top, of: backgroundView, withOffset: -4)
             
@@ -488,11 +488,11 @@ final class SessionViewController: UIViewController {
             hrsDownButton.addSubview(hrsDownLabel)
             hrsDownButton.addSubview(hrsDownImageView)
             addSubview(hrsDownButton)
-            hrsDownLabel.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
+            hrsDownLabel.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
             hrsDownImageView.autoSetDimensions(to: CGSize(width: 12, height: 7.5))
             hrsDownImageView.autoAlignAxis(.vertical, toSameAxisOf: hrsDownLabel)
             hrsDownImageView.autoPinEdge(.top, to: .bottom, of: hrsDownLabel)
-            hrsDownButton.autoSetDimensions(to: CGSize(width: 22, height: 27))
+            hrsDownButton.autoSetDimensions(to: CGSize(width: 67, height: 36))
             hrsDownButton.autoAlignAxis(.vertical, toSameAxisOf: hrsView)
             hrsDownButton.autoPinEdge(.top, to: .bottom, of: backgroundView, withOffset: 4)
             
@@ -504,11 +504,11 @@ final class SessionViewController: UIViewController {
             minsDownButton.addSubview(minsDownLabel)
             minsDownButton.addSubview(minsDownImageView)
             addSubview(minsDownButton)
-            minsDownLabel.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
+            minsDownLabel.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
             minsDownImageView.autoSetDimensions(to: CGSize(width: 12, height: 7.5))
             minsDownImageView.autoAlignAxis(.vertical, toSameAxisOf: minsDownLabel)
             minsDownImageView.autoPinEdge(.top, to: .bottom, of: minsDownLabel)
-            minsDownButton.autoSetDimensions(to: CGSize(width: 25, height: 27))
+            minsDownButton.autoSetDimensions(to: CGSize(width: 67, height: 36))
             minsDownButton.autoAlignAxis(.vertical, toSameAxisOf: minsView)
             minsDownButton.autoPinEdge(.top, to: .bottom, of: backgroundView, withOffset: 4)
             
@@ -612,7 +612,8 @@ final class SessionViewController: UIViewController {
             
             let timerTextAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 64.0)!]
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 64.0)!,
+                NSAttributedString.Key.baselineOffset: 4]
                 as [NSAttributedString.Key : Any]
             
             dotsView.attributedText = NSAttributedString(string: ":", attributes: timerTextAttributes)
