@@ -17,6 +17,8 @@ final class SessionViewController: UIViewController {
     private var startPageTextField: PageTextField?
     private var finishPageTextField: PageTextField?
     private var handTimeInputButton: UIButton?
+    private var handTimerView: HandTimerView?
+    private var isAutomaticTimeCounterEnabled: Bool = true
     
     private var hasBook: Bool = false {
         didSet {
@@ -72,13 +74,32 @@ final class SessionViewController: UIViewController {
         
         self.handTimeInputButton = handTimeInputButton
         
+        let handTimerView = HandTimerView(frame: .zero)
+        view.addSubview(handTimerView)
+        
+        handTimerView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 152 + bottomSpace)
+        handTimerView.autoAlignAxis(toSuperviewAxis: .vertical)
+        handTimerView.autoSetDimensions(to: CGSize(width: 218, height: 104))
+        self.handTimerView = handTimerView
+        
+        updateTimeInput(isHand: false)
+        
         hasBook = false
     }
     
     @objc private func onHandTimeTap() {
-        let alert = UIAlertController(title: "Ошибка!", message: "TODO: ручник времени", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+        isAutomaticTimeCounterEnabled = !isAutomaticTimeCounterEnabled
+        updateTimeInput(isHand: !isAutomaticTimeCounterEnabled)
+    }
+    
+    private func updateTimeInput(isHand: Bool) {
+        let handTimeInputButtonTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!]
+            as [NSAttributedString.Key : Any]
+        handTimeInputButton?.setAttributedTitle(NSAttributedString(string: isHand ? "Вернуться к таймеру" : "Указать время вручную", attributes: handTimeInputButtonTextAttributes), for: [])
+        handTimerView?.isHidden = !isHand
+        sessionButton?.isHidden = isHand
     }
     
     @objc private func onSessionButtonTap() {
@@ -396,6 +417,32 @@ final class SessionViewController: UIViewController {
         
         func disable(disable: Bool) {
             textField.isEnabled = !disable
+        }
+    }
+    
+    private class HandTimerView: UIView {
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            
+            let backgroundView = setupBackgroundView()
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        private func setupBackgroundView() -> UIView {
+            let backgroundView = UIView(forAutoLayout: ())
+            
+            backgroundView.backgroundColor = .white
+            backgroundView.layer.cornerRadius = 40
+            backgroundView.layer.shadowOffset = CGSize(width: 0, height: 3)
+            backgroundView.layer.shadowColor = UIColor.black.withAlphaComponent(0.2).cgColor
+            
+            addSubview(backgroundView)
+            backgroundView.autoSetDimensions(to: CGSize(width: 218, height: 80))
+            
+            return backgroundView
         }
     }
 }
