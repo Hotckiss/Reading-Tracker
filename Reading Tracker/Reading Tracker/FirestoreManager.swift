@@ -206,4 +206,22 @@ final class FirestoreManager {
                 }
         }
     }
+    
+    public func removeBook(book: BookModel) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        db.collection("books")
+            .document("libraries")
+            .collection(uid)
+            .document(book.id)
+            .delete() { err in
+                if let err = err {
+                    print("Error removing document: \(err)")
+                } else {
+                    print("Document successfully removed!")
+                }
+        }
+    }
 }
