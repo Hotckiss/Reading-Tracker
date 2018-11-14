@@ -118,7 +118,7 @@ final class FirestoreManager {
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
         let ref = db.collection("books")
-            .document("userLibraries")
+            .document("libraries")
             .collection(uid)
             .addDocument(data: [
             "title": book.title,
@@ -180,5 +180,30 @@ final class FirestoreManager {
         }
         
         return res
+    }
+    
+    public func updateBook(book: BookModel) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        db.collection("books")
+            .document("libraries")
+            .collection(uid)
+            .document(book.id)
+            .setData([
+                "title": book.title,
+                "author": book.author,
+                "last updated": formatter.string(from: book.lastUpdated),
+                "type": book.type.rawValue
+            ], merge: true) { error in
+                if let error = error {
+                    print("Error writing document: \(error.localizedDescription)")
+                } else {
+                    print("Document successfully written!")
+                }
+        }
     }
 }
