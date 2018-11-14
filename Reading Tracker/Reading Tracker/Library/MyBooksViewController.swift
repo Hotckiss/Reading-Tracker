@@ -128,6 +128,11 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         self.line = line
         //todo: удалить мусор
         update()
+        
+        FirestoreManager.DBManager.getAllBooks(completion: { [weak self] result in
+            self?.books = result
+            self?.update()
+        })
     }
     
     public func update() {

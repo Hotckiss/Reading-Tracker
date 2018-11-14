@@ -136,11 +136,11 @@ final class FirestoreManager {
         return ref.documentID
     }
     
-    public func getAllBooks() -> [BookModel] {
+    public func getAllBooks(completion: (([BookModel]) -> Void)? = nil) {
         guard let uid = Auth.auth().currentUser?.uid else {
-            return []
+            return
         }
-        var res: [BookModel] = []
+        
         db.collection("books")
             .document("libraries")
             .collection(uid)
@@ -148,6 +148,7 @@ final class FirestoreManager {
                 if let err = err {
                     print("Error getting documents: \(err)")
                 } else {
+                    var res: [BookModel] = []
                     for document in querySnapshot!.documents {
                         let data = document.data()
                         let id = document.documentID
@@ -176,10 +177,9 @@ final class FirestoreManager {
                         
                         res.append(book)
                     }
+                    completion?(res)
                 }
         }
-        
-        return res
     }
     
     public func updateBook(book: BookModel) {
