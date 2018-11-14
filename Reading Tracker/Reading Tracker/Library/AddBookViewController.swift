@@ -169,13 +169,14 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
                     break
                 }
             }
-            //SEND BOOK
-            //FirestoreManager.DBManager.addBook(book: BookModel)
-            self?.onCompleted?(BookModel(title: self?.nameTextField?.text ?? "",
-                                         author: self?.authorTextField?.text ?? "",
-                                         image: self?.addedBookStub?.imageStub?.image,
-                                         lastUpdated: Date(),
-                                         type: type))
+            var model = BookModel(title: self?.nameTextField?.text ?? "",
+                                  author: self?.authorTextField?.text ?? "",
+                                  image: self?.addedBookStub?.imageStub?.image,
+                                  lastUpdated: Date(),
+                                  type: type)
+            
+            model.id = FirestoreManager.DBManager.addBook(book: model)
+            self?.onCompleted?(model)
             self?.navigationController?.popViewController(animated: true)
         })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)

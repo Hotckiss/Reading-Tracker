@@ -127,7 +127,11 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         
         self.line = line
         //todo: удалить мусор
-        update(booksList: [])
+        update()
+    }
+    
+    public func update() {
+        update(booksList: books)
     }
     
     public func update(booksList: [BookModel]) {
@@ -147,13 +151,12 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     @objc private func addBook() {
-        let alert = UIAlertController(title: "Ошибка!", message: "TODO: форма добавления", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-        
-        // уже работает
-        //FirestoreManager.DBManager.getAllBooks()
-        FirestoreManager.DBManager.addBook(book: BookModel(title: "Биоцентризм. Как жизнь создает вселенную", author: "Роберт Ланца"))
+        let vc = AddBookViewController()
+        vc.onCompleted = { [weak self] book in
+            self?.books.append(book)
+            self?.update()
+        }
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     private func setupNavigationBar() {
