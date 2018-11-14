@@ -53,7 +53,7 @@ final class MainViewController: UIViewController {
         let controllers = [profileVC, libraryVC, sessionVC]
         
         mainTabBarController.viewControllers = controllers.map{ UINavigationController.init(rootViewController: $0)}
-        
+        mainTabBarController.selectedIndex = 2
         mainTabBarController.tabBar.barTintColor = UIColor(rgb: 0x2f5870)
         mainTabBarController.tabBar.tintColor = .white
         navigationController?.pushViewController(mainTabBarController, animated: false)

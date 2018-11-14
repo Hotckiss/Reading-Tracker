@@ -80,7 +80,7 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         let linePath = UIBezierPath()
         let width = UIScreen.main.bounds.width
         let height = UIScreen.main.bounds.height
-        let start = CGPoint(x: width / 3, y: ((width == 320) ? 138.5 : 106))
+        let start = CGPoint(x: width / 6, y: ((width == 320) ? 190 : 155))
         let end = CGPoint(x: width - 16 - 30, y: height - 16 - 49 - 60 - 8 - bottomSpace)
         linePath.move(to: end)
         linePath.addLine(to: end)
@@ -90,26 +90,23 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
                           controlPoint2: CGPoint(x: end.x - width, y: end.y - dy / 5))
         
         line.path = linePath.cgPath
-        line.strokeColor = UIColor(rgb: 0x2f5870).cgColor
+        line.strokeColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5).cgColor
         line.fillColor = UIColor.white.cgColor
         line.lineWidth = 3.0
         view.layer.addSublayer(line)
         
         self.line = line
         //todo: удалить мусор
-        update(booksList: [BookModel(icbn: "1", title: "Биоцентризм. Как жизнь создает вселенную", author: "Роберт Ланца"),
-                           BookModel(icbn: "2", title: "Фату-Хива: возврат к природе", author: "Тур Хейердал")])
+        update(booksList: [])
     }
     
     public func update(booksList: [BookModel]) {
         if booksList.isEmpty {
-            navBar?.isHidden = true
             emptyNavBar?.isHidden = false
             tableView.isHidden = true
             line?.isHidden = false
             tableViewTopConstraint?.constant = emptyNavBar?.frame.height ?? 97
         } else {
-            navBar?.isHidden = false
             emptyNavBar?.isHidden = true
             tableView.isHidden = false
             line?.isHidden = true
@@ -130,27 +127,25 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
     
     private func setupNavigationBar() {
         let navBar = NavigationBar()
-        navBar.configure(model: NavigationBarModel(title: "Выберите книгу"))
+        navBar.configure(model: NavigationBarModel(title: "Книги"))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
         self.navBar = navBar
         
-        let emptyNavBar = UIView(forAutoLayout: ())
         let titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor.white,
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
             NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 24.0)!]
             as [NSAttributedString.Key : Any]
         let emptyLabel = UILabel(forAutoLayout: ())
         emptyLabel.numberOfLines = 0
         emptyLabel.textAlignment = .center
         emptyLabel.attributedText = NSAttributedString(string: "Для начала, добавьте книги, которые сейчас читаете", attributes: titleTextAttributes)
-        emptyNavBar.addSubview(emptyLabel)
-        emptyNavBar.backgroundColor = UIColor(rgb: 0x2f5870)
-        view.addSubview(emptyNavBar)
-        emptyNavBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
-        emptyLabel.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 28, left: 16, bottom: 12, right: 16))
-        self.emptyNavBar = emptyNavBar
+        view.addSubview(emptyLabel)
+        emptyLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        emptyLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+        emptyLabel.autoPinEdge(.top, to: .bottom, of: navBar, withOffset: 20)
+        self.emptyNavBar = emptyLabel
     }
     
     private func setupSpinner() {
