@@ -9,15 +9,8 @@
 import Foundation
 import UIKit
 
-public enum BookType {
-    case paper
-    case smartphone
-    case tab
-    case ebook
-}
-
 final class AddBookViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    var onCompleted: ((BookModel, BookType) -> Void)?
+    var onCompleted: ((BookModel) -> Void)?
     private var spinner: UIActivityIndicatorView?
     private var navBar: NavigationBar?
     private var bookStub: AddBookView?
@@ -176,13 +169,13 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
                     break
                 }
             }
-            
-            self?.onCompleted?(BookModel(icbn: "TODO",
-                                   title: self?.nameTextField?.text ?? "",
-                                   author: self?.authorTextField?.text ?? "",
-                                   image: self?.addedBookStub?.imageStub?.image,
-                                   lastUpdated: Date()),
-                        type)
+            //SEND BOOK
+            //FirestoreManager.DBManager.addBook(book: BookModel)
+            self?.onCompleted?(BookModel(title: self?.nameTextField?.text ?? "",
+                                         author: self?.authorTextField?.text ?? "",
+                                         image: self?.addedBookStub?.imageStub?.image,
+                                         lastUpdated: Date(),
+                                         type: type))
             self?.navigationController?.popViewController(animated: true)
         })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)

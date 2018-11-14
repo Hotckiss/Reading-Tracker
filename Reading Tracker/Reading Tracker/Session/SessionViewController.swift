@@ -21,7 +21,6 @@ final class SessionViewController: UIViewController {
     private var handTimerView: HandTimerView?
     private var isAutomaticTimeCounterEnabled: Bool = true
     private var bookModel = BookModel(title: "", author: "")
-    private var bookType: BookType = .smartphone
     
     private var hasBook: Bool = false {
         didSet {
@@ -175,7 +174,6 @@ final class SessionViewController: UIViewController {
                                                         
                                                         let vc = SessionFinishViewController()
                                                         vc.model = SessionFinishModel(bookInfo: strongSelf.bookModel,
-                                                                                      bookType: strongSelf.bookType,
                                                                                       startPage: start,
                                                                                       finishPage: finish,
                                                                                       time: time)
@@ -204,9 +202,8 @@ final class SessionViewController: UIViewController {
         bookEmptyCell.autoPinEdge(.top, to: .bottom, of: navBar)
         bookEmptyCell.onAdd = { [weak self] in
             let vc = AddBookViewController()
-            vc.onCompleted = { [weak self] bookModel, bookType in
+            vc.onCompleted = { [weak self] bookModel in
                 self?.bookModel = bookModel
-                self?.bookType = bookType
                 self?.bookCell?.configure(model: bookModel)
                 self?.hasBook = true
             }

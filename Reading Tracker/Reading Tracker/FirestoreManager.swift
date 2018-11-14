@@ -110,26 +110,75 @@ final class FirestoreManager {
         return resultSubject.asObservable()
     }
     
-    public func addBook(book: BookModel) {
+    public func addBook(book: BookModel) -> String {
         guard let uid = Auth.auth().currentUser?.uid else {
-            return
+            return ""
         }
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
-        db.collection("books")
-            .document(uid)
-            .collection(book.icbn)
-            .document("info").setData([
+        let ref = db.collection("books")
+            .document("userLibraries")
+            .collection(uid)
+            .addDocument(data: [
             "title": book.title,
             "author": book.author,
-            "last updated": formatter.string(from: book.lastUpdated)
-            ], merge: true) { error in
+            "last updated": formatter.string(from: book.lastUpdated),
+            "type": book.type.rawValue
+            ]) { error in
                 if let error = error {
                     print("Error writing document: \(error.localizedDescription)")
                 } else {
                     print("Document successfully written!")
                 }
         }
+        
+        return ref.documentID
+    }
+    
+    public func getAllBooks() -> [BookModel] {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return []
+        }
+        var res: [BookModel] = []
+        db.collection("books")
+            .document("libraries")
+            .collection(uid)
+            .getDocuments { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        let data = document.data()
+                        let id = document.documentID
+                        var book = BookModel()
+                        book.id = id
+                        for (key, value) in data {
+                            guard let stringValue = value as? String else {
+                                print("Document error format")
+                                return
+                            }
+                            switch key {
+                            case "author":
+                                book.author = stringValue
+                            case "last updated":
+                                let formatter = DateFormatter()
+                                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                                book.lastUpdated = formatter.date(from: stringValue)!
+                            case "title":
+                                book.title = stringValue
+                            case "type":
+                                book.type = BookType.generate(raw: stringValue)
+                            default:
+                                break
+                            }
+                        }
+                        
+                        res.append(book)
+                    }
+                }
+        }
+        
+        return res
     }
 }

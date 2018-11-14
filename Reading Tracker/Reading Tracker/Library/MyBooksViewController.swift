@@ -10,19 +10,49 @@ import Foundation
 import UIKit
 import Firebase
 
+public enum BookType: String {
+    case paper = "paper"
+    case smartphone = "smartphone"
+    case tab = "tab"
+    case ebook = "ebook"
+    case unknown = "unknown"
+    
+    public static func generate(raw: String) -> BookType {
+        switch raw {
+        case "paper":
+            return .paper
+        case "smartphone":
+            return .smartphone
+        case "tab":
+            return .tab
+        case "ebook":
+            return .ebook
+        default:
+            return .unknown
+        }
+    }
+}
+
 public struct BookModel {
-    public var icbn: String
+    public var id: String
     public var title: String
     public var author: String
     public var image: UIImage
     public var lastUpdated: Date
+    public var type: BookType
     
-    init(icbn: String = "226611156", title: String, author: String, image: UIImage? = nil, lastUpdated: Date = Date.distantPast) {
-        self.icbn = icbn
+    init(id: String = "",
+         title: String = "",
+         author: String = "",
+         image: UIImage? = nil,
+         lastUpdated: Date = Date.distantPast,
+         type: BookType = .unknown) {
+        self.id = id
         self.title = title
         self.author = author
-        self.image = (image ?? UIImage(named: "bookPlaceholder")) ?? UIImage()
+        self.image = image ?? UIImage(named: "bookPlaceholder")!
         self.lastUpdated = lastUpdated
+        self.type = type
     }
 }
 
@@ -122,7 +152,8 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         self.present(alert, animated: true, completion: nil)
         
         // уже работает
-        //FirestoreManager.DBManager.addBook(book: BookModel(icbn: "1113", title: "Биоцентризм. Как жизнь создает вселенную", author: "Роберт Ланца"))
+        //FirestoreManager.DBManager.getAllBooks()
+        FirestoreManager.DBManager.addBook(book: BookModel(title: "Биоцентризм. Как жизнь создает вселенную", author: "Роберт Ланца"))
     }
     
     private func setupNavigationBar() {
