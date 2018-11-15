@@ -64,7 +64,37 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
     private var tableViewTopConstraint: NSLayoutConstraint?
     private var addButton: UIButton?
     private var line: CAShapeLayer?
-    private var tableView: UITableView!
+    private var tableView: UITableView?
+    private var handler: AuthStateDidChangeListenerHandle?
+    
+    convenience init() {
+        self.init(nibName: nil, bundle: nil)
+        handler = Auth.auth().addStateDidChangeListener { [weak self] (auth, user) in
+            if user != nil {
+                FirestoreManager.DBManager.getAllBooks(completion: { [weak self] result in
+                    self?.books = result
+                    self?.update()
+                })
+            } else {
+                self?.books = []
+                self?.update()
+            }
+        }
+    }
+    
+    deinit {
+        if let handler = handler {
+            Auth.auth().removeStateDidChangeListener(handler)
+        }
+    }
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)   {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,7 +107,7 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         setupNavigationBar()
         setupSpinner()
         
-        tableView = UITableView(forAutoLayout: ())
+        let tableView = UITableView(forAutoLayout: ())
         view.addSubview(tableView)
         tableViewTopConstraint = tableView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: UIApplication.shared.statusBarFrame.height + 4 + 32 + 4, left: 0, bottom: 0, right: 0))[0]
         tableView.register(BookCell.self, forCellReuseIdentifier: "bookCell")
@@ -87,6 +117,7 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         tableView.backgroundColor = .white
         tableView.separatorInset = .zero
         tableView.separatorColor = UIColor(rgb: 0x2f5870)
+        self.tableView = tableView
         
         let addButton = UIButton(forAutoLayout: ())
         
@@ -128,11 +159,11 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         self.line = line
         //todo: удалить мусор
         update()
-        
-        FirestoreManager.DBManager.getAllBooks(completion: { [weak self] result in
-            self?.books = result
-            self?.update()
-        })
+    }
+    
+    public func pushBook(book: BookModel) {
+        books = [book] + books
+        update()
     }
     
     public func update() {
@@ -142,17 +173,17 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
     public func update(booksList: [BookModel]) {
         if booksList.isEmpty {
             emptyNavBar?.isHidden = false
-            tableView.isHidden = true
+            tableView?.isHidden = true
             line?.isHidden = false
             tableViewTopConstraint?.constant = emptyNavBar?.frame.height ?? 97
         } else {
             emptyNavBar?.isHidden = true
-            tableView.isHidden = false
+            tableView?.isHidden = false
             line?.isHidden = true
             tableViewTopConstraint?.constant = 60
         }
         books = booksList
-        tableView.reloadData()
+        tableView?.reloadData()
     }
     
     @objc private func addBook() {
@@ -202,13 +233,15 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
     override func viewWillAppear(_ animated: Bool) {
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return books.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell: BookCell = self.tableView.dequeueReusableCell(withIdentifier: "bookCell") as! BookCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "bookCell") as! BookCell
         cell.configure(model: books[indexPath.row])
         return cell
     }

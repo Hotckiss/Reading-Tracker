@@ -50,6 +50,9 @@ final class MainViewController: UIViewController {
         sessionVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "sessionSelected"), selectedImage: UIImage(named: "sessionSelected"))
         sessionVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         
+        sessionVC.onBookAddedInSession = { [weak self] bookModel in
+            libraryVC.pushBook(book: bookModel)
+        }
         let controllers = [profileVC, libraryVC, sessionVC]
         
         mainTabBarController.viewControllers = controllers.map{ UINavigationController.init(rootViewController: $0)}

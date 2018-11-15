@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 final class SessionViewController: UIViewController {
+    var onBookAddedInSession: ((BookModel) -> Void)?
     private var spinner: UIActivityIndicatorView?
     private var navBar: NavigationBar?
     private var sessionButton: SessionTimerButton?
@@ -206,6 +207,7 @@ final class SessionViewController: UIViewController {
                 self?.bookModel = bookModel
                 self?.bookCell?.configure(model: bookModel)
                 self?.hasBook = true
+                self?.onBookAddedInSession?(bookModel)
             }
             self?.navigationController?.pushViewController(vc, animated: true)
         }
