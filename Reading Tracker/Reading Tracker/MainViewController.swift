@@ -50,8 +50,16 @@ final class MainViewController: UIViewController {
         sessionVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "sessionSelected"), selectedImage: UIImage(named: "sessionSelected"))
         sessionVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         
-        sessionVC.onBookAddedInSession = { [weak self] bookModel in
+        sessionVC.onBookAddedInSession = { bookModel in
             libraryVC.pushBook(book: bookModel)
+        }
+        
+        libraryVC.onBooksListUpdated = { list in
+            guard let lastBook = list.first else {
+                return
+            }
+            
+            sessionVC.updateWithBook(book: lastBook)
         }
         let controllers = [profileVC, libraryVC, sessionVC]
         

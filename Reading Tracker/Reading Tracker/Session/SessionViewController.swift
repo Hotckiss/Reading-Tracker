@@ -21,7 +21,7 @@ final class SessionViewController: UIViewController {
     private var handTimeInputButton: UIButton?
     private var handTimerView: HandTimerView?
     private var isAutomaticTimeCounterEnabled: Bool = true
-    private var bookModel = BookModel(title: "", author: "")
+    private var bookModel: BookModel?
     
     private var hasBook: Bool = false {
         didSet {
@@ -95,7 +95,7 @@ final class SessionViewController: UIViewController {
         
         updateTimeInput(isHand: false)
         
-        hasBook = false
+        hasBook = (bookModel != nil)
     }
     
     @objc private func onHandTimeTap() {
@@ -159,7 +159,7 @@ final class SessionViewController: UIViewController {
                                                               let start = strongSelf.startPageTextField?.page,
                                                               let finish = strongSelf.finishPageTextField?.page,
                                                               start < finish,
-                                                            
+                                                              let bookModel = strongSelf.bookModel,
                                                               let autoTime = strongSelf.sessionButton?.time,
                                                               let handTime = strongSelf.handTimerView?.time,
                                                               let state = strongSelf.sessionButton?.buttonState,
@@ -174,7 +174,7 @@ final class SessionViewController: UIViewController {
                                                         let time = strongSelf.isAutomaticTimeCounterEnabled ? autoTime : handTime
                                                         
                                                         let vc = SessionFinishViewController()
-                                                        vc.model = SessionFinishModel(bookInfo: strongSelf.bookModel,
+                                                        vc.model = SessionFinishModel(bookInfo: bookModel,
                                                                                       startPage: start,
                                                                                       finishPage: finish,
                                                                                       time: time)
@@ -188,7 +188,9 @@ final class SessionViewController: UIViewController {
         self.navBar = navBar
         
         let bookCell = BookFilledCell(frame: .zero)
-        bookCell.configure(model: bookModel)
+        if let bookModel = bookModel {
+            bookCell.configure(model: bookModel)
+        }
         
         view.addSubview(bookCell)
         bookCell.autoPinEdge(toSuperviewEdge: .left)
@@ -204,9 +206,7 @@ final class SessionViewController: UIViewController {
         bookEmptyCell.onAdd = { [weak self] in
             let vc = AddBookViewController()
             vc.onCompleted = { [weak self] bookModel in
-                self?.bookModel = bookModel
-                self?.bookCell?.configure(model: bookModel)
-                self?.hasBook = true
+                self?.updateWithBook(book: bookModel)
                 self?.onBookAddedInSession?(bookModel)
             }
             self?.navigationController?.pushViewController(vc, animated: true)
@@ -247,5 +247,11 @@ final class SessionViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+    }
+    
+    func updateWithBook(book: BookModel) {
+        bookModel = book
+        bookCell?.configure(model: book)
+        hasBook = true
     }
 }

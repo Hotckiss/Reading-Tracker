@@ -57,6 +57,7 @@ public struct BookModel {
 }
 
 final class MyBooksViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    var onBooksListUpdated: (([BookModel]) -> Void)?
     private var spinner: UIActivityIndicatorView?
     private var navBar: NavigationBar?
     private var emptyNavBar: UIView?
@@ -162,7 +163,7 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     public func pushBook(book: BookModel) {
-        books = [book] + books
+        books.insert(book, at: 0)
         update()
     }
     
@@ -183,14 +184,14 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
             tableViewTopConstraint?.constant = 60
         }
         books = booksList
+        onBooksListUpdated?(booksList)
         tableView?.reloadData()
     }
     
     @objc private func addBook() {
         let vc = AddBookViewController()
         vc.onCompleted = { [weak self] book in
-            self?.books.append(book)
-            self?.update()
+            self?.pushBook(book: book)
         }
         navigationController?.pushViewController(vc, animated: true)
     }
