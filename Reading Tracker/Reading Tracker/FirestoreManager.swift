@@ -207,7 +207,7 @@ final class FirestoreManager {
         }
     }
     
-    public func removeBook(book: BookModel) {
+    public func removeBook(book: BookModel, onSuccess: (() -> Void)? = nil, onError: (() -> Void)? = nil) {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
@@ -219,7 +219,9 @@ final class FirestoreManager {
             .delete() { err in
                 if let err = err {
                     print("Error removing document: \(err)")
+                    onError?()
                 } else {
+                    onSuccess?()
                     print("Document successfully removed!")
                 }
         }

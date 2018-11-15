@@ -196,6 +196,33 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         navigationController?.pushViewController(vc, animated: true)
     }
     
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        let moreRowAction = UITableViewRowAction(style: UITableViewRowAction.Style.default, title: "Изменить", handler: { action, indexpath in
+            print("Изменить")
+        })
+        
+        moreRowAction.backgroundColor = UIColor(red: 0.298, green: 0.851, blue: 0.3922, alpha: 1.0);
+        
+        let deleteRowAction = UITableViewRowAction(style: UITableViewRowAction.Style.default, title: "Удалить", handler: { [weak self] action, indexpath in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            FirestoreManager.DBManager.removeBook(book: strongSelf.books[indexPath.row], onSuccess: ({
+                strongSelf.books.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+                if indexPath.row == 0 {
+                    strongSelf.onBooksListUpdated?(strongSelf.books)
+                }
+            }), onError: ({
+                // show error?
+            }))
+        })
+        
+        return [deleteRowAction, moreRowAction]
+    }
+    
     private func setupNavigationBar() {
         let navBar = NavigationBar()
         navBar.configure(model: NavigationBarModel(title: "Книги"))
