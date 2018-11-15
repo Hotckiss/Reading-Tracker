@@ -249,9 +249,13 @@ final class SessionViewController: UIViewController {
         super.viewWillAppear(animated)
     }
     
-    func updateWithBook(book: BookModel) {
-        bookModel = book
-        bookCell?.configure(model: book)
-        hasBook = true
+    func updateWithBook(book: BookModel?) {
+        if let book = book {
+            bookModel = book
+            bookCell?.configure(model: book)
+            hasBook = true
+        } else {
+            hasBook = false
+        }
     }
 }

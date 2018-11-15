@@ -55,11 +55,7 @@ final class MainViewController: UIViewController {
         }
         
         libraryVC.onBooksListUpdated = { list in
-            guard let lastBook = list.first else {
-                return
-            }
-            
-            sessionVC.updateWithBook(book: lastBook)
+            sessionVC.updateWithBook(book: list.first)
         }
         let controllers = [profileVC, libraryVC, sessionVC]
         

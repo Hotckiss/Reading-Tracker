@@ -202,7 +202,7 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
             print("Изменить")
         })
         
-        moreRowAction.backgroundColor = UIColor(red: 0.298, green: 0.851, blue: 0.3922, alpha: 1.0);
+        moreRowAction.backgroundColor = UIColor(red: 0.298, green: 0.851, blue: 0.3922, alpha: 1.0)
         
         let deleteRowAction = UITableViewRowAction(style: UITableViewRowAction.Style.default, title: "Удалить", handler: { [weak self] action, indexpath in
             guard let strongSelf = self else {
@@ -214,6 +214,10 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
                 tableView.deleteRows(at: [indexPath], with: .automatic)
                 if indexPath.row == 0 {
                     strongSelf.onBooksListUpdated?(strongSelf.books)
+                }
+                
+                if strongSelf.books.isEmpty {
+                    strongSelf.update()
                 }
             }), onError: ({
                 // show error?
