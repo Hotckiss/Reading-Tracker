@@ -87,6 +87,7 @@ PODS:
   - FirebaseUI/Storage (5.2.1):
     - Firebase/Storage (~> 5.0)
     - SDWebImage (~> 4.0)
+  - FLAnimatedImage (1.0.12)
   - GoogleAppMeasurement (5.1.1):
     - GoogleUtilities/AppDelegateSwizzler (~> 5.2.0)
     - GoogleUtilities/MethodSwizzler (~> 5.2.0)
@@ -166,6 +167,9 @@ PODS:
   - SDWebImage (4.4.2):
     - SDWebImage/Core (= 4.4.2)
   - SDWebImage/Core (4.4.2)
+  - SDWebImage/GIF (4.4.2):
+    - FLAnimatedImage (~> 1.0)
+    - SDWebImage/Core
   - TwitterCore (3.2.0)
   - TwitterKit (3.4.0):
     - TwitterCore (>= 3.1.0)
@@ -185,6 +189,7 @@ DEPENDENCIES:
   - GoogleSignIn
   - PureLayout
   - RxSwift
+  - SDWebImage/GIF
   - TwitterKit
   - VK-ios-sdk
 
@@ -206,6 +211,7 @@ SPEC REPOS:
     - FirebaseInstanceID
     - FirebaseStorage
     - FirebaseUI
+    - FLAnimatedImage
     - GoogleAppMeasurement
     - GoogleSignIn
     - GoogleToolboxForMac
@@ -243,6 +249,7 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: ea5af6920d0a4a29b40459d055bebe4a6c1333c4
   FirebaseStorage: 43f823b96b72a08539eba21a7de043348a69d4c6
   FirebaseUI: 0f6035898947af3e6ee9e9ab78ab57f8441bae56
+  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   GoogleAppMeasurement: f7507b39b70ad0bd80b3d81518b2f43868974307
   GoogleSignIn: 591e46382014e591269f862ba6e7bc0fbd793532
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
@@ -263,6 +270,6 @@ SPEC CHECKSUMS:
   TwitterKit: bc7bd086b9b724a1d888745a054e1d0b1ecc4f3f
   VK-ios-sdk: 7fd48bc5aaa6b96c3197c1987eb6593f2ea67331
 
-PODFILE CHECKSUM: 8f4a44e46340eab2bb6a4c74bfdef8f8a8135680
+PODFILE CHECKSUM: 2d72a670b9f70aadd1471df1cce55a25250fe39a
 
 COCOAPODS: 1.5.3
