@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2F0C7E2B219F0F7D00C28ECB /* FirebaseStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F0C7E2A219F0F7D00C28ECB /* FirebaseStorageManager.swift */; };
+		2F0C7E2D219F1D4100C28ECB /* ImageCompression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F0C7E2C219F1D4100C28ECB /* ImageCompression.swift */; };
 		2F1891D9215832210043BDCC /* AuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1891D8215832210043BDCC /* AuthorizationViewController.swift */; };
 		2F1891DC2158B9760043BDCC /* UIColor+RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1891DB2158B9760043BDCC /* UIColor+RGB.swift */; };
 		2F1891DF2158BCC10043BDCC /* RTTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1891DE2158BCC10043BDCC /* RTTextView.swift */; };
@@ -74,6 +75,7 @@
 		1867B49C98F22DAF02008586 /* Pods_Reading_Tracker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Reading_Tracker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28AEB30CF38345261F42D491 /* Pods_Reading_TrackerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Reading_TrackerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F0C7E2A219F0F7D00C28ECB /* FirebaseStorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseStorageManager.swift; sourceTree = "<group>"; };
+		2F0C7E2C219F1D4100C28ECB /* ImageCompression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompression.swift; sourceTree = "<group>"; };
 		2F1891D8215832210043BDCC /* AuthorizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationViewController.swift; sourceTree = "<group>"; };
 		2F1891DB2158B9760043BDCC /* UIColor+RGB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+RGB.swift"; sourceTree = "<group>"; };
 		2F1891DE2158BCC10043BDCC /* RTTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTTextView.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				2F1891DE2158BCC10043BDCC /* RTTextView.swift */,
 				2F71B325218F3A2700E4E80F /* OnLiginStuff.swift */,
 				2F7CE0632193892C00CFE6CF /* Spinner.swift */,
+				2F0C7E2C219F1D4100C28ECB /* ImageCompression.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -660,6 +663,7 @@
 				2F71B324218EFAFF00E4E80F /* RegistrationViewController.swift in Sources */,
 				2F0C7E2B219F0F7D00C28ECB /* FirebaseStorageManager.swift in Sources */,
 				2F1891DC2158B9760043BDCC /* UIColor+RGB.swift in Sources */,
+				2F0C7E2D219F1D4100C28ECB /* ImageCompression.swift in Sources */,
 				2FFD1D072198CB1500779459 /* SessionFinishViewController.swift in Sources */,
 				2FE450C1216FA53E008B2F22 /* MainInteractor.swift in Sources */,
 			);

@@ -89,6 +89,10 @@ final class BookFilledCell: UIButton {
         
         titleTextLabel?.attributedText = NSAttributedString(string: model.title, attributes: titleTextAttributes)
         authorLabel?.attributedText = NSAttributedString(string: model.author, attributes: authorTextAttributes)
-        coverImageView?.image = model.image
+        if let imageView = coverImageView {
+            FirebaseStorageManager.DBManager.downloadCover(into: imageView, bookId: model.id, onImageReceived: ({ img in
+                self.model.image = img
+            }))
+        }
     }
 }

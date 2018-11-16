@@ -9,6 +9,8 @@
 import Foundation
 import Firebase
 import RxSwift
+import SDWebImage
+import FirebaseUI
 
 final class FirebaseStorageManager {
     
@@ -17,7 +19,7 @@ final class FirebaseStorageManager {
     
     public func uploadCover(cover: UIImage, bookId: String, completion: (() -> Void)?) {
         guard let uid = Auth.auth().currentUser?.uid,
-              let data = cover.pngData() else {
+              let data = cover.resizeImage(targetSize: CGSize(width: 155, height: 222)).pngData() else {
             return
         }
         
@@ -29,16 +31,17 @@ final class FirebaseStorageManager {
                 return
             }
             completion?()
-            /*
-            // Metadata contains file metadata such as size, content-type.
-            let size = metadata.size
-            // You can also access to download URL after upload.
-            rootReference.downloadURL { (url, error) in
-                guard let downloadURL = url else {
-                    // Uh-oh, an error occurred!
-                    return
-                }
-            }*/
+        }
+    }
+    
+    public func downloadCover(into imageView: UIImageView, bookId: String, onImageReceived: ((UIImage) -> Void)?) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+                return
+        }
+        
+        let imageRef = rootReference.child("covers/\(uid)/\(bookId)/cover.png")
+        imageView.sd_setImage(with: imageRef, placeholderImage: UIImage(named: "bookPlaceholder")!) { (image, error, cacheType, storageReference) in
+            onImageReceived?(image ?? UIImage(named: "bookPlaceholder")!)
         }
     }
 }

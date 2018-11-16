@@ -158,7 +158,6 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         view.layer.addSublayer(line)
         
         self.line = line
-        //todo: удалить мусор
         update()
     }
     
@@ -359,7 +358,11 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
             
             titleLabel?.attributedText = NSAttributedString(string: model.title, attributes: titleTextAttributes)
             authorLabel?.attributedText = NSAttributedString(string: model.author, attributes: authorTextAttributes)
-            coverImageView?.image = model.image
+            if let imageView = coverImageView {
+                FirebaseStorageManager.DBManager.downloadCover(into: imageView, bookId: model.id, onImageReceived: ({ img in
+                    self.model.image = img
+                }))
+            }
         }
     }
 }
