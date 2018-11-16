@@ -20,6 +20,7 @@ target 'Reading Tracker' do
   pod 'FBSDKShareKit'
   pod 'TwitterKit'
   pod 'VK-ios-sdk'
+  pod 'SDWebImage'
   pod 'SDWebImage/GIF'
   target 'Reading TrackerTests' do
     inherit! :search_paths

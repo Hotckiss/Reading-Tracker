@@ -189,6 +189,7 @@ DEPENDENCIES:
   - GoogleSignIn
   - PureLayout
   - RxSwift
+  - SDWebImage
   - SDWebImage/GIF
   - TwitterKit
   - VK-ios-sdk
@@ -270,6 +271,6 @@ SPEC CHECKSUMS:
   TwitterKit: bc7bd086b9b724a1d888745a054e1d0b1ecc4f3f
   VK-ios-sdk: 7fd48bc5aaa6b96c3197c1987eb6593f2ea67331
 
-PODFILE CHECKSUM: 2d72a670b9f70aadd1471df1cce55a25250fe39a
+PODFILE CHECKSUM: 6c112bb0a6946a520165d0cddb62a9edcf4ce892
 
 COCOAPODS: 1.5.3
