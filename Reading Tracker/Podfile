@@ -13,6 +13,7 @@ target 'Reading Tracker' do
   pod 'Firebase/Database'
   pod 'Firebase/Crash'
   pod 'Firebase/Firestore'
+  pod 'FirebaseUI/Storage'
   pod 'GoogleSignIn'
   pod 'FBSDKCoreKit'
   pod 'FBSDKLoginKit'

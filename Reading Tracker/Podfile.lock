@@ -84,6 +84,9 @@ PODS:
   - FirebaseStorage (3.0.1):
     - FirebaseCore (~> 5.0)
     - GTMSessionFetcher/Core (~> 1.1)
+  - FirebaseUI/Storage (5.2.1):
+    - Firebase/Storage (~> 5.0)
+    - SDWebImage (~> 4.0)
   - GoogleAppMeasurement (5.1.1):
     - GoogleUtilities/AppDelegateSwizzler (~> 5.2.0)
     - GoogleUtilities/MethodSwizzler (~> 5.2.0)
@@ -160,6 +163,9 @@ PODS:
   - Protobuf (3.6.1)
   - PureLayout (3.1.2)
   - RxSwift (4.2.0)
+  - SDWebImage (4.4.2):
+    - SDWebImage/Core (= 4.4.2)
+  - SDWebImage/Core (4.4.2)
   - TwitterCore (3.2.0)
   - TwitterKit (3.4.0):
     - TwitterCore (>= 3.1.0)
@@ -175,6 +181,7 @@ DEPENDENCIES:
   - Firebase/Database
   - Firebase/Firestore
   - Firebase/Storage
+  - FirebaseUI/Storage
   - GoogleSignIn
   - PureLayout
   - RxSwift
@@ -198,6 +205,7 @@ SPEC REPOS:
     - FirebaseFirestore
     - FirebaseInstanceID
     - FirebaseStorage
+    - FirebaseUI
     - GoogleAppMeasurement
     - GoogleSignIn
     - GoogleToolboxForMac
@@ -213,6 +221,7 @@ SPEC REPOS:
     - Protobuf
     - PureLayout
     - RxSwift
+    - SDWebImage
     - TwitterCore
     - TwitterKit
     - VK-ios-sdk
@@ -233,6 +242,7 @@ SPEC CHECKSUMS:
   FirebaseFirestore: 7eec93809ad61e7ebe303089c5cc5efa63424b72
   FirebaseInstanceID: ea5af6920d0a4a29b40459d055bebe4a6c1333c4
   FirebaseStorage: 43f823b96b72a08539eba21a7de043348a69d4c6
+  FirebaseUI: 0f6035898947af3e6ee9e9ab78ab57f8441bae56
   GoogleAppMeasurement: f7507b39b70ad0bd80b3d81518b2f43868974307
   GoogleSignIn: 591e46382014e591269f862ba6e7bc0fbd793532
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
@@ -248,10 +258,11 @@ SPEC CHECKSUMS:
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
   PureLayout: 4634d0b61e3b5021166e8ec7c18e9e0ca0720c8b
   RxSwift: 99e10317ddfcc7fbe01356aafd118fde4a0be104
+  SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: bc7bd086b9b724a1d888745a054e1d0b1ecc4f3f
   VK-ios-sdk: 7fd48bc5aaa6b96c3197c1987eb6593f2ea67331
 
-PODFILE CHECKSUM: afd61d35d007226df9a0a2850086f202536ca013
+PODFILE CHECKSUM: 8f4a44e46340eab2bb6a4c74bfdef8f8a8135680
 
 COCOAPODS: 1.5.3
