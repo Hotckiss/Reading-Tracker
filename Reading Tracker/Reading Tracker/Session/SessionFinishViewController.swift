@@ -117,12 +117,6 @@ class SessionFinishViewController: UIViewController {
     }
     
     private class FinishTextFieldDelegate: NSObject, UITextFieldDelegate {
-        func textFieldDidBeginEditing(_ textField: UITextField) {
-            textField.typingAttributes = [
-                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
-                as [NSAttributedString.Key : Any]
-        }
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
             textField.resignFirstResponder()
             return true
