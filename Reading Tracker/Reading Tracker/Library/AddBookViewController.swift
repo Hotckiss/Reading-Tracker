@@ -175,9 +175,12 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
                                   lastUpdated: Date(),
                                   type: type)
             
-            model.id = FirestoreManager.DBManager.addBook(book: model)
-            self?.onCompleted?(model)
-            self?.navigationController?.popViewController(animated: true)
+            model.id = FirestoreManager.DBManager.addBook(book: model, completion: ({ bookId in
+                FirebaseStorageManager.DBManager.uploadCover(cover: model.image, bookId: bookId, completion: ({ [weak self] in
+                    self?.onCompleted?(model)
+                    self?.navigationController?.popViewController(animated: true)
+                }))
+            }))
         })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         view.addSubview(navBar)

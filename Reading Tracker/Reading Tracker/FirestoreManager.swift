@@ -110,7 +110,7 @@ final class FirestoreManager {
         return resultSubject.asObservable()
     }
     
-    public func addBook(book: BookModel) -> String {
+    public func addBook(book: BookModel, completion: ((String) -> Void)?) -> String {
         guard let uid = Auth.auth().currentUser?.uid else {
             return ""
         }
@@ -133,6 +133,7 @@ final class FirestoreManager {
                 }
         }
         
+        completion?(ref.documentID)
         return ref.documentID
     }
     
