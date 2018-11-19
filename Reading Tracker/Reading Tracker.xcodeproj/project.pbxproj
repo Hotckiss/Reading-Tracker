@@ -38,6 +38,7 @@
 		2FE6C5AA21581BDF005A7A68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FE6C5A921581BDF005A7A68 /* Assets.xcassets */; };
 		2FE6C5B821581BDF005A7A68 /* Reading_TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6C5B721581BDF005A7A68 /* Reading_TrackerTests.swift */; };
 		2FE6C5C321581BDF005A7A68 /* Reading_TrackerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6C5C221581BDF005A7A68 /* Reading_TrackerUITests.swift */; };
+		2FEB6A9321A343FE00334802 /* QuestionarreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEB6A9221A343FE00334802 /* QuestionarreViewController.swift */; };
 		2FED199B21748F4A00AFFF99 /* AddBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FED199A21748F4A00AFFF99 /* AddBookViewController.swift */; };
 		2FED199D21748FB000AFFF99 /* MyBooksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FED199C21748FB000AFFF99 /* MyBooksViewController.swift */; };
 		2FED199F21748FC900AFFF99 /* SessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FED199E21748FC900AFFF99 /* SessionViewController.swift */; };
@@ -109,6 +110,7 @@
 		2FE6C5BE21581BDF005A7A68 /* Reading TrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Reading TrackerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FE6C5C221581BDF005A7A68 /* Reading_TrackerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reading_TrackerUITests.swift; sourceTree = "<group>"; };
 		2FE6C5C421581BDF005A7A68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2FEB6A9221A343FE00334802 /* QuestionarreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionarreViewController.swift; sourceTree = "<group>"; };
 		2FED199A21748F4A00AFFF99 /* AddBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBookViewController.swift; sourceTree = "<group>"; };
 		2FED199C21748FB000AFFF99 /* MyBooksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBooksViewController.swift; sourceTree = "<group>"; };
 		2FED199E21748FC900AFFF99 /* SessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionViewController.swift; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				2F71B32E218F965000E4E80F /* ProfileViewController.swift */,
+				2FEB6A9221A343FE00334802 /* QuestionarreViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -665,6 +668,7 @@
 				2F71B324218EFAFF00E4E80F /* RegistrationViewController.swift in Sources */,
 				2F0C7E2B219F0F7D00C28ECB /* FirebaseStorageManager.swift in Sources */,
 				2F1891DC2158B9760043BDCC /* UIColor+RGB.swift in Sources */,
+				2FEB6A9321A343FE00334802 /* QuestionarreViewController.swift in Sources */,
 				2F0C7E2D219F1D4100C28ECB /* ImageCompression.swift in Sources */,
 				2FFD1D072198CB1500779459 /* SessionFinishViewController.swift in Sources */,
 				2FE450C1216FA53E008B2F22 /* MainInteractor.swift in Sources */,
