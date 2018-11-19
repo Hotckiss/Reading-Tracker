@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import ActionSheetPicker_3_0
 
 final class AddBookViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var onCompleted: ((BookModel) -> Void)?
@@ -77,13 +78,13 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
         lineView2.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         lineView2.autoSetDimension(.height, toSize: 1)
         
-        let bookTypes =  ["Медиа", "Бумажная книга", "Элекронная книга", "Смартфон", "Планшет"]
+        let bookTypes =  ["Бумажная книга", "Элекронная книга", "Смартфон", "Планшет"]
         let mediaDropdown = DropdownMenu(frame: .zero, optionsList: bookTypes)
         view.addSubview(mediaDropdown)
         mediaDropdown.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         mediaDropdown.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         mediaDropdown.autoPinEdge(.top, to: .bottom, of: lineView2, withOffset: 59)
-        mediaDropdown.autoSetDimension(.height, toSize: 32 * CGFloat(bookTypes.count) + 9)
+        mediaDropdown.autoSetDimension(.height, toSize: 33)
         self.mediaDropdown = mediaDropdown
         
         let bookStub = AddBookView(frame: .zero)
@@ -157,13 +158,13 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
             var type: BookType = .paper
             if let index = self?.mediaDropdown?.selectedIndex {
                 switch index {
-                case 1:
+                case 0:
                     type = .paper
-                case 2:
+                case 1:
                     type = .ebook
-                case 3:
+                case 2:
                     type = .smartphone
-                case 4:
+                case 3:
                     type = .tab
                 default:
                     break
@@ -204,17 +205,11 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
     }
     
     private class DropdownMenu: UIView {
-        var selectedIndex: Int
+        var selectedIndex: Int = 0
         private var optionsList: [String]
-        private var mainOptionIndex: Int
-        private var buttons: [UIButton] = []
-        private var isExpanded = false
-        private var mainButtonLine: UIView?
         
-        init(frame: CGRect, optionsList: [String], mainOptionIndex: Int = 0) {
+        init(frame: CGRect, optionsList: [String]) {
             self.optionsList = optionsList
-            self.mainOptionIndex = mainOptionIndex
-            self.selectedIndex = mainOptionIndex
             super.init(frame: frame)
             
             setupSubviews()
@@ -230,21 +225,14 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
                 NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
                 as [NSAttributedString.Key : Any]
             
-            let textAttributes = [
-                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
-                as [NSAttributedString.Key : Any]
-            
             let mainButton = UIButton(forAutoLayout: ())
-            mainButton.setAttributedTitle(NSAttributedString(string: optionsList[mainOptionIndex], attributes: mainTextAttributes), for: [])
+            mainButton.setAttributedTitle(NSAttributedString(string: "Медиа", attributes: mainTextAttributes), for: [])
             mainButton.contentHorizontalAlignment = .left
             addSubview(mainButton)
             mainButton.autoSetDimension(.height, toSize: 32)
-            mainButton.autoPinEdge(toSuperviewEdge: .left)
-            mainButton.autoPinEdge(toSuperviewEdge: .right)
-            mainButton.autoPinEdge(toSuperviewEdge: .top)
+            mainButton.autoPinEdgesToSuperviewEdges(with: .zero)
             
-            mainButton.addTarget(self, action: #selector(mainButtonTap), for: .touchUpInside)
+            mainButton.addTarget(self, action: #selector(mainButtonTap(_:)), for: .touchUpInside)
             
             let arrowImageView = UIImageView(image: UIImage(named: "down"))
             mainButton.addSubview(arrowImageView)
@@ -259,62 +247,42 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
             mainButtonLine.autoPinEdge(toSuperviewEdge: .left)
             mainButtonLine.autoPinEdge(toSuperviewEdge: .right)
             mainButtonLine.autoPinEdge(.top, to: .bottom, of: mainButton, withOffset: 8)
-            self.mainButtonLine = mainButtonLine
-            var lastButton: UIView = mainButtonLine
-            
-            buttons.append(mainButton)
-            for i in 1..<optionsList.count {
-                let button = IndexedButton(frame: .zero, index: i)
-                button.setAttributedTitle(NSAttributedString(string: optionsList[i], attributes: textAttributes), for: [])
-                button.contentHorizontalAlignment = .left
-                button.backgroundColor = .white
-                addSubview(button)
-                button.autoSetDimension(.height, toSize: 32)
-                button.autoPinEdge(toSuperviewEdge: .left)
-                button.autoPinEdge(toSuperviewEdge: .right)
-                button.autoPinEdge(.top, to: .bottom, of: lastButton)
-                button.isHidden = !isExpanded
-                button.addTarget(self, action: #selector(buttonTap(_:)), for: .touchUpInside)
-                buttons.append(button)
-                lastButton = button
-            }
         }
         
-        @objc private func buttonTap(_ sender: IndexedButton) {
+        @objc private func mainButtonTap(_ sender: UIButton) {
+            let picker = ActionSheetMultipleStringPicker(title: "Медиа", rows: [
+                optionsList
+                ], initialSelection: [selectedIndex], doneBlock: { [weak self]
+                    picker, values, indexes in
+                    let textAttributes = [
+                        NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+                        NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+                        as [NSAttributedString.Key : Any]
+                    if let values = values,
+                       let optionIndex = values.first as? Int,
+                       let text = self?.optionsList[optionIndex] {
+                        self?.selectedIndex = optionIndex
+                        sender.setAttributedTitle(NSAttributedString(string: text, attributes: textAttributes), for: [])
+                    }
+                    
+                    return
+            }, cancel: { ActionMultipleStringCancelBlock in return }, origin: sender)
+            
+            picker?.setTextColor(UIColor(rgb: 0x2f5870))
+            
             let textAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 17.0)!]
                 as [NSAttributedString.Key : Any]
-            buttons[mainOptionIndex].setAttributedTitle(NSAttributedString(string: optionsList[sender.index], attributes: textAttributes), for: [])
-            isExpanded = false
-            selectedIndex = sender.index
-            updateExpand()
-        }
-        
-        @objc private func mainButtonTap() {
-            isExpanded = !isExpanded
-            updateExpand()
-        }
-        
-        private func updateExpand() {
-            mainButtonLine?.isHidden = isExpanded
-            for i in 0..<buttons.count {
-                if i != mainOptionIndex {
-                    buttons[i].isHidden = !isExpanded
-                }
-            }
-        }
-        
-        private class IndexedButton: UIButton {
-            let index: Int
-            init(frame: CGRect, index: Int) {
-                self.index = index
-                super.init(frame: frame)
-            }
             
-            required init?(coder aDecoder: NSCoder) {
-                fatalError("init(coder:) has not been implemented")
-            }
+            let finishButton = UIButton(forAutoLayout: ())
+            finishButton.setAttributedTitle(NSAttributedString(string: "Готово", attributes: textAttributes), for: [])
+            picker?.setDoneButton(UIBarButtonItem(customView: finishButton))
+            
+            let closeButton = UIButton(forAutoLayout: ())
+            closeButton.setAttributedTitle(NSAttributedString(string: "Закрыть", attributes: textAttributes), for: [])
+            picker?.setCancelButton(UIBarButtonItem(customView: closeButton))
+            picker?.show()
         }
     }
     
