@@ -9,18 +9,36 @@
 import Foundation
 import UIKit
 import Firebase
+import ActionSheetPicker_3_0
+
+struct ChooseCellModel {
+    var title: String
+    var options: [String]
+    
+    init(title: String = "",
+         options: [String] = [""]) {
+        self.title = title
+        self.options = options
+    }
+}
 
 enum QuestionItem {
     case text(String)
-    case choose(Int)
+    case choose(ChooseCellModel)
 }
 
 final class QuestionarreViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     private var spinner: UIActivityIndicatorView?
     private var navBar: NavigationBar!
-    private var itemsSelf: [QuestionItem] = [.text("Имя"), .text("Фамилия"), .choose(0), .choose(0),
-                                             .text("Направление образования"), .text("Сфера деятельности")]
-    private var itemsReading: [QuestionItem] = [.text("Любимые книги"), .text("Любимые авторы"), .choose(0)]
+    private var items: [[QuestionItem]] = [[.text("Имя"),
+                                            .text("Фамилия"),
+                                            .choose(ChooseCellModel(title: "Пол", options: ["Мужской", "Женский"])),
+                                            .choose(ChooseCellModel(title: "Образование", options: ["Среднее общее", "Бакалавр", "Магистр", "Кандидат наук", "Доктор наук", "Другое"])),
+                                             .text("Направление образования"),
+                                             .text("Сфера деятельности")],
+                                           [.text("Любимые книги"),
+                                            .text("Любимые авторы"),
+                                            .choose(ChooseCellModel(title: "Формат чтения", options: ["Бумажная книга", "Смартфон", "Планшет", "Электронная книга"]))]]
     private var tableView: UITableView?
     private var handler: AuthStateDidChangeListenerHandle?
     
@@ -70,19 +88,19 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         tableView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
         tableView.register(SectionCell.self, forCellReuseIdentifier: "sectionCell")
         tableView.register(TextFieldCell.self, forCellReuseIdentifier: "textFieldCell")
+        tableView.register(ChooseCell.self, forCellReuseIdentifier: "chooseCell")
         tableView.tableFooterView = UIView()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .white
         tableView.separatorInset = .zero
         tableView.separatorColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
-        //tableView.separatorInset = UIEdgeInsets(top: 1, left: 16, bottom: 1, right: 16)
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         self.tableView = tableView
     }
     
-    public func update(itemsSelf: [QuestionItem], itemsReading: [QuestionItem]) {
-        self.itemsSelf = itemsSelf
-        self.itemsReading = itemsReading
+    public func update(items: [[QuestionItem]]) {
+        self.items = items
         tableView?.reloadData()
     }
     
@@ -93,7 +111,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (section == 0) ? itemsSelf.count : itemsReading.count
+        return items[section].count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -107,27 +125,14 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "textFieldCell") as! TextFieldCell
-            var placeholder = ""
-            switch itemsSelf[indexPath.row] {
-            case .choose(let index):
-                placeholder = "TODO"
-            case .text(let placeholderText):
-                placeholder = placeholderText
-            }
-            cell.configure(model: placeholder)
+        switch items[indexPath.section][indexPath.row] {
+        case .choose(let model):
+            let cell = tableView.dequeueReusableCell(withIdentifier: "chooseCell") as! ChooseCell
+            cell.configure(model: model)
             return cell
-        } else {
+        case .text(let placeholderText):
             let cell = tableView.dequeueReusableCell(withIdentifier: "textFieldCell") as! TextFieldCell
-            var placeholder = ""
-            switch itemsSelf[indexPath.row] {
-            case .choose(let index):
-                placeholder = "TODO"
-            case .text(let placeholderText):
-                placeholder = placeholderText
-            }
-            cell.configure(model: placeholder)
+            cell.configure(model: placeholderText)
             return cell
         }
     }
@@ -253,6 +258,90 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                 as [NSAttributedString.Key : Any]
             
             field.attributedPlaceholder = NSAttributedString(string: model, attributes: textAttributes)
+        }
+    }
+    
+    private class ChooseCell: UITableViewCell {
+        private var model = ChooseCellModel()
+        private var mainButton: UIButton!
+        
+        override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+            super.init(style: style, reuseIdentifier: reuseIdentifier)
+            backgroundColor = .white
+            selectionStyle = .none
+            setupSubviews()
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        private func setupSubviews() {
+            let mainTextAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
+                as [NSAttributedString.Key : Any]
+            
+            let mainButton = UIButton(forAutoLayout: ())
+            mainButton.setAttributedTitle(NSAttributedString(string: model.title, attributes: mainTextAttributes), for: [])
+            mainButton.contentHorizontalAlignment = .left
+            addSubview(mainButton)
+            mainButton.autoSetDimension(.height, toSize: 32)
+            mainButton.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 32, left: 16, bottom: 8, right: 16))
+            
+            mainButton.addTarget(self, action: #selector(mainButtonTap), for: .touchUpInside)
+            
+            let arrowImageView = UIImageView(image: UIImage(named: "down"))
+            mainButton.addSubview(arrowImageView)
+            arrowImageView.autoSetDimensions(to: CGSize(width: 10, height: 5))
+            arrowImageView.autoAlignAxis(toSuperviewAxis: .horizontal)
+            arrowImageView.autoPinEdge(toSuperviewEdge: .right)
+            
+            self.mainButton = mainButton
+        }
+        
+        func configure(model: ChooseCellModel) {
+            self.model = model
+            
+            let textAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
+                as [NSAttributedString.Key : Any]
+            
+            mainButton.setAttributedTitle(NSAttributedString(string: model.title, attributes: textAttributes), for: [])
+        }
+        
+        @objc private func mainButtonTap(_ sender: UIButton) {
+            let picker = ActionSheetMultipleStringPicker(title: model.title, rows: [model.options],
+                                                         initialSelection: [0], doneBlock: { [weak self]
+                    picker, values, indexes in
+                    let textAttributes = [
+                        NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+                        NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+                        as [NSAttributedString.Key : Any]
+                    if let values = values,
+                        let optionIndex = values.first as? Int,
+                        let text = self?.model.options[optionIndex] {
+                        sender.setAttributedTitle(NSAttributedString(string: text, attributes: textAttributes), for: [])
+                    }
+                                                            
+                    return
+                }, cancel: { ActionMultipleStringCancelBlock in return }, origin: sender)
+            picker?.setTextColor(UIColor(rgb: 0x2f5870))
+            
+            let textAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 17.0)!]
+                as [NSAttributedString.Key : Any]
+            
+            let finishButton = UIButton(forAutoLayout: ())
+            finishButton.setAttributedTitle(NSAttributedString(string: "Готово", attributes: textAttributes), for: [])
+            picker?.setDoneButton(UIBarButtonItem(customView: finishButton))
+            
+            let closeButton = UIButton(forAutoLayout: ())
+            closeButton.setAttributedTitle(NSAttributedString(string: "Закрыть", attributes: textAttributes), for: [])
+            picker?.setCancelButton(UIBarButtonItem(customView: closeButton))
+            picker?.show()
         }
     }
 }
