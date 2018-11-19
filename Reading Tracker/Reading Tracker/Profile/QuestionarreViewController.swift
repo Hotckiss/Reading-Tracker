@@ -18,7 +18,8 @@ enum QuestionItem {
 final class QuestionarreViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     private var spinner: UIActivityIndicatorView?
     private var navBar: NavigationBar!
-    private var items: [QuestionItem] = []
+    private var itemsSelf: [QuestionItem] = []
+    private var itemsReading: [QuestionItem] = []
     private var tableView: UITableView?
     private var handler: AuthStateDidChangeListenerHandle?
     
@@ -57,10 +58,6 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        var bottomSpace: CGFloat = 0
-        if #available(iOS 11.0, *) {
-            bottomSpace = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
-        }
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .white
         setupNavigationBar()
@@ -70,7 +67,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         view.addSubview(tableView)
         tableView.autoPinEdge(.top, to: .bottom, of: navBar)
         tableView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
-        //tableView.register(BookCell.self, forCellReuseIdentifier: "bookCell")
+        tableView.register(SectionCell.self, forCellReuseIdentifier: "sectionCell")
         tableView.tableFooterView = UIView()
         tableView.delegate = self
         tableView.dataSource = self
@@ -80,8 +77,9 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         self.tableView = tableView
     }
     
-    public func update(items: [QuestionItem]) {
-        self.items = items
+    public func update(itemsSelf: [QuestionItem], itemsReading: [QuestionItem]) {
+        self.itemsSelf = itemsSelf
+        self.itemsReading = itemsReading
         tableView?.reloadData()
     }
     
@@ -92,7 +90,17 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return (section == 0) ? itemsSelf.count : itemsReading.count
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "sectionCell") as! SectionCell
+        cell.configure(model: (section == 0) ? "О себе" : "О предпочтениях")
+        return cell
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -132,5 +140,47 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         spinner.layer.cornerRadius = 8
         spinner.autoSetDimensions(to: CGSize(width: 64, height: 64))
         self.spinner = spinner
+    }
+    
+    private class SectionCell: UITableViewCell {
+        private var model: String = ""
+        private var titleLabel: UILabel?
+        
+        override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+            super.init(style: style, reuseIdentifier: reuseIdentifier)
+            backgroundColor = .white
+            selectionStyle = .none
+            setupSubviews()
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        private func setupSubviews() {
+            let titleLabel = UILabel(forAutoLayout: ())
+            
+            let titleTextAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+                as [NSAttributedString.Key : Any]
+            
+            titleLabel.attributedText = NSAttributedString(string: model, attributes: titleTextAttributes)
+            titleLabel.numberOfLines = 0
+            addSubview(titleLabel)
+            titleLabel.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16))
+            self.titleLabel = titleLabel
+        }
+        
+        func configure(model: String) {
+            self.model = model
+            
+            let titleTextAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+                as [NSAttributedString.Key : Any]
+            
+            titleLabel?.attributedText = NSAttributedString(string: model, attributes: titleTextAttributes)
+        }
     }
 }
