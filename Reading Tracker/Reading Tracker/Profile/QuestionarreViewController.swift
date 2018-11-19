@@ -18,8 +18,9 @@ enum QuestionItem {
 final class QuestionarreViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     private var spinner: UIActivityIndicatorView?
     private var navBar: NavigationBar!
-    private var itemsSelf: [QuestionItem] = []
-    private var itemsReading: [QuestionItem] = []
+    private var itemsSelf: [QuestionItem] = [.text("Имя"), .text("Фамилия"), .choose(0), .choose(0),
+                                             .text("Направление образования"), .text("Сфера деятельности")]
+    private var itemsReading: [QuestionItem] = [.text("Любимые книги"), .text("Любимые авторы"), .choose(0)]
     private var tableView: UITableView?
     private var handler: AuthStateDidChangeListenerHandle?
     
@@ -68,12 +69,14 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         tableView.autoPinEdge(.top, to: .bottom, of: navBar)
         tableView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
         tableView.register(SectionCell.self, forCellReuseIdentifier: "sectionCell")
+        tableView.register(TextFieldCell.self, forCellReuseIdentifier: "textFieldCell")
         tableView.tableFooterView = UIView()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .white
         tableView.separatorInset = .zero
-        tableView.separatorColor = UIColor(rgb: 0x2f5870)
+        tableView.separatorColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
+        //tableView.separatorInset = UIEdgeInsets(top: 1, left: 16, bottom: 1, right: 16)
         self.tableView = tableView
     }
     
@@ -104,10 +107,29 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //let cell = tableView.dequeueReusableCell(withIdentifier: "bookCell") as! BookCell
-        //cell.configure(model: books[indexPath.row])
-        //return cell
-        return UITableViewCell(forAutoLayout: ())
+        if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "textFieldCell") as! TextFieldCell
+            var placeholder = ""
+            switch itemsSelf[indexPath.row] {
+            case .choose(let index):
+                placeholder = "TODO"
+            case .text(let placeholderText):
+                placeholder = placeholderText
+            }
+            cell.configure(model: placeholder)
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "textFieldCell") as! TextFieldCell
+            var placeholder = ""
+            switch itemsSelf[indexPath.row] {
+            case .choose(let index):
+                placeholder = "TODO"
+            case .text(let placeholderText):
+                placeholder = placeholderText
+            }
+            cell.configure(model: placeholder)
+            return cell
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -168,7 +190,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             titleLabel.attributedText = NSAttributedString(string: model, attributes: titleTextAttributes)
             titleLabel.numberOfLines = 0
             addSubview(titleLabel)
-            titleLabel.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16))
+            titleLabel.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 16, left: 16, bottom: 0, right: 16))
             self.titleLabel = titleLabel
         }
         
@@ -181,6 +203,56 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                 as [NSAttributedString.Key : Any]
             
             titleLabel?.attributedText = NSAttributedString(string: model, attributes: titleTextAttributes)
+        }
+    }
+    
+    private class TextFieldCell: UITableViewCell {
+        var resultText: String {
+            get {
+                return field.text ?? ""
+            }
+            set {
+                field.text = newValue
+            }
+        }
+
+        private var model: String = ""
+        private var field: RTTextField!
+        
+        override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+            super.init(style: style, reuseIdentifier: reuseIdentifier)
+            backgroundColor = .white
+            selectionStyle = .none
+            setupSubviews()
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        private func setupSubviews() {
+            let field = RTTextField(frame: .zero)
+            
+            let textAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
+                as [NSAttributedString.Key : Any]
+            
+            field.attributedPlaceholder = NSAttributedString(string: model, attributes: textAttributes)
+            addSubview(field)
+            field.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 32, left: 8, bottom: 8, right: 8))
+            self.field = field
+        }
+        
+        func configure(model: String) {
+            self.model = model
+            
+            let textAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
+                as [NSAttributedString.Key : Any]
+            
+            field.attributedPlaceholder = NSAttributedString(string: model, attributes: textAttributes)
         }
     }
 }
