@@ -23,6 +23,7 @@ struct ChooseCellModel {
 }
 
 enum QuestionItem {
+    case longtext(String)
     case text(String)
     case choose(ChooseCellModel)
 }
@@ -36,8 +37,8 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                                             .choose(ChooseCellModel(title: "Образование", options: ["Среднее общее", "Бакалавр", "Магистр", "Кандидат наук", "Доктор наук", "Другое"])),
                                              .text("Направление образования"),
                                              .text("Сфера деятельности")],
-                                           [.text("Любимые книги"),
-                                            .text("Любимые авторы"),
+                                           [.longtext("Любимые книги"),
+                                            .longtext("Любимые авторы"),
                                             .choose(ChooseCellModel(title: "Формат чтения", options: ["Бумажная книга", "Смартфон", "Планшет", "Электронная книга"]))]]
     private var tableView: UITableView?
     private var handler: AuthStateDidChangeListenerHandle?
@@ -88,6 +89,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         tableView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
         tableView.register(SectionCell.self, forCellReuseIdentifier: "sectionCell")
         tableView.register(TextFieldCell.self, forCellReuseIdentifier: "textFieldCell")
+        tableView.register(LongTextFieldCell.self, forCellReuseIdentifier: "longTextFieldCell")
         tableView.register(ChooseCell.self, forCellReuseIdentifier: "chooseCell")
         tableView.tableFooterView = UIView()
         tableView.delegate = self
@@ -132,6 +134,10 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             return cell
         case .text(let placeholderText):
             let cell = tableView.dequeueReusableCell(withIdentifier: "textFieldCell") as! TextFieldCell
+            cell.configure(model: placeholderText)
+            return cell
+        case .longtext(let placeholderText):
+            let cell = tableView.dequeueReusableCell(withIdentifier: "longTextFieldCell") as! LongTextFieldCell
             cell.configure(model: placeholderText)
             return cell
         }
@@ -221,6 +227,56 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             }
         }
 
+        private var model: String = ""
+        private var field: RTTextField!
+        
+        override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+            super.init(style: style, reuseIdentifier: reuseIdentifier)
+            backgroundColor = .white
+            selectionStyle = .none
+            setupSubviews()
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        private func setupSubviews() {
+            let field = RTTextField(frame: .zero)
+            
+            let textAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
+                as [NSAttributedString.Key : Any]
+            
+            field.attributedPlaceholder = NSAttributedString(string: model, attributes: textAttributes)
+            addSubview(field)
+            field.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 32, left: 8, bottom: 8, right: 8))
+            self.field = field
+        }
+        
+        func configure(model: String) {
+            self.model = model
+            
+            let textAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
+                as [NSAttributedString.Key : Any]
+            
+            field.attributedPlaceholder = NSAttributedString(string: model, attributes: textAttributes)
+        }
+    }
+    
+    private class LongTextFieldCell: UITableViewCell {
+        var resultText: String {
+            get {
+                return field.text ?? ""
+            }
+            set {
+                field.text = newValue
+            }
+        }
+        
         private var model: String = ""
         private var field: RTTextField!
         
