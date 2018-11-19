@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Firebase
+import ActionSheetPicker_3_0
 
 public struct ProfileOption {
     public let title: String
@@ -86,6 +87,35 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 0 {
+            let picker = ActionSheetMultipleStringPicker(title: "Тестовый пикер", rows: [
+                ["One", "Two", "A lot"],
+                ["Many", "Many more", "Infinite"]
+                ], initialSelection: [2, 2], doneBlock: {
+                    picker, values, indexes in
+                    
+                    print("values = \(values)")
+                    print("indexes = \(indexes)")
+                    print("picker = \(picker)")
+                    return
+            }, cancel: { ActionMultipleStringCancelBlock in return }, origin: tableView)
+            
+            picker?.setTextColor(UIColor(rgb: 0x2f5870))
+            
+            let textAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 17.0)!]
+                as [NSAttributedString.Key : Any]
+            
+            let finishButton = UIButton(forAutoLayout: ())
+            finishButton.setAttributedTitle(NSAttributedString(string: "Готово", attributes: textAttributes), for: [])
+            picker?.setDoneButton(UIBarButtonItem(customView: finishButton))
+            
+            let closeButton = UIButton(forAutoLayout: ())
+            closeButton.setAttributedTitle(NSAttributedString(string: "Закрыть", attributes: textAttributes), for: [])
+            picker?.setCancelButton(UIBarButtonItem(customView: closeButton))
+            picker?.show()
+        }
         if indexPath.row == 3 {
             onExit?()
         }
