@@ -82,6 +82,52 @@ final class FirestoreManager {
         }
     }
     
+    public func downloadQuestionarrie(onCompleted: ((Questionarrie) -> Void)?, onError: (() -> Void)?) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        db.collection("questionarries").document(uid).getDocument { (document, error) in
+            if let document = document,
+                let data = document.data(),
+                document.exists {
+                var q = Questionarrie()
+                for (key, value) in data {
+                    guard let stringValue = value as? String else {
+                        print("Document error format")
+                        return
+                    }
+                    switch key {
+                    case "sex":
+                        q.sex = Sex(str: stringValue)
+                    case "degree":
+                        q.education = Education(str: stringValue)
+                    case "occupation":
+                        q.workSphere = stringValue
+                    case "firstName":
+                        q.firstName = stringValue
+                    case "major":
+                        q.major = stringValue
+                    case "favorite book format":
+                        q.bookType = BookType.generate(raw: stringValue)
+                    case "favorite authors":
+                        q.favoriteAuthors = stringValue
+                    case "lastName":
+                        q.lastName = stringValue
+                    case "favorite books":
+                        q.favoriteBooks = stringValue
+                    default:
+                        break
+                    }
+                }
+                onCompleted?(q)
+            } else {
+                print("Document does not exist")
+                onError?()
+            }
+        }
+    }
+    
     public func loadUserProfile() -> Observable<UserModel> {
         guard let uid = Auth.auth().currentUser?.uid else {
             return .empty()

@@ -34,6 +34,17 @@ enum Sex: String {
             self = .unknown
         }
     }
+    
+    init(str: String) {
+        switch str {
+        case "male":
+            self = .male
+        case "female":
+            self = .female
+        default:
+            self = .unknown
+        }
+    }
 }
 
 enum Education: String {
@@ -62,6 +73,25 @@ enum Education: String {
                 self = .other
             }
         } else {
+            self = .unknown
+        }
+    }
+    
+    init(str: String) {
+        switch str {
+        case "middle":
+            self = .middle
+        case "bachelor":
+            self = .bachelor
+        case "master":
+            self = .master
+        case "candidate":
+            self = .candidate
+        case "doctor":
+            self = .doctor
+        case "other":
+            self = .other
+        default:
             self = .unknown
         }
     }
