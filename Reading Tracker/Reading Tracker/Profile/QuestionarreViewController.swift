@@ -214,7 +214,7 @@ enum QuestionItem {
 
 final class QuestionarreViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var questionarrie = Questionarrie()
-    private var spinner: UIActivityIndicatorView?
+    private var spinner: Spinner?
     private var navBar: NavigationBar!
     private var items: [[QuestionItem]] = [[.text(TextCellModel(placeholder: "Имя", text: "")),
                                             .text(TextCellModel(placeholder: "Фамилия", text: "")),
@@ -230,25 +230,6 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
     
     convenience init() {
         self.init(nibName: nil, bundle: nil)
-        handler = Auth.auth().addStateDidChangeListener { [weak self] (auth, user) in
-            if user != nil {
-                FirestoreManager.DBManager.downloadQuestionarrie(onCompleted: ({ [weak self] q in
-                    self?.questionarrie = q
-                    self?.items = [[.text(TextCellModel(placeholder: "Имя", text: q.firstName)),
-                              .text(TextCellModel(placeholder: "Фамилия", text: q.lastName)),
-                              .choose(ChooseCellModel(title: "Пол", selectedIndex: q.sex.index(),  options: ["Мужской", "Женский"])),
-                              .choose(ChooseCellModel(title: "Образование", selectedIndex: q.education.index(), options: ["Среднее общее", "Бакалавр", "Магистр", "Кандидат наук", "Доктор наук", "Другое"])),
-                              .text(TextCellModel(placeholder: "Направление образования", text: q.major)),
-                              .text(TextCellModel(placeholder: "Сфера деятельности", text: q.workSphere))],
-                             [.longtext(TextCellModel(placeholder: "Любимые книги", text: q.favoriteBooks)),
-                              .longtext(TextCellModel(placeholder: "Любимые авторы", text: q.favoriteAuthors)),
-                              .choose(ChooseCellModel(title: "Формат чтения", selectedIndex: q.bookType.index(), options: ["Бумажная книга", "Электронная книга", "Смартфон", "Планшет"]))]]
-                    self?.tableView?.reloadData()
-                }), onError: nil)
-            } else {
-                self?.questionarrie = Questionarrie()
-            }
-        }
     }
     
     deinit {
@@ -270,7 +251,6 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .white
         setupNavigationBar()
-        setupSpinner()
         
         let tableView = UITableView(forAutoLayout: ())
         view.addSubview(tableView)
@@ -289,6 +269,34 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         tableView.rowHeight = UITableView.automaticDimension
         self.tableView = tableView
+        
+        setupSpinner()
+        spinner?.isAnimating = true
+        handler = Auth.auth().addStateDidChangeListener { [weak self] (auth, user) in
+            if user != nil {
+                FirestoreManager.DBManager.downloadQuestionarrie(onCompleted: ({ [weak self] q in
+                    self?.spinner?.isAnimating = false
+                    self?.questionarrie = q
+                    self?.items = [[.text(TextCellModel(placeholder: "Имя", text: q.firstName)),
+                                    .text(TextCellModel(placeholder: "Фамилия", text: q.lastName)),
+                                    .choose(ChooseCellModel(title: "Пол", selectedIndex: q.sex.index(),  options: ["Мужской", "Женский"])),
+                                    .choose(ChooseCellModel(title: "Образование", selectedIndex: q.education.index(), options: ["Среднее общее", "Бакалавр", "Магистр", "Кандидат наук", "Доктор наук", "Другое"])),
+                                    .text(TextCellModel(placeholder: "Направление образования", text: q.major)),
+                                    .text(TextCellModel(placeholder: "Сфера деятельности", text: q.workSphere))],
+                                   [.longtext(TextCellModel(placeholder: "Любимые книги", text: q.favoriteBooks)),
+                                    .longtext(TextCellModel(placeholder: "Любимые авторы", text: q.favoriteAuthors)),
+                                    .choose(ChooseCellModel(title: "Формат чтения", selectedIndex: q.bookType.index(), options: ["Бумажная книга", "Электронная книга", "Смартфон", "Планшет"]))]]
+                    self?.tableView?.reloadData()
+                }), onError: ({ [weak self] in
+                    self?.spinner?.isAnimating = false
+                    let alert = UIAlertController(title: "Ошибка!", message: "Не удалось скачать анкету", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+                    self?.present(alert, animated: true, completion: nil)
+                }))
+            } else {
+                self?.questionarrie = Questionarrie()
+            }
+        }
     }
     
     public func update(items: [[QuestionItem]]) {
@@ -369,16 +377,20 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                                                     self?.navigationController?.popViewController(animated: true)
                                                    }),
                                                    onFrontButtonPressed: ({ [weak self] in
+                                                    self?.spinner?.isAnimating = true
                                                     guard let strongSelf = self else {
-                                                            let alert = UIAlertController(title: "Ошибка!", message: "Неизвестная ошибка", preferredStyle: .alert)
-                                                            alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
-                                                            self?.present(alert, animated: true, completion: nil)
+                                                        self?.spinner?.isAnimating = false
+                                                        let alert = UIAlertController(title: "Ошибка!", message: "Неизвестная ошибка", preferredStyle: .alert)
+                                                        alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+                                                        self?.present(alert, animated: true, completion: nil)
                                                         return
                                                     }
                                                     FirestoreManager.DBManager.updateQuestionarre(q: strongSelf.questionarrie,
                                                                                                   onError: ({ err in
+                                                                                                    self?.spinner?.isAnimating = false
                                                                                                     strongSelf.alertError(reason: "Ошибка загрузки анкеты " + err)
                                                                                                   }), onCompleted: ({ [weak self] in
+                                                                                                    self?.spinner?.isAnimating = false
                                                                                                     self?.navigationController?.popViewController(animated: true)
                                                                                                   }))
                                                    })))
@@ -389,14 +401,12 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
     }
     
     private func setupSpinner() {
-        let spinner = UIActivityIndicatorView()
+        let spinner = Spinner(forAutoLayout: ())
         view.addSubview(spinner)
         
         view.bringSubviewToFront(spinner)
         spinner.autoCenterInSuperview()
-        spinner.backgroundColor = UIColor(rgb: 0x555555).withAlphaComponent(0.7)
-        spinner.layer.cornerRadius = 8
-        spinner.autoSetDimensions(to: CGSize(width: 64, height: 64))
+        spinner.autoSetDimensions(to: CGSize(width: 56, height: 56))
         self.spinner = spinner
     }
     
@@ -554,9 +564,9 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                 parent?.endUpdates()
                 UIView.setAnimationsEnabled(true)
                 
-                //if let thisIndexPath = parent?.indexPath(for: self) {
-                //    parent?.scrollToRow(at: thisIndexPath, at: .bottom, animated: false)
-                //}
+                if let thisIndexPath = parent?.indexPath(for: self) {
+                    parent?.scrollToRow(at: thisIndexPath, at: .bottom, animated: false)
+                }
             }
         }
         
