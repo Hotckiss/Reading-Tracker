@@ -117,6 +117,18 @@ struct Questionarrie {
         self.favoriteAuthors = favoriteAuthors
         self.bookType = BookType(raw: bookType)
     }
+    
+    init() {
+        self.init(firstName: "",
+                  lastName: "",
+                  sex: .unknown,
+                  education: .unknown,
+                  major: "",
+                  workSphere: "",
+                  favoriteAuthors: "",
+                  favoriteBooks: "",
+                  bookType: .unknown)
+    }
 }
 
 enum QuestionItem {
@@ -126,6 +138,7 @@ enum QuestionItem {
 }
 
 final class QuestionarreViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    var questionarrie = Questionarrie()
     private var spinner: UIActivityIndicatorView?
     private var navBar: NavigationBar!
     private var items: [[QuestionItem]] = [[.text("Имя"),
@@ -228,15 +241,39 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         switch items[indexPath.section][indexPath.row] {
         case .choose(let model):
             let cell = tableView.dequeueReusableCell(withIdentifier: "chooseCell") as! ChooseCell
-            cell.configure(model: model)
+            cell.configure(model: model, onUpdate: ({ [weak self] indq in
+                if indexPath.section == 0 && indexPath.row == 2 {
+                    self?.questionarrie.sex = Sex(raw: indq)
+                } else if indexPath.section == 0 && indexPath.row == 3 {
+                    self?.questionarrie.education = Education(raw: indq)
+                } else {
+                    self?.questionarrie.bookType = BookType(raw: indq)
+                }
+            }))
             return cell
         case .text(let placeholderText):
             let cell = tableView.dequeueReusableCell(withIdentifier: "textFieldCell") as! TextFieldCell
-            cell.configure(model: placeholderText)
+            cell.configure(model: placeholderText, onUpdate: ({ [weak self] str in
+                if indexPath.row == 0 {
+                    self?.questionarrie.firstName = str
+                } else if indexPath.row == 1 {
+                    self?.questionarrie.lastName = str
+                } else if indexPath.row == 4 {
+                    self?.questionarrie.major = str
+                } else {
+                    self?.questionarrie.workSphere = str
+                }
+            }))
             return cell
         case .longtext(let placeholderText):
             let cell = tableView.dequeueReusableCell(withIdentifier: "longTextFieldCell") as! LongTextFieldCell
-            cell.configure(model: placeholderText, parent: tableView)
+            cell.configure(model: placeholderText, parent: tableView, onUpdate: ({ [weak self] str in
+                if indexPath.row == 0 {
+                    self?.questionarrie.favoriteBooks = str
+                } else {
+                    self?.questionarrie.favoriteAuthors = str
+                }
+            }))
             return cell
         }
     }
@@ -253,39 +290,13 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                                                     self?.navigationController?.popViewController(animated: true)
                                                    }),
                                                    onFrontButtonPressed: ({ [weak self] in
-                                                    guard let strongSelf = self,
-                                                          let table = strongSelf.tableView else {
+                                                    guard let strongSelf = self else {
                                                             let alert = UIAlertController(title: "Ошибка!", message: "Неизвестная ошибка", preferredStyle: .alert)
                                                             alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
                                                             self?.present(alert, animated: true, completion: nil)
                                                         return
                                                     }
-                                                    for (i, section) in strongSelf.items.enumerated() {
-                                                        for (j, item) in section.enumerated() {
-                                                            let path = IndexPath(row: j, section: i)
-                                                            let cell = table.cellForRow(at: path)
-                                                            switch item {
-                                                            case .choose:
-                                                                guard let typedCell = cell as? ChooseCell else {
-                                                                    strongSelf.alertError(reason: "Не удалось собрать данные")
-                                                                    return
-                                                                }
-                                                                print(typedCell.chooseNumber)
-                                                            case .text:
-                                                                guard let typedCell = cell as? TextFieldCell else {
-                                                                    strongSelf.alertError(reason: "Не удалось собрать данные")
-                                                                    return
-                                                                }
-                                                                print("S: \(typedCell.resultText)")
-                                                            case .longtext:
-                                                                guard let typedCell = cell as? LongTextFieldCell else {
-                                                                    strongSelf.alertError(reason: "Не удалось собрать данные")
-                                                                    return
-                                                                }
-                                                                print("L: \(typedCell.resultText)")
-                                                            }
-                                                        }
-                                                    }
+                                                    print(strongSelf.questionarrie)
                                                     //todo -- upload
                                                    })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
@@ -313,7 +324,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
     }
     
     private class SectionCell: UITableViewCell {
-        private var model: String = "f"
+        private var model: String = ""
         private var titleLabel: UILabel?
         
         override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -356,15 +367,8 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
     }
     
     private class TextFieldCell: UITableViewCell {
-        var resultText: String {
-            get {
-                return field.text ?? ""
-            }
-            set {
-                field.text = newValue
-            }
-        }
-
+        var resultText: String = ""
+        var onUpdate: ((String) -> Void)?
         private var model: String = ""
         private var field: RTTextField!
         
@@ -391,11 +395,16 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             addSubview(field)
             field.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 32, left: 8, bottom: 8, right: 8))
             self.field = field
+            field.addTarget(self, action: #selector(fieldChanged(_:)), for: .editingChanged)
         }
         
-        func configure(model: String) {
+        @objc private func fieldChanged(_ sender: UITextField) {
+            onUpdate?(sender.text ?? "")
+        }
+        
+        func configure(model: String, onUpdate: ((String) -> Void)?) {
             self.model = model
-            
+            self.onUpdate = onUpdate
             let textAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
                 NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
@@ -406,15 +415,8 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
     }
     
     private class LongTextFieldCell: UITableViewCell, UITextViewDelegate {
-        var resultText: String {
-            get {
-                return field.text ?? ""
-            }
-            set {
-                field.text = newValue
-            }
-        }
-        
+        var resultText: String = ""
+        var onUpdate: ((String) -> Void)?
         private var parent: UITableView?
         private var model: String = ""
         private var field: UITextView!
@@ -457,7 +459,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         func textViewDidChange(_ textView: UITextView) {
             let size = textView.bounds.size
             let newSize = textView.sizeThatFits(CGSize(width: size.width, height: CGFloat.greatestFiniteMagnitude))
-            
+            onUpdate?(textView.text)
             if size.height != newSize.height {
                 UIView.setAnimationsEnabled(false)
                 parent?.beginUpdates()
@@ -478,9 +480,10 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             placeholder?.isHidden = (textView.text.count > 0)
         }
         
-        func configure(model: String, parent: UITableView?) {
+        func configure(model: String, parent: UITableView?, onUpdate: ((String) -> Void)?) {
             self.model = model
             self.parent = parent
+            self.onUpdate = onUpdate
             let textAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
                 NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
@@ -492,6 +495,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
     
     private class ChooseCell: UITableViewCell {
         var chooseNumber: Int? = nil
+        var onUpdate: ((Int?) -> Void)?
         private var model = ChooseCellModel()
         private var mainButton: UIButton!
         
@@ -530,9 +534,9 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             self.mainButton = mainButton
         }
         
-        func configure(model: ChooseCellModel) {
+        func configure(model: ChooseCellModel, onUpdate: ((Int?) -> Void)?) {
             self.model = model
-            
+            self.onUpdate = onUpdate
             let textAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
                 NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
@@ -552,10 +556,12 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                     if let values = values,
                         let optionIndex = values.first as? Int,
                         let text = self?.model.options[optionIndex] {
+                        self?.onUpdate?(optionIndex)
                         sender.setAttributedTitle(NSAttributedString(string: text, attributes: textAttributes), for: [])
                         self?.chooseNumber = optionIndex
+                        return
                     }
-                                                            
+                    self?.onUpdate?(nil)
                     return
                 }, cancel: { ActionMultipleStringCancelBlock in return }, origin: sender)
             picker?.setTextColor(UIColor(rgb: 0x2f5870))
