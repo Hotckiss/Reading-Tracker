@@ -22,10 +22,10 @@ struct ChooseCellModel {
     }
 }
 
-enum Sex {
-    case male
-    case female
-    case unknown
+enum Sex: String {
+    case male = "male"
+    case female = "female"
+    case unknown = "unknown"
     
     init(raw: Int?) {
         if let int = raw {
@@ -36,14 +36,14 @@ enum Sex {
     }
 }
 
-enum Education {
-    case middle
-    case bachelor
-    case master
-    case candidate
-    case doctor
-    case other
-    case unknown
+enum Education: String {
+    case middle = "middle"
+    case bachelor = "bachelor"
+    case master = "master"
+    case candidate = "candidate"
+    case doctor = "doctor"
+    case other = "other"
+    case unknown = "unknown"
     
     init(raw: Int?) {
         if let int = raw {
@@ -296,8 +296,10 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                                                             self?.present(alert, animated: true, completion: nil)
                                                         return
                                                     }
-                                                    print(strongSelf.questionarrie)
-                                                    //todo -- upload
+                                                    FirestoreManager.DBManager.updateQuestionarre(q: strongSelf.questionarrie,
+                                                                                                  onError: ({ err in
+                                                                                                    strongSelf.alertError(reason: "Ошибка загрузки анкеты " + err)
+                                                                                                  }))
                                                    })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         view.addSubview(navBar)

@@ -57,6 +57,31 @@ final class FirestoreManager {
         }
     }
     
+    public func updateQuestionarre(q: Questionarrie, onError: ((String) -> Void)?) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        db.collection("questionarries").document(uid).setData([
+            "firstName": q.firstName,
+            "lastName": q.lastName,
+            "sex": q.sex.rawValue,
+            "degree": q.education.rawValue,
+            "major": q.major,
+            "occupation": q.workSphere,
+            "favorite books": q.favoriteBooks,
+            "favorite authors": q.favoriteAuthors,
+            "favorite book format": q.bookType.rawValue,
+            ], merge: true) { error in
+                if let error = error {
+                    print("Error writing document: \(error)")
+                    onError?("\(error)")
+                } else {
+                    print("Document successfully written!")
+                }
+        }
+    }
+    
     public func loadUserProfile() -> Observable<UserModel> {
         guard let uid = Auth.auth().currentUser?.uid else {
             return .empty()
