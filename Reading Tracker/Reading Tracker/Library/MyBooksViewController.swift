@@ -50,6 +50,21 @@ public enum BookType: String {
             self = .unknown
         }
     }
+    
+    func index() -> Int? {
+        switch self {
+        case .paper:
+            return 0
+        case .ebook:
+            return 1
+        case .smartphone:
+            return 2
+        case .tab:
+            return 3
+        case .unknown:
+            return nil
+        }
+    }
 }
 
 public struct BookModel {

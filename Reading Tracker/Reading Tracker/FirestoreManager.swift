@@ -57,7 +57,7 @@ final class FirestoreManager {
         }
     }
     
-    public func updateQuestionarre(q: Questionarrie, onError: ((String) -> Void)?) {
+    public func updateQuestionarre(q: Questionarrie, onError: ((String) -> Void)?, onCompleted: (() -> Void)?) {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
@@ -78,6 +78,7 @@ final class FirestoreManager {
                     onError?("\(error)")
                 } else {
                     print("Document successfully written!")
+                    onCompleted?()
                 }
         }
     }

@@ -50,6 +50,17 @@ enum Sex: String {
         }
     }
     
+    func index() -> Int? {
+        switch self {
+        case .male:
+            return 0
+        case .female:
+            return 1
+        case .unknown:
+            return nil
+        }
+    }
+        
     init(str: String) {
         switch str {
         case "male":
@@ -71,6 +82,25 @@ enum Education: String {
     case other = "other"
     case unknown = "unknown"
     
+    func index() -> Int? {
+        switch self {
+        case .middle:
+            return 0
+        case .bachelor:
+            return 1
+        case .master:
+            return 2
+        case .candidate:
+            return 3
+        case .doctor:
+            return 4
+        case .other:
+            return 5
+        case .unknown:
+            return nil
+        }
+    }
+        
     init(raw: Int?) {
         if let int = raw {
             switch int {
@@ -206,13 +236,13 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                     self?.questionarrie = q
                     self?.items = [[.text(TextCellModel(placeholder: "Имя", text: q.firstName)),
                               .text(TextCellModel(placeholder: "Фамилия", text: q.lastName)),
-                              .choose(ChooseCellModel(title: "Пол", options: ["Мужской", "Женский"])),
-                              .choose(ChooseCellModel(title: "Образование", options: ["Среднее общее", "Бакалавр", "Магистр", "Кандидат наук", "Доктор наук", "Другое"])),
+                              .choose(ChooseCellModel(title: "Пол", selectedIndex: q.sex.index(),  options: ["Мужской", "Женский"])),
+                              .choose(ChooseCellModel(title: "Образование", selectedIndex: q.education.index(), options: ["Среднее общее", "Бакалавр", "Магистр", "Кандидат наук", "Доктор наук", "Другое"])),
                               .text(TextCellModel(placeholder: "Направление образования", text: q.major)),
                               .text(TextCellModel(placeholder: "Сфера деятельности", text: q.workSphere))],
                              [.longtext(TextCellModel(placeholder: "Любимые книги", text: q.favoriteBooks)),
                               .longtext(TextCellModel(placeholder: "Любимые авторы", text: q.favoriteAuthors)),
-                              .choose(ChooseCellModel(title: "Формат чтения", options: ["Бумажная книга", "Электронная книга", "Смартфон", "Планшет"]))]]
+                              .choose(ChooseCellModel(title: "Формат чтения", selectedIndex: q.bookType.index(), options: ["Бумажная книга", "Электронная книга", "Смартфон", "Планшет"]))]]
                     self?.tableView?.reloadData()
                 }), onError: nil)
             } else {
@@ -348,6 +378,8 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                                                     FirestoreManager.DBManager.updateQuestionarre(q: strongSelf.questionarrie,
                                                                                                   onError: ({ err in
                                                                                                     strongSelf.alertError(reason: "Ошибка загрузки анкеты " + err)
+                                                                                                  }), onCompleted: ({ [weak self] in
+                                                                                                    self?.navigationController?.popViewController(animated: true)
                                                                                                   }))
                                                    })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
@@ -569,13 +601,22 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         }
         
         private func setupSubviews() {
-            let mainTextAttributes = [
+            let mainTextAttributes1 = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
                 NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
                 as [NSAttributedString.Key : Any]
             
+            let mainTextAttributes2 = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+                as [NSAttributedString.Key : Any]
+            
             let mainButton = UIButton(forAutoLayout: ())
-            mainButton.setAttributedTitle(NSAttributedString(string: model.title, attributes: mainTextAttributes), for: [])
+            if let ind = model.selectedIndex {
+                mainButton.setAttributedTitle(NSAttributedString(string: model.options[ind], attributes: mainTextAttributes2), for: [])
+            } else {
+                mainButton.setAttributedTitle(NSAttributedString(string: model.title, attributes: mainTextAttributes1), for: [])
+            }
             mainButton.contentHorizontalAlignment = .left
             addSubview(mainButton)
             mainButton.autoSetDimension(.height, toSize: 32)
@@ -595,17 +636,26 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         func configure(model: ChooseCellModel, onUpdate: ((Int?) -> Void)?) {
             self.model = model
             self.onUpdate = onUpdate
-            let textAttributes = [
+            let mainTextAttributes1 = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
                 NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
                 as [NSAttributedString.Key : Any]
             
-            mainButton.setAttributedTitle(NSAttributedString(string: model.title, attributes: textAttributes), for: [])
+            let mainTextAttributes2 = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+                as [NSAttributedString.Key : Any]
+            
+            if let ind = model.selectedIndex {
+                mainButton.setAttributedTitle(NSAttributedString(string: model.options[ind], attributes: mainTextAttributes2), for: [])
+            } else {
+                mainButton.setAttributedTitle(NSAttributedString(string: model.title, attributes: mainTextAttributes1), for: [])
+            }
         }
         
         @objc private func mainButtonTap(_ sender: UIButton) {
             let picker = ActionSheetMultipleStringPicker(title: model.title, rows: [model.options],
-                                                         initialSelection: [0], doneBlock: { [weak self]
+                                                         initialSelection: [model.selectedIndex ?? 0], doneBlock: { [weak self]
                     picker, values, indexes in
                     let textAttributes = [
                         NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
