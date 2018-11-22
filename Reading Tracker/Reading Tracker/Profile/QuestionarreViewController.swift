@@ -226,16 +226,21 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                                             .longtext(TextCellModel(placeholder: "Любимые авторы", text: "")),
                                             .choose(ChooseCellModel(title: "Формат чтения", options: ["Бумажная книга", "Электронная книга", "Смартфон", "Планшет"]))]]
     private var tableView: UITableView?
+    private var tableViewBottomConstraint: NSLayoutConstraint?
     private var handler: AuthStateDidChangeListenerHandle?
     
     convenience init() {
         self.init(nibName: nil, bundle: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     deinit {
         if let handler = handler {
             Auth.auth().removeStateDidChangeListener(handler)
         }
+        NotificationCenter.default.removeObserver(UIResponder.keyboardWillShowNotification)
+        NotificationCenter.default.removeObserver(UIResponder.keyboardWillHideNotification)
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)   {
@@ -255,7 +260,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         let tableView = UITableView(forAutoLayout: ())
         view.addSubview(tableView)
         tableView.autoPinEdge(.top, to: .bottom, of: navBar)
-        tableView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
+        tableViewBottomConstraint = tableView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)[1]
         tableView.register(SectionCell.self, forCellReuseIdentifier: "sectionCell")
         tableView.register(TextFieldCell.self, forCellReuseIdentifier: "textFieldCell")
         tableView.register(LongTextFieldCell.self, forCellReuseIdentifier: "longTextFieldCell")
@@ -302,6 +307,17 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
     public func update(items: [[QuestionItem]]) {
         self.items = items
         tableView?.reloadData()
+    }
+    
+    @objc func keyboardWillShow(notification: Notification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            tableViewBottomConstraint?.constant = -(keyboardSize.height)
+        }
+        
+    }
+    
+    @objc func keyboardWillHide(notification: Notification) {
+        tableViewBottomConstraint?.constant = 0
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -459,7 +475,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         }
     }
     
-    private class TextFieldCell: UITableViewCell {
+    private class TextFieldCell: UITableViewCell, UITextFieldDelegate {
         var resultText: String = ""
         var onUpdate: ((String) -> Void)?
         private var model: TextCellModel = TextCellModel(placeholder: "", text: "")
@@ -486,6 +502,8 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             
             field.attributedPlaceholder = NSAttributedString(string: model.placeholder, attributes: textAttributes)
             field.text = model.text
+            field.returnKeyType = .done
+            field.delegate = self
             addSubview(field)
             field.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 32, left: 8, bottom: 8, right: 8))
             self.field = field
@@ -494,6 +512,11 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         
         @objc private func fieldChanged(_ sender: UITextField) {
             onUpdate?(sender.text ?? "")
+        }
+        
+        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            textField.resignFirstResponder()
+            return true
         }
         
         func configure(model: TextCellModel, onUpdate: ((String) -> Void)?) {
@@ -535,6 +558,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             addSubview(field)
             field.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 32, left: 8, bottom: 8, right: 8))
             field.font = UIFont.systemFont(ofSize: 20)
+            field.returnKeyType = .done
             self.field = field
             
             let placeholder = UILabel(frame: .zero)
@@ -552,6 +576,25 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             
             field.text = model.text
             placeholder.isHidden = !model.text.isEmpty
+            
+            let textFieldAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+                as [NSAttributedString.Key : Any]
+            
+            let accessoryView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 40))
+            accessoryView.backgroundColor = UIColor(rgb: 0xe5e5e5)
+            let finishButton = UIButton(forAutoLayout: ())
+            finishButton.setAttributedTitle(NSAttributedString(string: "Готово", attributes: textFieldAttributes), for: [])
+            field.inputAccessoryView = accessoryView
+            accessoryView.addSubview(finishButton)
+            finishButton.addTarget(self, action: #selector(hideKeyboard), for: .touchUpInside)
+            finishButton.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+            finishButton.autoAlignAxis(toSuperviewAxis: .horizontal)
+        }
+        
+        @objc private func hideKeyboard() {
+            field.endEditing(true)
         }
         
         func textViewDidChange(_ textView: UITextView) {

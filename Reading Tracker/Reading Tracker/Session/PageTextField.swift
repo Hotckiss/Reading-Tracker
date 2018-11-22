@@ -68,7 +68,7 @@ final class PageTextField: UIView, UITextFieldDelegate {
         textField.delegate = self
         
         let accessoryView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 40))
-        accessoryView.backgroundColor = .white
+        accessoryView.backgroundColor = UIColor(rgb: 0xe5e5e5)
         let finishButton = UIButton(forAutoLayout: ())
         finishButton.setAttributedTitle(NSAttributedString(string: "Готово", attributes: textFieldAttributes), for: [])
         textField.inputAccessoryView = accessoryView
