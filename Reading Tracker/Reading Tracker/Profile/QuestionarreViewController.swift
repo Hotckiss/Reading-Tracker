@@ -98,6 +98,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         tableView.separatorInset = .zero
         tableView.separatorColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.rowHeight = UITableView.automaticDimension
         self.tableView = tableView
     }
     
@@ -123,7 +124,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let cell = tableView.dequeueReusableCell(withIdentifier: "sectionCell") as! SectionCell
         cell.configure(model: (section == 0) ? "О себе" : "О предпочтениях")
-        return cell
+        return cell.contentView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -138,7 +139,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             return cell
         case .longtext(let placeholderText):
             let cell = tableView.dequeueReusableCell(withIdentifier: "longTextFieldCell") as! LongTextFieldCell
-            cell.configure(model: placeholderText)
+            cell.configure(model: placeholderText, parent: tableView)
             return cell
         }
     }
@@ -176,7 +177,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
     }
     
     private class SectionCell: UITableViewCell {
-        private var model: String = ""
+        private var model: String = "f"
         private var titleLabel: UILabel?
         
         override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -200,7 +201,8 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             
             titleLabel.attributedText = NSAttributedString(string: model, attributes: titleTextAttributes)
             titleLabel.numberOfLines = 0
-            addSubview(titleLabel)
+            contentView.addSubview(titleLabel)
+            contentView.backgroundColor = .white
             titleLabel.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 16, left: 16, bottom: 0, right: 16))
             self.titleLabel = titleLabel
         }
@@ -267,7 +269,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         }
     }
     
-    private class LongTextFieldCell: UITableViewCell {
+    private class LongTextFieldCell: UITableViewCell, UITextViewDelegate {
         var resultText: String {
             get {
                 return field.text ?? ""
@@ -277,8 +279,10 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             }
         }
         
+        private var parent: UITableView?
         private var model: String = ""
-        private var field: RTTextField!
+        private var field: UITextView!
+        private var placeholder: UILabel?
         
         override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
             super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -292,28 +296,61 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         }
         
         private func setupSubviews() {
-            let field = RTTextField(frame: .zero)
-            
-            let textAttributes = [
-                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
-                as [NSAttributedString.Key : Any]
-            
-            field.attributedPlaceholder = NSAttributedString(string: model, attributes: textAttributes)
+            let field = UITextView(frame: .zero)
+            field.delegate = self
+            field.isScrollEnabled = false
             addSubview(field)
             field.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 32, left: 8, bottom: 8, right: 8))
+            field.font = UIFont.systemFont(ofSize: 20)
             self.field = field
-        }
-        
-        func configure(model: String) {
-            self.model = model
             
+            let placeholder = UILabel(frame: .zero)
             let textAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
                 NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
                 as [NSAttributedString.Key : Any]
             
-            field.attributedPlaceholder = NSAttributedString(string: model, attributes: textAttributes)
+            placeholder.attributedText = NSAttributedString(string: model, attributes: textAttributes)
+            
+            addSubview(placeholder)
+            placeholder.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+            placeholder.autoPinEdge(toSuperviewEdge: .top, withInset: 32 + 4)
+            self.placeholder = placeholder
+        }
+        
+        func textViewDidChange(_ textView: UITextView) {
+            let size = textView.bounds.size
+            let newSize = textView.sizeThatFits(CGSize(width: size.width, height: CGFloat.greatestFiniteMagnitude))
+            
+            if size.height != newSize.height {
+                UIView.setAnimationsEnabled(false)
+                parent?.beginUpdates()
+                parent?.endUpdates()
+                UIView.setAnimationsEnabled(true)
+                
+                //if let thisIndexPath = parent?.indexPath(for: self) {
+                //    parent?.scrollToRow(at: thisIndexPath, at: .bottom, animated: false)
+                //}
+            }
+        }
+        
+        func textViewDidBeginEditing(_ textView: UITextView) {
+            placeholder?.isHidden = true
+        }
+        
+        func textViewDidEndEditing(_ textView: UITextView) {
+            placeholder?.isHidden = (textView.text.count > 0)
+        }
+        
+        func configure(model: String, parent: UITableView?) {
+            self.model = model
+            self.parent = parent
+            let textAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
+                as [NSAttributedString.Key : Any]
+            
+            placeholder?.attributedText = NSAttributedString(string: model, attributes: textAttributes)
         }
     }
     
