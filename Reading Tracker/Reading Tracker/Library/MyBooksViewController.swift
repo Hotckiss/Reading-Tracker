@@ -31,6 +31,25 @@ public enum BookType: String {
             return .unknown
         }
     }
+    
+    init(raw: Int?) {
+        if let int = raw {
+            switch int {
+            case 0:
+                self = .paper
+            case 1:
+                self = .ebook
+            case 2:
+                self = .smartphone
+            case 3:
+                self = .tab
+            default:
+                self = .unknown
+            }
+        } else {
+            self = .unknown
+        }
+    }
 }
 
 public struct BookModel {

@@ -22,6 +22,103 @@ struct ChooseCellModel {
     }
 }
 
+enum Sex {
+    case male
+    case female
+    case unknown
+    
+    init(raw: Int?) {
+        if let int = raw {
+            self = (int == 0) ? .male : .female
+        } else {
+            self = .unknown
+        }
+    }
+}
+
+enum Education {
+    case middle
+    case bachelor
+    case master
+    case candidate
+    case doctor
+    case other
+    case unknown
+    
+    init(raw: Int?) {
+        if let int = raw {
+            switch int {
+            case 0:
+                self = .middle
+            case 1:
+                self = .bachelor
+            case 2:
+                self = .master
+            case 3:
+                self = .candidate
+            case 4:
+                self = .doctor
+            default:
+                self = .other
+            }
+        } else {
+            self = .unknown
+        }
+    }
+}
+
+struct Questionarrie {
+    var firstName: String
+    var lastName: String
+    var sex: Sex
+    var education: Education
+    var major: String
+    var workSphere: String
+    var favoriteAuthors: String
+    var favoriteBooks: String
+    var bookType: BookType
+    
+    init(firstName: String,
+         lastName: String,
+         sex: Sex,
+         education: Education,
+         major: String,
+         workSphere: String,
+         favoriteAuthors: String,
+         favoriteBooks: String,
+         bookType: BookType) {
+        self.firstName = firstName
+        self.lastName = lastName
+        self.sex = sex
+        self.education = education
+        self.major = major
+        self.workSphere = workSphere
+        self.favoriteBooks = favoriteBooks
+        self.favoriteAuthors = favoriteAuthors
+        self.bookType = bookType
+    }
+    
+    init(firstName: String,
+         lastName: String,
+         sex: Int?,
+         education: Int?,
+         major: String,
+         workSphere: String,
+         favoriteAuthors: String,
+         favoriteBooks: String,
+         bookType: Int?) {
+        self.firstName = firstName
+        self.lastName = lastName
+        self.sex = Sex(raw: sex)
+        self.education = Education(raw: education)
+        self.major = major
+        self.workSphere = workSphere
+        self.favoriteBooks = favoriteBooks
+        self.favoriteAuthors = favoriteAuthors
+        self.bookType = BookType(raw: bookType)
+    }
+}
+
 enum QuestionItem {
     case longtext(String)
     case text(String)
@@ -39,7 +136,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                                              .text("Сфера деятельности")],
                                            [.longtext("Любимые книги"),
                                             .longtext("Любимые авторы"),
-                                            .choose(ChooseCellModel(title: "Формат чтения", options: ["Бумажная книга", "Смартфон", "Планшет", "Электронная книга"]))]]
+                                            .choose(ChooseCellModel(title: "Формат чтения", options: ["Бумажная книга", "Электронная книга", "Смартфон", "Планшет"]))]]
     private var tableView: UITableView?
     private var handler: AuthStateDidChangeListenerHandle?
     
@@ -155,7 +252,40 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                                                    onBackButtonPressed: ({ [weak self] in
                                                     self?.navigationController?.popViewController(animated: true)
                                                    }),
-                                                   onFrontButtonPressed: ({
+                                                   onFrontButtonPressed: ({ [weak self] in
+                                                    guard let strongSelf = self,
+                                                          let table = strongSelf.tableView else {
+                                                            let alert = UIAlertController(title: "Ошибка!", message: "Неизвестная ошибка", preferredStyle: .alert)
+                                                            alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+                                                            self?.present(alert, animated: true, completion: nil)
+                                                        return
+                                                    }
+                                                    for (i, section) in strongSelf.items.enumerated() {
+                                                        for (j, item) in section.enumerated() {
+                                                            let path = IndexPath(row: j, section: i)
+                                                            let cell = table.cellForRow(at: path)
+                                                            switch item {
+                                                            case .choose:
+                                                                guard let typedCell = cell as? ChooseCell else {
+                                                                    strongSelf.alertError(reason: "Не удалось собрать данные")
+                                                                    return
+                                                                }
+                                                                print(typedCell.chooseNumber)
+                                                            case .text:
+                                                                guard let typedCell = cell as? TextFieldCell else {
+                                                                    strongSelf.alertError(reason: "Не удалось собрать данные")
+                                                                    return
+                                                                }
+                                                                print("S: \(typedCell.resultText)")
+                                                            case .longtext:
+                                                                guard let typedCell = cell as? LongTextFieldCell else {
+                                                                    strongSelf.alertError(reason: "Не удалось собрать данные")
+                                                                    return
+                                                                }
+                                                                print("L: \(typedCell.resultText)")
+                                                            }
+                                                        }
+                                                    }
                                                     //todo -- upload
                                                    })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
@@ -174,6 +304,12 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         spinner.layer.cornerRadius = 8
         spinner.autoSetDimensions(to: CGSize(width: 64, height: 64))
         self.spinner = spinner
+    }
+    
+    private func alertError(reason: String) {
+        let alert = UIAlertController(title: "Ошибка!", message: reason, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
     
     private class SectionCell: UITableViewCell {
@@ -355,6 +491,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
     }
     
     private class ChooseCell: UITableViewCell {
+        var chooseNumber: Int? = nil
         private var model = ChooseCellModel()
         private var mainButton: UIButton!
         
@@ -416,6 +553,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                         let optionIndex = values.first as? Int,
                         let text = self?.model.options[optionIndex] {
                         sender.setAttributedTitle(NSAttributedString(string: text, attributes: textAttributes), for: [])
+                        self?.chooseNumber = optionIndex
                     }
                                                             
                     return
