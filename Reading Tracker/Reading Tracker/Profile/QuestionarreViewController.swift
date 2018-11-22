@@ -13,14 +13,29 @@ import ActionSheetPicker_3_0
 
 struct ChooseCellModel {
     var title: String
+    var selectedIndex: Int?
     var options: [String]
     
     init(title: String = "",
+         selectedIndex: Int? = nil,
          options: [String] = [""]) {
         self.title = title
+        self.selectedIndex = selectedIndex
         self.options = options
     }
 }
+
+struct TextCellModel {
+    var placeholder: String
+    var text: String
+    
+    init(placeholder: String = "",
+         text: String = "") {
+        self.placeholder = placeholder
+        self.text = text
+    }
+}
+
 
 enum Sex: String {
     case male = "male"
@@ -162,8 +177,8 @@ struct Questionarrie {
 }
 
 enum QuestionItem {
-    case longtext(String)
-    case text(String)
+    case longtext(TextCellModel)
+    case text(TextCellModel)
     case choose(ChooseCellModel)
 }
 
@@ -171,14 +186,14 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
     var questionarrie = Questionarrie()
     private var spinner: UIActivityIndicatorView?
     private var navBar: NavigationBar!
-    private var items: [[QuestionItem]] = [[.text("Имя"),
-                                            .text("Фамилия"),
+    private var items: [[QuestionItem]] = [[.text(TextCellModel(placeholder: "Имя", text: "")),
+                                            .text(TextCellModel(placeholder: "Фамилия", text: "")),
                                             .choose(ChooseCellModel(title: "Пол", options: ["Мужской", "Женский"])),
                                             .choose(ChooseCellModel(title: "Образование", options: ["Среднее общее", "Бакалавр", "Магистр", "Кандидат наук", "Доктор наук", "Другое"])),
-                                             .text("Направление образования"),
-                                             .text("Сфера деятельности")],
-                                           [.longtext("Любимые книги"),
-                                            .longtext("Любимые авторы"),
+                                             .text(TextCellModel(placeholder: "Направление образования", text: "")),
+                                             .text(TextCellModel(placeholder: "Сфера деятельности", text: ""))],
+                                           [.longtext(TextCellModel(placeholder: "Любимые книги", text: "")),
+                                            .longtext(TextCellModel(placeholder: "Любимые авторы", text: "")),
                                             .choose(ChooseCellModel(title: "Формат чтения", options: ["Бумажная книга", "Электронная книга", "Смартфон", "Планшет"]))]]
     private var tableView: UITableView?
     private var handler: AuthStateDidChangeListenerHandle?
@@ -187,17 +202,21 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         self.init(nibName: nil, bundle: nil)
         handler = Auth.auth().addStateDidChangeListener { [weak self] (auth, user) in
             if user != nil {
-                //load info
-                
-                //FirestoreManager.DBManager.getAllBooks(completion: { [weak self] result in
-                //    self?.books = result
-                //    self?.update()
-                //})
+                FirestoreManager.DBManager.downloadQuestionarrie(onCompleted: ({ [weak self] q in
+                    self?.questionarrie = q
+                    self?.items = [[.text(TextCellModel(placeholder: "Имя", text: q.firstName)),
+                              .text(TextCellModel(placeholder: "Фамилия", text: q.lastName)),
+                              .choose(ChooseCellModel(title: "Пол", options: ["Мужской", "Женский"])),
+                              .choose(ChooseCellModel(title: "Образование", options: ["Среднее общее", "Бакалавр", "Магистр", "Кандидат наук", "Доктор наук", "Другое"])),
+                              .text(TextCellModel(placeholder: "Направление образования", text: q.major)),
+                              .text(TextCellModel(placeholder: "Сфера деятельности", text: q.workSphere))],
+                             [.longtext(TextCellModel(placeholder: "Любимые книги", text: q.favoriteBooks)),
+                              .longtext(TextCellModel(placeholder: "Любимые авторы", text: q.favoriteAuthors)),
+                              .choose(ChooseCellModel(title: "Формат чтения", options: ["Бумажная книга", "Электронная книга", "Смартфон", "Планшет"]))]]
+                    self?.tableView?.reloadData()
+                }), onError: nil)
             } else {
-                //clear info
-                
-                //self?.books = []
-                //self?.update()
+                self?.questionarrie = Questionarrie()
             }
         }
     }
@@ -281,9 +300,9 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                 }
             }))
             return cell
-        case .text(let placeholderText):
+        case .text(let model):
             let cell = tableView.dequeueReusableCell(withIdentifier: "textFieldCell") as! TextFieldCell
-            cell.configure(model: placeholderText, onUpdate: ({ [weak self] str in
+            cell.configure(model: model, onUpdate: ({ [weak self] str in
                 if indexPath.row == 0 {
                     self?.questionarrie.firstName = str
                 } else if indexPath.row == 1 {
@@ -295,9 +314,9 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                 }
             }))
             return cell
-        case .longtext(let placeholderText):
+        case .longtext(let model):
             let cell = tableView.dequeueReusableCell(withIdentifier: "longTextFieldCell") as! LongTextFieldCell
-            cell.configure(model: placeholderText, parent: tableView, onUpdate: ({ [weak self] str in
+            cell.configure(model: model, parent: tableView, onUpdate: ({ [weak self] str in
                 if indexPath.row == 0 {
                     self?.questionarrie.favoriteBooks = str
                 } else {
@@ -401,7 +420,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
     private class TextFieldCell: UITableViewCell {
         var resultText: String = ""
         var onUpdate: ((String) -> Void)?
-        private var model: String = ""
+        private var model: TextCellModel = TextCellModel(placeholder: "", text: "")
         private var field: RTTextField!
         
         override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -423,7 +442,8 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                 NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
                 as [NSAttributedString.Key : Any]
             
-            field.attributedPlaceholder = NSAttributedString(string: model, attributes: textAttributes)
+            field.attributedPlaceholder = NSAttributedString(string: model.placeholder, attributes: textAttributes)
+            field.text = model.text
             addSubview(field)
             field.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 32, left: 8, bottom: 8, right: 8))
             self.field = field
@@ -434,7 +454,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             onUpdate?(sender.text ?? "")
         }
         
-        func configure(model: String, onUpdate: ((String) -> Void)?) {
+        func configure(model: TextCellModel, onUpdate: ((String) -> Void)?) {
             self.model = model
             self.onUpdate = onUpdate
             let textAttributes = [
@@ -442,7 +462,8 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                 NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
                 as [NSAttributedString.Key : Any]
             
-            field.attributedPlaceholder = NSAttributedString(string: model, attributes: textAttributes)
+            field.attributedPlaceholder = NSAttributedString(string: model.placeholder, attributes: textAttributes)
+            field.text = model.text
         }
     }
     
@@ -450,7 +471,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         var resultText: String = ""
         var onUpdate: ((String) -> Void)?
         private var parent: UITableView?
-        private var model: String = ""
+        private var model: TextCellModel = TextCellModel(placeholder: "", text: "")
         private var field: UITextView!
         private var placeholder: UILabel?
         
@@ -480,12 +501,15 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                 NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
                 as [NSAttributedString.Key : Any]
             
-            placeholder.attributedText = NSAttributedString(string: model, attributes: textAttributes)
+            placeholder.attributedText = NSAttributedString(string: model.placeholder, attributes: textAttributes)
             
             addSubview(placeholder)
             placeholder.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
             placeholder.autoPinEdge(toSuperviewEdge: .top, withInset: 32 + 4)
             self.placeholder = placeholder
+            
+            field.text = model.text
+            placeholder.isHidden = !model.text.isEmpty
         }
         
         func textViewDidChange(_ textView: UITextView) {
@@ -512,7 +536,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             placeholder?.isHidden = (textView.text.count > 0)
         }
         
-        func configure(model: String, parent: UITableView?, onUpdate: ((String) -> Void)?) {
+        func configure(model: TextCellModel, parent: UITableView?, onUpdate: ((String) -> Void)?) {
             self.model = model
             self.parent = parent
             self.onUpdate = onUpdate
@@ -521,7 +545,9 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                 NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
                 as [NSAttributedString.Key : Any]
             
-            placeholder?.attributedText = NSAttributedString(string: model, attributes: textAttributes)
+            placeholder?.attributedText = NSAttributedString(string: model.placeholder, attributes: textAttributes)
+            field.text = model.text
+            placeholder?.isHidden = !model.text.isEmpty
         }
     }
     
