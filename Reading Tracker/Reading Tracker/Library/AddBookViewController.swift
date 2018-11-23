@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import ActionSheetPicker_3_0
+import BarcodeScanner
 
 final class AddBookViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var onCompleted: ((BookModel) -> Void)?
@@ -126,6 +127,7 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
                 strongSelf.present(imagePicker, animated: true, completion: nil)
             }
         })))
+        
         alert.addAction(UIAlertAction(title: "Камера", style: .default, handler: ({ [weak self] _ in
             let imagePicker = UIImagePickerController()
             imagePicker.delegate = self
@@ -138,6 +140,14 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
                 
                 strongSelf.present(imagePicker, animated: true, completion: nil)
             }
+        })))
+        alert.addAction(UIAlertAction(title: "Сканировать ICBN", style: .default, handler: ({ [weak self] _ in
+            /*let vc = BarcodeScannerViewController()
+            vc.codeDelegate = self
+            vc.errorDelegate = self
+            vc.dismissalDelegate = self
+            
+            strongSelf.present(viewController, animated: true, completion: nil)*/
         })))
         alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
