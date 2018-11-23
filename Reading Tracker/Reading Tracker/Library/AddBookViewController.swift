@@ -156,7 +156,7 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
     
     func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
         print(code)
-        controller.reset()
+        controller.dismiss(animated: true, completion: nil)
     }
     
     func scanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {

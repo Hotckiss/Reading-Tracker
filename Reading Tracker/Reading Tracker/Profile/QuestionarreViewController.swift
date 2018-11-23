@@ -214,7 +214,7 @@ enum QuestionItem {
 
 final class QuestionarreViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var questionarrie = Questionarrie()
-    private var spinner: Spinner?
+    private var spinner: SpinnerView?
     private var navBar: NavigationBar!
     private var items: [[QuestionItem]] = [[.text(TextCellModel(placeholder: "Имя", text: "")),
                                             .text(TextCellModel(placeholder: "Фамилия", text: "")),
@@ -276,11 +276,11 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         self.tableView = tableView
         
         setupSpinner()
-        spinner?.isAnimating = true
+        spinner?.show()
         handler = Auth.auth().addStateDidChangeListener { [weak self] (auth, user) in
             if user != nil {
                 FirestoreManager.DBManager.downloadQuestionarrie(onCompleted: ({ [weak self] q in
-                    self?.spinner?.isAnimating = false
+                    self?.spinner?.hide()
                     self?.questionarrie = q
                     self?.items = [[.text(TextCellModel(placeholder: "Имя", text: q.firstName)),
                                     .text(TextCellModel(placeholder: "Фамилия", text: q.lastName)),
@@ -293,7 +293,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                                     .choose(ChooseCellModel(title: "Формат чтения", selectedIndex: q.bookType.index(), options: ["Бумажная книга", "Электронная книга", "Смартфон", "Планшет"]))]]
                     self?.tableView?.reloadData()
                 }), onError: ({ [weak self] in
-                    self?.spinner?.isAnimating = false
+                    self?.spinner?.hide()
                     let alert = UIAlertController(title: "Ошибка!", message: "Не удалось скачать анкету", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
                     self?.present(alert, animated: true, completion: nil)
@@ -393,9 +393,9 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                                                     self?.navigationController?.popViewController(animated: true)
                                                    }),
                                                    onFrontButtonPressed: ({ [weak self] in
-                                                    self?.spinner?.isAnimating = true
+                                                    self?.spinner?.show()
                                                     guard let strongSelf = self else {
-                                                        self?.spinner?.isAnimating = false
+                                                        self?.spinner?.hide()
                                                         let alert = UIAlertController(title: "Ошибка!", message: "Неизвестная ошибка", preferredStyle: .alert)
                                                         alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
                                                         self?.present(alert, animated: true, completion: nil)
@@ -403,10 +403,10 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                                                     }
                                                     FirestoreManager.DBManager.updateQuestionarre(q: strongSelf.questionarrie,
                                                                                                   onError: ({ err in
-                                                                                                    self?.spinner?.isAnimating = false
+                                                                                                    self?.spinner?.hide()
                                                                                                     strongSelf.alertError(reason: "Ошибка загрузки анкеты " + err)
                                                                                                   }), onCompleted: ({ [weak self] in
-                                                                                                    self?.spinner?.isAnimating = false
+                                                                                                    self?.spinner?.hide()
                                                                                                     self?.navigationController?.popViewController(animated: true)
                                                                                                   }))
                                                    })))
@@ -417,12 +417,11 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
     }
     
     private func setupSpinner() {
-        let spinner = Spinner(forAutoLayout: ())
+        let spinner = SpinnerView(frame: .zero)
         view.addSubview(spinner)
         
         view.bringSubviewToFront(spinner)
-        spinner.autoCenterInSuperview()
-        spinner.autoSetDimensions(to: CGSize(width: 56, height: 56))
+        spinner.autoPinEdgesToSuperviewEdges()
         self.spinner = spinner
     }
     
