@@ -23,6 +23,7 @@ target 'Reading Tracker' do
   pod 'SDWebImage'
   pod 'SDWebImage/GIF'
   pod 'ActionSheetPicker-3.0'
+  pod 'BarcodeScanner'
   target 'Reading TrackerTests' do
     inherit! :search_paths
     # Pods for testing
