@@ -11,7 +11,8 @@ import UIKit
 import ActionSheetPicker_3_0
 import BarcodeScanner
 
-final class AddBookViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+final class AddBookViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
+BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissalDelegate {
     var onCompleted: ((BookModel) -> Void)?
     private var spinner: UIActivityIndicatorView?
     private var navBar: NavigationBar?
@@ -142,15 +143,28 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
             }
         })))
         alert.addAction(UIAlertAction(title: "Сканировать ICBN", style: .default, handler: ({ [weak self] _ in
-            /*let vc = BarcodeScannerViewController()
+            let vc = BarcodeScannerViewController()
             vc.codeDelegate = self
             vc.errorDelegate = self
             vc.dismissalDelegate = self
             
-            strongSelf.present(viewController, animated: true, completion: nil)*/
+            self?.present(vc, animated: true, completion: nil)
         })))
         alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
+        print(code)
+        controller.reset()
+    }
+    
+    func scanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {
+        print(error)
+    }
+    
+    func scannerDidDismiss(_ controller: BarcodeScannerViewController) {
+        controller.dismiss(animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
