@@ -63,7 +63,9 @@ final class MainViewController: UIViewController {
         mainTabBarController.selectedIndex = 2
         mainTabBarController.tabBar.barTintColor = UIColor(rgb: 0x2f5870)
         mainTabBarController.tabBar.tintColor = .white
-        navigationController?.pushViewController(mainTabBarController, animated: false)
+        addChild(mainTabBarController)
+        view.addSubview(mainTabBarController.view)
+        mainTabBarController.didMove(toParent: self)
     }
     
     private func exitAction() {

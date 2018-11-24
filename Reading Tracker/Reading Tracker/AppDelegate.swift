@@ -56,8 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                                                        accessToken: authentication.accessToken)
         
         OnLiginStuff.tryLogin(credential: credential, completion: ({ result in
-            self.mainVC.navigationController?.popViewController(animated: false)
-            self.mainVC.navigationController?.popViewController(animated: false)
+            self.mainVC.navigationController?.popToRootViewController(animated: true)
         }))
     }
     

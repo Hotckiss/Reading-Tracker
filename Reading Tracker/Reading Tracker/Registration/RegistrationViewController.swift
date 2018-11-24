@@ -87,8 +87,7 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLo
             let credential = TwitterAuthProvider.credential(withToken: authToken, secret: authTokenSecret)
             
             OnLiginStuff.tryLogin(credential: credential, completion: ({ [weak self] result in
-                self?.navigationController?.popViewController(animated: false)
-                self?.navigationController?.popViewController(animated: false)
+                self?.navigationController?.popToRootViewController(animated: true)
                 //...
             }))
         })
@@ -115,9 +114,7 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLo
         let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
         
         OnLiginStuff.tryLogin(credential: credential, completion: ({ [weak self] result in
-            self?.navigationController?.popViewController(animated: false)
-            self?.navigationController?.popViewController(animated: false)
-            //...
+            self?.navigationController?.popToRootViewController(animated: true)
         }))
     }
     
