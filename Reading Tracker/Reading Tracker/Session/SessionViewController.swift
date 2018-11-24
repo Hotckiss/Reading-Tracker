@@ -11,7 +11,7 @@ import UIKit
 
 final class SessionViewController: UIViewController {
     var onBookAddedInSession: ((BookModel) -> Void)?
-    private var spinner: UIActivityIndicatorView?
+    private var spinner: SpinnerView?
     private var navBar: NavigationBar?
     private var sessionButton: SessionTimerButton?
     private var bookEmptyCell: BookEmptyCell?
@@ -46,8 +46,6 @@ final class SessionViewController: UIViewController {
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .white
         setupNavigationBarAndBookCell()
-        setupSpinner()
-        
         var bottomSpace: CGFloat = 49
         if #available(iOS 11.0, *) {
             bottomSpace += UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
@@ -96,6 +94,9 @@ final class SessionViewController: UIViewController {
         updateTimeInput(isHand: false)
         
         hasBook = (bookModel != nil)
+        
+        setupSpinner()
+        spinner?.show()
     }
     
     @objc private func onHandTimeTap() {
@@ -234,14 +235,11 @@ final class SessionViewController: UIViewController {
     }
     
     private func setupSpinner() {
-        let spinner = UIActivityIndicatorView()
+        let spinner = SpinnerView(frame: .zero)
         view.addSubview(spinner)
         
         view.bringSubviewToFront(spinner)
-        spinner.autoCenterInSuperview()
-        spinner.backgroundColor = UIColor(rgb: 0x555555).withAlphaComponent(0.7)
-        spinner.layer.cornerRadius = 8
-        spinner.autoSetDimensions(to: CGSize(width: 64, height: 64))
+        spinner.autoPinEdgesToSuperviewEdges()
         self.spinner = spinner
     }
     
@@ -250,6 +248,7 @@ final class SessionViewController: UIViewController {
     }
     
     func updateWithBook(book: BookModel?) {
+        spinner?.hide()
         if let book = book {
             bookModel = book
             bookCell?.configure(model: book)

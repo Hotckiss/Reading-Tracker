@@ -172,6 +172,7 @@ PODS:
   - SDWebImage/GIF (4.4.2):
     - FLAnimatedImage (~> 1.0)
     - SDWebImage/Core
+  - SwiftyXMLParser (4.0.0)
   - TwitterCore (3.2.0)
   - TwitterKit (3.4.0):
     - TwitterCore (>= 3.1.0)
@@ -195,6 +196,7 @@ DEPENDENCIES:
   - RxSwift
   - SDWebImage
   - SDWebImage/GIF
+  - SwiftyXMLParser
   - TwitterKit
   - VK-ios-sdk
 
@@ -235,6 +237,7 @@ SPEC REPOS:
     - PureLayout
     - RxSwift
     - SDWebImage
+    - SwiftyXMLParser
     - TwitterCore
     - TwitterKit
     - VK-ios-sdk
@@ -275,10 +278,11 @@ SPEC CHECKSUMS:
   PureLayout: 4634d0b61e3b5021166e8ec7c18e9e0ca0720c8b
   RxSwift: 99e10317ddfcc7fbe01356aafd118fde4a0be104
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
+  SwiftyXMLParser: 8065da2e715e86aeba677a34fad8c252db5128bb
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: bc7bd086b9b724a1d888745a054e1d0b1ecc4f3f
   VK-ios-sdk: 7fd48bc5aaa6b96c3197c1987eb6593f2ea67331
 
-PODFILE CHECKSUM: 3696e8991828b0cfd4739ebd0c41ac52c5a1eda4
+PODFILE CHECKSUM: 3c24d6e5cdb1042cf2f3c80dfb15f184d3cdce97
 
 COCOAPODS: 1.5.3

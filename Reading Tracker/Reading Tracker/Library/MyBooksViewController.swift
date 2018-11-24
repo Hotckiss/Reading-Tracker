@@ -92,7 +92,7 @@ public struct BookModel {
 
 final class MyBooksViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var onBooksListUpdated: (([BookModel]) -> Void)?
-    private var spinner: UIActivityIndicatorView?
+    private var spinner: SpinnerView?
     private var navBar: NavigationBar?
     private var emptyNavBar: UIView?
     private var books: [BookModel] = []
@@ -101,16 +101,24 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
     private var line: CAShapeLayer?
     private var tableView: UITableView?
     private var handler: AuthStateDidChangeListenerHandle?
+    private var isLoaded = false
     
     convenience init() {
         self.init(nibName: nil, bundle: nil)
         handler = Auth.auth().addStateDidChangeListener { [weak self] (auth, user) in
             if user != nil {
                 FirestoreManager.DBManager.getAllBooks(completion: { [weak self] result in
+                    self?.isLoaded = true
+                    self?.spinner?.hide()
                     self?.books = result
                     self?.update()
-                })
+                    }, onError: ({ [weak self] in
+                        self?.isLoaded = true
+                        self?.spinner?.hide()
+                    }))
             } else {
+                self?.isLoaded = false
+                self?.spinner?.hide()
                 self?.books = []
                 self?.update()
             }
@@ -140,7 +148,6 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .white
         setupNavigationBar()
-        setupSpinner()
         
         let tableView = UITableView(forAutoLayout: ())
         view.addSubview(tableView)
@@ -192,6 +199,13 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         view.layer.addSublayer(line)
         
         self.line = line
+        
+        setupSpinner()
+        if isLoaded {
+            spinner?.hide()
+        } else {
+            spinner?.show()
+        }
         update()
     }
     
@@ -284,14 +298,11 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     private func setupSpinner() {
-        let spinner = UIActivityIndicatorView()
+        let spinner = SpinnerView(frame: .zero)
         view.addSubview(spinner)
         
         view.bringSubviewToFront(spinner)
-        spinner.autoCenterInSuperview()
-        spinner.backgroundColor = UIColor(rgb: 0x555555).withAlphaComponent(0.7)
-        spinner.layer.cornerRadius = 8
-        spinner.autoSetDimensions(to: CGSize(width: 64, height: 64))
+        spinner.autoPinEdgesToSuperviewEdges()
         self.spinner = spinner
     }
     

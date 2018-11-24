@@ -209,7 +209,7 @@ final class FirestoreManager {
         return ref.documentID
     }
     
-    public func getAllBooks(completion: (([BookModel]) -> Void)? = nil) {
+    public func getAllBooks(completion: (([BookModel]) -> Void)? = nil, onError: (() -> Void)?) {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
@@ -297,6 +297,31 @@ final class FirestoreManager {
                     onSuccess?()
                     print("Document successfully removed!")
                 }
+        }
+    }
+    
+    func uploadOZONCatalog(books: [OZONBook]) {
+        print("Starting upload...")
+        var progress = 0
+        var errorsCount = 0
+        let total = books.count
+        
+        for book in books {
+            db.collection("ozon_catalog")
+                .document(book.barcode)
+                .setData([
+                    "icbn": book.barcode,
+                    "name": book.name,
+                    "author": book.author,
+                    "coverURL": book.coverURL
+                ], merge: true) { error in
+                    if error != nil {
+                        errorsCount += 1
+                    }
+                    progress += 1
+                    
+                    print("Progress: \(progress)/\(total), Errors count: \(errorsCount)")
+            }
         }
     }
 }
