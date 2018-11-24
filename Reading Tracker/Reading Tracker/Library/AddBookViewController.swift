@@ -155,8 +155,20 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
     }
     
     func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
-        print(code)
         controller.dismiss(animated: true, completion: nil)
+        FirestoreManager.DBManager.downloadOZONBook(ozonId: code, onSuccess: ({ [weak self] model, url in
+            let alert = UIAlertController(title: "Успех!", message: "Загрузить книгу \(model.title)?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Да", style: .default, handler: ({ [weak self] _ in
+                self?.nameTextField?.text = model.title
+                self?.authorTextField?.text = model.author
+                self?.addedBookStub?.imageStub?.downloaded(from: url)
+                self?.updateCover(hasBook: true)
+                })))
+            alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
+            self?.present(alert, animated: true, completion: nil)
+        }), onFail: ({ [weak self] in
+            self?.alertError(reason: "Книга не найдена")
+        }))
     }
     
     func scanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {
@@ -395,4 +407,33 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
             //TODO: check corectness
         }
     }
+    
+    private func alertError(reason: String) {
+        let alert = UIAlertController(title: "Ошибка!", message: reason, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
 }
+
+extension UIImageView {
+    func downloaded(from url: URL, contentMode mode: UIView.ContentMode = .scaleAspectFit) {
+        contentMode = mode
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard
+                let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+                let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
+                let data = data, error == nil,
+                let image = UIImage(data: data)
+                else { return }
+            DispatchQueue.main.async() {
+                self.image = image
+            }
+            }.resume()
+    }
+    
+    func downloaded(from link: String, contentMode mode: UIView.ContentMode = .scaleAspectFit) {
+        guard let url = URL(string: link) else { return }
+        downloaded(from: url, contentMode: mode)
+    }
+}
+

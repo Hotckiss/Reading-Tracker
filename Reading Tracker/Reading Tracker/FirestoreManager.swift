@@ -72,7 +72,7 @@ final class FirestoreManager {
             "favorite books": q.favoriteBooks,
             "favorite authors": q.favoriteAuthors,
             "favorite book format": q.bookType.rawValue,
-            ], merge: true) { error in
+            ]) { error in
                 if let error = error {
                     print("Error writing document: \(error)")
                     onError?("\(error)")
@@ -296,6 +296,42 @@ final class FirestoreManager {
                 } else {
                     onSuccess?()
                     print("Document successfully removed!")
+                }
+        }
+    }
+    
+    
+    func downloadOZONBook(ozonId: String, onSuccess: ((BookModel, String) -> Void)?, onFail: (() -> Void)?) {
+        db.collection("ozon_catalog")
+            .document(ozonId)
+            .getDocument { (document, error) in
+                if let document = document,
+                    let data = document.data(),
+                    document.exists {
+                    var book = BookModel()
+                    var url = ""
+                    for (key, value) in data {
+                        guard let stringValue = value as? String else {
+                            print("Document error format")
+                            return
+                        }
+                        switch key {
+                        case "name":
+                            book.title = stringValue
+                        case "author":
+                            book.author = stringValue
+                        case "coverURL":
+                            url = stringValue
+                            break
+                        case "icbn":
+                            break
+                        default:
+                            break
+                        }
+                    }
+                    onSuccess?(book, url)
+                } else {
+                    onFail?()
                 }
         }
     }
