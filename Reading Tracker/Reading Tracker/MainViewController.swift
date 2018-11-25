@@ -13,7 +13,7 @@ import Firebase
 
 final class MainViewController: UIViewController {
     private var spinner: UIActivityIndicatorView?
-    let mainTabBarController = UITabBarController()
+    let mainTabBarController = AnimatedTabBarController()
     var interactor: MainInteractor?
     
     override func viewDidLoad() {
@@ -57,6 +57,12 @@ final class MainViewController: UIViewController {
         libraryVC.onBooksListUpdated = { list in
             sessionVC.updateWithBook(book: list.first)
         }
+        
+        libraryVC.onTapToStartSession = { [weak self] book in
+            sessionVC.updateWithBook(book: book)
+            self?.mainTabBarController.selectedIndex = 2
+        }
+        
         let controllers = [profileVC, libraryVC, sessionVC]
         
         mainTabBarController.viewControllers = controllers.map{ UINavigationController.init(rootViewController: $0)}
@@ -100,3 +106,24 @@ final class MainViewController: UIViewController {
     }
 }
 
+class AnimatedTabBarController: UITabBarController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        delegate = self
+    }
+}
+
+extension AnimatedTabBarController: UITabBarControllerDelegate  {
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        
+        guard let fromView = selectedViewController?.view, let toView = viewController.view else {
+            return false
+        }
+        
+        if fromView != toView {
+            UIView.transition(from: fromView, to: toView, duration: 0.1, options: [.transitionCrossDissolve], completion: nil)
+        }
+        
+        return true
+    }
+}

@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "bookPlaceholder.png",
+      "filename" : "coverStub.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "bookPlaceholder-1.png",
+      "filename" : "coverStub-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "bookPlaceholder-2.png",
+      "filename" : "coverStub-2.png",
       "scale" : "3x"
     }
   ],

@@ -92,6 +92,7 @@ public struct BookModel {
 
 final class MyBooksViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var onBooksListUpdated: (([BookModel]) -> Void)?
+    var onTapToStartSession: ((BookModel) -> Void)?
     private var spinner: SpinnerView?
     private var navBar: NavigationBar?
     private var emptyNavBar: UIView?
@@ -323,6 +324,8 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let book = books[indexPath.row]
+        onTapToStartSession?(book)
     }
 }
 
