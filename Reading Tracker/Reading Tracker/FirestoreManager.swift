@@ -342,8 +342,8 @@ final class FirestoreManager {
             return
         }
         
-        db.collection("sessions")
-            .document("sessions_list")
+        db.collection("statistics")
+            .document("sessions")
             .collection(uid)
             .addDocument(data: [
                 "book id": session.bookInfo.id,

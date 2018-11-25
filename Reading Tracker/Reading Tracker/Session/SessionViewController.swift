@@ -11,6 +11,7 @@ import UIKit
 
 final class SessionViewController: UIViewController {
     var onBookAddedInSession: ((BookModel) -> Void)?
+    var onBookSelectFromLibraryRequest: (() -> Void)?
     private var spinner: SpinnerView?
     private var navBar: NavigationBar?
     private var sessionButton: SessionTimerButton?
@@ -197,7 +198,7 @@ final class SessionViewController: UIViewController {
         bookCell.autoPinEdge(toSuperviewEdge: .left)
         bookCell.autoPinEdge(toSuperviewEdge: .right)
         bookCell.autoPinEdge(.top, to: .bottom, of: navBar)
-        
+        bookCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onBookCellTap)))
         let bookEmptyCell = BookEmptyCell(frame: .zero)
         
         view.addSubview(bookEmptyCell)
@@ -232,6 +233,10 @@ final class SessionViewController: UIViewController {
         self.bookCell = bookCell
         self.finishPageTextField = finishPageTextField
         self.startPageTextField = startPageTextField
+    }
+    
+    @objc private func onBookCellTap() {
+        onBookSelectFromLibraryRequest?()
     }
     
     private func setupSpinner() {

@@ -68,6 +68,10 @@ final class MainViewController: UIViewController {
             self?.present(alert, animated: true, completion: nil)
         }
         
+        sessionVC.onBookSelectFromLibraryRequest = { [weak self] in
+            self?.mainTabBarController.selectedIndex = 1
+        }
+        
         let controllers = [profileVC, libraryVC, sessionVC]
         
         mainTabBarController.viewControllers = controllers.map{ UINavigationController.init(rootViewController: $0)}
