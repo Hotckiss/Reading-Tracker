@@ -191,7 +191,7 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         navBar.configure(model: NavigationBarModel(title: "Новая книга", backButtonText: "Назад", frontButtonText: "Готово", onBackButtonPressed: ({ [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }), onFrontButtonPressed: ({ [weak self] in
-            var type: BookType = .paper
+            var type: BookType = .unknown
             if let index = self?.mediaDropdown?.selectedIndex {
                 switch index {
                 case 0:
@@ -211,6 +211,13 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
                                   image: self?.addedBookStub?.imageStub?.image,
                                   lastUpdated: Date(),
                                   type: type)
+            
+            if model.title.isEmpty {
+                let alert = UIAlertController(title: "Ошибка!", message: "Пустое название книги", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+                self?.present(alert, animated: true, completion: nil)
+                return
+            }
             
             model.id = FirestoreManager.DBManager.addBook(book: model, completion: ({ bookId in
                 FirebaseStorageManager.DBManager.uploadCover(cover: model.image, bookId: bookId, completion: ({ [weak self] in
