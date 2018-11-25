@@ -14,7 +14,7 @@ import BarcodeScanner
 final class AddBookViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
 BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissalDelegate {
     var onCompleted: ((BookModel) -> Void)?
-    private var spinner: UIActivityIndicatorView?
+    private var spinner: SpinnerView?
     private var navBar: NavigationBar?
     private var bookStub: AddBookView?
     private var addedBookStub: AddedBookView?
@@ -156,7 +156,9 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
     
     func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
         controller.dismiss(animated: true, completion: nil)
+        spinner?.show()
         FirestoreManager.DBManager.downloadOZONBook(ozonId: code, onSuccess: ({ [weak self] model, url in
+            self?.spinner?.hide()
             let alert = UIAlertController(title: "Успех!", message: "Загрузить книгу \(model.title)?", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Да", style: .default, handler: ({ [weak self] _ in
                 self?.nameTextField?.text = model.title
@@ -167,6 +169,7 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
             alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
             self?.present(alert, animated: true, completion: nil)
         }), onFail: ({ [weak self] in
+            self?.spinner?.hide()
             self?.alertError(reason: "Книга не найдена")
         }))
     }
@@ -191,6 +194,7 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         navBar.configure(model: NavigationBarModel(title: "Новая книга", backButtonText: "Назад", frontButtonText: "Готово", onBackButtonPressed: ({ [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }), onFrontButtonPressed: ({ [weak self] in
+            self?.spinner?.show()
             var type: BookType = .unknown
             if let index = self?.mediaDropdown?.selectedIndex {
                 switch index {
@@ -213,6 +217,7 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
                                   type: type)
             
             if model.title.isEmpty {
+                self?.spinner?.hide()
                 let alert = UIAlertController(title: "Ошибка!", message: "Пустое название книги", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
                 self?.present(alert, animated: true, completion: nil)
@@ -221,8 +226,11 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
             
             model.id = FirestoreManager.DBManager.addBook(book: model, completion: ({ bookId in
                 FirebaseStorageManager.DBManager.uploadCover(cover: model.image, bookId: bookId, completion: ({ [weak self] in
+                    self?.spinner?.hide()
                     self?.onCompleted?(model)
                     self?.navigationController?.popViewController(animated: true)
+                }), onError: ({ [weak self] in
+                    self?.spinner?.hide()
                 }))
             }))
         })))
@@ -233,14 +241,11 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
     }
     
     private func setupSpinner() {
-        let spinner = UIActivityIndicatorView()
+        let spinner = SpinnerView(frame: .zero)
         view.addSubview(spinner)
         
         view.bringSubviewToFront(spinner)
-        spinner.autoCenterInSuperview()
-        spinner.backgroundColor = UIColor(rgb: 0x555555).withAlphaComponent(0.7)
-        spinner.layer.cornerRadius = 8
-        spinner.autoSetDimensions(to: CGSize(width: 64, height: 64))
+        spinner.autoPinEdgesToSuperviewEdges()
         self.spinner = spinner
     }
     

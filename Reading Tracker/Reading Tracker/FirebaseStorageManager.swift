@@ -17,7 +17,7 @@ final class FirebaseStorageManager {
     public static let DBManager = FirebaseStorageManager()
     private let rootReference = Storage.storage().reference()
     
-    public func uploadCover(cover: UIImage, bookId: String, completion: (() -> Void)?) {
+    public func uploadCover(cover: UIImage, bookId: String, completion: (() -> Void)?, onError: (() -> Void)?) {
         guard let uid = Auth.auth().currentUser?.uid,
               let data = cover.resizeImage(targetSize: CGSize(width: 310, height: 444)).pngData() else {
             return
@@ -30,6 +30,7 @@ final class FirebaseStorageManager {
         let uploadTask = imageRef.putData(data, metadata: metadata) { (metadata, error) in
             guard let metadata = metadata else {
                 print("Error uploading image: \(error)")
+                onError?()
                 return
             }
             completion?()
