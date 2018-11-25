@@ -125,12 +125,5 @@ class OfflineCodeSignUpViewController: UIViewController {
         print("Code: \(code)")
         navigationController?.popViewController(animated: true)
     }
-    
-    private class FinishTextFieldDelegate: NSObject, UITextFieldDelegate {
-        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            textField.resignFirstResponder()
-            return true
-        }
-    }
 }
 

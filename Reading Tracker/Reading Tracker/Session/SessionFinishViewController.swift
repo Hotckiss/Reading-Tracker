@@ -217,13 +217,6 @@ class SessionFinishViewController: UIViewController {
         self.spinner = spinner
     }
     
-    private class FinishTextFieldDelegate: NSObject, UITextFieldDelegate {
-        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            textField.resignFirstResponder()
-            return true
-        }
-    }
-    
     private class PollView: UIView {
         var result: Int?
         private var buttons: [IndexedButton] = []

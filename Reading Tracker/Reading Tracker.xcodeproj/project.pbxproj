@@ -33,6 +33,8 @@
 		2FAA8FBC216A6E430011F59D /* RegistrationEducationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FBB216A6E430011F59D /* RegistrationEducationViewController.swift */; };
 		2FAA8FBE216A792A0011F59D /* RegistrationFavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FBD216A792A0011F59D /* RegistrationFavoritesViewController.swift */; };
 		2FAA8FC0216A8B4A0011F59D /* RegistrationInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FBF216A8B4A0011F59D /* RegistrationInteractor.swift */; };
+		2FC9561921AB419C00E52CE6 /* UIImageView+Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC9561821AB419C00E52CE6 /* UIImageView+Download.swift */; };
+		2FC9561B21AB41EA00E52CE6 /* TextFieldDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC9561A21AB41EA00E52CE6 /* TextFieldDelegates.swift */; };
 		2FE450C1216FA53E008B2F22 /* MainInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE450C0216FA53E008B2F22 /* MainInteractor.swift */; };
 		2FE6C5A321581BDE005A7A68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6C5A221581BDE005A7A68 /* AppDelegate.swift */; };
 		2FE6C5A521581BDE005A7A68 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6C5A421581BDE005A7A68 /* MainViewController.swift */; };
@@ -101,6 +103,8 @@
 		2FAA8FBB216A6E430011F59D /* RegistrationEducationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationEducationViewController.swift; sourceTree = "<group>"; };
 		2FAA8FBD216A792A0011F59D /* RegistrationFavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationFavoritesViewController.swift; sourceTree = "<group>"; };
 		2FAA8FBF216A8B4A0011F59D /* RegistrationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationInteractor.swift; sourceTree = "<group>"; };
+		2FC9561821AB419C00E52CE6 /* UIImageView+Download.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Download.swift"; sourceTree = "<group>"; };
+		2FC9561A21AB41EA00E52CE6 /* TextFieldDelegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldDelegates.swift; sourceTree = "<group>"; };
 		2FE450C0216FA53E008B2F22 /* MainInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainInteractor.swift; sourceTree = "<group>"; };
 		2FE6C59F21581BDE005A7A68 /* Reading Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reading Tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FE6C5A221581BDE005A7A68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -183,6 +187,8 @@
 				2F1891DE2158BCC10043BDCC /* RTTextView.swift */,
 				2F71B325218F3A2700E4E80F /* OnLiginStuff.swift */,
 				2F0C7E2C219F1D4100C28ECB /* ImageCompression.swift */,
+				2FC9561821AB419C00E52CE6 /* UIImageView+Download.swift */,
+				2FC9561A21AB41EA00E52CE6 /* TextFieldDelegates.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -648,6 +654,7 @@
 			files = (
 				2F1891D9215832210043BDCC /* AuthorizationViewController.swift in Sources */,
 				2F7CE0642193892C00CFE6CF /* Spinner.swift in Sources */,
+				2FC9561B21AB41EA00E52CE6 /* TextFieldDelegates.swift in Sources */,
 				2F71B328218F3FFE00E4E80F /* OfflineCodeSignUpViewController.swift in Sources */,
 				2FAA8FB3216A152C0011F59D /* RegistrationLoginViewController.swift in Sources */,
 				2FAA8FBC216A6E430011F59D /* RegistrationEducationViewController.swift in Sources */,
@@ -670,6 +677,7 @@
 				2F71B32A218F5CF000E4E80F /* LoginPasswordRegistrationViewController.swift in Sources */,
 				2FE6C5A321581BDE005A7A68 /* AppDelegate.swift in Sources */,
 				2FFE218A21679AB4001BBE90 /* FirestoreManager.swift in Sources */,
+				2FC9561921AB419C00E52CE6 /* UIImageView+Download.swift in Sources */,
 				2FED199F21748FC900AFFF99 /* SessionViewController.swift in Sources */,
 				2FFD1CFF2198BBF700779459 /* BookEmptyCell.swift in Sources */,
 				2FA1676221A963C1006E9712 /* OZONXMLParser.swift in Sources */,

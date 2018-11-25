@@ -348,7 +348,7 @@ final class FirestoreManager {
             .addDocument(data: [
                 "book id": session.bookInfo.id,
                 "start page": session.startPage,
-                "last page": session.finishPage,
+                "end page": session.finishPage,
                 "time": session.time,
                 "mood": session.mood.rawValue,
                 "place": session.readPlace.rawValue,

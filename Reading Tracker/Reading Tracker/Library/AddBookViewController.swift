@@ -400,52 +400,10 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         }
     }
     
-    private class IntermediateTextFieldDelegate: NSObject, UITextFieldDelegate {
-        var nextField: UITextField?
-        
-        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            nextField?.becomeFirstResponder()
-            return true
-        }
-    }
-    
-    private class FinishTextFieldDelegate: NSObject, UITextFieldDelegate {
-        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            textField.resignFirstResponder()
-            return true
-        }
-        
-        func textFieldDidEndEditing(_ textField: UITextField) {
-            //TODO: check corectness
-        }
-    }
-    
     private func alertError(reason: String) {
         let alert = UIAlertController(title: "Ошибка!", message: reason, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
-    }
-}
-
-extension UIImageView {
-    func downloaded(from url: URL, contentMode mode: UIView.ContentMode = .scaleAspectFit) {
-        contentMode = mode
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard
-                let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
-                let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
-                let data = data, error == nil,
-                let image = UIImage(data: data)
-                else { return }
-            DispatchQueue.main.async() {
-                self.image = image
-            }
-            }.resume()
-    }
-    
-    func downloaded(from link: String, contentMode mode: UIView.ContentMode = .scaleAspectFit) {
-        guard let url = URL(string: link) else { return }
-        downloaded(from: url, contentMode: mode)
     }
 }
 

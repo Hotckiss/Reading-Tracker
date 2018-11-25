@@ -188,22 +188,6 @@ class LoginPasswordAuthorizationViewController: UIViewController {
             }
         }
     }
-    
-    private class IntermediateTextFieldDelegate: NSObject, UITextFieldDelegate {
-        var nextField: UITextField?
-        
-        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            nextField?.becomeFirstResponder()
-            return true
-        }
-    }
-    
-    private class FinishTextFieldDelegate: NSObject, UITextFieldDelegate {
-        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            textField.resignFirstResponder()
-            return true
-        }
-    }
 }
 
 
