@@ -59,8 +59,13 @@ final class MainViewController: UIViewController {
         }
         
         libraryVC.onTapToStartSession = { [weak self] book in
-            sessionVC.updateWithBook(book: book)
-            self?.mainTabBarController.selectedIndex = 2
+            let alert = UIAlertController(title: "Выбор книги", message: "Начать сессию с выбранной книгой?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Начать!", style: .default, handler: ({ [weak self] _ in
+                sessionVC.updateWithBook(book: book)
+                self?.mainTabBarController.selectedIndex = 2
+            })))
+            alert.addAction(UIAlertAction(title: "Отмена", style: .default, handler: nil))
+            self?.present(alert, animated: true, completion: nil)
         }
         
         let controllers = [profileVC, libraryVC, sessionVC]
