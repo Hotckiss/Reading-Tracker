@@ -35,6 +35,10 @@
 		2FAA8FC0216A8B4A0011F59D /* RegistrationInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FBF216A8B4A0011F59D /* RegistrationInteractor.swift */; };
 		2FC9561921AB419C00E52CE6 /* UIImageView+Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC9561821AB419C00E52CE6 /* UIImageView+Download.swift */; };
 		2FC9561B21AB41EA00E52CE6 /* TextFieldDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC9561A21AB41EA00E52CE6 /* TextFieldDelegates.swift */; };
+		2FC9561D21AB43F900E52CE6 /* DropdownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC9561C21AB43F900E52CE6 /* DropdownMenu.swift */; };
+		2FC9561F21AB448B00E52CE6 /* AddBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC9561E21AB448B00E52CE6 /* AddBookView.swift */; };
+		2FC9562121AB44B500E52CE6 /* AddedBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC9562021AB44B500E52CE6 /* AddedBookView.swift */; };
+		2FC9562321AB44E900E52CE6 /* EditBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC9562221AB44E900E52CE6 /* EditBookViewController.swift */; };
 		2FE450C1216FA53E008B2F22 /* MainInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE450C0216FA53E008B2F22 /* MainInteractor.swift */; };
 		2FE6C5A321581BDE005A7A68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6C5A221581BDE005A7A68 /* AppDelegate.swift */; };
 		2FE6C5A521581BDE005A7A68 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE6C5A421581BDE005A7A68 /* MainViewController.swift */; };
@@ -105,6 +109,10 @@
 		2FAA8FBF216A8B4A0011F59D /* RegistrationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationInteractor.swift; sourceTree = "<group>"; };
 		2FC9561821AB419C00E52CE6 /* UIImageView+Download.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Download.swift"; sourceTree = "<group>"; };
 		2FC9561A21AB41EA00E52CE6 /* TextFieldDelegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldDelegates.swift; sourceTree = "<group>"; };
+		2FC9561C21AB43F900E52CE6 /* DropdownMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownMenu.swift; sourceTree = "<group>"; };
+		2FC9561E21AB448B00E52CE6 /* AddBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBookView.swift; sourceTree = "<group>"; };
+		2FC9562021AB44B500E52CE6 /* AddedBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddedBookView.swift; sourceTree = "<group>"; };
+		2FC9562221AB44E900E52CE6 /* EditBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBookViewController.swift; sourceTree = "<group>"; };
 		2FE450C0216FA53E008B2F22 /* MainInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainInteractor.swift; sourceTree = "<group>"; };
 		2FE6C59F21581BDE005A7A68 /* Reading Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reading Tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FE6C5A221581BDE005A7A68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -334,6 +342,10 @@
 			children = (
 				2FED199A21748F4A00AFFF99 /* AddBookViewController.swift */,
 				2FED199C21748FB000AFFF99 /* MyBooksViewController.swift */,
+				2FC9561C21AB43F900E52CE6 /* DropdownMenu.swift */,
+				2FC9561E21AB448B00E52CE6 /* AddBookView.swift */,
+				2FC9562021AB44B500E52CE6 /* AddedBookView.swift */,
+				2FC9562221AB44E900E52CE6 /* EditBookViewController.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -652,12 +664,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FC9562121AB44B500E52CE6 /* AddedBookView.swift in Sources */,
+				2FC9561D21AB43F900E52CE6 /* DropdownMenu.swift in Sources */,
 				2F1891D9215832210043BDCC /* AuthorizationViewController.swift in Sources */,
 				2F7CE0642193892C00CFE6CF /* Spinner.swift in Sources */,
 				2FC9561B21AB41EA00E52CE6 /* TextFieldDelegates.swift in Sources */,
 				2F71B328218F3FFE00E4E80F /* OfflineCodeSignUpViewController.swift in Sources */,
 				2FAA8FB3216A152C0011F59D /* RegistrationLoginViewController.swift in Sources */,
 				2FAA8FBC216A6E430011F59D /* RegistrationEducationViewController.swift in Sources */,
+				2FC9561F21AB448B00E52CE6 /* AddBookView.swift in Sources */,
 				2FFD1D052198BCA100779459 /* HandTimerView.swift in Sources */,
 				2F71B326218F3A2700E4E80F /* OnLiginStuff.swift in Sources */,
 				2F1891DF2158BCC10043BDCC /* RTTextView.swift in Sources */,
@@ -668,6 +683,7 @@
 				2FAA8FC0216A8B4A0011F59D /* RegistrationInteractor.swift in Sources */,
 				2FAA8FBE216A792A0011F59D /* RegistrationFavoritesViewController.swift in Sources */,
 				2F71B32F218F965000E4E80F /* ProfileViewController.swift in Sources */,
+				2FC9562321AB44E900E52CE6 /* EditBookViewController.swift in Sources */,
 				2FE6C5A521581BDE005A7A68 /* MainViewController.swift in Sources */,
 				2FFD1D032198BC6E00779459 /* PageTextField.swift in Sources */,
 				2FED199D21748FB000AFFF99 /* MyBooksViewController.swift in Sources */,

@@ -246,8 +246,19 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        let moreRowAction = UITableViewRowAction(style: UITableViewRowAction.Style.default, title: "Изменить", handler: { action, indexpath in
-            print("Изменить")
+        let moreRowAction = UITableViewRowAction(style: UITableViewRowAction.Style.default, title: "Изменить", handler: { [weak self] action, indexpath in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            let vc = EditBookViewController(model: strongSelf.books[indexpath.row])
+            
+            vc.onCompleted = { [weak self] updatedBook in
+                strongSelf.books[indexpath.row] = updatedBook
+                self?.update()
+            }
+            
+            strongSelf.navigationController?.pushViewController(vc, animated: true)
         })
         
         moreRowAction.backgroundColor = UIColor(red: 0.298, green: 0.851, blue: 0.3922, alpha: 1.0)

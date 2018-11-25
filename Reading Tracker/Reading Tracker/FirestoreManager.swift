@@ -255,7 +255,7 @@ final class FirestoreManager {
         }
     }
     
-    public func updateBook(book: BookModel) {
+    public func updateBook(book: BookModel, onCompleted: (() -> Void)?, onError: (() -> Void)?) {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
@@ -274,8 +274,10 @@ final class FirestoreManager {
             ], merge: true) { error in
                 if let error = error {
                     print("Error writing document: \(error.localizedDescription)")
+                    onError?()
                 } else {
                     print("Document successfully written!")
+                    onCompleted?()
                 }
         }
     }

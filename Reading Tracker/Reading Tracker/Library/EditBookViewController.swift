@@ -1,19 +1,18 @@
 //
-//  AddBookViewController.swift
+//  EditBookViewController.swift
 //  Reading Tracker
 //
-//  Created by Andrei Kirilenko on 15.10.2018.
+//  Created by Andrei Kirilenko on 26/11/2018.
 //  Copyright © 2018 Andrei Kirilenko. All rights reserved.
 //
 
 import Foundation
 import UIKit
-import BarcodeScanner
 
-final class AddBookViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissalDelegate {
+final class EditBookViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var onCompleted: ((BookModel) -> Void)?
     private var spinner: SpinnerView?
+    private var model: BookModel
     private var navBar: NavigationBar?
     private var bookStub: AddBookView?
     private var addedBookStub: AddedBookView?
@@ -22,6 +21,16 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
     private var nameTextFieldDelegate = IntermediateTextFieldDelegate()
     private var authorTextFieldDelegate = FinishTextFieldDelegate()
     private var mediaDropdown: DropdownMenu?
+    
+    
+    init(model: BookModel) {
+        self.model = model
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +48,7 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         nameTextField.backgroundColor = .clear
         nameTextField.autocorrectionType = .no
         nameTextField.returnKeyType = .continue
+        nameTextField.text = model.title
         nameTextField.delegate = nameTextFieldDelegate
         self.nameTextField = nameTextField
         
@@ -60,6 +70,7 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         authorTextField.backgroundColor = .clear
         authorTextField.autocorrectionType = .no
         authorTextField.returnKeyType = .done
+        authorTextField.text = model.author
         authorTextField.delegate = authorTextFieldDelegate
         nameTextFieldDelegate.nextField = authorTextField
         self.authorTextField = authorTextField
@@ -86,6 +97,22 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         mediaDropdown.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         mediaDropdown.autoPinEdge(.top, to: .bottom, of: lineView2, withOffset: 59)
         mediaDropdown.autoSetDimension(.height, toSize: 33)
+        switch model.type {
+        case .paper:
+            mediaDropdown.selectedIndex = 0
+            mediaDropdown.forceUpdate(optionText: bookTypes[0])
+        case .ebook:
+            mediaDropdown.selectedIndex = 1
+            mediaDropdown.forceUpdate(optionText: bookTypes[1])
+        case .smartphone:
+            mediaDropdown.selectedIndex = 2
+            mediaDropdown.forceUpdate(optionText: bookTypes[2])
+        case .tab:
+            mediaDropdown.selectedIndex = 3
+            mediaDropdown.forceUpdate(optionText: bookTypes[3])
+        case .unknown:
+            mediaDropdown.selectedIndex = 0
+        }
         self.mediaDropdown = mediaDropdown
         
         let bookStub = AddBookView(frame: .zero)
@@ -102,9 +129,14 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         addedBookStub.autoPinEdge(.top, to: .bottom, of: lineView2, withOffset: 59 + 32 + 9 + 32)
         addedBookStub.autoSetDimensions(to: CGSize(width: 155, height: 255))
         addedBookStub.addTarget(self, action: #selector(onAddCover), for: .touchUpInside)
+        if let imageView = addedBookStub.imageStub {
+            FirebaseStorageManager.DBManager.downloadCover(into: imageView, bookId: model.id, onImageReceived: ({ img in
+                self.model.image = img
+            }))
+        }
         self.addedBookStub = addedBookStub
         
-        updateCover(hasBook: false)
+        updateCover(hasBook: true)
     }
     
     private func updateCover(hasBook: Bool) {
@@ -141,44 +173,8 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
                 strongSelf.present(imagePicker, animated: true, completion: nil)
             }
         })))
-        alert.addAction(UIAlertAction(title: "Сканировать ICBN", style: .default, handler: ({ [weak self] _ in
-            let vc = BarcodeScannerViewController()
-            vc.codeDelegate = self
-            vc.errorDelegate = self
-            vc.dismissalDelegate = self
-            
-            self?.present(vc, animated: true, completion: nil)
-        })))
         alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
-    }
-    
-    func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
-        controller.dismiss(animated: true, completion: nil)
-        spinner?.show()
-        FirestoreManager.DBManager.downloadOZONBook(ozonId: code, onSuccess: ({ [weak self] model, url in
-            self?.spinner?.hide()
-            let alert = UIAlertController(title: "Успех!", message: "Загрузить книгу \(model.title)?", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Да", style: .default, handler: ({ [weak self] _ in
-                self?.nameTextField?.text = model.title
-                self?.authorTextField?.text = model.author
-                self?.addedBookStub?.imageStub?.downloaded(from: url)
-                self?.updateCover(hasBook: true)
-                })))
-            alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
-            self?.present(alert, animated: true, completion: nil)
-        }), onFail: ({ [weak self] in
-            self?.spinner?.hide()
-            self?.alertError(reason: "Книга не найдена")
-        }))
-    }
-    
-    func scanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {
-        print(error)
-    }
-    
-    func scannerDidDismiss(_ controller: BarcodeScannerViewController) {
-        controller.dismiss(animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -190,10 +186,16 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
     
     private func setupNavigationBar() {
         let navBar = NavigationBar()
-        navBar.configure(model: NavigationBarModel(title: "Новая книга", backButtonText: "Назад", frontButtonText: "Готово", onBackButtonPressed: ({ [weak self] in
+        navBar.configure(model: NavigationBarModel(title: "Редактировать книгу", backButtonText: "Назад", frontButtonText: "Готово", onBackButtonPressed: ({ [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }), onFrontButtonPressed: ({ [weak self] in
             self?.spinner?.show()
+            
+            guard let strongSelf = self else {
+                self?.alertError(reason: "Ошибка загрузки")
+                return
+            }
+            
             var type: BookType = .unknown
             if let index = self?.mediaDropdown?.selectedIndex {
                 switch index {
@@ -209,13 +211,14 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
                     break
                 }
             }
-            var model = BookModel(title: self?.nameTextField?.text ?? "",
+            let newModel = BookModel(id: strongSelf.model.id,
+                                  title: self?.nameTextField?.text ?? "",
                                   author: self?.authorTextField?.text ?? "",
                                   image: self?.addedBookStub?.imageStub?.image,
                                   lastUpdated: Date(),
                                   type: type)
             
-            if model.title.isEmpty {
+            if newModel.title.isEmpty {
                 self?.spinner?.hide()
                 let alert = UIAlertController(title: "Ошибка!", message: "Пустое название книги", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
@@ -223,14 +226,18 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
                 return
             }
             
-            model.id = FirestoreManager.DBManager.addBook(book: model, completion: ({ bookId in
-                FirebaseStorageManager.DBManager.uploadCover(cover: model.image, bookId: bookId, completion: ({ [weak self] in
+            FirestoreManager.DBManager.updateBook(book: newModel, onCompleted: ({ [weak self] in
+                FirebaseStorageManager.DBManager.uploadCover(cover: newModel.image, bookId: newModel.id, completion: ({ [weak self] in
                     self?.spinner?.hide()
-                    self?.onCompleted?(model)
+                    self?.onCompleted?(newModel)
                     self?.navigationController?.popViewController(animated: true)
                 }), onError: ({ [weak self] in
+                    self?.alertError(reason: "Ошибка загрузки обложки")
                     self?.spinner?.hide()
                 }))
+            }), onError: ({ [weak self] in
+                self?.alertError(reason: "Ошибка загрузки книги")
+                self?.spinner?.hide()
             }))
         })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
@@ -248,13 +255,9 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         self.spinner = spinner
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-    }
-
     private func alertError(reason: String) {
         let alert = UIAlertController(title: "Ошибка!", message: reason, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
 }
-
