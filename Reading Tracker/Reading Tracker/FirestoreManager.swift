@@ -280,6 +280,7 @@ final class FirestoreManager {
         }
     }
     
+    //TODO remove cover
     public func removeBook(book: BookModel, onSuccess: (() -> Void)? = nil, onError: (() -> Void)? = nil) {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
@@ -332,6 +333,33 @@ final class FirestoreManager {
                     onSuccess?(book, url)
                 } else {
                     onFail?()
+                }
+        }
+    }
+    
+    public func uploadSession(session: SessionFinishModel, completion: (() -> Void)?, onError: (() -> Void)?) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        db.collection("sessions")
+            .document("sessions_list")
+            .collection(uid)
+            .addDocument(data: [
+                "book id": session.bookInfo.id,
+                "start page": session.startPage,
+                "finish page": session.finishPage,
+                "time": session.time,
+                "mood": session.mood.rawValue,
+                "place": session.readPlace.rawValue,
+                "comment": session.comment,
+            ]) { error in
+                if let error = error {
+                    print("Error writing document: \(error.localizedDescription)")
+                    onError?()
+                } else {
+                    print("Document successfully written!")
+                    completion?()
                 }
         }
     }

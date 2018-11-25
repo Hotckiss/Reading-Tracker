@@ -9,20 +9,103 @@
 import Foundation
 import UIKit
 
+public enum Mood: String {
+    case sad = "sad"
+    case neutral = "neutral"
+    case happy = "happy"
+    case unknown = "unknown"
+    
+    init(ind: Int?) {
+        if let ind = ind {
+            switch ind {
+            case 0:
+                self = .happy
+            case 1:
+                self = .neutral
+            case 2:
+                self = .sad
+            default:
+                self = .unknown
+            }
+        } else {
+            self = .unknown
+        }
+    }
+    
+    init(str: String) {
+        switch str {
+        case "happy":
+            self = .happy
+        case "neutral":
+            self = .neutral
+        case "sad":
+            self = .sad
+        default:
+            self = .unknown
+        }
+    }
+}
+
+public enum ReadPlace: String {
+    case home = "home"
+    case transport = "transport"
+    case work = "work"
+    case unknown = "unknown"
+    
+    init(ind: Int?) {
+        if let ind = ind {
+            switch ind {
+            case 0:
+                self = .home
+            case 1:
+                self = .transport
+            case 2:
+                self = .work
+            default:
+                self = .unknown
+            }
+        } else {
+            self = .unknown
+        }
+    }
+    
+    init(str: String) {
+        switch str {
+        case "home":
+            self = .home
+        case "transport":
+            self = .transport
+        case "work":
+            self = .work
+        default:
+            self = .unknown
+        }
+    }
+}
+    
 public struct SessionFinishModel {
     var bookInfo: BookModel
     var startPage: Int
     var finishPage: Int
     var time: Int
+    var mood: Mood
+    var readPlace: ReadPlace
+    var comment: String
     
     public init(bookInfo: BookModel,
                 startPage: Int,
                 finishPage: Int,
-                time: Int) {
+                time: Int,
+                mood: Mood = .unknown,
+                readPlace: ReadPlace = .unknown,
+                comment: String = "") {
         self.bookInfo = bookInfo
         self.startPage = startPage
         self.finishPage = finishPage
         self.time = time
+        self.mood = mood
+        self.readPlace = readPlace
+        self.comment = comment
     }
 }
 
@@ -52,10 +135,28 @@ class SessionFinishViewController: UIViewController {
                                                     guard let strongSelf = self else {
                                                         return
                                                     }
-                                                    let mood = strongSelf.moodPollView.result
-                                                    let place = strongSelf.placePollView.result
-                                                    let comment = strongSelf.commentTextField.text
-                                                    //TODO send to db, pop, reset session
+                                                    let mood = Mood(ind: strongSelf.moodPollView.result)
+                                                    let place = ReadPlace(ind: strongSelf.placePollView.result)
+                                                    let comment = strongSelf.commentTextField.text ?? ""
+                                                    
+                                                    self?.model?.mood = mood
+                                                    self?.model?.readPlace = place
+                                                    self?.model?.comment = comment
+                                                    
+                                                    if let model = strongSelf.model {
+                                                        FirestoreManager.DBManager.uploadSession(session: model,
+                                                                                                 completion: ({
+                                                                                                    strongSelf.navigationController?.popViewController(animated: true)
+                                                                                                    //TODO reset session VC
+                                                                                                 }),
+                                                                                                 onError: ({
+                                                                                                    //TODO alert, hide spinner
+                                                                                                 }))
+                                                    } else {
+                                                        let alert = UIAlertController(title: "Ошибка!", message: "Сессия не найдена", preferredStyle: .alert)
+                                                        alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+                                                        self?.present(alert, animated: true, completion: nil)
+                                                    }
                                                    })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         view.addSubview(navBar)
@@ -124,7 +225,7 @@ class SessionFinishViewController: UIViewController {
     }
     
     private class PollView: UIView {
-        var result: Int = 0
+        var result: Int?
         private var buttons: [IndexedButton] = []
         
         init(frame: CGRect, title: String, options: [UIImage?]) {
