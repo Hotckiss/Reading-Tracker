@@ -23,7 +23,9 @@ final class StatisticsViewController: UIViewController {
     private func setupNavigationBar() {
         let navBar = NavigationBar()
         
-        navBar.configure(model: NavigationBarModel(title: "Статистика"))
+        navBar.configure(model: NavigationBarModel(title: "Чтение", backButtonText: "Назад", onBackButtonPressed: ({ [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         
         view.addSubview(navBar)

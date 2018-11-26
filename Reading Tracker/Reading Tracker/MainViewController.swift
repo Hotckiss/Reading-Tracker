@@ -30,9 +30,9 @@ final class MainViewController: UIViewController {
         }
         
         interactor?.checkLogin(onStartLoad: ({ [weak self] in
-            self?.spinner?.startAnimating()
+            //self?.spinner?.startAnimating()
         }), onFinishLoad: ({ [weak self] in
-            self?.spinner?.stopAnimating()
+            //self?.spinner?.stopAnimating()
         }))
     }
     
@@ -91,9 +91,9 @@ final class MainViewController: UIViewController {
         }
         
         interactor?.checkLogin(onStartLoad: ({ [weak self] in
-            self?.spinner?.startAnimating()
+            //self?.spinner?.startAnimating()
         }), onFinishLoad: ({ [weak self] in
-            self?.spinner?.stopAnimating()
+            //self?.spinner?.stopAnimating()
         }))
     }
     

@@ -90,8 +90,10 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         if indexPath.row == 0 {
             let qVC = QuestionarreViewController()
             navigationController?.pushViewController(qVC, animated: true)
-        }
-        if indexPath.row == 3 {
+        } else if indexPath.row == 1 {
+            let sVC = StatisticsViewController()
+            navigationController?.pushViewController(sVC, animated: true)
+        } else if indexPath.row == 3 {
             onExit?()
         }
     }
