@@ -28,7 +28,7 @@ final class MainInteractor {
             
             interactor.authorization.subscribe(onNext: ({ user in
                 onStartLoad?()
-                self.loadUserData(onComplete: onFinishLoad)
+                //self.loadUserData(onComplete: onFinishLoad)
                 
                 self.viewController?.navigationController?.popViewController(animated: true)
             })).disposed(by: disposeBag)
@@ -36,12 +36,14 @@ final class MainInteractor {
             viewController?.navigationController?.pushViewController(vc, animated: false)
         } else {
             onStartLoad?()
-            loadUserData(onComplete: onFinishLoad)
+            //loadUserData(onComplete: onFinishLoad)
         }
     }
     
     public func loadUserData(onComplete: (() -> Void)?) {
-        FirestoreManager.DBManager.loadUserProfile().subscribe(onNext: ({ [weak self] user in
+        FirestoreManager.DBManager.loadUserProfile(onError: ({
+            //nothing to do
+        })).subscribe(onNext: ({ [weak self] user in
             self?.userData = user
             onComplete?()
         })).disposed(by: disposeBag)

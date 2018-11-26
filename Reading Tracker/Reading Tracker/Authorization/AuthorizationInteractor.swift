@@ -25,7 +25,7 @@ class AuthorizationInteractor {
         authorizationSubject.onCompleted()
     }
     
-    func loginButtonTapped(login: String, password: String, onCompleted: (() -> Void)?) {
+    /*func loginButtonTapped(login: String, password: String, onCompleted: (() -> Void)?) {
         Auth.auth().signIn(withEmail: login, password: password) { [weak self] (rawUser, rawError) in
             onCompleted?()
             if let error = rawError {
@@ -34,7 +34,7 @@ class AuthorizationInteractor {
                 self?.authorizationSubject.onNext(user)
             }
         }
-    }
+    }*/
     
     func onLogin(result: AuthDataResult) {
         authorizationSubject.onNext(result)

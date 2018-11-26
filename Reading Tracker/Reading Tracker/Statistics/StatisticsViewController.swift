@@ -11,12 +11,17 @@ import UIKit
 
 final class StatisticsViewController: UIViewController {
     private var spinner: UIActivityIndicatorView?
+    private var navBar: NavigationBar!
+    var contentView: UIScrollView = UIScrollView(frame: .zero)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .white
         setupNavigationBar()
+        view.addSubview(contentView)
+        contentView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
+        contentView.autoPinEdge(.top, to: .bottom, of: navBar)
         setupSpinner()
         
         let overall = OverallStatsView(frame: .zero)
@@ -36,6 +41,7 @@ final class StatisticsViewController: UIViewController {
         
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
+        self.navBar = navBar
     }
     
     private func setupSpinner() {

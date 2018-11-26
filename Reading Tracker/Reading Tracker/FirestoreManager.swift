@@ -96,6 +96,7 @@ final class FirestoreManager {
                 for (key, value) in data {
                     guard let stringValue = value as? String else {
                         print("Document error format")
+                        onError?()
                         return
                     }
                     switch key {
@@ -129,7 +130,7 @@ final class FirestoreManager {
         }
     }
     
-    public func loadUserProfile() -> Observable<UserModel> {
+    public func loadUserProfile(onError: (() -> Void)?) -> Observable<UserModel> {
         guard let uid = Auth.auth().currentUser?.uid else {
             return .empty()
         }
@@ -144,6 +145,7 @@ final class FirestoreManager {
                 for (key, value) in data {
                     guard let stringValue = value as? String else {
                         print("Document error format")
+                        onError?()
                         return
                     }
                     switch key {
@@ -230,6 +232,7 @@ final class FirestoreManager {
                         for (key, value) in data {
                             guard let stringValue = value as? String else {
                                 print("Document error format")
+                                onError?()
                                 return
                             }
                             switch key {
@@ -316,6 +319,7 @@ final class FirestoreManager {
                     for (key, value) in data {
                         guard let stringValue = value as? String else {
                             print("Document error format")
+                            onFail?()
                             return
                         }
                         switch key {

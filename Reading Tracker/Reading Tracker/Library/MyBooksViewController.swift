@@ -13,7 +13,7 @@ import Firebase
 public enum BookType: String {
     case paper = "paper"
     case smartphone = "smartphone"
-    case tab = "tab"
+    case tab = "tablet"
     case ebook = "ebook"
     case unknown = "unknown"
     
@@ -23,7 +23,7 @@ public enum BookType: String {
             return .paper
         case "smartphone":
             return .smartphone
-        case "tab":
+        case "tablet":
             return .tab
         case "ebook":
             return .ebook
