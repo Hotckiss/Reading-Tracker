@@ -18,6 +18,11 @@ final class StatisticsViewController: UIViewController {
         view.backgroundColor = .white
         setupNavigationBar()
         setupSpinner()
+        
+        let overall = OverallStatsView(frame: .zero)
+        view.addSubview(overall)
+        overall.autoSetDimensions(to: SizeDependent.instance.convertSize(CGSize(width: 230, height: 230)))
+        overall.autoCenterInSuperview()
     }
     
     private func setupNavigationBar() {
