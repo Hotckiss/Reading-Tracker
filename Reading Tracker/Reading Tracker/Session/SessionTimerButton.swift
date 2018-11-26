@@ -148,15 +148,17 @@ public final class SessionTimerButton: UIButton {
     }
     
     private func setupButton(radius: CGFloat) {
+        let r1 = SizeDependent.instance.convertPadding(radius)
+        let r2 = SizeDependent.instance.convertPadding(radius - 13)
+        let r3 = SizeDependent.instance.convertPadding(radius - 37)
         backgroundColor = .white
-        layer.cornerRadius = radius
-        addCircle(radius: radius, width: 7, totalSize: 2 * radius)
-        addCircle(radius: radius - 13, width: 1, totalSize: 2 * radius)
-        addCircle(radius: radius - 37, width: 0, totalSize: 2 * radius, fillColor: UIColor(rgb: 0xedaf97).withAlphaComponent(0.2).cgColor)
+        layer.cornerRadius = r1
+        addCircle(radius: r1, width: SizeDependent.instance.convertPadding(7), totalSize: 2 * r1)
+        addCircle(radius: r2, width: 1, totalSize: 2 * r1)
+        addCircle(radius: r3, width: 0, totalSize: 2 * r1, fillColor: UIColor(rgb: 0xedaf97).withAlphaComponent(0.2).cgColor)
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOpacity = 0.2
         layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
-        
     }
     
     private func addCircle(radius: CGFloat, width: CGFloat, totalSize: CGFloat, fillColor: CGColor? = nil) {

@@ -23,6 +23,7 @@ final class StatisticsViewController: UIViewController {
         view.addSubview(overall)
         overall.autoSetDimensions(to: SizeDependent.instance.convertSize(CGSize(width: 230, height: 230)))
         overall.autoCenterInSuperview()
+        overall.update(booksCount: 7, minsCount: 7257, approachesCount: 213)
     }
     
     private func setupNavigationBar() {

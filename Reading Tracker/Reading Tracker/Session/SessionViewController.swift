@@ -57,7 +57,7 @@ final class SessionViewController: UIViewController {
         
         sessionButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 82 + bottomSpace)
         sessionButton.autoAlignAxis(toSuperviewAxis: .vertical)
-        sessionButton.autoSetDimensions(to: CGSize(width: 230, height: 230))
+        sessionButton.autoSetDimensions(to: SizeDependent.instance.convertSize(CGSize(width: 230, height: 230)))
         sessionButton.addTarget(self, action: #selector(onSessionButtonTap), for: .touchUpInside)
         sessionButton.onStateChanged = { [weak self] state in
             self?.finishPageTextField?.isHidden = (state != .pause)
