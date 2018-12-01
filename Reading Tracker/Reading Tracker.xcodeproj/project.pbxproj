@@ -17,6 +17,7 @@
 		2F1891E521590A680043BDCC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F1891E321590A670043BDCC /* GoogleService-Info.plist */; };
 		2F1891E621590A680043BDCC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F1891E321590A670043BDCC /* GoogleService-Info.plist */; };
 		2F3AA2A621B2F9D700CCE35D /* PeriodSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3AA2A521B2F9D700CCE35D /* PeriodSelectionView.swift */; };
+		2F3AA2A821B30B1000CCE35D /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3AA2A721B30B1000CCE35D /* SegmentedControl.swift */; };
 		2F412CDD21ABEF2B007C491B /* OverallStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F412CDC21ABEF2B007C491B /* OverallStatsView.swift */; };
 		2F412CE121ABEF58007C491B /* SizeDependent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F412CE021ABEF58007C491B /* SizeDependent.swift */; };
 		2F71B324218EFAFF00E4E80F /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B323218EFAFF00E4E80F /* RegistrationViewController.swift */; };
@@ -94,6 +95,7 @@
 		2F1891E12158EF2E0043BDCC /* AuthorizationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationInteractor.swift; sourceTree = "<group>"; };
 		2F1891E321590A670043BDCC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2F3AA2A521B2F9D700CCE35D /* PeriodSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodSelectionView.swift; sourceTree = "<group>"; };
+		2F3AA2A721B30B1000CCE35D /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		2F412CDC21ABEF2B007C491B /* OverallStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverallStatsView.swift; sourceTree = "<group>"; };
 		2F412CE021ABEF58007C491B /* SizeDependent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeDependent.swift; sourceTree = "<group>"; };
 		2F71B323218EFAFF00E4E80F /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
@@ -232,6 +234,7 @@
 			children = (
 				2F412CDC21ABEF2B007C491B /* OverallStatsView.swift */,
 				2F3AA2A521B2F9D700CCE35D /* PeriodSelectionView.swift */,
+				2F3AA2A721B30B1000CCE35D /* SegmentedControl.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -727,6 +730,7 @@
 				2F0C7E2D219F1D4100C28ECB /* ImageCompression.swift in Sources */,
 				2FFD1D072198CB1500779459 /* SessionFinishViewController.swift in Sources */,
 				2FE450C1216FA53E008B2F22 /* MainInteractor.swift in Sources */,
+				2F3AA2A821B30B1000CCE35D /* SegmentedControl.swift in Sources */,
 				2F412CDD21ABEF2B007C491B /* OverallStatsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -10,25 +10,14 @@ import Foundation
 import UIKit
 
 final class StatisticsViewController: UIViewController {
-    private var spinner: UIActivityIndicatorView?
-    private var navBar: NavigationBar!
-    private var periodView: PeriodSelectionView!
+    private var navBar: NavigationBar?
+    private var periodView: PeriodSelectionView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .white
-        setupNavigationBar()
-        setupSpinner()
         
-        let overall = OverallStatsView(frame: .zero)
-        view.addSubview(overall)
-        overall.autoSetDimensions(to: SizeDependent.instance.convertSize(CGSize(width: 230, height: 230)))
-        overall.autoCenterInSuperview()
-        overall.update(booksCount: 7, minsCount: 7257, approachesCount: 213)
-    }
-    
-    private func setupNavigationBar() {
         let navBar = NavigationBar()
         
         navBar.configure(model: NavigationBarModel(title: "Чтение", backButtonText: "Назад", onBackButtonPressed: ({ [weak self] in
@@ -51,18 +40,31 @@ final class StatisticsViewController: UIViewController {
         periodView.autoPinEdge(.top, to: .bottom, of: navBar)
         periodView.autoPinEdge(toSuperviewEdge: .left)
         periodView.autoPinEdge(toSuperviewEdge: .right)
-    }
-    
-    private func setupSpinner() {
-        let spinner = UIActivityIndicatorView()
-        view.addSubview(spinner)
+        self.periodView = periodView
         
-        view.bringSubviewToFront(spinner)
-        spinner.autoCenterInSuperview()
-        spinner.backgroundColor = UIColor(rgb: 0x555555).withAlphaComponent(0.7)
-        spinner.layer.cornerRadius = 8
-        spinner.autoSetDimensions(to: CGSize(width: 64, height: 64))
-        self.spinner = spinner
+        let overall = OverallStatsView(frame: .zero)
+        view.addSubview(overall)
+        overall.autoSetDimensions(to: SizeDependent.instance.convertSize(CGSize(width: 230, height: 230)))
+        overall.autoAlignAxis(toSuperviewAxis: .vertical)
+        overall.autoPinEdge(.top, to: .bottom, of: periodView, withOffset: 8)
+        overall.update(booksCount: 7, minsCount: 7257, approachesCount: 213)
+        
+        let segmentControl = SegmentedControl(frame: .zero)
+        segmentControl.layer.shadowColor = UIColor.black.cgColor
+        segmentControl.layer.shadowOpacity = 0.2
+        segmentControl.layer.shadowRadius = 2
+        segmentControl.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        view.addSubview(segmentControl)
+        segmentControl.autoPinEdge(.top, to: .bottom, of: overall, withOffset: 16)
+        segmentControl.autoPinEdge(toSuperviewEdge: .left)
+        segmentControl.autoPinEdge(toSuperviewEdge: .right)
+        segmentControl.autoSetDimension(.height, toSize: 42)
+        segmentControl.setSegments(items: ["Записи", "По книгам", "Графики"])
+        segmentControl.setSelected(index: 0)
+        segmentControl.didSelectSegmentItem = { index in
+            segmentControl.setSelected(index: index)
+            print(index)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
