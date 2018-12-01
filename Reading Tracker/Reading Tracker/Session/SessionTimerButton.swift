@@ -11,6 +11,7 @@ import UIKit
 
 public final class SessionTimerButton: UIButton {
     public var time: Int = 0
+    public var startTime: Date?
     public var onStateChanged: ((ButtonState) -> Void)?
     private var shapes: [CAShapeLayer] = []
     private var innerButtonImageView: UIImageView?
@@ -20,6 +21,9 @@ public final class SessionTimerButton: UIButton {
     
     public var buttonState: ButtonState = .start {
         didSet {
+            if oldValue == .start && buttonState != .start {
+                startTime = Date()
+            }
             setupInnerButton()
             setupTimer()
             onStateChanged?(buttonState)

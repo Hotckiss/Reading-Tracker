@@ -188,8 +188,6 @@ final class FirestoreManager {
         guard let uid = Auth.auth().currentUser?.uid else {
             return ""
         }
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
         let ref = db.collection("books")
             .document("libraries")
@@ -197,7 +195,7 @@ final class FirestoreManager {
             .addDocument(data: [
             "title": book.title,
             "author": book.author,
-            "last updated": formatter.string(from: book.lastUpdated),
+            "last updated": Timestamp(date: book.lastUpdated),
             "type": book.type.rawValue
             ]) { error in
                 if let error = error {
@@ -230,6 +228,11 @@ final class FirestoreManager {
                         var book = BookModel()
                         book.id = id
                         for (key, value) in data {
+                            if key == "last updated" {
+                                if let time = value as? Timestamp {
+                                    book.lastUpdated = time.dateValue()
+                                }
+                            }
                             guard let stringValue = value as? String else {
                                 print("Document error format")
                                 onError?()
@@ -239,9 +242,7 @@ final class FirestoreManager {
                             case "author":
                                 book.author = stringValue
                             case "last updated":
-                                let formatter = DateFormatter()
-                                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-                                book.lastUpdated = formatter.date(from: stringValue)!
+                                continue
                             case "title":
                                 book.title = stringValue
                             case "type":
@@ -262,8 +263,6 @@ final class FirestoreManager {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
         db.collection("books")
             .document("libraries")
@@ -272,7 +271,7 @@ final class FirestoreManager {
             .setData([
                 "title": book.title,
                 "author": book.author,
-                "last updated": formatter.string(from: book.lastUpdated),
+                "last updated": Timestamp(date: book.lastUpdated),
                 "type": book.type.rawValue
             ], merge: true) { error in
                 if let error = error {
@@ -355,7 +354,8 @@ final class FirestoreManager {
                 "book id": session.bookInfo.id,
                 "start page": session.startPage,
                 "end page": session.finishPage,
-                "time": session.time,
+                "duration": session.time,
+                "start time": Timestamp(date: session.startTime),
                 "mood": session.mood.rawValue,
                 "place": session.readPlace.rawValue,
                 "comment": session.comment,

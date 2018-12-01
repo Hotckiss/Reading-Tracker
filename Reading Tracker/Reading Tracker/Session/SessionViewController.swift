@@ -168,7 +168,8 @@ final class SessionViewController: UIViewController {
                                                               (strongSelf.isAutomaticTimeCounterEnabled && autoTime > 0) ||
                                                               (!strongSelf.isAutomaticTimeCounterEnabled && handTime > 0),
                                                               (strongSelf.isAutomaticTimeCounterEnabled && (state == .pause)) ||
-                                                              (!strongSelf.isAutomaticTimeCounterEnabled) else {
+                                                              (!strongSelf.isAutomaticTimeCounterEnabled),
+                                                              let startTime = strongSelf.sessionButton?.startTime else {
                                                                 showError()
                                                                 return
                                                         }
@@ -179,7 +180,8 @@ final class SessionViewController: UIViewController {
                                                         vc.model = SessionFinishModel(bookInfo: bookModel,
                                                                                       startPage: start,
                                                                                       finishPage: finish,
-                                                                                      time: time)
+                                                                                      time: time,
+                                                                                      startTime: startTime)
                                                         
                                                         strongSelf.navigationController?.pushViewController(vc, animated: true)
                                                     })))

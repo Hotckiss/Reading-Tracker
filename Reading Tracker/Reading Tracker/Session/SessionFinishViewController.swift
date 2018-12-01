@@ -88,6 +88,7 @@ public struct SessionFinishModel {
     var startPage: Int
     var finishPage: Int
     var time: Int
+    var startTime: Date
     var mood: Mood
     var readPlace: ReadPlace
     var comment: String
@@ -96,6 +97,7 @@ public struct SessionFinishModel {
                 startPage: Int,
                 finishPage: Int,
                 time: Int,
+                startTime: Date,
                 mood: Mood = .unknown,
                 readPlace: ReadPlace = .unknown,
                 comment: String = "") {
@@ -103,6 +105,7 @@ public struct SessionFinishModel {
         self.startPage = startPage
         self.finishPage = finishPage
         self.time = time
+        self.startTime = startTime
         self.mood = mood
         self.readPlace = readPlace
         self.comment = comment
