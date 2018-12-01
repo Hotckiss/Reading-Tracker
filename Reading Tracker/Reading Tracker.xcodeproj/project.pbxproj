@@ -18,6 +18,9 @@
 		2F1891E621590A680043BDCC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F1891E321590A670043BDCC /* GoogleService-Info.plist */; };
 		2F3AA2A621B2F9D700CCE35D /* PeriodSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3AA2A521B2F9D700CCE35D /* PeriodSelectionView.swift */; };
 		2F3AA2A821B30B1000CCE35D /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3AA2A721B30B1000CCE35D /* SegmentedControl.swift */; };
+		2F3AA2AB21B31AA400CCE35D /* SessionsStatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3AA2AA21B31AA400CCE35D /* SessionsStatisticsViewController.swift */; };
+		2F3AA2AD21B31AB600CCE35D /* BooksStatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3AA2AC21B31AB600CCE35D /* BooksStatisticsViewController.swift */; };
+		2F3AA2AF21B31ACB00CCE35D /* PlotsStatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3AA2AE21B31ACA00CCE35D /* PlotsStatisticsViewController.swift */; };
 		2F412CDD21ABEF2B007C491B /* OverallStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F412CDC21ABEF2B007C491B /* OverallStatsView.swift */; };
 		2F412CE121ABEF58007C491B /* SizeDependent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F412CE021ABEF58007C491B /* SizeDependent.swift */; };
 		2F71B324218EFAFF00E4E80F /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B323218EFAFF00E4E80F /* RegistrationViewController.swift */; };
@@ -96,6 +99,9 @@
 		2F1891E321590A670043BDCC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2F3AA2A521B2F9D700CCE35D /* PeriodSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodSelectionView.swift; sourceTree = "<group>"; };
 		2F3AA2A721B30B1000CCE35D /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
+		2F3AA2AA21B31AA400CCE35D /* SessionsStatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionsStatisticsViewController.swift; sourceTree = "<group>"; };
+		2F3AA2AC21B31AB600CCE35D /* BooksStatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksStatisticsViewController.swift; sourceTree = "<group>"; };
+		2F3AA2AE21B31ACA00CCE35D /* PlotsStatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlotsStatisticsViewController.swift; sourceTree = "<group>"; };
 		2F412CDC21ABEF2B007C491B /* OverallStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverallStatsView.swift; sourceTree = "<group>"; };
 		2F412CE021ABEF58007C491B /* SizeDependent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeDependent.swift; sourceTree = "<group>"; };
 		2F71B323218EFAFF00E4E80F /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
@@ -229,6 +235,16 @@
 			path = Authorization;
 			sourceTree = "<group>";
 		};
+		2F3AA2A921B31A5500CCE35D /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				2F3AA2AA21B31AA400CCE35D /* SessionsStatisticsViewController.swift */,
+				2F3AA2AC21B31AB600CCE35D /* BooksStatisticsViewController.swift */,
+				2F3AA2AE21B31ACA00CCE35D /* PlotsStatisticsViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		2F412CDB21ABEF03007C491B /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -337,6 +353,7 @@
 		2FED199721748F1200AFFF99 /* Statistics */ = {
 			isa = PBXGroup;
 			children = (
+				2F3AA2A921B31A5500CCE35D /* Controllers */,
 				2F412CDB21ABEF03007C491B /* Views */,
 				2FED19A021748FE300AFFF99 /* StatisticsViewController.swift */,
 			);
@@ -691,6 +708,7 @@
 				2F3AA2A621B2F9D700CCE35D /* PeriodSelectionView.swift in Sources */,
 				2FC9561B21AB41EA00E52CE6 /* TextFieldDelegates.swift in Sources */,
 				2F71B328218F3FFE00E4E80F /* OfflineCodeSignUpViewController.swift in Sources */,
+				2F3AA2AF21B31ACB00CCE35D /* PlotsStatisticsViewController.swift in Sources */,
 				2FAA8FB3216A152C0011F59D /* RegistrationLoginViewController.swift in Sources */,
 				2FAA8FBC216A6E430011F59D /* RegistrationEducationViewController.swift in Sources */,
 				2FC9561F21AB448B00E52CE6 /* AddBookView.swift in Sources */,
@@ -723,8 +741,10 @@
 				2FFE218E21679BE6001BBE90 /* UserModel.swift in Sources */,
 				2FA1676021A890FF006E9712 /* SpinnerView.swift in Sources */,
 				2FAA8FB8216A32310011F59D /* RegistrationDraft.swift in Sources */,
+				2F3AA2AB21B31AA400CCE35D /* SessionsStatisticsViewController.swift in Sources */,
 				2F71B324218EFAFF00E4E80F /* RegistrationViewController.swift in Sources */,
 				2F0C7E2B219F0F7D00C28ECB /* FirebaseStorageManager.swift in Sources */,
+				2F3AA2AD21B31AB600CCE35D /* BooksStatisticsViewController.swift in Sources */,
 				2F1891DC2158B9760043BDCC /* UIColor+RGB.swift in Sources */,
 				2FEB6A9321A343FE00334802 /* QuestionarreViewController.swift in Sources */,
 				2F0C7E2D219F1D4100C28ECB /* ImageCompression.swift in Sources */,

@@ -12,6 +12,10 @@ import UIKit
 final class StatisticsViewController: UIViewController {
     private var navBar: NavigationBar?
     private var periodView: PeriodSelectionView?
+    private var childsVC: [UIViewController] = [SessionsStatisticsViewController(),
+                                                BooksStatisticsViewController(),
+                                                PlotsStatisticsViewController()]
+    private var container: UIView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,10 +65,44 @@ final class StatisticsViewController: UIViewController {
         segmentControl.autoSetDimension(.height, toSize: 42)
         segmentControl.setSegments(items: ["Записи", "По книгам", "Графики"])
         segmentControl.setSelected(index: 0)
-        segmentControl.didSelectSegmentItem = { index in
+        segmentControl.didSelectSegmentItem = { [weak self] index in
             segmentControl.setSelected(index: index)
+            self?.setController(index: index)
             print(index)
         }
+        
+        let container = UIView(frame: .zero)
+        view.addSubview(container)
+        container.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
+        container.autoPinEdge(.top, to: .bottom, of: segmentControl, withOffset: 5)
+        self.container = container
+        
+        setController(index: 0)
+    }
+    
+    private func setController(index: Int) {
+        if let currentChild = children.first {
+            currentChild.willMove(toParent: nil)
+            currentChild.view.removeFromSuperview()
+            currentChild.removeFromParent()
+            currentChild.setEditing(false, animated: false)
+        }
+        
+        guard index < childsVC.count else {
+            return
+        }
+        
+        let viewController = childsVC[index]
+        addChild(viewController)
+        container?.addSubview(viewController.view)
+        
+        if #available(iOS 11, *) {
+        } else {
+            viewController.viewWillAppear(false)
+        }
+        
+        viewController.view.autoPinEdgesToSuperviewEdges()
+        viewController.didMove(toParent: self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
