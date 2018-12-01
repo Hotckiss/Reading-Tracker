@@ -232,6 +232,7 @@ final class FirestoreManager {
                                 if let time = value as? Timestamp {
                                     book.lastUpdated = time.dateValue()
                                 }
+                                continue
                             }
                             guard let stringValue = value as? String else {
                                 print("Document error format")

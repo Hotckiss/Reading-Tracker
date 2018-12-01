@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+
 public final class OverallStatsView: UIView {
     
     var booksNumLabel: UILabel?

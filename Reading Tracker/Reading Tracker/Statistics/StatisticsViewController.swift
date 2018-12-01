@@ -12,16 +12,13 @@ import UIKit
 final class StatisticsViewController: UIViewController {
     private var spinner: UIActivityIndicatorView?
     private var navBar: NavigationBar!
-    var contentView: UIScrollView = UIScrollView(frame: .zero)
+    private var periodView: PeriodSelectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .white
         setupNavigationBar()
-        view.addSubview(contentView)
-        contentView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
-        contentView.autoPinEdge(.top, to: .bottom, of: navBar)
         setupSpinner()
         
         let overall = OverallStatsView(frame: .zero)
@@ -42,6 +39,18 @@ final class StatisticsViewController: UIViewController {
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
         self.navBar = navBar
+        
+        let periodView = PeriodSelectionView(frame: .zero)
+        
+        periodView.update(title: "Все время")
+        periodView.onTap = { [weak self] in
+            print("TODO: different time intervals")
+        }
+        
+        view.addSubview(periodView)
+        periodView.autoPinEdge(.top, to: .bottom, of: navBar)
+        periodView.autoPinEdge(toSuperviewEdge: .left)
+        periodView.autoPinEdge(toSuperviewEdge: .right)
     }
     
     private func setupSpinner() {
