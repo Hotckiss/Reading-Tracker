@@ -9,19 +9,20 @@
 import Foundation
 import UIKit
 
-final class StatisticsViewController: UIViewController {
+final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     private var navBar: NavigationBar?
     private var periodView: PeriodSelectionView?
+    private var contentView: UIScrollView!
+    private var segmentControl: SegmentedControl!
+    private var segmentControlTopInset: NSLayoutConstraint?
     private var childsVC: [UIViewController] = [SessionsStatisticsViewController(),
-                                                BooksStatisticsViewController(),
-                                                PlotsStatisticsViewController()]
-    private var container: UIView?
+                                               BooksStatisticsViewController(),
+                                               PlotsStatisticsViewController()]
+    private var container: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .white
-        
         let navBar = NavigationBar()
         
         navBar.configure(model: NavigationBarModel(title: "Чтение", backButtonText: "Назад", onBackButtonPressed: ({ [weak self] in
@@ -46,11 +47,19 @@ final class StatisticsViewController: UIViewController {
         periodView.autoPinEdge(toSuperviewEdge: .right)
         self.periodView = periodView
         
+        contentView = UIScrollView(frame: .zero)
+        contentView.isScrollEnabled = true
+        contentView.alwaysBounceVertical = true
+        contentView.delegate = self
+        view.addSubview(contentView)
+        contentView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
+        contentView.autoPinEdge(.top, to: .bottom, of: periodView)
+        
         let overall = OverallStatsView(frame: .zero)
-        view.addSubview(overall)
+        contentView.addSubview(overall)
         overall.autoSetDimensions(to: SizeDependent.instance.convertSize(CGSize(width: 230, height: 230)))
         overall.autoAlignAxis(toSuperviewAxis: .vertical)
-        overall.autoPinEdge(.top, to: .bottom, of: periodView, withOffset: 8)
+        overall.autoPinEdge(toSuperviewEdge: .top, withInset: 8)
         overall.update(booksCount: 7, minsCount: 7257, approachesCount: 213)
         
         let segmentControl = SegmentedControl(frame: .zero)
@@ -59,22 +68,25 @@ final class StatisticsViewController: UIViewController {
         segmentControl.layer.shadowRadius = 2
         segmentControl.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
         view.addSubview(segmentControl)
-        segmentControl.autoPinEdge(.top, to: .bottom, of: overall, withOffset: 16)
+        segmentControlTopInset = segmentControl.autoPinEdge(.top, to: .bottom, of: periodView, withOffset: SizeDependent.instance.convertSize(CGSize(width: 230, height: 230)).height + CGFloat(24))
         segmentControl.autoPinEdge(toSuperviewEdge: .left)
         segmentControl.autoPinEdge(toSuperviewEdge: .right)
         segmentControl.autoSetDimension(.height, toSize: 42)
         segmentControl.setSegments(items: ["Записи", "По книгам", "Графики"])
         segmentControl.setSelected(index: 0)
+        view.bringSubviewToFront(segmentControl)
+        self.segmentControl = segmentControl
         segmentControl.didSelectSegmentItem = { [weak self] index in
             segmentControl.setSelected(index: index)
             self?.setController(index: index)
-            print(index)
         }
         
         let container = UIView(frame: .zero)
-        view.addSubview(container)
+        contentView.addSubview(container)
         container.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
-        container.autoPinEdge(.top, to: .bottom, of: segmentControl, withOffset: 5)
+        container.autoMatch(.width, to: .width, of: contentView)
+        container.autoPinEdge(.top, to: .bottom, of: overall, withOffset: 42 + 5)
+        container.autoPinEdge(toSuperviewEdge: .bottom)
         self.container = container
         
         setController(index: 0)
@@ -94,8 +106,7 @@ final class StatisticsViewController: UIViewController {
         
         let viewController = childsVC[index]
         addChild(viewController)
-        container?.addSubview(viewController.view)
-        
+        container.addSubview(viewController.view)
         if #available(iOS 11, *) {
         } else {
             viewController.viewWillAppear(false)
@@ -105,6 +116,12 @@ final class StatisticsViewController: UIViewController {
         viewController.didMove(toParent: self)
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        segmentControlTopInset?.constant = max(SizeDependent.instance.convertSize(CGSize(width: 230, height: 230)).height + CGFloat(24) - scrollView.bounds.origin.y, 0)
+        print(scrollView.contentSize)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
 }

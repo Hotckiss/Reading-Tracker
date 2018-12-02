@@ -39,10 +39,17 @@ final class SessionsStatisticsViewController: UIViewController {
         
         view.addSubview(nameTextField)
         nameTextField.autoAlignAxis(toSuperviewAxis: .vertical)
-        nameTextField.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 124, left: 16, bottom: 0, right: 16), excludingEdge: .bottom)
+        nameTextField.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 124, left: 16, bottom: 0, right: 16))
+        nameTextField.autoSetDimension(.height, toSize: 2000)
+        let b = UIButton(frame: .zero)
+        b.setAttributedTitle(NSAttributedString(string: "button", attributes: placeholderTextAttributes), for: .normal)
+        b.addTarget(self, action: #selector(tap1), for: .touchUpInside)
+        view.addSubview(b)
+        b.autoCenterInSuperview()
     }
     
-    @objc private func onAddCover() {
+    @objc private func tap1() {
+        //tap?()
     }
     
     private func setupSpinner() {
