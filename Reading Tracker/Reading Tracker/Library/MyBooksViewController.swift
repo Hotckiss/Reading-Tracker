@@ -75,7 +75,7 @@ public struct BookModel {
     public var lastUpdated: Date
     public var type: BookType
     
-    init(id: String = "",
+    public init(id: String = "",
          title: String = "",
          author: String = "",
          image: UIImage? = nil,

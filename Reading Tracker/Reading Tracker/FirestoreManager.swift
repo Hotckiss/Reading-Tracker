@@ -395,4 +395,87 @@ final class FirestoreManager {
             }
         }
     }
+    
+    public func getAllSessions(completion: (([UploadSessionModel]) -> Void)? = nil, onError: (() -> Void)?) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        db.collection("statistics")
+            .document("sessions")
+            .collection(uid)
+            .getDocuments { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    var res: [UploadSessionModel] = []
+                    for document in querySnapshot!.documents {
+                        let data = document.data()
+                        var session = UploadSessionModel()
+                        for (key, value) in data {
+                            let onErrorClosure = {
+                                print("Document error format")
+                                onError?()
+                                return
+                            }
+                            switch key {
+                            case "start time":
+                                if let time = value as? Timestamp {
+                                    session.startTime = time.dateValue()
+                                } else {
+                                    onErrorClosure()
+                                }
+                            case "duration":
+                                if let duration = value as? Int {
+                                    session.time = duration
+                                } else {
+                                    onErrorClosure()
+                                }
+                            case "start page":
+                                if let startPage = value as? Int {
+                                    session.startPage = startPage
+                                } else {
+                                    onErrorClosure()
+                                }
+                            case "end page":
+                                if let endPage = value as? Int {
+                                    session.finishPage = endPage
+                                } else {
+                                    onErrorClosure()
+                                }
+                            case "mood":
+                                if let mood = value as? String {
+                                    session.mood = Mood(str: mood)
+                                } else {
+                                    onErrorClosure()
+                                }
+                            case "place":
+                                if let place = value as? String {
+                                    session.readPlace = ReadPlace(str: place)
+                                } else {
+                                    onErrorClosure()
+                                }
+                            case "comment":
+                                if let comment = value as? String {
+                                    session.comment = comment
+                                } else {
+                                    onErrorClosure()
+                                }
+                            case "book id":
+                                if let id = value as? String {
+                                    session.bookId = id
+                                } else {
+                                    onErrorClosure()
+                                }
+                            default:
+                                break
+                            }
+                        }
+                        
+                        res.append(session)
+                    }
+                    completion?(res)
+                }
+        }
+    }
 }

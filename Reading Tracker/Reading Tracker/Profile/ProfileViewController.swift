@@ -24,6 +24,7 @@ public struct ProfileOption {
 
 final class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     public var onExit: (() -> Void)? = nil
+    public var booksStorage: [BookModel] = []
     private var spinner: UIActivityIndicatorView?
     private var profileOptions: [ProfileOption] = [ProfileOption(title: "Анкета участника исследования", subtitle: "Заполняя анкету, вы учавствуете в научном исследовании читателей и их интересов"),
                                                    ProfileOption(title: "Статистика"),
@@ -91,7 +92,7 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
             let qVC = QuestionarreViewController()
             navigationController?.pushViewController(qVC, animated: true)
         } else if indexPath.row == 1 {
-            let sVC = StatisticsViewController()
+            let sVC = StatisticsViewController(books: booksStorage)
             navigationController?.pushViewController(sVC, animated: true)
         } else if indexPath.row == 3 {
             onExit?()

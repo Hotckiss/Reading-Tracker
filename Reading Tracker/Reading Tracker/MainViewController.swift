@@ -56,6 +56,7 @@ final class MainViewController: UIViewController {
         
         libraryVC.onBooksListUpdated = { list in
             sessionVC.updateWithBook(book: list.first)
+            profileVC.booksStorage = list
         }
         
         libraryVC.onTapToStartSession = { [weak self] book in

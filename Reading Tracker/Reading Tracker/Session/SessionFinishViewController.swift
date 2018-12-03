@@ -93,15 +93,44 @@ public struct SessionFinishModel {
     var readPlace: ReadPlace
     var comment: String
     
-    public init(bookInfo: BookModel,
-                startPage: Int,
-                finishPage: Int,
-                time: Int,
-                startTime: Date,
+    public init(bookInfo: BookModel = BookModel(),
+                startPage: Int = 1,
+                finishPage: Int = 2,
+                time: Int = 0,
+                startTime: Date = Date(),
                 mood: Mood = .unknown,
                 readPlace: ReadPlace = .unknown,
                 comment: String = "") {
         self.bookInfo = bookInfo
+        self.startPage = startPage
+        self.finishPage = finishPage
+        self.time = time
+        self.startTime = startTime
+        self.mood = mood
+        self.readPlace = readPlace
+        self.comment = comment
+    }
+}
+
+public struct UploadSessionModel {
+    var bookId: String
+    var startPage: Int
+    var finishPage: Int
+    var time: Int
+    var startTime: Date
+    var mood: Mood
+    var readPlace: ReadPlace
+    var comment: String
+    
+    public init(bookId: String = "",
+                startPage: Int = 1,
+                finishPage: Int = 2,
+                time: Int = 0,
+                startTime: Date = Date(),
+                mood: Mood = .unknown,
+                readPlace: ReadPlace = .unknown,
+                comment: String = "") {
+        self.bookId = bookId
         self.startPage = startPage
         self.finishPage = finishPage
         self.time = time

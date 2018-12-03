@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Firebase
 
 final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     private var navBar: NavigationBar?
@@ -19,6 +20,32 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
                                                BooksStatisticsViewController(),
                                                PlotsStatisticsViewController()]
     private var container: UIView!
+    private var handler: AuthStateDidChangeListenerHandle?
+    private var sessions: [UploadSessionModel] = []
+    private var booksMap: [String : BookModel] = [:]
+    private var overallView: OverallStatsView?
+    
+    convenience init(books: [BookModel]) {
+        self.init(nibName: nil, bundle: nil)
+        
+        for book in books {
+            booksMap[book.id] = book
+        }
+    }
+    
+    deinit {
+        if let handler = handler {
+            Auth.auth().removeStateDidChangeListener(handler)
+        }
+    }
+    
+    func update() {
+        var secs = 0
+        for session in sessions {
+            secs += session.time
+        }
+        overallView?.update(booksCount: booksMap.count, minsCount: secs / 60, approachesCount: sessions.count)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,6 +78,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         contentView.isScrollEnabled = true
         contentView.alwaysBounceVertical = true
         contentView.delegate = self
+        contentView.showsVerticalScrollIndicator = false
         view.addSubview(contentView)
         contentView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
         contentView.autoPinEdge(.top, to: .bottom, of: periodView)
@@ -60,7 +88,8 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         overall.autoSetDimensions(to: SizeDependent.instance.convertSize(CGSize(width: 230, height: 230)))
         overall.autoAlignAxis(toSuperviewAxis: .vertical)
         overall.autoPinEdge(toSuperviewEdge: .top, withInset: 8)
-        overall.update(booksCount: 7, minsCount: 7257, approachesCount: 213)
+        overall.update(booksCount: 0, minsCount: 0, approachesCount: 0)
+        self.overallView = overall
         
         let segmentControl = SegmentedControl(frame: .zero)
         segmentControl.layer.shadowColor = UIColor.black.cgColor
@@ -90,6 +119,21 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         self.container = container
         
         setController(index: 0)
+        
+        handler = Auth.auth().addStateDidChangeListener { [weak self] (auth, user) in
+            if user != nil {
+                FirestoreManager.DBManager.getAllSessions(completion: { sessions in
+                    self?.sessions = sessions
+                    self?.update()
+                },
+                                                          onError: ({ [weak self] in
+                                                            //self?.spinner?.hide()
+                                                          }))
+            } else {
+                self?.sessions = []
+            }
+        }
+        update()
     }
     
     private func setController(index: Int) {
@@ -118,7 +162,6 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         segmentControlTopInset?.constant = max(SizeDependent.instance.convertSize(CGSize(width: 230, height: 230)).height + CGFloat(24) - scrollView.bounds.origin.y, 0)
-        print(scrollView.contentSize)
     }
     
     override func viewWillAppear(_ animated: Bool) {
