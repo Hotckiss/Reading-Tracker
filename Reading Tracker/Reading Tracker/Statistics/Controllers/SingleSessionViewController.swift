@@ -14,10 +14,14 @@ final class SingleSessionViewController: UIViewController {
     private var navBar: NavigationBar?
     private var bookCell: BookFilledCell?
     private var bookModel: BookModel
+    private var sessionModel: UploadSessionModel
     
-    init(model: BookModel) {
+    private var hrsNumLabel: UILabel?
+    private var minsNumLabel: UILabel?
+    
+    init(model: BookModel, sessionModel: UploadSessionModel) {
         self.bookModel = model
-        
+        self.sessionModel = sessionModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -56,7 +60,89 @@ final class SingleSessionViewController: UIViewController {
         bookCell.configure(model: bookModel)
         self.bookCell = bookCell
         
+        let lineView = UIView(frame: .zero)
+        lineView.backgroundColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
+        
+        view.addSubview(lineView)
+        lineView.autoPinEdge(toSuperviewEdge: .left)
+        lineView.autoPinEdge(toSuperviewEdge: .right)
+        lineView.autoPinEdge(.top, to: .bottom, of: bookCell)
+        lineView.autoSetDimension(.height, toSize: 1)
+        
+        let dateLabel = UILabel(forAutoLayout: ())
+        dateLabel.numberOfLines = 1
+        view.addSubview(dateLabel)
+        dateLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        dateLabel.autoPinEdge(.top, to: .bottom, of: lineView, withOffset: 20)
+        
+        let dayOfWeekLabel = UILabel(forAutoLayout: ())
+        dayOfWeekLabel.numberOfLines = 1
+        view.addSubview(dayOfWeekLabel)
+        dayOfWeekLabel.autoPinEdge(.left, to: .right, of: dateLabel, withOffset: 8)
+        dayOfWeekLabel.autoAlignAxis(.horizontal, toSameAxisOf: dateLabel)
+        
+        let dateTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+            as [NSAttributedString.Key : Any]
+        
+        let dayOfWeekTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!]
+            as [NSAttributedString.Key : Any]
+        
+        dateLabel.attributedText = NSAttributedString(string: format(sessionModel.startTime), attributes: dateTextAttributes)
+        dayOfWeekLabel.attributedText = NSAttributedString(string: getDayOfWeek(sessionModel.startTime), attributes: dayOfWeekTextAttributes)
+        
+        let timeDescriptionTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 24.0)!,
+            NSAttributedString.Key.baselineOffset: 2]
+            as [NSAttributedString.Key : Any]
+        
+        let hrsNumLabel = UILabel(forAutoLayout: ())
+        self.hrsNumLabel = hrsNumLabel
+        
+        let hrsTextLabel = UILabel(forAutoLayout: ())
+        hrsTextLabel.attributedText = NSAttributedString(string: "час", attributes: timeDescriptionTextAttributes)
+        
+        let minsNumLabel = UILabel(forAutoLayout: ())
+        self.minsNumLabel = minsNumLabel
+        
+        let minsTextLabel = UILabel(forAutoLayout: ())
+        minsTextLabel.attributedText = NSAttributedString(string: "мин", attributes: timeDescriptionTextAttributes)
+        
+        [minsTextLabel, minsNumLabel, hrsTextLabel, hrsNumLabel].forEach { [weak self] label in
+            self?.view.addSubview(label)
+        }
+        
+        hrsNumLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        hrsNumLabel.autoPinEdge(.top, to: .bottom, of: dateLabel, withOffset: 16)
+        hrsTextLabel.autoPinEdge(.left, to: .right, of: hrsNumLabel, withOffset: 4)
+        minsNumLabel.autoPinEdge(.left, to: .right, of: hrsTextLabel, withOffset: 6)
+        minsTextLabel.autoPinEdge(.left, to: .right, of: minsNumLabel, withOffset: 4)
+        [minsNumLabel, hrsTextLabel, minsTextLabel].forEach { label in
+            label.autoAlignAxis(.horizontal, toSameAxisOf: hrsNumLabel)
+        }
+        
+        configure(sessionModel: sessionModel)
+        
         setupSpinner()
+    }
+    
+    func configure(sessionModel: UploadSessionModel) {
+        let style = NSMutableParagraphStyle()
+        style.maximumLineHeight = 48
+        
+        let timeNumTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 48.0)!,
+            NSAttributedString.Key.paragraphStyle: style,
+            NSAttributedString.Key.baselineOffset: -8]
+            as [NSAttributedString.Key : Any]
+        
+        minsNumLabel?.attributedText = NSAttributedString(string: String((sessionModel.time / 60) % 60), attributes: timeNumTextAttributes)
+        hrsNumLabel?.attributedText = NSAttributedString(string: String(sessionModel.time / 3600), attributes: timeNumTextAttributes)
     }
     
     private func setupSpinner() {
@@ -67,4 +153,28 @@ final class SingleSessionViewController: UIViewController {
         spinner.autoPinEdgesToSuperviewEdges()
         self.spinner = spinner
     }
+    
+    public func format(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateFormat = "d MMMM"
+        return formatter.string(from: date)
+    }
+    
+    func getDayOfWeek(_ date: Date) -> String {
+        var cal = Calendar(identifier: .gregorian)
+        cal.locale = Locale(identifier: "ru_RU")
+        let weekDay = cal.component(.weekday, from: date)
+        return SingleSessionViewController.weedDayMap[weekDay]!
+    }
+    
+    static let weedDayMap: [Int: String] = [
+        1: "воскресенье",
+        2: "понедельник",
+        3: "вторник",
+        4: "среда",
+        5: "четверг",
+        6: "пятница",
+        7: "суббота",
+        ]
 }

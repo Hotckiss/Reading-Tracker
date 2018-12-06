@@ -111,7 +111,7 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
         
         let session = sessions[dataIndex]
         if let book = booksMap[sessions[dataIndex].bookId] {
-            let vc = SingleSessionViewController(model: book)
+            let vc = SingleSessionViewController(model: book, sessionModel: session)
             navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -397,6 +397,5 @@ private class SessionCell: UITableViewCell {
         5: "четверг",
         6: "пятница",
         7: "суббота",
-        
     ]
 }
