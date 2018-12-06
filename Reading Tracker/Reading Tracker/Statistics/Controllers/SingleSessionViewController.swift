@@ -19,6 +19,9 @@ final class SingleSessionViewController: UIViewController {
     private var hrsNumLabel: UILabel?
     private var minsNumLabel: UILabel?
     
+    private var startTimeLabel: UILabel?
+    private var finishTimeLabel: UILabel?
+    
     init(model: BookModel, sessionModel: UploadSessionModel) {
         self.bookModel = model
         self.sessionModel = sessionModel
@@ -125,8 +128,34 @@ final class SingleSessionViewController: UIViewController {
             label.autoAlignAxis(.horizontal, toSameAxisOf: hrsNumLabel)
         }
         
-        configure(sessionModel: sessionModel)
+        let startTimeLabel = UILabel(forAutoLayout: ())
+        self.startTimeLabel = startTimeLabel
         
+        view.addSubview(startTimeLabel)
+        startTimeLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        startTimeLabel.autoPinEdge(.top, to: .bottom, of: hrsNumLabel, withOffset: 16)
+        
+        let separatorLabel = UILabel(forAutoLayout: ())
+        
+        let separatorTextAttributesBig = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 24.0)!,
+            NSAttributedString.Key.baselineOffset: 2]
+            as [NSAttributedString.Key : Any]
+        
+        separatorLabel.attributedText = NSAttributedString(string: "\u{2013}", attributes: separatorTextAttributesBig)
+        view.addSubview(separatorLabel)
+        separatorLabel.autoPinEdge(.left, to: .right, of: startTimeLabel, withOffset: 4)
+        separatorLabel.autoAlignAxis(.horizontal, toSameAxisOf: startTimeLabel)
+        
+        let finishTimeLabel = UILabel(forAutoLayout: ())
+        self.finishTimeLabel = finishTimeLabel
+        
+        view.addSubview(finishTimeLabel)
+        finishTimeLabel.autoPinEdge(.left, to: .right, of: separatorLabel, withOffset: 4)
+        finishTimeLabel.autoAlignAxis(.horizontal, toSameAxisOf: startTimeLabel)
+        
+        configure(sessionModel: sessionModel)
         setupSpinner()
     }
     
@@ -143,6 +172,32 @@ final class SingleSessionViewController: UIViewController {
         
         minsNumLabel?.attributedText = NSAttributedString(string: String((sessionModel.time / 60) % 60), attributes: timeNumTextAttributes)
         hrsNumLabel?.attributedText = NSAttributedString(string: String(sessionModel.time / 3600), attributes: timeNumTextAttributes)
+        
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateFormat = "HH:mm"
+        
+        let realTimeTextAttributesBig = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 48.0)!]
+            as [NSAttributedString.Key : Any]
+        
+        let realTimeTextAttributesSmall = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 24.0)!,
+            NSAttributedString.Key.baselineOffset: 8]
+            as [NSAttributedString.Key : Any]
+        
+        let startTimeString = formatter.string(from: sessionModel.startTime)
+        let finishTimeString = formatter.string(from: Calendar.current.date(byAdding: .second, value: sessionModel.time, to: sessionModel.startTime)!)
+        
+        let startTimeAttributed = NSMutableAttributedString(string: startTimeString, attributes: realTimeTextAttributesBig)
+        startTimeAttributed.addAttributes(realTimeTextAttributesSmall, range: NSRange(location: 2, length: 3))
+        startTimeLabel?.attributedText = startTimeAttributed
+        
+        let finishTimeAttributed = NSMutableAttributedString(string: finishTimeString, attributes: realTimeTextAttributesBig)
+        finishTimeAttributed.addAttributes(realTimeTextAttributesSmall, range: NSRange(location: 2, length: 3))
+        finishTimeLabel?.attributedText = finishTimeAttributed
     }
     
     private func setupSpinner() {
