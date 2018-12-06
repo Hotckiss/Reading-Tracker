@@ -14,7 +14,7 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
     private var spinner: SpinnerView?
     private var sessions: [UploadSessionModel] = []
     private var booksMap: [String : BookModel] = [:]
-    //private var items: [UIView] = []
+    private var indexOfLongestSession: Int = 0
     private var tableView: UITableView?
     private var tableViewHeightConstraint: NSLayoutConstraint?
     init() {
@@ -22,9 +22,19 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
     }
     
     func update(sessions: [UploadSessionModel], booksMap: [String : BookModel]) {
+        guard !sessions.isEmpty else {
+            return
+        }
+        
         self.sessions = sessions
         self.booksMap = booksMap
-        tableViewHeightConstraint?.constant = CGFloat(sessions.count * 118)
+        for (index, session) in sessions.enumerated() {
+            if session.time > sessions[indexOfLongestSession].time {
+                indexOfLongestSession = index
+            }
+        }
+        
+        tableViewHeightConstraint?.constant = CGFloat(sessions.count * 118 + 2 * 42 + 118)
         tableView?.reloadData()
         
         //tableView?.frame.size = tableView?.contentSize ?? CGSize()
@@ -43,7 +53,12 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
         tableView.backgroundColor = .red
         tableView.autoPinEdgesToSuperviewEdges()
         tableView.register(SessionCell.self, forCellReuseIdentifier: "sessionCell")
-        tableView.tableFooterView = UIView()
+        tableView.register(SectionCell.self, forCellReuseIdentifier: "sectionCell")
+        
+        let lineView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 1))
+        lineView.backgroundColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
+        
+        tableView.tableFooterView = lineView
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .white
@@ -73,13 +88,19 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sessions.count
+        return (section == 0) ? 1 : sessions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "sessionCell") as! SessionCell
-        if let book = booksMap[sessions[indexPath.row].bookId] {
-            cell.configure(model: SessionCellModel(sessionInfo: sessions[indexPath.row], book: book))
+        if indexPath.section == 0 {
+            if let book = booksMap[sessions[indexOfLongestSession].bookId] {
+                cell.configure(model: SessionCellModel(sessionInfo: sessions[indexOfLongestSession], book: book))
+            }
+        } else {
+            if let book = booksMap[sessions[indexPath.row].bookId] {
+                cell.configure(model: SessionCellModel(sessionInfo: sessions[indexPath.row], book: book))
+            }
         }
         
         return cell
@@ -88,6 +109,16 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let session = sessions[indexPath.row]
         //onTapToStartSession?(book)
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "sectionCell") as! SectionCell
+        cell.configure(text: (section == 0) ? "Самое продолжительное чтение" : "Все записи о чтении")
+        return cell.contentView
     }
 }
 
@@ -98,6 +129,50 @@ public struct SessionCellModel {
     public init(sessionInfo: UploadSessionModel = UploadSessionModel(), book: BookModel = BookModel()) {
         self.book = book
         self.sessionInfo = sessionInfo
+    }
+}
+
+private class SectionCell: UITableViewCell {
+    private var titleLabel: UILabel?
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        backgroundColor = .white
+        selectionStyle = .none
+        setupSubviews()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupSubviews() {
+        let titleLabel = UILabel(forAutoLayout: ())
+        contentView.addSubview(titleLabel)
+        contentView.backgroundColor = .white
+        titleLabel.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 16, left: 16, bottom: 6, right: 16))
+        self.titleLabel = titleLabel
+        
+        let lineView = UIView(frame: .zero)
+        lineView.backgroundColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
+        
+        contentView.addSubview(lineView)
+        lineView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16), excludingEdge: .top)
+        lineView.autoSetDimension(.height, toSize: 1)
+    }
+    
+    func configure(text: String) {
+        let style = NSMutableParagraphStyle()
+        style.maximumLineHeight = 20
+        style.minimumLineHeight = 20
+        style.alignment = .right
+        let titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!,
+            NSAttributedString.Key.paragraphStyle: style]
+            as [NSAttributedString.Key : Any]
+        
+        titleLabel?.attributedText = NSAttributedString(string: text, attributes: titleTextAttributes)
     }
 }
 

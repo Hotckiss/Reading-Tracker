@@ -320,12 +320,6 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         tableViewBottomConstraint?.constant = 0
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items[section].count
     }
