@@ -24,6 +24,10 @@ final class SingleSessionViewController: UIViewController {
     
     private var pagesLabel: UILabel?
     
+    private var commentView: UIImageView?
+    private var placeView: UIImageView?
+    private var moodView: UIImageView?
+    
     init(model: BookModel, sessionModel: UploadSessionModel) {
         self.bookModel = model
         self.sessionModel = sessionModel
@@ -220,6 +224,64 @@ final class SingleSessionViewController: UIViewController {
             String(sessionModel.finishPage)
         
         pagesLabel?.attributedText = NSAttributedString(string: pagesString, attributes: pagesTextAttributesSmall)
+        
+        if let pagesView = pagesLabel {
+            commentView?.removeFromSuperview()
+            placeView?.removeFromSuperview()
+            moodView?.removeFromSuperview()
+            
+            var lastView: UIImageView?
+            
+            if sessionModel.mood != .unknown {
+                let moodView = UIImageView(forAutoLayout: ())
+                moodView.image = UIImage(named: sessionModel.mood.rawValue)
+                self.moodView = moodView
+                view.addSubview(moodView)
+                moodView.autoPinEdge(.top, to: .bottom, of: pagesView, withOffset: 32)
+                moodView.autoSetDimensions(to: CGSize(width: 32, height: 32))
+                
+                if let last = lastView {
+                    moodView.autoPinEdge(.left, to: .right, of: last, withOffset: 16)
+                } else {
+                    moodView.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+                }
+                
+                lastView = moodView
+            }
+            
+            if sessionModel.readPlace != .unknown {
+                let placeView = UIImageView(forAutoLayout: ())
+                placeView.image = UIImage(named: sessionModel.readPlace.rawValue)
+                self.placeView = placeView
+                view.addSubview(placeView)
+                placeView.autoPinEdge(.top, to: .bottom, of: pagesView, withOffset: 32)
+                placeView.autoSetDimensions(to: CGSize(width: 32, height: 32))
+                
+                if let last = lastView {
+                    placeView.autoPinEdge(.left, to: .right, of: last, withOffset: 16)
+                } else {
+                    placeView.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+                }
+                
+                lastView = placeView
+            }
+            
+            if !sessionModel.comment.isEmpty {
+                let commentView = UIImageView(forAutoLayout: ())
+                commentView.image = UIImage(named: "commentIcon")
+                self.commentView = commentView
+                view.addSubview(commentView)
+                commentView.autoPinEdge(.top, to: .bottom, of: pagesView, withOffset: 32)
+                commentView.autoSetDimensions(to: CGSize(width: 32, height: 32))
+                
+                if let last = lastView {
+                    commentView.autoPinEdge(.left, to: .right, of: last, withOffset: 16)
+                } else {
+                    commentView.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+                }
+            }
+        }
+        
     }
     
     private func setupSpinner() {
