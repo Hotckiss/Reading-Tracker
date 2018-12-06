@@ -111,6 +111,10 @@ private class SessionCell: UITableViewCell {
     private var hrsNumLabel: UILabel?
     private var minsNumLabel: UILabel?
     
+    private var commentView: UIImageView?
+    private var placeView: UIImageView?
+    private var moodView: UIImageView?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .white
@@ -235,6 +239,60 @@ private class SessionCell: UITableViewCell {
         authorLabel?.attributedText = NSAttributedString(string: model.book.author, attributes: authorTextAttributes)
         minsNumLabel?.attributedText = NSAttributedString(string: String((model.sessionInfo.time / 60) % 60), attributes: timeNumTextAttributes)
         hrsNumLabel?.attributedText = NSAttributedString(string: String(model.sessionInfo.time / 3600), attributes: timeNumTextAttributes)
+        
+        commentView?.removeFromSuperview()
+        placeView?.removeFromSuperview()
+        moodView?.removeFromSuperview()
+        
+        var lastView: UIImageView?
+        
+        if !model.sessionInfo.comment.isEmpty {
+            let commentView = UIImageView(forAutoLayout: ())
+            commentView.image = UIImage(named: "commentIcon")
+            commentView.alpha = 0.5
+            self.commentView = commentView
+            addSubview(commentView)
+            commentView.autoSetDimensions(to: CGSize(width: 16, height: 16))
+            commentView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+            commentView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16)
+            lastView = commentView
+        }
+        
+        if model.sessionInfo.readPlace != .unknown {
+            let placeView = UIImageView(forAutoLayout: ())
+            placeView.image = UIImage(named: model.sessionInfo.readPlace.rawValue)
+            placeView.alpha = 0.5
+            self.placeView = placeView
+            addSubview(placeView)
+            placeView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16)
+            placeView.autoSetDimensions(to: CGSize(width: 16, height: 16))
+            
+            if let last = lastView {
+                placeView.autoPinEdge(.right, to: .left, of: last, withOffset: -8)
+            } else {
+                placeView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+            }
+            
+            lastView = placeView
+        }
+        
+        if model.sessionInfo.mood != .unknown {
+            let moodView = UIImageView(forAutoLayout: ())
+            moodView.image = UIImage(named: model.sessionInfo.mood.rawValue)
+            moodView.alpha = 0.5
+            self.moodView = moodView
+            addSubview(moodView)
+            moodView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16)
+            moodView.autoSetDimensions(to: CGSize(width: 16, height: 16))
+            
+            if let last = lastView {
+                moodView.autoPinEdge(.right, to: .left, of: last, withOffset: -8)
+            } else {
+                moodView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+            }
+            
+            lastView = moodView
+        }
     }
     
     public func format(_ date: Date) -> String {

@@ -124,7 +124,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         contentView.addSubview(container)
         container.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
         container.autoMatch(.width, to: .width, of: contentView)
-        container.autoPinEdge(.top, to: .bottom, of: overall, withOffset: 42 + 10)
+        container.autoPinEdge(.top, to: .bottom, of: overall, withOffset: 60)
         container.autoPinEdge(toSuperviewEdge: .bottom)
         self.container = container
         
