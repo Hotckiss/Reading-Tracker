@@ -28,6 +28,8 @@ final class SingleSessionViewController: UIViewController {
     private var placeView: UIImageView?
     private var moodView: UIImageView?
     
+    private var commentLabel: UILabel?
+    
     init(model: BookModel, sessionModel: UploadSessionModel) {
         self.bookModel = model
         self.sessionModel = sessionModel
@@ -149,7 +151,7 @@ final class SingleSessionViewController: UIViewController {
             NSAttributedString.Key.baselineOffset: 2]
             as [NSAttributedString.Key : Any]
         
-        separatorLabel.attributedText = NSAttributedString(string: "\u{2013}", attributes: separatorTextAttributesBig)
+        separatorLabel.attributedText = NSAttributedString(string: " \u{2013} ", attributes: separatorTextAttributesBig)
         view.addSubview(separatorLabel)
         separatorLabel.autoPinEdge(.left, to: .right, of: startTimeLabel, withOffset: 4)
         separatorLabel.autoAlignAxis(.horizontal, toSameAxisOf: startTimeLabel)
@@ -188,7 +190,7 @@ final class SingleSessionViewController: UIViewController {
         
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ru_RU")
-        formatter.dateFormat = "HH:mm"
+        formatter.dateFormat = "HH : mm"
         
         let textAttributesBig = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
@@ -212,7 +214,7 @@ final class SingleSessionViewController: UIViewController {
         finishTimeAttributed.addAttributes(textAttributesSmall, range: NSRange(location: 2, length: 3))
         finishTimeLabel?.attributedText = finishTimeAttributed
         
-        let pagesTextAttributesSmall = [
+        let pagesTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
             NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 24.0)!]
             as [NSAttributedString.Key : Any]
@@ -223,14 +225,14 @@ final class SingleSessionViewController: UIViewController {
             " \u{2013} " +
             String(sessionModel.finishPage)
         
-        pagesLabel?.attributedText = NSAttributedString(string: pagesString, attributes: pagesTextAttributesSmall)
+        pagesLabel?.attributedText = NSAttributedString(string: pagesString, attributes: pagesTextAttributes)
+        
+        var lastView: UIImageView?
         
         if let pagesView = pagesLabel {
             commentView?.removeFromSuperview()
             placeView?.removeFromSuperview()
             moodView?.removeFromSuperview()
-            
-            var lastView: UIImageView?
             
             if sessionModel.mood != .unknown {
                 let moodView = UIImageView(forAutoLayout: ())
@@ -279,9 +281,20 @@ final class SingleSessionViewController: UIViewController {
                 } else {
                     commentView.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
                 }
+                
+                self.commentLabel?.removeFromSuperview()
+                
+                let commentLabel = UILabel(forAutoLayout: ())
+                commentLabel.numberOfLines = 0
+                self.commentLabel = commentLabel
+                view.addSubview(commentLabel)
+                commentLabel.autoPinEdge(.top, to: .bottom, of: commentView, withOffset: 16)
+                commentLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+                commentLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+                
+                commentLabel.attributedText = NSAttributedString(string: sessionModel.comment, attributes: pagesTextAttributes)
             }
         }
-        
     }
     
     private func setupSpinner() {
