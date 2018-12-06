@@ -10,6 +10,10 @@ import Foundation
 import UIKit
 import Firebase
 
+public protocol StatisticsViewControllerItem {
+    func update(sessions: [UploadSessionModel], booksMap: [String : BookModel])
+}
+
 final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     private var navBar: NavigationBar?
     private var periodView: PeriodSelectionView?
@@ -19,6 +23,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     private var childsVC: [UIViewController] = [SessionsStatisticsViewController(),
                                                BooksStatisticsViewController(),
                                                PlotsStatisticsViewController()]
+    private var currentIndex: Int = 0
     private var container: UIView!
     private var handler: AuthStateDidChangeListenerHandle?
     private var sessions: [UploadSessionModel] = []
@@ -45,6 +50,11 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
             secs += session.time
         }
         overallView?.update(booksCount: booksMap.count, minsCount: secs / 60, approachesCount: sessions.count)
+        
+        if let vc = childsVC[currentIndex] as? SessionsStatisticsViewController {
+            vc.update(sessions: sessions, booksMap: booksMap)
+        }
+        
     }
     
     override func viewDidLoad() {
@@ -114,7 +124,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         contentView.addSubview(container)
         container.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
         container.autoMatch(.width, to: .width, of: contentView)
-        container.autoPinEdge(.top, to: .bottom, of: overall, withOffset: 42 + 5)
+        container.autoPinEdge(.top, to: .bottom, of: overall, withOffset: 42 + 10)
         container.autoPinEdge(toSuperviewEdge: .bottom)
         self.container = container
         
@@ -147,13 +157,17 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         guard index < childsVC.count else {
             return
         }
-        
+        currentIndex = index
         let viewController = childsVC[index]
         addChild(viewController)
         container.addSubview(viewController.view)
         if #available(iOS 11, *) {
         } else {
             viewController.viewWillAppear(false)
+        }
+        
+        if let vc = viewController as? SessionsStatisticsViewController {
+            vc.update(sessions: sessions, booksMap: booksMap)
         }
         
         viewController.view.autoPinEdgesToSuperviewEdges()
