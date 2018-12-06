@@ -23,6 +23,7 @@
 		2F3AA2AF21B31ACB00CCE35D /* PlotsStatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3AA2AE21B31ACA00CCE35D /* PlotsStatisticsViewController.swift */; };
 		2F412CDD21ABEF2B007C491B /* OverallStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F412CDC21ABEF2B007C491B /* OverallStatsView.swift */; };
 		2F412CE121ABEF58007C491B /* SizeDependent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F412CE021ABEF58007C491B /* SizeDependent.swift */; };
+		2F43CB5321B9B7810008B593 /* SingleSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F43CB5221B9B7810008B593 /* SingleSessionViewController.swift */; };
 		2F71B324218EFAFF00E4E80F /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B323218EFAFF00E4E80F /* RegistrationViewController.swift */; };
 		2F71B326218F3A2700E4E80F /* OnLiginStuff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B325218F3A2700E4E80F /* OnLiginStuff.swift */; };
 		2F71B328218F3FFE00E4E80F /* OfflineCodeSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B327218F3FFE00E4E80F /* OfflineCodeSignUpViewController.swift */; };
@@ -104,6 +105,7 @@
 		2F3AA2AE21B31ACA00CCE35D /* PlotsStatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlotsStatisticsViewController.swift; sourceTree = "<group>"; };
 		2F412CDC21ABEF2B007C491B /* OverallStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverallStatsView.swift; sourceTree = "<group>"; };
 		2F412CE021ABEF58007C491B /* SizeDependent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeDependent.swift; sourceTree = "<group>"; };
+		2F43CB5221B9B7810008B593 /* SingleSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSessionViewController.swift; sourceTree = "<group>"; };
 		2F71B323218EFAFF00E4E80F /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		2F71B325218F3A2700E4E80F /* OnLiginStuff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnLiginStuff.swift; sourceTree = "<group>"; };
 		2F71B327218F3FFE00E4E80F /* OfflineCodeSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineCodeSignUpViewController.swift; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 				2F3AA2AA21B31AA400CCE35D /* SessionsStatisticsViewController.swift */,
 				2F3AA2AC21B31AB600CCE35D /* BooksStatisticsViewController.swift */,
 				2F3AA2AE21B31ACA00CCE35D /* PlotsStatisticsViewController.swift */,
+				2F43CB5221B9B7810008B593 /* SingleSessionViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -724,6 +727,7 @@
 				2FAA8FBE216A792A0011F59D /* RegistrationFavoritesViewController.swift in Sources */,
 				2F71B32F218F965000E4E80F /* ProfileViewController.swift in Sources */,
 				2FC9562321AB44E900E52CE6 /* EditBookViewController.swift in Sources */,
+				2F43CB5321B9B7810008B593 /* SingleSessionViewController.swift in Sources */,
 				2FE6C5A521581BDE005A7A68 /* MainViewController.swift in Sources */,
 				2FFD1D032198BC6E00779459 /* PageTextField.swift in Sources */,
 				2FED199D21748FB000AFFF99 /* MyBooksViewController.swift in Sources */,

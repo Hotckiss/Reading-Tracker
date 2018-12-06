@@ -18,9 +18,6 @@ final class BookFilledCell: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOpacity = 0.2
-        layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
         setupSubviews()
     }
     
@@ -30,23 +27,9 @@ final class BookFilledCell: UIButton {
     
     private func setupSubviews() {
         let titleTextLabel = UILabel(forAutoLayout: ())
-        
-        let titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
-            as [NSAttributedString.Key : Any]
-        
-        titleTextLabel.attributedText = NSAttributedString(string: model.title, attributes: titleTextAttributes)
         titleTextLabel.numberOfLines = 0
         
         let authorLabel = UILabel(forAutoLayout: ())
-        
-        let authorTextAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 14.0)!]
-            as [NSAttributedString.Key : Any]
-        
-        authorLabel.attributedText = NSAttributedString(string: model.author, attributes: authorTextAttributes)
         authorLabel.numberOfLines = 0
         
         let coverImageView = UIImageView(image: model.image)

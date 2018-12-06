@@ -225,7 +225,7 @@ class SessionFinishViewController: UIViewController {
         lineView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         lineView.autoSetDimension(.height, toSize: 1)
         
-        let moodPollView = PollView(frame: .zero, title: "Эмоции от чтения", options: [UIImage(named: "good"), UIImage(named: "normal"), UIImage(named: "sad")])
+        let moodPollView = PollView(frame: .zero, title: "Эмоции от чтения", options: [UIImage(named: "happy"), UIImage(named: "neutral"), UIImage(named: "sad")])
         view.addSubview(moodPollView)
         moodPollView.autoAlignAxis(toSuperviewAxis: .vertical)
         moodPollView.autoPinEdge(.top, to: .bottom, of: lineView, withOffset: 88)

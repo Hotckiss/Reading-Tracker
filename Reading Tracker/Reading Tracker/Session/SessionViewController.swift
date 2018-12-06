@@ -192,6 +192,9 @@ final class SessionViewController: UIViewController {
         self.navBar = navBar
         
         let bookCell = BookFilledCell(frame: .zero)
+        bookCell.layer.shadowColor = UIColor.black.cgColor
+        bookCell.layer.shadowOpacity = 0.2
+        bookCell.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
         if let bookModel = bookModel {
             bookCell.configure(model: bookModel)
         }

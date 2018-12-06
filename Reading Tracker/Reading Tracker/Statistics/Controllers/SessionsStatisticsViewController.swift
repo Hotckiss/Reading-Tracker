@@ -107,8 +107,13 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let session = sessions[indexPath.row]
-        //onTapToStartSession?(book)
+        let dataIndex = (indexPath.section == 1 ? indexPath.row : indexOfLongestSession)
+        
+        let session = sessions[dataIndex]
+        if let book = booksMap[sessions[dataIndex].bookId] {
+            let vc = SingleSessionViewController(model: book)
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
