@@ -22,6 +22,8 @@ final class SingleSessionViewController: UIViewController {
     private var startTimeLabel: UILabel?
     private var finishTimeLabel: UILabel?
     
+    private var pagesLabel: UILabel?
+    
     init(model: BookModel, sessionModel: UploadSessionModel) {
         self.bookModel = model
         self.sessionModel = sessionModel
@@ -155,6 +157,13 @@ final class SingleSessionViewController: UIViewController {
         finishTimeLabel.autoPinEdge(.left, to: .right, of: separatorLabel, withOffset: 4)
         finishTimeLabel.autoAlignAxis(.horizontal, toSameAxisOf: startTimeLabel)
         
+        let pagesLabel = UILabel(forAutoLayout: ())
+        self.pagesLabel = pagesLabel
+        
+        view.addSubview(pagesLabel)
+        pagesLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        pagesLabel.autoPinEdge(.top, to: .bottom, of: startTimeLabel, withOffset: 16)
+        
         configure(sessionModel: sessionModel)
         setupSpinner()
     }
@@ -177,12 +186,12 @@ final class SingleSessionViewController: UIViewController {
         formatter.locale = Locale(identifier: "ru_RU")
         formatter.dateFormat = "HH:mm"
         
-        let realTimeTextAttributesBig = [
+        let textAttributesBig = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
             NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 48.0)!]
             as [NSAttributedString.Key : Any]
         
-        let realTimeTextAttributesSmall = [
+        let textAttributesSmall = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
             NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 24.0)!,
             NSAttributedString.Key.baselineOffset: 8]
@@ -191,13 +200,26 @@ final class SingleSessionViewController: UIViewController {
         let startTimeString = formatter.string(from: sessionModel.startTime)
         let finishTimeString = formatter.string(from: Calendar.current.date(byAdding: .second, value: sessionModel.time, to: sessionModel.startTime)!)
         
-        let startTimeAttributed = NSMutableAttributedString(string: startTimeString, attributes: realTimeTextAttributesBig)
-        startTimeAttributed.addAttributes(realTimeTextAttributesSmall, range: NSRange(location: 2, length: 3))
+        let startTimeAttributed = NSMutableAttributedString(string: startTimeString, attributes: textAttributesBig)
+        startTimeAttributed.addAttributes(textAttributesSmall, range: NSRange(location: 2, length: 3))
         startTimeLabel?.attributedText = startTimeAttributed
         
-        let finishTimeAttributed = NSMutableAttributedString(string: finishTimeString, attributes: realTimeTextAttributesBig)
-        finishTimeAttributed.addAttributes(realTimeTextAttributesSmall, range: NSRange(location: 2, length: 3))
+        let finishTimeAttributed = NSMutableAttributedString(string: finishTimeString, attributes: textAttributesBig)
+        finishTimeAttributed.addAttributes(textAttributesSmall, range: NSRange(location: 2, length: 3))
         finishTimeLabel?.attributedText = finishTimeAttributed
+        
+        let pagesTextAttributesSmall = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 24.0)!]
+            as [NSAttributedString.Key : Any]
+        
+        let pagesCount = sessionModel.finishPage - sessionModel.startPage
+        let pagesString = PluralRule().formatPages(count: pagesCount) + ", " +
+            String(sessionModel.startPage) +
+            " \u{2013} " +
+            String(sessionModel.finishPage)
+        
+        pagesLabel?.attributedText = NSAttributedString(string: pagesString, attributes: pagesTextAttributesSmall)
     }
     
     private func setupSpinner() {
