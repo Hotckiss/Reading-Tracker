@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 
 final class SingleSessionViewController: UIViewController {
+    private var contentView: UIView!
+    private var scrollView: UIScrollView!
     private var spinner: SpinnerView?
     private var navBar: NavigationBar?
     private var bookCell: BookFilledCell?
@@ -63,32 +65,47 @@ final class SingleSessionViewController: UIViewController {
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
         self.navBar = navBar
         
+        let scrollView = UIScrollView(frame: .zero)
+        scrollView.showsVerticalScrollIndicator = true
+        scrollView.alwaysBounceVertical = true
+        view.addSubview(scrollView)
+        scrollView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 0, bottom: bottomSpace, right: 0), excludingEdge: .top)
+        scrollView.autoPinEdge(.top, to: .bottom, of: navBar)
+        self.scrollView = scrollView
+        
+        let contentView = UIView(frame: .zero)
+        scrollView.addSubview(contentView)
+        contentView.autoMatch(.width, to: .width, of: scrollView)
+        self.contentView = contentView
+        
         let bookCell = BookFilledCell(frame: .zero)
-        view.addSubview(bookCell)
+        contentView.addSubview(bookCell)
         bookCell.autoPinEdge(toSuperviewEdge: .left)
         bookCell.autoPinEdge(toSuperviewEdge: .right)
-        bookCell.autoPinEdge(.top, to: .bottom, of: navBar)
+        bookCell.autoPinEdge(toSuperviewEdge: .top)
+        bookCell.autoMatch(.width, to: .width, of: contentView)
         bookCell.configure(model: bookModel)
         self.bookCell = bookCell
         
         let lineView = UIView(frame: .zero)
         lineView.backgroundColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
         
-        view.addSubview(lineView)
+        contentView.addSubview(lineView)
         lineView.autoPinEdge(toSuperviewEdge: .left)
         lineView.autoPinEdge(toSuperviewEdge: .right)
         lineView.autoPinEdge(.top, to: .bottom, of: bookCell)
+        lineView.autoMatch(.width, to: .width, of: contentView)
         lineView.autoSetDimension(.height, toSize: 1)
         
         let dateLabel = UILabel(forAutoLayout: ())
         dateLabel.numberOfLines = 1
-        view.addSubview(dateLabel)
+        contentView.addSubview(dateLabel)
         dateLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         dateLabel.autoPinEdge(.top, to: .bottom, of: lineView, withOffset: 20)
         
         let dayOfWeekLabel = UILabel(forAutoLayout: ())
         dayOfWeekLabel.numberOfLines = 1
-        view.addSubview(dayOfWeekLabel)
+        contentView.addSubview(dayOfWeekLabel)
         dayOfWeekLabel.autoPinEdge(.left, to: .right, of: dateLabel, withOffset: 8)
         dayOfWeekLabel.autoAlignAxis(.horizontal, toSameAxisOf: dateLabel)
         
@@ -124,7 +141,7 @@ final class SingleSessionViewController: UIViewController {
         minsTextLabel.attributedText = NSAttributedString(string: "мин", attributes: timeDescriptionTextAttributes)
         
         [minsTextLabel, minsNumLabel, hrsTextLabel, hrsNumLabel].forEach { [weak self] label in
-            self?.view.addSubview(label)
+            self?.contentView.addSubview(label)
         }
         
         hrsNumLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
@@ -139,7 +156,7 @@ final class SingleSessionViewController: UIViewController {
         let startTimeLabel = UILabel(forAutoLayout: ())
         self.startTimeLabel = startTimeLabel
         
-        view.addSubview(startTimeLabel)
+        contentView.addSubview(startTimeLabel)
         startTimeLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         startTimeLabel.autoPinEdge(.top, to: .bottom, of: hrsNumLabel, withOffset: 16)
         
@@ -152,21 +169,21 @@ final class SingleSessionViewController: UIViewController {
             as [NSAttributedString.Key : Any]
         
         separatorLabel.attributedText = NSAttributedString(string: " \u{2013} ", attributes: separatorTextAttributesBig)
-        view.addSubview(separatorLabel)
+        contentView.addSubview(separatorLabel)
         separatorLabel.autoPinEdge(.left, to: .right, of: startTimeLabel, withOffset: 4)
         separatorLabel.autoAlignAxis(.horizontal, toSameAxisOf: startTimeLabel)
         
         let finishTimeLabel = UILabel(forAutoLayout: ())
         self.finishTimeLabel = finishTimeLabel
         
-        view.addSubview(finishTimeLabel)
+        contentView.addSubview(finishTimeLabel)
         finishTimeLabel.autoPinEdge(.left, to: .right, of: separatorLabel, withOffset: 4)
         finishTimeLabel.autoAlignAxis(.horizontal, toSameAxisOf: startTimeLabel)
         
         let pagesLabel = UILabel(forAutoLayout: ())
         self.pagesLabel = pagesLabel
         
-        view.addSubview(pagesLabel)
+        contentView.addSubview(pagesLabel)
         pagesLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         pagesLabel.autoPinEdge(.top, to: .bottom, of: startTimeLabel, withOffset: 16)
         
@@ -238,7 +255,7 @@ final class SingleSessionViewController: UIViewController {
                 let moodView = UIImageView(forAutoLayout: ())
                 moodView.image = UIImage(named: sessionModel.mood.rawValue)
                 self.moodView = moodView
-                view.addSubview(moodView)
+                contentView.addSubview(moodView)
                 moodView.autoPinEdge(.top, to: .bottom, of: pagesView, withOffset: 32)
                 moodView.autoSetDimensions(to: CGSize(width: 32, height: 32))
                 
@@ -255,7 +272,7 @@ final class SingleSessionViewController: UIViewController {
                 let placeView = UIImageView(forAutoLayout: ())
                 placeView.image = UIImage(named: sessionModel.readPlace.rawValue)
                 self.placeView = placeView
-                view.addSubview(placeView)
+                contentView.addSubview(placeView)
                 placeView.autoPinEdge(.top, to: .bottom, of: pagesView, withOffset: 32)
                 placeView.autoSetDimensions(to: CGSize(width: 32, height: 32))
                 
@@ -272,7 +289,7 @@ final class SingleSessionViewController: UIViewController {
                 let commentView = UIImageView(forAutoLayout: ())
                 commentView.image = UIImage(named: "commentIcon")
                 self.commentView = commentView
-                view.addSubview(commentView)
+                contentView.addSubview(commentView)
                 commentView.autoPinEdge(.top, to: .bottom, of: pagesView, withOffset: 32)
                 commentView.autoSetDimensions(to: CGSize(width: 32, height: 32))
                 
@@ -287,14 +304,20 @@ final class SingleSessionViewController: UIViewController {
                 let commentLabel = UILabel(forAutoLayout: ())
                 commentLabel.numberOfLines = 0
                 self.commentLabel = commentLabel
-                view.addSubview(commentLabel)
+                contentView.addSubview(commentLabel)
                 commentLabel.autoPinEdge(.top, to: .bottom, of: commentView, withOffset: 16)
                 commentLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
                 commentLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+                commentLabel.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16)
                 
                 commentLabel.attributedText = NSAttributedString(string: sessionModel.comment, attributes: pagesTextAttributes)
             }
         }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        scrollView.contentSize = contentView.bounds.size
     }
     
     private func setupSpinner() {

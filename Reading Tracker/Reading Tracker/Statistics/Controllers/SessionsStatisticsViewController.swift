@@ -46,11 +46,10 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
+        view.backgroundColor = .white
         
         let tableView = UITableView(forAutoLayout: ())
         view.addSubview(tableView)
-        tableView.backgroundColor = .red
         tableView.autoPinEdgesToSuperviewEdges()
         tableView.register(SessionCell.self, forCellReuseIdentifier: "sessionCell")
         tableView.register(SectionCell.self, forCellReuseIdentifier: "sectionCell")
@@ -253,7 +252,7 @@ private class SessionCell: UITableViewCell {
         self.hrsNumLabel = hrsNumLabel
         
         let hrsTextLabel = UILabel(forAutoLayout: ())
-        hrsTextLabel.attributedText = NSAttributedString(string: "час", attributes: timeDescriptionTextAttributes)
+        hrsTextLabel.attributedText = NSAttributedString(string: "ч", attributes: timeDescriptionTextAttributes)
         
         let minsNumLabel = UILabel(forAutoLayout: ())
         self.minsNumLabel = minsNumLabel
