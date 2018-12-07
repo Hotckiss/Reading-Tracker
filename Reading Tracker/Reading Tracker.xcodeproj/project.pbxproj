@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2F074A1D21BAF186002146F6 /* StatisticsSessionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F074A1C21BAF186002146F6 /* StatisticsSessionCell.swift */; };
 		2F074A1F21BAF227002146F6 /* SessionCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F074A1E21BAF227002146F6 /* SessionCellModel.swift */; };
+		2F074A2121BB0332002146F6 /* BookSessionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F074A2021BB0332002146F6 /* BookSessionsCell.swift */; };
 		2F0C7E2B219F0F7D00C28ECB /* FirebaseStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F0C7E2A219F0F7D00C28ECB /* FirebaseStorageManager.swift */; };
 		2F0C7E2D219F1D4100C28ECB /* ImageCompression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F0C7E2C219F1D4100C28ECB /* ImageCompression.swift */; };
 		2F1891D9215832210043BDCC /* AuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1891D8215832210043BDCC /* AuthorizationViewController.swift */; };
@@ -96,6 +97,7 @@
 		28AEB30CF38345261F42D491 /* Pods_Reading_TrackerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Reading_TrackerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F074A1C21BAF186002146F6 /* StatisticsSessionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsSessionCell.swift; sourceTree = "<group>"; };
 		2F074A1E21BAF227002146F6 /* SessionCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionCellModel.swift; sourceTree = "<group>"; };
+		2F074A2021BB0332002146F6 /* BookSessionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookSessionsCell.swift; sourceTree = "<group>"; };
 		2F0C7E2A219F0F7D00C28ECB /* FirebaseStorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseStorageManager.swift; sourceTree = "<group>"; };
 		2F0C7E2C219F1D4100C28ECB /* ImageCompression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompression.swift; sourceTree = "<group>"; };
 		2F1891D8215832210043BDCC /* AuthorizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationViewController.swift; sourceTree = "<group>"; };
@@ -263,6 +265,7 @@
 				2F3AA2A721B30B1000CCE35D /* SegmentedControl.swift */,
 				2F074A1C21BAF186002146F6 /* StatisticsSessionCell.swift */,
 				2F074A1E21BAF227002146F6 /* SessionCellModel.swift */,
+				2F074A2021BB0332002146F6 /* BookSessionsCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -764,6 +767,7 @@
 				2F1891DC2158B9760043BDCC /* UIColor+RGB.swift in Sources */,
 				2FEB6A9321A343FE00334802 /* QuestionarreViewController.swift in Sources */,
 				2F0C7E2D219F1D4100C28ECB /* ImageCompression.swift in Sources */,
+				2F074A2121BB0332002146F6 /* BookSessionsCell.swift in Sources */,
 				2FFD1D072198CB1500779459 /* SessionFinishViewController.swift in Sources */,
 				2FE450C1216FA53E008B2F22 /* MainInteractor.swift in Sources */,
 				2F3AA2A821B30B1000CCE35D /* SegmentedControl.swift in Sources */,

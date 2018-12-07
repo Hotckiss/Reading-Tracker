@@ -13,11 +13,23 @@ import Foundation
 import UIKit
 import Firebase
 
+struct SessionsSummModel {
+    var totalTime: Int = 0
+    var minPage: Int?
+    var maxPage: Int?
+    var attempts: Int = 0
+    var moodsCounts: [String: Int] = [:]
+    var placesCounts: [String: Int] = [:]
+}
+
 final class BooksStatisticsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     private var spinner: SpinnerView?
-    private var sessions: [UploadSessionModel] = []
+    private var groupedSessions: [String: [UploadSessionModel]] = [:]
+    private var summSessions: [String: SessionsSummModel] = [:]
+    private var keys: [String] = []
     private var booksMap: [String : BookModel] = [:]
-    private var indexOfLongestSession: Int = 0
+    private var keyOfLongestBook: String = ""
+    private var keyOfMostFrequentBook: String = ""
     private var tableView: UITableView?
     private var tableViewHeightConstraint: NSLayoutConstraint?
     
@@ -30,18 +42,59 @@ final class BooksStatisticsViewController: UIViewController, UITableViewDelegate
             return
         }
         
-        self.sessions = sessions
+        let groupedSessions: [String: [UploadSessionModel]] = Dictionary(grouping: sessions) {
+            $0.bookId
+        }
+        
+        self.groupedSessions = groupedSessions
         self.booksMap = booksMap
-        for (index, session) in sessions.enumerated() {
-            if session.time > sessions[indexOfLongestSession].time {
-                indexOfLongestSession = index
+        
+        for (key, sessionsArr) in groupedSessions {
+            var ssm = SessionsSummModel()
+            for session in sessionsArr {
+                ssm.totalTime += session.time
+                if ssm.minPage == nil {
+                    ssm.minPage = session.startPage
+                } else {
+                    ssm.minPage = min(session.startPage, ssm.minPage!)
+                }
+                
+                if ssm.maxPage == nil {
+                    ssm.maxPage = session.finishPage
+                } else {
+                    ssm.maxPage = max(session.finishPage, ssm.maxPage!)
+                }
+                
+                ssm.attempts += 1
+                if session.mood != .unknown {
+                    let currentValue = ssm.moodsCounts[session.mood.rawValue] ?? 0
+                    ssm.moodsCounts[session.mood.rawValue] = currentValue + 1
+                }
+                if session.readPlace != .unknown {
+                    let currentValue = ssm.placesCounts[session.readPlace.rawValue] ?? 0
+                    ssm.placesCounts[session.readPlace.rawValue] = currentValue + 1
+                }
+            }
+            summSessions[key] = ssm
+        }
+        var maxTimeCnt = 0
+        var mostFreqCnt = 0
+        
+        for (key, ssm) in summSessions {
+            if ssm.totalTime > maxTimeCnt {
+                maxTimeCnt = ssm.totalTime
+                keyOfLongestBook = key
+            }
+            
+            if ssm.attempts > mostFreqCnt {
+                mostFreqCnt = ssm.attempts
+                keyOfMostFrequentBook = key
             }
         }
         
-        tableViewHeightConstraint?.constant = CGFloat(sessions.count * 118 + 2 * 42 + 118)
+        keys = Array(summSessions.keys)
+        tableViewHeightConstraint?.constant = CGFloat(groupedSessions.count * 118 + 3 * 42 + 118 * 2)
         tableView?.reloadData()
-        
-        //tableView?.frame.size = tableView?.contentSize ?? CGSize()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -55,7 +108,7 @@ final class BooksStatisticsViewController: UIViewController, UITableViewDelegate
         let tableView = UITableView(forAutoLayout: ())
         view.addSubview(tableView)
         tableView.autoPinEdgesToSuperviewEdges()
-        tableView.register(SessionCell.self, forCellReuseIdentifier: "sessionCell")
+        tableView.register(BookSessionsCell.self, forCellReuseIdentifier: "bookSessionsCell")
         tableView.register(SectionCell.self, forCellReuseIdentifier: "sectionCell")
         
         let lineView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 1))
@@ -74,13 +127,6 @@ final class BooksStatisticsViewController: UIViewController, UITableViewDelegate
         setupSpinner()
     }
     
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let deleteRowAction = UITableViewRowAction(style: UITableViewRowAction.Style.default, title: "Удалить", handler: { [weak self] action, indexpath in
-            //REMOVE
-        })
-        return [deleteRowAction]
-    }
-    
     private func setupSpinner() {
         let spinner = SpinnerView(frame: .zero)
         view.addSubview(spinner)
@@ -91,41 +137,62 @@ final class BooksStatisticsViewController: UIViewController, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (section == 0) ? 1 : sessions.count
+        return (section == 2) ? summSessions.count : 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "sessionCell") as! SessionCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "bookSessionsCell") as! BookSessionsCell
         if indexPath.section == 0 {
-            if let book = booksMap[sessions[indexOfLongestSession].bookId] {
-                cell.configure(model: SessionCellModel(sessionInfo: sessions[indexOfLongestSession], book: book))
+            if let book = booksMap[keyOfMostFrequentBook],
+                let summ = summSessions[keyOfMostFrequentBook] {
+                cell.configure(model: BookSessionsCellModel(book: book, attempts: summ.attempts, time: summ.totalTime))
+            }
+        } else if indexPath.section == 1 {
+            if let book = booksMap[keyOfLongestBook],
+                let summ = summSessions[keyOfLongestBook] {
+                cell.configure(model: BookSessionsCellModel(book: book, attempts: summ.attempts, time: summ.totalTime))
             }
         } else {
-            if let book = booksMap[sessions[indexPath.row].bookId] {
-                cell.configure(model: SessionCellModel(sessionInfo: sessions[indexPath.row], book: book))
+            if let book = booksMap[keys[indexPath.row]],
+                let summ = summSessions[keys[indexPath.row]] {
+                cell.configure(model: BookSessionsCellModel(book: book, attempts: summ.attempts, time: summ.totalTime))
             }
         }
         
         return cell
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 118.0
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let dataIndex = (indexPath.section == 1 ? indexPath.row : indexOfLongestSession)
+        /*let dataIndex = (indexPath.section == 1 ? indexPath.row : indexOfLongestSession)
         
         let session = sessions[dataIndex]
         if let book = booksMap[sessions[dataIndex].bookId] {
             let vc = SingleSessionViewController(model: book, sessionModel: session)
             navigationController?.pushViewController(vc, animated: true)
-        }
+        }*/
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let cell = tableView.dequeueReusableCell(withIdentifier: "sectionCell") as! SectionCell
-        cell.configure(text: (section == 0) ? "Самое продолжительное чтение" : "Все записи о чтении")
+        let sectionText: String
+        switch section {
+        case 0:
+            sectionText = "Больше всего подходов"
+        case 1:
+            sectionText = "Дольше всего читаете"
+        default:
+            sectionText = "И все остальное"
+            
+        }
+        cell.configure(text: sectionText)
         return cell.contentView
     }
 }

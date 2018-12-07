@@ -18,7 +18,7 @@ public enum PluralCategory {
 }
 
 public struct PluralRule {
-    private func numToCategory(_ num: Int) -> PluralCategory {
+    public func numToCategory(_ num: Int) -> PluralCategory {
         if num % 10 == 1, num % 100 != 11 {
             return .one
         } else if (2...4).contains(num % 10), (12...14).contains(num % 100) == false {
@@ -74,5 +74,22 @@ public struct PluralRule {
                 .other: "подхода"
             ]
         )
+    }
+    
+    public func getAttempts(count: Int) -> String {
+        let category = numToCategory(count)
+        
+        let categoryToString: [PluralCategory: String] = [
+        .one: "подход",
+        .few: "подхода",
+        .many: "подходов",
+        .other: "подхода"
+        ]
+        
+        if let value = categoryToString[category] {
+            return "\(value)"
+        }
+        
+        return "подходов"
     }
 }
