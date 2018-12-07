@@ -43,11 +43,11 @@ final class MainViewController: UIViewController {
         let libraryVC = MyBooksViewController()
         let sessionVC = SessionViewController()
         
-        profileVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "profileSelected"), selectedImage: UIImage(named: "profileSelected"))
+        profileVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "profileTabBar"), selectedImage: UIImage(named: "profileTabBar"))
         profileVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
-        libraryVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "librarySelected"), selectedImage: UIImage(named: "librarySelected"))
+        libraryVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "libraryTabBar"), selectedImage: UIImage(named: "libraryTabBar"))
         libraryVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
-        sessionVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "sessionSelected"), selectedImage: UIImage(named: "sessionSelected"))
+        sessionVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "sessionTabBar"), selectedImage: UIImage(named: "sessionTabBar"))
         sessionVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         
         sessionVC.onBookAddedInSession = { bookModel in
@@ -63,20 +63,20 @@ final class MainViewController: UIViewController {
             let alert = UIAlertController(title: "Выбор книги", message: "Начать сессию с выбранной книгой?", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Начать!", style: .default, handler: ({ [weak self] _ in
                 sessionVC.updateWithBook(book: book)
-                self?.mainTabBarController.selectedIndex = 2
+                self?.mainTabBarController.selectedIndex = 1
             })))
             alert.addAction(UIAlertAction(title: "Отмена", style: .default, handler: nil))
             self?.present(alert, animated: true, completion: nil)
         }
         
         sessionVC.onBookSelectFromLibraryRequest = { [weak self] in
-            self?.mainTabBarController.selectedIndex = 1
+            self?.mainTabBarController.selectedIndex = 2
         }
         
-        let controllers = [profileVC, libraryVC, sessionVC]
+        let controllers = [profileVC, sessionVC, libraryVC]
         
         mainTabBarController.viewControllers = controllers.map{ UINavigationController.init(rootViewController: $0)}
-        mainTabBarController.selectedIndex = 2
+        mainTabBarController.selectedIndex = 1
         mainTabBarController.tabBar.barTintColor = UIColor(rgb: 0x2f5870)
         mainTabBarController.tabBar.tintColor = .white
         addChild(mainTabBarController)

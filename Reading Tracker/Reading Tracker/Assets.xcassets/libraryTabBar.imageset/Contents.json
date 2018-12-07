@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "librarySelected.png",
+      "filename" : "libraryTabBar.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "librarySelected-1.png",
+      "filename" : "libraryTabBar-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "librarySelected-2.png",
+      "filename" : "libraryTabBar-2.png",
       "scale" : "3x"
     }
   ],
