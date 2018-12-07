@@ -55,6 +55,9 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
             vc.update(sessions: sessions, booksMap: booksMap)
         }
         
+        if let vc = childsVC[currentIndex] as? BooksStatisticsViewController {
+            vc.update(sessions: sessions, booksMap: booksMap)
+        }
     }
     
     override func viewDidLoad() {
@@ -167,6 +170,10 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         }
         
         if let vc = viewController as? SessionsStatisticsViewController {
+            vc.update(sessions: sessions, booksMap: booksMap)
+        }
+        
+        if let vc = viewController as? BooksStatisticsViewController {
             vc.update(sessions: sessions, booksMap: booksMap)
         }
         
