@@ -167,13 +167,22 @@ final class BooksStatisticsViewController: UIViewController, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        /*let dataIndex = (indexPath.section == 1 ? indexPath.row : indexOfLongestSession)
-        
-        let session = sessions[dataIndex]
-        if let book = booksMap[sessions[dataIndex].bookId] {
-            let vc = SingleSessionViewController(model: book, sessionModel: session)
+        let key: String
+        switch indexPath.section {
+        case 0:
+            key = keyOfMostFrequentBook
+        case 1:
+            key = keyOfLongestBook
+        default:
+            key = keys[indexPath.row]
+        }
+
+        if let book = booksMap[key],
+            let sessions = groupedSessions[key],
+            let summary = summSessions[key] {
+            let vc = SingleBookViewController(model: book, sessionModels: sessions, summary: summary)
             navigationController?.pushViewController(vc, animated: true)
-        }*/
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
