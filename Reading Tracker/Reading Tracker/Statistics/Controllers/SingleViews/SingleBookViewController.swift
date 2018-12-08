@@ -19,16 +19,19 @@ final class SingleBookViewController: UIViewController {
     private var sessionModels: [UploadSessionModel]
     private var summary: SessionsSummModel
     
-    private var hrsNumLabel: UILabel?
-    private var minsNumLabel: UILabel?
+    private var hrsNumLabel: UILabel!
+    private var minsNumLabel: UILabel!
     
-    private var attemptsLabel: UILabel?
+    private var attemptsLabel: UILabel!
     
     private var pagesLabel: UILabel?
     
     private var freqLabel: UILabel?
     private var freqPlaceView: UIImageView?
     private var freqMoodView: UIImageView?
+    
+    private var comButton: UIButton?
+    private var recButton: UIButton?
     
     init(model: BookModel, sessionModels: [UploadSessionModel], summary: SessionsSummModel) {
         self.bookModel = model
@@ -68,6 +71,11 @@ final class SingleBookViewController: UIViewController {
         scrollView.showsVerticalScrollIndicator = true
         scrollView.alwaysBounceVertical = true
         view.addSubview(scrollView)
+        scrollView.isUserInteractionEnabled = true;
+        scrollView.isExclusiveTouch = true;
+        //scrollView.touc
+        //scrollView.delaysContentTouches = false
+        //scrollView.canCancelContentTouches = false
         scrollView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 0, bottom: bottomSpace, right: 0), excludingEdge: .top)
         scrollView.autoPinEdge(.top, to: .bottom, of: navBar)
         self.scrollView = scrollView
@@ -90,10 +98,9 @@ final class SingleBookViewController: UIViewController {
         lineView.backgroundColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
         
         contentView.addSubview(lineView)
-        lineView.autoPinEdge(toSuperviewEdge: .left)
-        lineView.autoPinEdge(toSuperviewEdge: .right)
+        lineView.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        lineView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         lineView.autoPinEdge(.top, to: .bottom, of: bookCell)
-        lineView.autoMatch(.width, to: .width, of: contentView)
         lineView.autoSetDimension(.height, toSize: 1)
         
         let timeDescriptionTextAttributes = [
@@ -156,8 +163,8 @@ final class SingleBookViewController: UIViewController {
             NSAttributedString.Key.baselineOffset: -8]
             as [NSAttributedString.Key : Any]
         
-        minsNumLabel?.attributedText = NSAttributedString(string: String((summary.totalTime / 60) % 60), attributes: timeNumTextAttributes)
-        hrsNumLabel?.attributedText = NSAttributedString(string: String(summary.totalTime / 3600), attributes: timeNumTextAttributes)
+        minsNumLabel.attributedText = NSAttributedString(string: String((summary.totalTime / 60) % 60), attributes: timeNumTextAttributes)
+        hrsNumLabel.attributedText = NSAttributedString(string: String(summary.totalTime / 3600), attributes: timeNumTextAttributes)
         
         let attemptsTextAttributesBig = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
@@ -175,7 +182,7 @@ final class SingleBookViewController: UIViewController {
         let attemptsAttributed = NSMutableAttributedString(string: attemptsString, attributes: attemptsTextAttributesBig)
         let numberLenght = String(summary.attempts).count
         attemptsAttributed.addAttributes(attemptsTextAttributesSmall, range: NSRange(location: numberLenght, length: attemptsString.count - numberLenght))
-        attemptsLabel?.attributedText = attemptsAttributed
+        attemptsLabel.attributedText = attemptsAttributed
 
         let pagesTextAttributesSmall = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
@@ -264,6 +271,81 @@ final class SingleBookViewController: UIViewController {
                 freqLabel.autoPinEdge(.left, to: .right, of: moodV, withOffset: 12)
             }
         }
+        
+        let endOfSectionView: UIView! = freqLabel ?? (pagesLabel ?? attemptsLabel)
+        
+        let lineView2 = UIView(frame: .zero)
+        lineView2.backgroundColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
+        
+        contentView.addSubview(lineView2)
+        lineView2.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        lineView2.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+        lineView2.autoPinEdge(.top, to: .bottom, of: endOfSectionView, withOffset: 32)
+        lineView2.autoSetDimension(.height, toSize: 1)
+        
+        comButton?.removeFromSuperview()
+        let commButton = UIButton(forAutoLayout: ())
+        contentView.addSubview(commButton)
+        commButton.autoPinEdge(toSuperviewEdge: .left)
+        commButton.autoPinEdge(toSuperviewEdge: .right)
+        commButton.autoPinEdge(.top, to: .bottom, of: lineView2)
+        commButton.autoSetDimension(.height, toSize: 90)
+        self.comButton = commButton
+        commButton.addTarget(self, action: #selector(commentsTap), for: .touchUpInside)
+        
+        let commButtonTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+            as [NSAttributedString.Key : Any]
+        
+        let commButtonTitle = UILabel(forAutoLayout: ())
+        commButtonTitle.attributedText = NSAttributedString(string: "Комментарии", attributes: commButtonTextAttributes)
+        commButton.addSubview(commButtonTitle)
+        commButtonTitle.autoAlignAxis(toSuperviewAxis: .horizontal)
+        commButtonTitle.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        
+        let lineView3 = UIView(frame: .zero)
+        lineView3.backgroundColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
+        
+        contentView.addSubview(lineView3)
+        lineView3.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        lineView3.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+        lineView3.autoPinEdge(.top, to: .bottom, of: commButton)
+        lineView3.autoSetDimension(.height, toSize: 1)
+        
+        recButton?.removeFromSuperview()
+        let recordsButton = UIButton(forAutoLayout: ())
+        recordsButton.addTarget(self, action: #selector(recordsTap), for: .touchUpInside)
+        contentView.addSubview(recordsButton)
+        recordsButton.autoPinEdge(toSuperviewEdge: .left)
+        recordsButton.autoPinEdge(toSuperviewEdge: .right)
+        recordsButton.autoPinEdge(.top, to: .bottom, of: lineView3)
+        recordsButton.autoSetDimension(.height, toSize: 90)
+        self.recButton = recordsButton
+        
+        let recordsButtonTitle = UILabel(forAutoLayout: ())
+        recordsButtonTitle.attributedText = NSAttributedString(string: "Записи о чтении", attributes: commButtonTextAttributes)
+        recordsButton.addSubview(recordsButtonTitle)
+        recordsButtonTitle.autoAlignAxis(toSuperviewAxis: .horizontal)
+        recordsButtonTitle.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        
+        let lineView4 = UIView(frame: .zero)
+        lineView4.backgroundColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
+        
+        contentView.addSubview(lineView4)
+        lineView4.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        lineView4.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+        lineView4.autoPinEdge(.top, to: .bottom, of: recordsButton)
+        lineView4.autoPinEdge(toSuperviewEdge: .bottom)
+        lineView4.autoSetDimension(.height, toSize: 1)
+    }
+    
+    @objc private func commentsTap() {
+        print("c")
+    }
+    
+    @objc private func recordsTap() {
+        print("r")
     }
     
     override func viewDidLayoutSubviews() {
