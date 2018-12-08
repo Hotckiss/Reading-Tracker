@@ -225,6 +225,7 @@ final class SingleBookViewController: UIViewController {
                 
                 let freqMoodView = UIImageView(image: UIImage(named: maxMoodKey))
                 contentView.addSubview(freqMoodView)
+                freqMoodView.autoSetDimensions(to: CGSize(width: 32, height: 32))
                 freqMoodView.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
                 freqMoodView.autoPinEdge(.top, to: .bottom, of: pagesView, withOffset: 16)
                 self.freqMoodView = freqMoodView
@@ -244,7 +245,7 @@ final class SingleBookViewController: UIViewController {
                 
                 let freqPlaceView = UIImageView(image: UIImage(named: maxPlaceKey))
                 contentView.addSubview(freqPlaceView)
-                
+                freqPlaceView.autoSetDimensions(to: CGSize(width: 32, height: 32))
                 if let freqMood = freqMoodView {
                     freqPlaceView.autoAlignAxis(.horizontal, toSameAxisOf: freqMood)
                     freqPlaceView.autoPinEdge(.left, to: .right, of: freqMood, withOffset: 12)
@@ -363,11 +364,13 @@ final class SingleBookViewController: UIViewController {
     }
     
     @objc private func commentsTap() {
-        print("c")
+        let vc = BookCommentsViewController(model: bookModel, sessionModels: sessionModels)
+        
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func recordsTap() {
-        print("r")
+        //TODO: sessions list
     }
     
     override func viewDidLayoutSubviews() {
