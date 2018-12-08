@@ -13,6 +13,9 @@ PODS:
   - BoringSSL/Implementation (10.0.6):
     - BoringSSL/Interface (= 10.0.6)
   - BoringSSL/Interface (10.0.6)
+  - Charts (3.1.1):
+    - Charts/Core (= 3.1.1)
+  - Charts/Core (3.1.1)
   - FBSDKCoreKit (4.36.0):
     - Bolts (~> 1.7)
   - FBSDKLoginKit (4.36.0):
@@ -181,6 +184,7 @@ PODS:
 DEPENDENCIES:
   - ActionSheetPicker-3.0
   - BarcodeScanner
+  - Charts
   - FBSDKCoreKit
   - FBSDKLoginKit
   - FBSDKShareKit
@@ -206,6 +210,7 @@ SPEC REPOS:
     - BarcodeScanner
     - Bolts
     - BoringSSL
+    - Charts
     - FBSDKCoreKit
     - FBSDKLoginKit
     - FBSDKShareKit
@@ -247,6 +252,7 @@ SPEC CHECKSUMS:
   BarcodeScanner: fce1ad2b3f28286b1ab5091fe0979789618bee27
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   BoringSSL: e10f92a27043805c01071fe815a5cd98ae8212e7
+  Charts: 90a4d61da0f6e06684c591e3bcab11940fe61736
   FBSDKCoreKit: 3b8e6570eedb443f9fc4af196a7bf39f18e3a3d8
   FBSDKLoginKit: 8bccb6064708ab2f4251a7fc4e3b6d8d00ad91ba
   FBSDKShareKit: 7090fdd55c39b03941efddb64c83a64ff6b3949f
@@ -283,6 +289,6 @@ SPEC CHECKSUMS:
   TwitterKit: bc7bd086b9b724a1d888745a054e1d0b1ecc4f3f
   VK-ios-sdk: 7fd48bc5aaa6b96c3197c1987eb6593f2ea67331
 
-PODFILE CHECKSUM: 3c24d6e5cdb1042cf2f3c80dfb15f184d3cdce97
+PODFILE CHECKSUM: 6bcf600db98b4bc57b88320afdf9612399914342
 
 COCOAPODS: 1.5.3
