@@ -44,6 +44,8 @@ public enum Mood: String {
             self = .unknown
         }
     }
+    
+    public static let all: [Mood] = [.sad, .neutral, .happy]
 }
 
 public enum ReadPlace: String {
@@ -81,6 +83,8 @@ public enum ReadPlace: String {
             self = .unknown
         }
     }
+    
+    public static let all: [ReadPlace] = [.work, .transport, .home]
 }
     
 public struct SessionFinishModel {

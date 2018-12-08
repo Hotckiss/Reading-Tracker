@@ -246,6 +246,15 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
+        let finishRowAction = UITableViewRowAction(style: UITableViewRowAction.Style.default, title: "Завершить\nчтение", handler: { action, indexpath in
+            guard let cell = tableView.cellForRow(at: indexpath) else {
+                return
+            }
+            cell.backgroundColor = UIColor.green.withAlphaComponent(0.5)
+        })
+        
+        finishRowAction.backgroundColor = UIColor(rgb: 0xffd700)
+        
         let moreRowAction = UITableViewRowAction(style: UITableViewRowAction.Style.default, title: "Изменить", handler: { [weak self] action, indexpath in
             guard let strongSelf = self else {
                 return
@@ -283,7 +292,7 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
             }))
         })
         
-        return [deleteRowAction, moreRowAction]
+        return [finishRowAction, deleteRowAction, moreRowAction]
     }
     
     private func setupNavigationBar() {

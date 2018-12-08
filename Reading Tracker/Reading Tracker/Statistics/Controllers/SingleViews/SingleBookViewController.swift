@@ -25,8 +25,10 @@ final class SingleBookViewController: UIViewController {
     private var attemptsLabel: UILabel?
     
     private var pagesLabel: UILabel?
-    private var placeView: UIImageView?
-    private var moodView: UIImageView?
+    
+    private var freqLabel: UILabel?
+    private var freqPlaceView: UIImageView?
+    private var freqMoodView: UIImageView?
     
     init(model: BookModel, sessionModels: [UploadSessionModel], summary: SessionsSummModel) {
         self.bookModel = model
@@ -195,6 +197,73 @@ final class SingleBookViewController: UIViewController {
         pagesAttributed.addAttributes(pagesTextAttributesBig, range: NSRange(location: 0, length: String(pagesCount).count))
         
         pagesLabel?.attributedText = pagesAttributed
+        
+        [freqLabel, freqPlaceView, freqMoodView].forEach { label in
+            label?.removeFromSuperview()
+        }
+        
+        if summary.moodsCounts.count + summary.placesCounts.count > 0,
+            let pagesView = pagesLabel {
+            if !summary.moodsCounts.isEmpty {
+                var maxMoodCount = -1
+                var maxMoodKey = ""
+                
+                for mood in Mood.all {
+                    if let cnt = summary.moodsCounts[mood.rawValue],
+                        cnt >= maxMoodCount {
+                        maxMoodCount = cnt
+                        maxMoodKey = mood.rawValue
+                    }
+                }
+                
+                let freqMoodView = UIImageView(image: UIImage(named: maxMoodKey))
+                contentView.addSubview(freqMoodView)
+                freqMoodView.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+                freqMoodView.autoPinEdge(.top, to: .bottom, of: pagesView, withOffset: 16)
+                self.freqMoodView = freqMoodView
+            }
+            
+            if !summary.placesCounts.isEmpty {
+                var maxPlaceCount = -1
+                var maxPlaceKey = ""
+                
+                for place in ReadPlace.all {
+                    if let cnt = summary.placesCounts[place.rawValue],
+                        cnt >= maxPlaceCount {
+                        maxPlaceCount = cnt
+                        maxPlaceKey = place.rawValue
+                    }
+                }
+                
+                let freqPlaceView = UIImageView(image: UIImage(named: maxPlaceKey))
+                contentView.addSubview(freqPlaceView)
+                
+                if let freqMood = freqMoodView {
+                    freqPlaceView.autoAlignAxis(.horizontal, toSameAxisOf: freqMood)
+                    freqPlaceView.autoPinEdge(.left, to: .right, of: freqMood, withOffset: 12)
+                } else {
+                    freqPlaceView.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+                    freqPlaceView.autoPinEdge(.top, to: .bottom, of: pagesView, withOffset: 16)
+                }
+                
+                self.freqPlaceView = freqPlaceView
+            }
+            
+            let freqLabel = UILabel(forAutoLayout: ())
+            freqLabel.attributedText = NSAttributedString(string: "чаще всего", attributes: pagesTextAttributesSmall)
+            self.freqLabel = freqLabel
+            
+            
+            if let placeV = freqPlaceView {
+                contentView.addSubview(freqLabel)
+                freqLabel.autoPinEdge(.bottom, to: .bottom, of: placeV)
+                freqLabel.autoPinEdge(.left, to: .right, of: placeV, withOffset: 12)
+            } else if let moodV = freqMoodView {
+                contentView.addSubview(freqLabel)
+                freqLabel.autoPinEdge(.bottom, to: .bottom, of: moodV)
+                freqLabel.autoPinEdge(.left, to: .right, of: moodV, withOffset: 12)
+            }
+        }
     }
     
     override func viewDidLayoutSubviews() {
