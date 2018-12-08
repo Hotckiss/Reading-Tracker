@@ -157,26 +157,32 @@ final class SingleBookViewController: UIViewController {
         minsNumLabel?.attributedText = NSAttributedString(string: String((summary.totalTime / 60) % 60), attributes: timeNumTextAttributes)
         hrsNumLabel?.attributedText = NSAttributedString(string: String(summary.totalTime / 3600), attributes: timeNumTextAttributes)
         
-        let textAttributesBig = [
-            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+        let attemptsTextAttributesBig = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
             NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 48.0)!]
             as [NSAttributedString.Key : Any]
         
-        let textAttributesSmall = [
-            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+        let attemptsTextAttributesSmall = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
             NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 24.0)!,
             NSAttributedString.Key.baselineOffset: 8]
             as [NSAttributedString.Key : Any]
         
-        /*let startTimeString = ""
+        let attemptsString = PluralRule().formatAttempts(count: summary.attempts)
         
-        let startTimeAttributed = NSMutableAttributedString(string: startTimeString, attributes: textAttributesBig)
-        startTimeAttributed.addAttributes(textAttributesSmall, range: NSRange(location: 2, length: 3))
-        startTimeLabel?.attributedText = startTimeAttributed
-        */
-        let pagesTextAttributes = [
+        let attemptsAttributed = NSMutableAttributedString(string: attemptsString, attributes: attemptsTextAttributesBig)
+        let numberLenght = String(summary.attempts).count
+        attemptsAttributed.addAttributes(attemptsTextAttributesSmall, range: NSRange(location: numberLenght, length: attemptsString.count - numberLenght))
+        attemptsLabel?.attributedText = attemptsAttributed
+
+        let pagesTextAttributesSmall = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
             NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 24.0)!]
+            as [NSAttributedString.Key : Any]
+        
+        let pagesTextAttributesBig = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 48.0)!]
             as [NSAttributedString.Key : Any]
         
         let pagesCount = (summary.maxPage ?? 0) - (summary.minPage ?? 0)
@@ -185,9 +191,10 @@ final class SingleBookViewController: UIViewController {
             " \u{2013} " +
             String(summary.maxPage ?? 0)
         
-        pagesLabel?.attributedText = NSAttributedString(string: pagesString, attributes: pagesTextAttributes)
+        let pagesAttributed = NSMutableAttributedString(string: pagesString, attributes: pagesTextAttributesSmall)
+        pagesAttributed.addAttributes(pagesTextAttributesBig, range: NSRange(location: 0, length: String(pagesCount).count))
         
-        var lastView: UIImageView?
+        pagesLabel?.attributedText = pagesAttributed
     }
     
     override func viewDidLayoutSubviews() {
