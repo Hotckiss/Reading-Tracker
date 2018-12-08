@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2F074A1D21BAF186002146F6 /* StatisticsSessionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F074A1C21BAF186002146F6 /* StatisticsSessionCell.swift */; };
-		2F074A1F21BAF227002146F6 /* SessionCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F074A1E21BAF227002146F6 /* SessionCellModel.swift */; };
+		2F074A1F21BAF227002146F6 /* SessionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F074A1E21BAF227002146F6 /* SessionCell.swift */; };
 		2F074A2121BB0332002146F6 /* BookSessionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F074A2021BB0332002146F6 /* BookSessionsCell.swift */; };
 		2F0C7E2B219F0F7D00C28ECB /* FirebaseStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F0C7E2A219F0F7D00C28ECB /* FirebaseStorageManager.swift */; };
 		2F0C7E2D219F1D4100C28ECB /* ImageCompression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F0C7E2C219F1D4100C28ECB /* ImageCompression.swift */; };
@@ -21,6 +21,7 @@
 		2F1891E621590A680043BDCC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F1891E321590A670043BDCC /* GoogleService-Info.plist */; };
 		2F30E3B221BBE6B200C1A562 /* SingleBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30E3B121BBE6B200C1A562 /* SingleBookViewController.swift */; };
 		2F30E3B421BC3C0300C1A562 /* BookCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30E3B321BC3C0300C1A562 /* BookCommentsViewController.swift */; };
+		2F30E3B721BC45E700C1A562 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30E3B621BC45E700C1A562 /* CommentCell.swift */; };
 		2F3AA2A621B2F9D700CCE35D /* PeriodSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3AA2A521B2F9D700CCE35D /* PeriodSelectionView.swift */; };
 		2F3AA2A821B30B1000CCE35D /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3AA2A721B30B1000CCE35D /* SegmentedControl.swift */; };
 		2F3AA2AB21B31AA400CCE35D /* SessionsStatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3AA2AA21B31AA400CCE35D /* SessionsStatisticsViewController.swift */; };
@@ -98,7 +99,7 @@
 		1867B49C98F22DAF02008586 /* Pods_Reading_Tracker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Reading_Tracker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28AEB30CF38345261F42D491 /* Pods_Reading_TrackerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Reading_TrackerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F074A1C21BAF186002146F6 /* StatisticsSessionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsSessionCell.swift; sourceTree = "<group>"; };
-		2F074A1E21BAF227002146F6 /* SessionCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionCellModel.swift; sourceTree = "<group>"; };
+		2F074A1E21BAF227002146F6 /* SessionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionCell.swift; sourceTree = "<group>"; };
 		2F074A2021BB0332002146F6 /* BookSessionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookSessionsCell.swift; sourceTree = "<group>"; };
 		2F0C7E2A219F0F7D00C28ECB /* FirebaseStorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseStorageManager.swift; sourceTree = "<group>"; };
 		2F0C7E2C219F1D4100C28ECB /* ImageCompression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompression.swift; sourceTree = "<group>"; };
@@ -109,6 +110,7 @@
 		2F1891E321590A670043BDCC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2F30E3B121BBE6B200C1A562 /* SingleBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleBookViewController.swift; sourceTree = "<group>"; };
 		2F30E3B321BC3C0300C1A562 /* BookCommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCommentsViewController.swift; sourceTree = "<group>"; };
+		2F30E3B621BC45E700C1A562 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		2F3AA2A521B2F9D700CCE35D /* PeriodSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodSelectionView.swift; sourceTree = "<group>"; };
 		2F3AA2A721B30B1000CCE35D /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		2F3AA2AA21B31AA400CCE35D /* SessionsStatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionsStatisticsViewController.swift; sourceTree = "<group>"; };
@@ -270,9 +272,21 @@
 			path = SingleViews;
 			sourceTree = "<group>";
 		};
+		2F30E3B521BC45D300C1A562 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				2F30E3B621BC45E700C1A562 /* CommentCell.swift */,
+				2F074A1C21BAF186002146F6 /* StatisticsSessionCell.swift */,
+				2F074A2021BB0332002146F6 /* BookSessionsCell.swift */,
+				2F074A1E21BAF227002146F6 /* SessionCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		2F3AA2A921B31A5500CCE35D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				2F30E3B521BC45D300C1A562 /* Cells */,
 				2F30E3B021BBE64D00C1A562 /* SingleViews */,
 				2F30E3AF21BBE63900C1A562 /* Tabs */,
 			);
@@ -285,9 +299,6 @@
 				2F412CDC21ABEF2B007C491B /* OverallStatsView.swift */,
 				2F3AA2A521B2F9D700CCE35D /* PeriodSelectionView.swift */,
 				2F3AA2A721B30B1000CCE35D /* SegmentedControl.swift */,
-				2F074A1C21BAF186002146F6 /* StatisticsSessionCell.swift */,
-				2F074A1E21BAF227002146F6 /* SessionCellModel.swift */,
-				2F074A2021BB0332002146F6 /* BookSessionsCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -739,7 +750,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2FC9562121AB44B500E52CE6 /* AddedBookView.swift in Sources */,
-				2F074A1F21BAF227002146F6 /* SessionCellModel.swift in Sources */,
+				2F074A1F21BAF227002146F6 /* SessionCell.swift in Sources */,
 				2FC9561D21AB43F900E52CE6 /* DropdownMenu.swift in Sources */,
 				2F1891D9215832210043BDCC /* AuthorizationViewController.swift in Sources */,
 				2F7CE0642193892C00CFE6CF /* Spinner.swift in Sources */,
@@ -767,6 +778,7 @@
 				2F43CB5321B9B7810008B593 /* SingleSessionViewController.swift in Sources */,
 				2FE6C5A521581BDE005A7A68 /* MainViewController.swift in Sources */,
 				2FFD1D032198BC6E00779459 /* PageTextField.swift in Sources */,
+				2F30E3B721BC45E700C1A562 /* CommentCell.swift in Sources */,
 				2FED199D21748FB000AFFF99 /* MyBooksViewController.swift in Sources */,
 				2F71B32C218F684900E4E80F /* LoginPasswordAuthorizationViewController.swift in Sources */,
 				2FAA8FB6216A21920011F59D /* NavigationBar.swift in Sources */,

@@ -9,11 +9,11 @@
 import Foundation
 import UIKit
 
-final class BookCommentsViewController: UIViewController {
-    private var contentView: UIView!
-    private var scrollView: UIScrollView!
+final class BookCommentsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     private var navBar: NavigationBar?
     private var bookCell: BookFilledCell?
+    private var lineView: UIView?
+    
     private var bookModel: BookModel
     private var sessionModels: [UploadSessionModel]
     
@@ -50,29 +50,41 @@ final class BookCommentsViewController: UIViewController {
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
         self.navBar = navBar
+        
+        let bookCell = BookFilledCell(frame: .zero)
+        bookCell.layer.shadowColor = UIColor.black.cgColor
+        bookCell.layer.shadowOpacity = 0.2
+        bookCell.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        view.addSubview(bookCell)
+        bookCell.autoPinEdge(toSuperviewEdge: .left)
+        bookCell.autoPinEdge(toSuperviewEdge: .right)
+        bookCell.autoPinEdge(.top, to: .bottom, of: navBar)
+        bookCell.configure(model: bookModel)
+        self.bookCell = bookCell
+        
+        let tableView = UITableView(forAutoLayout: ())
+        view.addSubview(tableView)
+        tableView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 0, bottom: bottomSpace, right: 0), excludingEdge: .top)
+        tableView.autoPinEdge(.top, to: .bottom, of: bookCell)
+        tableView.register(CommentCell.self, forCellReuseIdentifier: "commentCell")
+        
+        tableView.tableFooterView = UIView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.backgroundColor = .white
+        tableView.separatorStyle = .none
+        
+        view.bringSubviewToFront(bookCell)
     }
     
-    public func format(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ru_RU")
-        formatter.dateFormat = "d MMMM"
-        return formatter.string(from: date)
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return sessionModels.count
     }
     
-    func getDayOfWeek(_ date: Date) -> String {
-        var cal = Calendar(identifier: .gregorian)
-        cal.locale = Locale(identifier: "ru_RU")
-        let weekDay = cal.component(.weekday, from: date)
-        return SingleSessionViewController.weedDayMap[weekDay]!
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "commentCell") as! CommentCell
+        cell.configure(model: sessionModels[indexPath.row])
+        
+        return cell
     }
-    
-    static let weedDayMap: [Int: String] = [
-        1: "воскресенье",
-        2: "понедельник",
-        3: "вторник",
-        4: "среда",
-        5: "четверг",
-        6: "пятница",
-        7: "суббота",
-        ]
 }
