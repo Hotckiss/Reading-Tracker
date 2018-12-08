@@ -1,36 +1,22 @@
 //
-//  SessionCellModel.swift
+//  BookSessionTimesCell.swift
 //  Reading Tracker
 //
-//  Created by Andrei Kirilenko on 07/12/2018.
+//  Created by Andrei Kirilenko on 08/12/2018.
 //  Copyright © 2018 Andrei Kirilenko. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-public struct SessionCellModel {
-    var book: BookModel
-    var sessionInfo: UploadSessionModel
-    
-    public init(sessionInfo: UploadSessionModel = UploadSessionModel(), book: BookModel = BookModel()) {
-        self.book = book
-        self.sessionInfo = sessionInfo
-    }
-}
-
-class SessionCell: UITableViewCell {
+class BookSessionTimesCell: UITableViewCell {
     private var dateLabel: UILabel?
     private var dayOfWeekLabel: UILabel?
-    private var titleLabel: UILabel?
-    private var authorLabel: UILabel?
+    private var timeIntervalLabel: UILabel?
     
     private var hrsNumLabel: UILabel?
+    private var hrsTextLabel: UILabel?
     private var minsNumLabel: UILabel?
-    
-    private var commentView: UIImageView?
-    private var placeView: UIImageView?
-    private var moodView: UIImageView?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -56,24 +42,15 @@ class SessionCell: UITableViewCell {
         dayOfWeekLabel.autoPinEdge(.left, to: .right, of: dateLabel, withOffset: 4)
         dayOfWeekLabel.autoAlignAxis(.horizontal, toSameAxisOf: dateLabel)
         
-        let titleLabel = UILabel(forAutoLayout: ())
-        titleLabel.numberOfLines = 0
-        addSubview(titleLabel)
-        titleLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
-        titleLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
-        titleLabel.autoPinEdge(.top, to: .bottom, of: dateLabel, withOffset: 16)
-        
-        let authorLabel = UILabel(forAutoLayout: ())
-        authorLabel.numberOfLines = 0
-        addSubview(authorLabel)
-        authorLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
-        authorLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
-        authorLabel.autoPinEdge(.top, to: .bottom, of: titleLabel)
-        authorLabel.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16)
+        let timeIntervalLabel = UILabel(forAutoLayout: ())
+        timeIntervalLabel.numberOfLines = 0
+        addSubview(timeIntervalLabel)
+        timeIntervalLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        timeIntervalLabel.autoPinEdge(toSuperviewEdge: .bottom, withInset: 20)
+        timeIntervalLabel.autoPinEdge(.top, to: .bottom, of: dateLabel, withOffset: 16)
         self.dateLabel = dateLabel
         self.dayOfWeekLabel = dayOfWeekLabel
-        self.titleLabel = titleLabel
-        self.authorLabel = authorLabel
+        self.timeIntervalLabel = timeIntervalLabel
         
         let style = NSMutableParagraphStyle()
         style.maximumLineHeight = SizeDependent.instance.convertPadding(20)
@@ -91,6 +68,7 @@ class SessionCell: UITableViewCell {
         
         let hrsTextLabel = UILabel(forAutoLayout: ())
         hrsTextLabel.attributedText = NSAttributedString(string: "ч", attributes: timeDescriptionTextAttributes)
+        self.hrsTextLabel = hrsTextLabel
         
         let minsNumLabel = UILabel(forAutoLayout: ())
         self.minsNumLabel = minsNumLabel
@@ -115,7 +93,7 @@ class SessionCell: UITableViewCell {
         }
     }
     
-    func configure(model: SessionCellModel) {
+    func configure(model: UploadSessionModel) {
         let style = NSMutableParagraphStyle()
         style.maximumLineHeight = SizeDependent.instance.convertPadding(36)
         
@@ -138,76 +116,27 @@ class SessionCell: UITableViewCell {
             NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!]
             as [NSAttributedString.Key : Any]
         
-        let titleTextAttributes = [
+        let timeIntervalTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
             NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 14.0)!]
             as [NSAttributedString.Key : Any]
         
-        let authorTextAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!]
-            as [NSAttributedString.Key : Any]
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateFormat = "HH:mm"
         
-        dateLabel?.attributedText = NSAttributedString(string: format(model.sessionInfo.startTime), attributes: dateTextAttributes)
-        dayOfWeekLabel?.attributedText = NSAttributedString(string: getDayOfWeek(model.sessionInfo.startTime), attributes: dayOfWeekTextAttributes)
-        titleLabel?.attributedText = NSAttributedString(string: model.book.title, attributes: titleTextAttributes)
-        authorLabel?.attributedText = NSAttributedString(string: model.book.author, attributes: authorTextAttributes)
-        minsNumLabel?.attributedText = NSAttributedString(string: String((model.sessionInfo.time / 60) % 60), attributes: timeNumTextAttributes)
-        hrsNumLabel?.attributedText = NSAttributedString(string: String(model.sessionInfo.time / 3600), attributes: timeNumTextAttributes)
+        let startTimeString = formatter.string(from: model.startTime)
+        let finishTimeString = formatter.string(from: Calendar.current.date(byAdding: .second, value: model.time, to: model.startTime)!)
         
-        commentView?.removeFromSuperview()
-        placeView?.removeFromSuperview()
-        moodView?.removeFromSuperview()
+        let timeIntervalString = startTimeString + " \u{2013} " + finishTimeString
+        dateLabel?.attributedText = NSAttributedString(string: format(model.startTime), attributes: dateTextAttributes)
+        dayOfWeekLabel?.attributedText = NSAttributedString(string: getDayOfWeek(model.startTime), attributes: dayOfWeekTextAttributes)
+        timeIntervalLabel?.attributedText = NSAttributedString(string: timeIntervalString, attributes: timeIntervalTextAttributes)
+        minsNumLabel?.attributedText = NSAttributedString(string: String((model.time / 60) % 60), attributes: timeNumTextAttributes)
+        hrsNumLabel?.attributedText = NSAttributedString(string: String(model.time / 3600), attributes: timeNumTextAttributes)
         
-        var lastView: UIImageView?
-        
-        if !model.sessionInfo.comment.isEmpty {
-            let commentView = UIImageView(forAutoLayout: ())
-            commentView.image = UIImage(named: "commentIcon")
-            commentView.alpha = 0.5
-            self.commentView = commentView
-            addSubview(commentView)
-            commentView.autoSetDimensions(to: CGSize(width: 16, height: 16))
-            commentView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
-            commentView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16)
-            lastView = commentView
-        }
-        
-        if model.sessionInfo.readPlace != .unknown {
-            let placeView = UIImageView(forAutoLayout: ())
-            placeView.image = UIImage(named: model.sessionInfo.readPlace.rawValue)
-            placeView.alpha = 0.5
-            self.placeView = placeView
-            addSubview(placeView)
-            placeView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16)
-            placeView.autoSetDimensions(to: CGSize(width: 16, height: 16))
-            
-            if let last = lastView {
-                placeView.autoPinEdge(.right, to: .left, of: last, withOffset: -8)
-            } else {
-                placeView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
-            }
-            
-            lastView = placeView
-        }
-        
-        if model.sessionInfo.mood != .unknown {
-            let moodView = UIImageView(forAutoLayout: ())
-            moodView.image = UIImage(named: model.sessionInfo.mood.rawValue)
-            moodView.alpha = 0.5
-            self.moodView = moodView
-            addSubview(moodView)
-            moodView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16)
-            moodView.autoSetDimensions(to: CGSize(width: 16, height: 16))
-            
-            if let last = lastView {
-                moodView.autoPinEdge(.right, to: .left, of: last, withOffset: -8)
-            } else {
-                moodView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
-            }
-            
-            lastView = moodView
-        }
+        hrsTextLabel?.isHidden = (model.time / 3600) == 0
+        hrsNumLabel?.isHidden = (model.time / 3600) == 0
     }
     
     public func format(_ date: Date) -> String {

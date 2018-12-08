@@ -370,7 +370,9 @@ final class SingleBookViewController: UIViewController {
     }
     
     @objc private func recordsTap() {
-        //TODO: sessions list
+        let vc = BookSessionsViewController(model: bookModel, sessionModels: sessionModels)
+        
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     override func viewDidLayoutSubviews() {

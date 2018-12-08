@@ -1,5 +1,5 @@
 //
-//  BookCommentsViewController.swift
+//  BookSessionsViewController.swift
 //  Reading Tracker
 //
 //  Created by Andrei Kirilenko on 08/12/2018.
@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-final class BookCommentsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+final class BookSessionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     private var navBar: NavigationBar?
     private var bookCell: BookFilledCell?
     
@@ -39,7 +39,7 @@ final class BookCommentsViewController: UIViewController, UITableViewDelegate, U
         
         let navBar = NavigationBar()
         
-        navBar.configure(model: NavigationBarModel(title: "Комментарии к книге",
+        navBar.configure(model: NavigationBarModel(title: "Записи о чтении",
                                                    backButtonText: "Назад",
                                                    onBackButtonPressed: ({ [weak self] in
                                                     self?.navigationController?.popViewController(animated: true)
@@ -65,13 +65,14 @@ final class BookCommentsViewController: UIViewController, UITableViewDelegate, U
         view.addSubview(tableView)
         tableView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 0, bottom: bottomSpace, right: 0), excludingEdge: .top)
         tableView.autoPinEdge(.top, to: .bottom, of: bookCell)
-        tableView.register(CommentCell.self, forCellReuseIdentifier: "commentCell")
+        tableView.register(BookSessionTimesCell.self, forCellReuseIdentifier: "bookSessionCell")
         
         tableView.tableFooterView = UIView()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .white
-        tableView.separatorStyle = .none
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorColor = UIColor(rgb: 0x2f5870)
         
         view.bringSubviewToFront(bookCell)
     }
@@ -81,7 +82,7 @@ final class BookCommentsViewController: UIViewController, UITableViewDelegate, U
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "commentCell") as! CommentCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "bookSessionCell") as! BookSessionTimesCell
         cell.configure(model: sessionModels[indexPath.row])
         
         return cell

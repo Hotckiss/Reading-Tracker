@@ -22,6 +22,8 @@
 		2F30E3B221BBE6B200C1A562 /* SingleBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30E3B121BBE6B200C1A562 /* SingleBookViewController.swift */; };
 		2F30E3B421BC3C0300C1A562 /* BookCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30E3B321BC3C0300C1A562 /* BookCommentsViewController.swift */; };
 		2F30E3B721BC45E700C1A562 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30E3B621BC45E700C1A562 /* CommentCell.swift */; };
+		2F30E3B921BC581700C1A562 /* BookSessionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30E3B821BC581700C1A562 /* BookSessionsViewController.swift */; };
+		2F30E3BB21BC58ED00C1A562 /* BookSessionTimesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30E3BA21BC58ED00C1A562 /* BookSessionTimesCell.swift */; };
 		2F3AA2A621B2F9D700CCE35D /* PeriodSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3AA2A521B2F9D700CCE35D /* PeriodSelectionView.swift */; };
 		2F3AA2A821B30B1000CCE35D /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3AA2A721B30B1000CCE35D /* SegmentedControl.swift */; };
 		2F3AA2AB21B31AA400CCE35D /* SessionsStatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3AA2AA21B31AA400CCE35D /* SessionsStatisticsViewController.swift */; };
@@ -111,6 +113,8 @@
 		2F30E3B121BBE6B200C1A562 /* SingleBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleBookViewController.swift; sourceTree = "<group>"; };
 		2F30E3B321BC3C0300C1A562 /* BookCommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCommentsViewController.swift; sourceTree = "<group>"; };
 		2F30E3B621BC45E700C1A562 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
+		2F30E3B821BC581700C1A562 /* BookSessionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookSessionsViewController.swift; sourceTree = "<group>"; };
+		2F30E3BA21BC58ED00C1A562 /* BookSessionTimesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookSessionTimesCell.swift; sourceTree = "<group>"; };
 		2F3AA2A521B2F9D700CCE35D /* PeriodSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodSelectionView.swift; sourceTree = "<group>"; };
 		2F3AA2A721B30B1000CCE35D /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		2F3AA2AA21B31AA400CCE35D /* SessionsStatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionsStatisticsViewController.swift; sourceTree = "<group>"; };
@@ -268,6 +272,7 @@
 				2F43CB5221B9B7810008B593 /* SingleSessionViewController.swift */,
 				2F30E3B121BBE6B200C1A562 /* SingleBookViewController.swift */,
 				2F30E3B321BC3C0300C1A562 /* BookCommentsViewController.swift */,
+				2F30E3B821BC581700C1A562 /* BookSessionsViewController.swift */,
 			);
 			path = SingleViews;
 			sourceTree = "<group>";
@@ -279,6 +284,7 @@
 				2F074A1C21BAF186002146F6 /* StatisticsSessionCell.swift */,
 				2F074A2021BB0332002146F6 /* BookSessionsCell.swift */,
 				2F074A1E21BAF227002146F6 /* SessionCell.swift */,
+				2F30E3BA21BC58ED00C1A562 /* BookSessionTimesCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -750,6 +756,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2FC9562121AB44B500E52CE6 /* AddedBookView.swift in Sources */,
+				2F30E3BB21BC58ED00C1A562 /* BookSessionTimesCell.swift in Sources */,
 				2F074A1F21BAF227002146F6 /* SessionCell.swift in Sources */,
 				2FC9561D21AB43F900E52CE6 /* DropdownMenu.swift in Sources */,
 				2F1891D9215832210043BDCC /* AuthorizationViewController.swift in Sources */,
@@ -777,6 +784,7 @@
 				2FC9562321AB44E900E52CE6 /* EditBookViewController.swift in Sources */,
 				2F43CB5321B9B7810008B593 /* SingleSessionViewController.swift in Sources */,
 				2FE6C5A521581BDE005A7A68 /* MainViewController.swift in Sources */,
+				2F30E3B921BC581700C1A562 /* BookSessionsViewController.swift in Sources */,
 				2FFD1D032198BC6E00779459 /* PageTextField.swift in Sources */,
 				2F30E3B721BC45E700C1A562 /* CommentCell.swift in Sources */,
 				2FED199D21748FB000AFFF99 /* MyBooksViewController.swift in Sources */,
