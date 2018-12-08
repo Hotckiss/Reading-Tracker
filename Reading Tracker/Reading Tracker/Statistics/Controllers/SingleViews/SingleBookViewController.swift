@@ -148,11 +148,11 @@ final class SingleBookViewController: UIViewController {
         pagesLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         pagesLabel.autoPinEdge(.top, to: .bottom, of: attemptsLabel, withOffset: 16)
         
-        configure(summary: summary)
+        configure(summary: summary, sessionModels: sessionModels)
         setupSpinner()
     }
     
-    func configure(summary: SessionsSummModel) {
+    func configure(summary: SessionsSummModel, sessionModels: [UploadSessionModel]) {
         let style = NSMutableParagraphStyle()
         style.maximumLineHeight = 48
         
@@ -284,6 +284,14 @@ final class SingleBookViewController: UIViewController {
         lineView2.autoSetDimension(.height, toSize: 1)
         
         comButton?.removeFromSuperview()
+        
+        var commentsCount = 0
+        for session in sessionModels {
+            if !session.comment.isEmpty {
+                commentsCount += 1
+            }
+        }
+        
         let commButton = UIButton(forAutoLayout: ())
         contentView.addSubview(commButton)
         commButton.autoPinEdge(toSuperviewEdge: .left)
@@ -303,6 +311,20 @@ final class SingleBookViewController: UIViewController {
         commButton.addSubview(commButtonTitle)
         commButtonTitle.autoAlignAxis(toSuperviewAxis: .horizontal)
         commButtonTitle.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        
+        if commentsCount > 0 {
+            let cntLabel = UILabel(forAutoLayout: ())
+            cntLabel.textAlignment = .center
+            let cntTextAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!]
+                as [NSAttributedString.Key : Any]
+            
+            cntLabel.attributedText = NSAttributedString(string: String(commentsCount), attributes: cntTextAttributes)
+            commButton.addSubview(cntLabel)
+            cntLabel.autoPinEdge(.left, to: .right, of: commButtonTitle, withOffset: 4)
+            cntLabel.autoPinEdge(.bottom, to: .bottom, of: commButtonTitle, withOffset: -8)
+        }
         
         let lineView3 = UIView(frame: .zero)
         lineView3.backgroundColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
