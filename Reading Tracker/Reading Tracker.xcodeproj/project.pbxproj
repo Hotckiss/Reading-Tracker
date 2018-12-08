@@ -246,13 +246,29 @@
 			path = Authorization;
 			sourceTree = "<group>";
 		};
-		2F3AA2A921B31A5500CCE35D /* Controllers */ = {
+		2F30E3AF21BBE63900C1A562 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
 				2F3AA2AA21B31AA400CCE35D /* SessionsStatisticsViewController.swift */,
 				2F3AA2AC21B31AB600CCE35D /* BooksStatisticsViewController.swift */,
 				2F3AA2AE21B31ACA00CCE35D /* PlotsStatisticsViewController.swift */,
+			);
+			path = Tabs;
+			sourceTree = "<group>";
+		};
+		2F30E3B021BBE64D00C1A562 /* SingleViews */ = {
+			isa = PBXGroup;
+			children = (
 				2F43CB5221B9B7810008B593 /* SingleSessionViewController.swift */,
+			);
+			path = SingleViews;
+			sourceTree = "<group>";
+		};
+		2F3AA2A921B31A5500CCE35D /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				2F30E3B021BBE64D00C1A562 /* SingleViews */,
+				2F30E3AF21BBE63900C1A562 /* Tabs */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
