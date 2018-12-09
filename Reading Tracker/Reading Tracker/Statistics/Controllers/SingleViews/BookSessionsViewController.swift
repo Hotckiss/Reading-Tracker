@@ -18,9 +18,7 @@ final class BookSessionsViewController: UIViewController, UITableViewDelegate, U
     
     init(model: BookModel, sessionModels: [UploadSessionModel]) {
         self.bookModel = model
-        self.sessionModels = sessionModels.filter {
-            !$0.comment.isEmpty
-        }
+        self.sessionModels = sessionModels
         super.init(nibName: nil, bundle: nil)
     }
     
