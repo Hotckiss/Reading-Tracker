@@ -11,6 +11,7 @@ import UIKit
 import Charts
 
 final class PlotsStatisticsViewController: UIViewController {
+    private var readTimeBarChart: BarChartView!
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -24,20 +25,51 @@ final class PlotsStatisticsViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        let barChart = BarChartView(forAutoLayout: ())
-        view.addSubview(barChart)
-        barChart.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0))
-        barChart.autoSetDimension(.height, toSize: 400)
+        let readTimeBarChart = BarChartView(forAutoLayout: ())
+        view.addSubview(readTimeBarChart)
+        readTimeBarChart.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0))
+        readTimeBarChart.autoSetDimension(.height, toSize: 200)
+        readTimeBarChart.animate(xAxisDuration: 0.5, yAxisDuration: 0.5, easingOption: .easeInExpo)
+        readTimeBarChart.xAxis.drawGridLinesEnabled = false
+        readTimeBarChart.rightAxis.enabled = false
+        readTimeBarChart.chartDescription = nil
+        readTimeBarChart.xAxis.labelPosition = .bottom
+        readTimeBarChart.xAxis.granularity = 1
+        /*let marker: BalloonMarker = BalloonMarker(color: UIColor.black, font: UIFont(name: "Helvetica", size: 12)!, textColor: UIColor.white, insets: UIEdgeInsets(top: 7.0, left: 7.0, bottom: 7.0, right: 7.0))
+        marker.minimumSize = CGSize(width: 75.0, height: 35.0)
+        readTimeBarChart.marker = marker*/
+        self.readTimeBarChart = readTimeBarChart
+
+        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        let unitsSold = [20000.0, 4000.0, 6000.0, 3000.0, 10002.0, 10006.0, 4000.0, 18000.0, 2000.0, 4000.0, 5000.0, 4000.0]
+        updateReadChart(dataPoints: months, values: unitsSold)
+    }
+    
+    func updateReadChart(dataPoints: [String], values: [Double]) {
+        readTimeBarChart.noDataText = "Нет данных."
         
-        var arr: [BarChartDataEntry] = []
-        for i in 1...30 {
-            arr.append(BarChartDataEntry(x: Double(i), y: Double(sin(Double(i)) * 10)))
+        var dataEntries: [BarChartDataEntry] = []
+        
+        for i in 0..<dataPoints.count {
+            let dataEntry = BarChartDataEntry(x: Double(i), y: values[i])//BarChartDataEntry(value: values[i], xIndex: i)
+            dataEntries.append(dataEntry)
         }
-        let dataSet = BarChartDataSet(values: arr, label: "Widgets Type")
-        let data = BarChartData(dataSets: [dataSet])
-        barChart.data = data
-        barChart.chartDescription?.text = "Number of Widgets by Type"
         
-        barChart.notifyDataSetChanged()
+        let chartDataSet = BarChartDataSet(values: dataEntries, label: "Время чтения в день")//BarChartDataSet(yVals: dataEntries, label: "Units Sold")
+        chartDataSet.colors = [UIColor(rgb: 0xedaf97)]
+        let chartData = BarChartData(dataSets: [chartDataSet])//BarChartData(xVals: months, dataSet: chartDataSet)
+        readTimeBarChart.xAxis.valueFormatter = IndexAxisValueFormatter(values: dataPoints)
+        readTimeBarChart.leftAxis.valueFormatter = ToHrsFormatter()
+        readTimeBarChart.data = chartData
+        readTimeBarChart.notifyDataSetChanged()
+    }
+    
+    private class ToHrsFormatter: IAxisValueFormatter {
+        func stringForValue(_ value: Double, axis: AxisBase?) -> String {
+            let intSecs = Int(value)
+            let mins = (intSecs / 60) % 60
+            let hrs = intSecs / 3600
+            return "\(hrs) ч \(mins) мин"
+        }
     }
 }
