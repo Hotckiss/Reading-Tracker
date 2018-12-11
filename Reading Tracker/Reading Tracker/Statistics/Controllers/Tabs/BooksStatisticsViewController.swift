@@ -38,17 +38,15 @@ final class BooksStatisticsViewController: UIViewController, UITableViewDelegate
     }
     
     func update(sessions: [UploadSessionModel], booksMap: [String : BookModel], interval: StatsInterval) {
-        guard !sessions.isEmpty else {
-            return
-        }
-        
         let groupedSessions: [String: [UploadSessionModel]] = Dictionary(grouping: sessions) {
             $0.bookId
         }
         
         self.groupedSessions = groupedSessions
         self.booksMap = booksMap
-        
+        self.summSessions = [:]
+        self.keyOfLongestBook = ""
+        self.keyOfMostFrequentBook = ""
         for (key, sessionsArr) in groupedSessions {
             var ssm = SessionsSummModel()
             for session in sessionsArr {
@@ -203,5 +201,10 @@ final class BooksStatisticsViewController: UIViewController, UITableViewDelegate
         }
         cell.configure(text: sectionText)
         return cell.contentView
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tableViewHeightConstraint?.constant = keys.isEmpty ? 0 : CGFloat(groupedSessions.count * 118 + 3 * 42 + 118 * 2)
+        tableView?.reloadData()
     }
 }

@@ -62,6 +62,21 @@ public enum StatsInterval {
         }
     }
     
+    func getSeconds() -> Int {
+        switch self {
+        case .allTime:
+            return Int.max
+        case .lastYear:
+            return 365 * 24 * 60 * 60
+        case .lastMonth:
+            return 30 * 24 * 60 * 60
+        case .lastWeek:
+            return 7 * 24 * 60 * 60
+        case .lastDay:
+            return 24 * 60 * 60
+        }
+    }
+    
     public static func getAllStrings() -> [String] {
         return StatsInterval.all.map {
             $0.getString()
@@ -86,7 +101,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     private var sessions: [UploadSessionModel] = []
     private var booksMap: [String : BookModel] = [:]
     private var overallView: OverallStatsView?
-    private var cuttentInterval: StatsInterval = .allTime
+    private var currentInterval: StatsInterval = .allTime
     
     convenience init(books: [BookModel]) {
         self.init(nibName: nil, bundle: nil)
@@ -103,23 +118,45 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func update() {
+        let (filteredArr, booksCount) = filteredSessions()
         var secs = 0
-        for session in sessions {
+        for session in filteredArr {
             secs += session.time
         }
-        overallView?.update(booksCount: booksMap.count, minsCount: secs / 60, approachesCount: sessions.count)
-        
-        if let vc = childsVC[currentIndex] as? SessionsStatisticsViewController {
-            vc.update(sessions: sessions, booksMap: booksMap, interval: cuttentInterval)
+        overallView?.update(booksCount: booksCount, minsCount: secs / 60, approachesCount: filteredArr.count)
+        for subViewController in childsVC {
+            if let vc = subViewController as? SessionsStatisticsViewController {
+                vc.update(sessions: filteredArr, booksMap: booksMap, interval: currentInterval)
+            }
+            
+            if let vc = subViewController as? BooksStatisticsViewController {
+                vc.update(sessions: filteredArr, booksMap: booksMap, interval: currentInterval)
+            }
+            
+            if let vc = subViewController as? PlotsStatisticsViewController {
+                vc.update(sessions: filteredArr, booksMap: booksMap, interval: currentInterval)
+            }
+        }
+    }
+    
+    func filteredSessions() -> ([UploadSessionModel], Int) {
+        guard currentInterval != .allTime else {
+            return (sessions, booksMap.count)
         }
         
-        if let vc = childsVC[currentIndex] as? BooksStatisticsViewController {
-            vc.update(sessions: sessions, booksMap: booksMap, interval: cuttentInterval)
+        var booksCounter: [String: Bool] = [:]
+        var res: [UploadSessionModel] = []
+        let currentDate = Date()
+        for session in sessions {
+            let calendar = Calendar.current
+            if let date = calendar.date(byAdding: .second, value: currentInterval.getSeconds() , to: session.startTime),
+               date > currentDate {
+                res.append(session)
+                booksCounter[session.bookId] = true
+            }
         }
         
-        if let vc = childsVC[currentIndex] as? PlotsStatisticsViewController {
-            vc.update(sessions: sessions, booksMap: booksMap, interval: cuttentInterval)
-        }
+        return (res, booksCounter.count)
     }
     
     override func viewDidLoad() {
@@ -141,13 +178,14 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         periodView.update(title: "Все время")
         periodView.onTap = { [weak self] in
             let picker = ActionSheetMultipleStringPicker(title: "Период статистики", rows: [StatsInterval.getAllStrings()],
-                                                         initialSelection: [self?.cuttentInterval.getIndex() ?? 0], doneBlock: { [weak self]
+                                                         initialSelection: [self?.currentInterval.getIndex() ?? 0], doneBlock: { [weak self]
                                                             picker, values, indexes in
                                                             if let values = values,
                                                                 let optionIndex = values.first as? Int {
                                                                 let newInterval = StatsInterval(int: optionIndex)
-                                                                self?.cuttentInterval = newInterval
+                                                                self?.currentInterval = newInterval
                                                                 periodView.update(title: newInterval.getString())
+                                                                self?.update()
                                                                 return
                                                             }
                                                             return
@@ -259,15 +297,15 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         }
         
         if let vc = viewController as? SessionsStatisticsViewController {
-            vc.update(sessions: sessions, booksMap: booksMap, interval: cuttentInterval)
+            vc.update(sessions: filteredSessions().0, booksMap: booksMap, interval: currentInterval)
         }
         
         if let vc = viewController as? BooksStatisticsViewController {
-            vc.update(sessions: sessions, booksMap: booksMap, interval: cuttentInterval)
+            vc.update(sessions: filteredSessions().0, booksMap: booksMap, interval: currentInterval)
         }
         
         if let vc = viewController as? PlotsStatisticsViewController {
-            vc.update(sessions: sessions, booksMap: booksMap, interval: cuttentInterval)
+            vc.update(sessions: filteredSessions().0, booksMap: booksMap, interval: currentInterval)
         }
         
         viewController.view.autoPinEdgesToSuperviewEdges()

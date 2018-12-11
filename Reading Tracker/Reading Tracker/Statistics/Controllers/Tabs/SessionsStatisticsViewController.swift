@@ -22,19 +22,16 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
     }
     
     func update(sessions: [UploadSessionModel], booksMap: [String : BookModel], interval: StatsInterval) {
-        guard !sessions.isEmpty else {
-            return
-        }
-        
         self.sessions = sessions
         self.booksMap = booksMap
+        indexOfLongestSession = 0
         for (index, session) in sessions.enumerated() {
             if session.time > sessions[indexOfLongestSession].time {
                 indexOfLongestSession = index
             }
         }
         
-        tableViewHeightConstraint?.constant = CGFloat(sessions.count * 118 + 2 * 42 + 118)
+        tableViewHeightConstraint?.constant = sessions.isEmpty ? 0 : CGFloat(sessions.count * 118 + 2 * 42 + 118)
         tableView?.reloadData()
         
         //tableView?.frame.size = tableView?.contentSize ?? CGSize()
@@ -93,7 +90,8 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "sessionCell") as! SessionCell
         if indexPath.section == 0 {
-            if let book = booksMap[sessions[indexOfLongestSession].bookId] {
+            if !sessions.isEmpty,
+                let book = booksMap[sessions[indexOfLongestSession].bookId] {
                 cell.configure(model: SessionCellModel(sessionInfo: sessions[indexOfLongestSession], book: book))
             }
         } else {
@@ -123,5 +121,10 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
         let cell = tableView.dequeueReusableCell(withIdentifier: "sectionCell") as! SectionCell
         cell.configure(text: (section == 0) ? "Самое продолжительное чтение" : "Все записи о чтении")
         return cell.contentView
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tableViewHeightConstraint?.constant = sessions.isEmpty ? 0 : CGFloat(sessions.count * 118 + 2 * 42 + 118)
+        tableView?.reloadData()
     }
 }
