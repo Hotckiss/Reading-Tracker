@@ -37,7 +37,7 @@ final class BooksStatisticsViewController: UIViewController, UITableViewDelegate
         super.init(nibName: nil, bundle: nil)
     }
     
-    func update(sessions: [UploadSessionModel], booksMap: [String : BookModel]) {
+    func update(sessions: [UploadSessionModel], booksMap: [String : BookModel], interval: StatsInterval) {
         guard !sessions.isEmpty else {
             return
         }

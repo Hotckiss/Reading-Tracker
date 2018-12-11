@@ -25,7 +25,7 @@ final class PlotsStatisticsViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(sessions: [UploadSessionModel], booksMap: [String : BookModel]) {
+    func update(sessions: [UploadSessionModel], booksMap: [String : BookModel], interval: StatsInterval) {
         guard !sessions.isEmpty else {
             return
         }

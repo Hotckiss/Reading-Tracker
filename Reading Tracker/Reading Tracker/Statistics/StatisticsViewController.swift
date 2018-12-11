@@ -9,9 +9,66 @@
 import Foundation
 import UIKit
 import Firebase
+import ActionSheetPicker_3_0
 
-public protocol StatisticsViewControllerItem {
-    func update(sessions: [UploadSessionModel], booksMap: [String : BookModel])
+public enum StatsInterval {
+    case allTime
+    case lastYear
+    case lastMonth
+    case lastWeek
+    case lastDay
+    
+    init(int: Int) {
+        switch int {
+        case 1:
+            self = .lastYear
+        case 2:
+            self = .lastMonth
+        case 3:
+            self = .lastWeek
+        case 4:
+            self = .lastDay
+        default:
+            self = .allTime
+        }
+    }
+    func getIndex() -> Int {
+        switch self {
+        case .allTime:
+            return 0
+        case .lastYear:
+            return 1
+        case .lastMonth:
+            return 2
+        case .lastWeek:
+            return 3
+        case .lastDay:
+            return 4
+        }
+    }
+    
+    func getString() -> String {
+        switch self {
+        case .allTime:
+            return "Все время"
+        case .lastYear:
+            return "Год"
+        case .lastMonth:
+            return "Месяц"
+        case .lastWeek:
+            return "Неделя"
+        case .lastDay:
+            return "День"
+        }
+    }
+    
+    public static func getAllStrings() -> [String] {
+        return StatsInterval.all.map {
+            $0.getString()
+        }
+    }
+    
+    public static let all: [StatsInterval] = [.allTime, .lastYear, .lastMonth, .lastWeek, .lastDay]
 }
 
 final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
@@ -29,6 +86,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     private var sessions: [UploadSessionModel] = []
     private var booksMap: [String : BookModel] = [:]
     private var overallView: OverallStatsView?
+    private var cuttentInterval: StatsInterval = .allTime
     
     convenience init(books: [BookModel]) {
         self.init(nibName: nil, bundle: nil)
@@ -52,15 +110,15 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         overallView?.update(booksCount: booksMap.count, minsCount: secs / 60, approachesCount: sessions.count)
         
         if let vc = childsVC[currentIndex] as? SessionsStatisticsViewController {
-            vc.update(sessions: sessions, booksMap: booksMap)
+            vc.update(sessions: sessions, booksMap: booksMap, interval: cuttentInterval)
         }
         
         if let vc = childsVC[currentIndex] as? BooksStatisticsViewController {
-            vc.update(sessions: sessions, booksMap: booksMap)
+            vc.update(sessions: sessions, booksMap: booksMap, interval: cuttentInterval)
         }
         
         if let vc = childsVC[currentIndex] as? PlotsStatisticsViewController {
-            vc.update(sessions: sessions, booksMap: booksMap)
+            vc.update(sessions: sessions, booksMap: booksMap, interval: cuttentInterval)
         }
     }
     
@@ -82,6 +140,33 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         
         periodView.update(title: "Все время")
         periodView.onTap = { [weak self] in
+            let picker = ActionSheetMultipleStringPicker(title: "Период статистики", rows: [StatsInterval.getAllStrings()],
+                                                         initialSelection: [self?.cuttentInterval.getIndex() ?? 0], doneBlock: { [weak self]
+                                                            picker, values, indexes in
+                                                            if let values = values,
+                                                                let optionIndex = values.first as? Int {
+                                                                let newInterval = StatsInterval(int: optionIndex)
+                                                                self?.cuttentInterval = newInterval
+                                                                periodView.update(title: newInterval.getString())
+                                                                return
+                                                            }
+                                                            return
+                }, cancel: { ActionMultipleStringCancelBlock in return }, origin: periodView)
+            picker?.setTextColor(UIColor(rgb: 0x2f5870))
+            
+            let textAttributes = [
+                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 17.0)!]
+                as [NSAttributedString.Key : Any]
+            
+            let finishButton = UIButton(forAutoLayout: ())
+            finishButton.setAttributedTitle(NSAttributedString(string: "Готово", attributes: textAttributes), for: [])
+            picker?.setDoneButton(UIBarButtonItem(customView: finishButton))
+            
+            let closeButton = UIButton(forAutoLayout: ())
+            closeButton.setAttributedTitle(NSAttributedString(string: "Закрыть", attributes: textAttributes), for: [])
+            picker?.setCancelButton(UIBarButtonItem(customView: closeButton))
+            picker?.show()
             print("TODO: different time intervals")
         }
         
@@ -174,15 +259,15 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         }
         
         if let vc = viewController as? SessionsStatisticsViewController {
-            vc.update(sessions: sessions, booksMap: booksMap)
+            vc.update(sessions: sessions, booksMap: booksMap, interval: cuttentInterval)
         }
         
         if let vc = viewController as? BooksStatisticsViewController {
-            vc.update(sessions: sessions, booksMap: booksMap)
+            vc.update(sessions: sessions, booksMap: booksMap, interval: cuttentInterval)
         }
         
         if let vc = viewController as? PlotsStatisticsViewController {
-            vc.update(sessions: sessions, booksMap: booksMap)
+            vc.update(sessions: sessions, booksMap: booksMap, interval: cuttentInterval)
         }
         
         viewController.view.autoPinEdgesToSuperviewEdges()
