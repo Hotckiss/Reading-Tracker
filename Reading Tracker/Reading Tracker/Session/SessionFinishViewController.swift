@@ -106,6 +106,35 @@ class SessionFinishViewController: UIViewController {
         self.placePollView = placePollView
     }
     
+    private func sendResults() {
+        let mood = Mood(ind: moodPollView.result)
+        let place = ReadPlace(ind: placePollView.result)
+        let comment = commentTextField.text ?? ""
+        
+        model?.mood = mood
+        model?.readPlace = place
+        model?.comment = comment
+        
+        if let model = model {
+            FirestoreManager.DBManager.uploadSession(session: model,
+                                                     completion: ({ [weak self] in
+                                                        self?.navigationController?.popViewController(animated: true)
+                                                        //TODO reset session VC
+                                                     }),
+                                                     onError: ({
+                                                        //TODO alert, hide spinner
+                                                     }))
+        } else {
+            alertError()
+        }
+    }
+    
+    private func alertError() {
+        let alert = UIAlertController(title: "Ошибка!", message: "Сессия не найдена", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     private func setupSpinner() {
         let spinner = UIActivityIndicatorView()
         view.addSubview(spinner)
