@@ -17,8 +17,6 @@ final class SessionViewController: UIViewController {
     private var sessionButton: SessionTimerButton?
     private var bookEmptyCell: BookEmptyCell?
     private var bookCell: BookFilledCell?
-    private var startPageTextField: PageTextField?
-    private var finishPageTextField: PageTextField?
     private var handTimeInputButton: UIButton?
     private var handTimerView: HandTimerView?
     private var isAutomaticTimeCounterEnabled: Bool = true
@@ -29,12 +27,8 @@ final class SessionViewController: UIViewController {
             bookEmptyCell?.isHidden = hasBook
             bookCell?.isHidden = !hasBook
             sessionButton?.isPlaceholder = !hasBook
-            startPageTextField?.isUserInteractionEnabled = hasBook
-            finishPageTextField?.isUserInteractionEnabled = hasBook
             handTimeInputButton?.isUserInteractionEnabled = hasBook
             handTimeInputButton?.isHidden = !hasBook
-            startPageTextField?.disable(disable: !hasBook)
-            finishPageTextField?.disable(disable: !hasBook)
         }
     }
     
@@ -175,26 +169,9 @@ final class SessionViewController: UIViewController {
             }
             self?.navigationController?.pushViewController(vc, animated: true)
         }
-        let startPageTextField = PageTextField(frame: .zero)
-        startPageTextField.configure(placeholder: "Начальная\nстраница")
-        
-        view.addSubview(startPageTextField)
-        startPageTextField.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
-        startPageTextField.autoPinEdge(.top, to: .bottom, of: bookCell, withOffset: 20)
-        startPageTextField.autoSetDimensions(to: CGSize(width: 86, height: 92))
-        
-        let finishPageTextField = PageTextField(frame: .zero)
-        finishPageTextField.configure(placeholder: "Конечная\nстраница")
-        
-        view.addSubview(finishPageTextField)
-        finishPageTextField.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
-        finishPageTextField.autoPinEdge(.top, to: .bottom, of: bookCell, withOffset: 20)
-        finishPageTextField.autoSetDimensions(to: CGSize(width: 86, height: 92))
-        
+
         self.bookEmptyCell = bookEmptyCell
         self.bookCell = bookCell
-        self.finishPageTextField = finishPageTextField
-        self.startPageTextField = startPageTextField
     }
     
     @objc private func onBookCellTap() {
@@ -203,9 +180,6 @@ final class SessionViewController: UIViewController {
     
     private func generateModel() -> SessionFinishModel? {
         guard hasBook,
-            let start = startPageTextField?.page,
-            let finish = finishPageTextField?.page,
-            start < finish,
             let bookModel = bookModel,
             let autoTime = sessionButton?.time,
             let handTime = handTimerView?.time,
@@ -222,8 +196,6 @@ final class SessionViewController: UIViewController {
         let time = isAutomaticTimeCounterEnabled ? autoTime : handTime
         
         return SessionFinishModel(bookInfo: bookModel,
-                                      startPage: start,
-                                      finishPage: finish,
                                       time: time,
                                       startTime: startTime)
     }
@@ -233,6 +205,7 @@ final class SessionViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
+    
     private func setupSpinner() {
         let spinner = SpinnerView(frame: .zero)
         view.addSubview(spinner)

@@ -16,6 +16,8 @@ class SessionFinishViewController: UIViewController {
     private let commentTextFieldDelegate = FinishTextFieldDelegate()
     private var moodPollView: PollView!
     private var placePollView: PollView!
+    private var startPageTextField: PageTextField?
+    private var finishPageTextField: PageTextField?
     
     init(model: SessionFinishModel) {
         self.model = model
@@ -55,6 +57,29 @@ class SessionFinishViewController: UIViewController {
             NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
             as [NSAttributedString.Key : Any]
         
+        let separatorLabel = UILabel(forAutoLayout: ())
+        separatorLabel.attributedText = NSAttributedString(string: "\u{2013}", attributes: placeholderTextAttributes)
+        view.addSubview(separatorLabel)
+        separatorLabel.autoAlignAxis(toSuperviewAxis: .vertical)
+        separatorLabel.autoPinEdge(.top, to: .bottom, of: navBar, withOffset: 92)
+        
+        let startPageTextField = PageTextField(frame: .zero)
+        startPageTextField.configure(placeholder: "Начальная\nстраница")
+        
+        view.addSubview(startPageTextField)
+        startPageTextField.autoPinEdge(.right, to: .left, of: separatorLabel, withOffset: -20)
+        startPageTextField.autoPinEdge(.top, to: .bottom, of: navBar, withOffset: 40)
+        startPageTextField.autoSetDimensions(to: CGSize(width: 86, height: 92))
+        self.startPageTextField = startPageTextField
+        let finishPageTextField = PageTextField(frame: .zero)
+        finishPageTextField.configure(placeholder: "Конечная\nстраница")
+        
+        view.addSubview(finishPageTextField)
+        finishPageTextField.autoPinEdge(.left, to: .right, of: separatorLabel, withOffset: 20)
+        finishPageTextField.autoPinEdge(.top, to: .bottom, of: navBar, withOffset: 40)
+        finishPageTextField.autoSetDimensions(to: CGSize(width: 86, height: 92))
+        self.finishPageTextField = finishPageTextField
+        
         let commentTextField = RTTextField(padding: .zero)
         commentTextField.attributedPlaceholder = NSAttributedString(string: "Комментарий к прочитанному", attributes: placeholderTextAttributes)
         commentTextField.backgroundColor = .clear
@@ -64,7 +89,7 @@ class SessionFinishViewController: UIViewController {
         
         view.addSubview(commentTextField)
         commentTextField.autoAlignAxis(toSuperviewAxis: .vertical)
-        commentTextField.autoPinEdge(.top, to: .bottom, of: navBar, withOffset: 138)
+        commentTextField.autoPinEdge(.top, to: .bottom, of: separatorLabel, withOffset: 46)
         commentTextField.autoPinEdge(toSuperviewEdge: .right)
         commentTextField.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         
@@ -93,6 +118,15 @@ class SessionFinishViewController: UIViewController {
     }
     
     private func sendResults() {
+        guard let start = startPageTextField?.page,
+            let finish = finishPageTextField?.page,
+            start < finish else {
+                self.showError()
+                return
+        }
+        
+        model.startPage = start
+        model.finishPage = finish
         let mood = Mood(ind: moodPollView.result)
         let place = ReadPlace(ind: placePollView.result)
         let comment = commentTextField.text ?? ""
@@ -109,6 +143,12 @@ class SessionFinishViewController: UIViewController {
                                                  onError: ({
                                                     //TODO alert, hide spinner
                                                  }))
+    }
+    
+    private func showError() {
+        let alert = UIAlertController(title: "Ошибка!", message: "Пожалуйста, ведите страницы", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     private func setupSpinner() {
