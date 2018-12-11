@@ -35,10 +35,6 @@ final class SessionViewController: UIViewController {
             handTimeInputButton?.isHidden = !hasBook
             startPageTextField?.disable(disable: !hasBook)
             finishPageTextField?.disable(disable: !hasBook)
-            
-            if !hasBook {
-                finishPageTextField?.isHidden = true
-            }
         }
     }
     
@@ -59,9 +55,6 @@ final class SessionViewController: UIViewController {
         sessionButton.autoAlignAxis(toSuperviewAxis: .vertical)
         sessionButton.autoSetDimensions(to: SizeDependent.instance.convertSize(CGSize(width: 230, height: 230)))
         sessionButton.addTarget(self, action: #selector(onSessionButtonTap), for: .touchUpInside)
-        sessionButton.onStateChanged = { [weak self] state in
-            self?.finishPageTextField?.isHidden = (state != .pause)
-        }
         sessionButton.buttonState = .start
         
         self.sessionButton = sessionButton
@@ -117,16 +110,6 @@ final class SessionViewController: UIViewController {
         handTimeInputButton?.setAttributedTitle(NSAttributedString(string: isHand ? "Вернуться к таймеру" : "Указать время вручную", attributes: handTimeInputButtonTextAttributes), for: [])
         handTimerView?.isHidden = !isHand
         sessionButton?.isHidden = isHand
-        
-        if isHand {
-            finishPageTextField?.isHidden = false
-        }
-        
-        if isHand {
-            finishPageTextField?.isHidden = false
-        } else {
-            finishPageTextField?.isHidden = ((sessionButton?.buttonState ?? .start) != .pause)
-        }
     }
     
     @objc private func onSessionButtonTap() {
@@ -151,39 +134,14 @@ final class SessionViewController: UIViewController {
                                                         //TODO: reset
                                                     }),
                                                     onFrontButtonPressed: ({ [weak self] in
-                                                        let showError = {
-                                                            let alert = UIAlertController(title: "Ошибка!", message: "Не все поля заполнены", preferredStyle: .alert)
-                                                            alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
-                                                            self?.present(alert, animated: true, completion: nil)
+                                                        guard let finishModel = self?.generateModel() else {
+                                                            return
                                                         }
-                                                        guard let strongSelf = self,
-                                                              strongSelf.hasBook,
-                                                              let start = strongSelf.startPageTextField?.page,
-                                                              let finish = strongSelf.finishPageTextField?.page,
-                                                              start < finish,
-                                                              let bookModel = strongSelf.bookModel,
-                                                              let autoTime = strongSelf.sessionButton?.time,
-                                                              let handTime = strongSelf.handTimerView?.time,
-                                                              let state = strongSelf.sessionButton?.buttonState,
-                                                              (strongSelf.isAutomaticTimeCounterEnabled && autoTime > 0) ||
-                                                              (!strongSelf.isAutomaticTimeCounterEnabled && handTime > 0),
-                                                              (strongSelf.isAutomaticTimeCounterEnabled && (state == .pause)) ||
-                                                              (!strongSelf.isAutomaticTimeCounterEnabled),
-                                                              let startTime = strongSelf.sessionButton?.startTime else {
-                                                                showError()
-                                                                return
-                                                        }
-                                                        
-                                                        let time = strongSelf.isAutomaticTimeCounterEnabled ? autoTime : handTime
                                                         
                                                         let vc = SessionFinishViewController()
-                                                        vc.model = SessionFinishModel(bookInfo: bookModel,
-                                                                                      startPage: start,
-                                                                                      finishPage: finish,
-                                                                                      time: time,
-                                                                                      startTime: startTime)
+                                                        vc.model = finishModel
                                                         
-                                                        strongSelf.navigationController?.pushViewController(vc, animated: true)
+                                                        self?.navigationController?.pushViewController(vc, animated: true)
                                                     })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         
@@ -244,6 +202,38 @@ final class SessionViewController: UIViewController {
         onBookSelectFromLibraryRequest?()
     }
     
+    private func generateModel() -> SessionFinishModel? {
+        guard hasBook,
+            let start = startPageTextField?.page,
+            let finish = finishPageTextField?.page,
+            start < finish,
+            let bookModel = bookModel,
+            let autoTime = sessionButton?.time,
+            let handTime = handTimerView?.time,
+            let state = sessionButton?.buttonState,
+            (isAutomaticTimeCounterEnabled && autoTime > 0) ||
+                (!isAutomaticTimeCounterEnabled && handTime > 0),
+            (isAutomaticTimeCounterEnabled && (state == .pause)) ||
+                (!isAutomaticTimeCounterEnabled),
+            let startTime = sessionButton?.startTime else {
+                showError()
+                return nil
+        }
+        
+        let time = isAutomaticTimeCounterEnabled ? autoTime : handTime
+        
+        return SessionFinishModel(bookInfo: bookModel,
+                                      startPage: start,
+                                      finishPage: finish,
+                                      time: time,
+                                      startTime: startTime)
+    }
+    
+    private func showError() {
+        let alert = UIAlertController(title: "Ошибка!", message: "Не все поля заполнены", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
     private func setupSpinner() {
         let spinner = SpinnerView(frame: .zero)
         view.addSubview(spinner)
@@ -251,10 +241,6 @@ final class SessionViewController: UIViewController {
         view.bringSubviewToFront(spinner)
         spinner.autoPinEdgesToSuperviewEdges()
         self.spinner = spinner
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
     }
     
     func updateWithBook(book: BookModel?) {
