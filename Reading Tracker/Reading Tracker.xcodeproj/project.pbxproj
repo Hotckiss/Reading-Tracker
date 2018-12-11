@@ -33,6 +33,10 @@
 		2F412CE121ABEF58007C491B /* SizeDependent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F412CE021ABEF58007C491B /* SizeDependent.swift */; };
 		2F43CB5321B9B7810008B593 /* SingleSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F43CB5221B9B7810008B593 /* SingleSessionViewController.swift */; };
 		2F43CB5521B9CBF00008B593 /* PluralRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F43CB5421B9CBF00008B593 /* PluralRule.swift */; };
+		2F62C5E121C0099E002119EA /* PollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F62C5E021C0099E002119EA /* PollView.swift */; };
+		2F62C5E321C009D2002119EA /* Mood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F62C5E221C009D2002119EA /* Mood.swift */; };
+		2F62C5E521C009EB002119EA /* ReadPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F62C5E421C009EB002119EA /* ReadPlace.swift */; };
+		2F62C5E721C00A09002119EA /* SessionFinishModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F62C5E621C00A09002119EA /* SessionFinishModels.swift */; };
 		2F71B324218EFAFF00E4E80F /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B323218EFAFF00E4E80F /* RegistrationViewController.swift */; };
 		2F71B326218F3A2700E4E80F /* OnLiginStuff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B325218F3A2700E4E80F /* OnLiginStuff.swift */; };
 		2F71B328218F3FFE00E4E80F /* OfflineCodeSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B327218F3FFE00E4E80F /* OfflineCodeSignUpViewController.swift */; };
@@ -124,6 +128,10 @@
 		2F412CE021ABEF58007C491B /* SizeDependent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeDependent.swift; sourceTree = "<group>"; };
 		2F43CB5221B9B7810008B593 /* SingleSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSessionViewController.swift; sourceTree = "<group>"; };
 		2F43CB5421B9CBF00008B593 /* PluralRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluralRule.swift; sourceTree = "<group>"; };
+		2F62C5E021C0099E002119EA /* PollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollView.swift; sourceTree = "<group>"; };
+		2F62C5E221C009D2002119EA /* Mood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mood.swift; sourceTree = "<group>"; };
+		2F62C5E421C009EB002119EA /* ReadPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadPlace.swift; sourceTree = "<group>"; };
+		2F62C5E621C00A09002119EA /* SessionFinishModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionFinishModels.swift; sourceTree = "<group>"; };
 		2F71B323218EFAFF00E4E80F /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		2F71B325218F3A2700E4E80F /* OnLiginStuff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnLiginStuff.swift; sourceTree = "<group>"; };
 		2F71B327218F3FFE00E4E80F /* OfflineCodeSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineCodeSignUpViewController.swift; sourceTree = "<group>"; };
@@ -424,6 +432,7 @@
 				2FFD1D042198BCA100779459 /* HandTimerView.swift */,
 				2F7CE0652194293600CFE6CF /* SessionTimerButton.swift */,
 				2FFD1D062198CB1500779459 /* SessionFinishViewController.swift */,
+				2F62C5E021C0099E002119EA /* PollView.swift */,
 			);
 			path = Session;
 			sourceTree = "<group>";
@@ -445,6 +454,9 @@
 			isa = PBXGroup;
 			children = (
 				2FFE218D21679BE6001BBE90 /* UserModel.swift */,
+				2F62C5E221C009D2002119EA /* Mood.swift */,
+				2F62C5E421C009EB002119EA /* ReadPlace.swift */,
+				2F62C5E621C00A09002119EA /* SessionFinishModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -767,6 +779,8 @@
 				2FC9561B21AB41EA00E52CE6 /* TextFieldDelegates.swift in Sources */,
 				2F71B328218F3FFE00E4E80F /* OfflineCodeSignUpViewController.swift in Sources */,
 				2F43CB5521B9CBF00008B593 /* PluralRule.swift in Sources */,
+				2F62C5E321C009D2002119EA /* Mood.swift in Sources */,
+				2F62C5E521C009EB002119EA /* ReadPlace.swift in Sources */,
 				2F3AA2AF21B31ACB00CCE35D /* PlotsStatisticsViewController.swift in Sources */,
 				2FAA8FB3216A152C0011F59D /* RegistrationLoginViewController.swift in Sources */,
 				2FAA8FBC216A6E430011F59D /* RegistrationEducationViewController.swift in Sources */,
@@ -776,6 +790,7 @@
 				2F71B326218F3A2700E4E80F /* OnLiginStuff.swift in Sources */,
 				2F1891DF2158BCC10043BDCC /* RTTextView.swift in Sources */,
 				2FAA8FBA216A34650011F59D /* RegistrationAboutSelfViewController.swift in Sources */,
+				2F62C5E121C0099E002119EA /* PollView.swift in Sources */,
 				2F7CE0662194293700CFE6CF /* SessionTimerButton.swift in Sources */,
 				2F412CE121ABEF58007C491B /* SizeDependent.swift in Sources */,
 				2F1891E22158EF2E0043BDCC /* AuthorizationInteractor.swift in Sources */,
@@ -794,6 +809,7 @@
 				2FAA8FB6216A21920011F59D /* NavigationBar.swift in Sources */,
 				2FED19A121748FE300AFFF99 /* StatisticsViewController.swift in Sources */,
 				2F71B32A218F5CF000E4E80F /* LoginPasswordRegistrationViewController.swift in Sources */,
+				2F62C5E721C00A09002119EA /* SessionFinishModels.swift in Sources */,
 				2FE6C5A321581BDE005A7A68 /* AppDelegate.swift in Sources */,
 				2FFE218A21679AB4001BBE90 /* FirestoreManager.swift in Sources */,
 				2FC9561921AB419C00E52CE6 /* UIImageView+Download.swift in Sources */,
