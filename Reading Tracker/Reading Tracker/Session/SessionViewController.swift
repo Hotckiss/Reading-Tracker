@@ -138,8 +138,7 @@ final class SessionViewController: UIViewController {
                                                             return
                                                         }
                                                         
-                                                        let vc = SessionFinishViewController()
-                                                        vc.model = finishModel
+                                                        let vc = SessionFinishViewController(model: finishModel)
                                                         
                                                         self?.navigationController?.pushViewController(vc, animated: true)
                                                     })))

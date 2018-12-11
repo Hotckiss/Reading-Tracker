@@ -10,12 +10,22 @@ import Foundation
 import UIKit
 
 class SessionFinishViewController: UIViewController {
-    var model: SessionFinishModel?
+    var model: SessionFinishModel
     private var spinner: UIActivityIndicatorView?
     private var commentTextField: RTTextField!
     private let commentTextFieldDelegate = FinishTextFieldDelegate()
     private var moodPollView: PollView!
     private var placePollView: PollView!
+    
+    init(model: SessionFinishModel) {
+        self.model = model
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -32,31 +42,7 @@ class SessionFinishViewController: UIViewController {
                                                     self?.navigationController?.popViewController(animated: true)
                                                    }),
                                                    onFrontButtonPressed: ({ [weak self] in
-                                                    guard let strongSelf = self else {
-                                                        return
-                                                    }
-                                                    let mood = Mood(ind: strongSelf.moodPollView.result)
-                                                    let place = ReadPlace(ind: strongSelf.placePollView.result)
-                                                    let comment = strongSelf.commentTextField.text ?? ""
-                                                    
-                                                    self?.model?.mood = mood
-                                                    self?.model?.readPlace = place
-                                                    self?.model?.comment = comment
-                                                    
-                                                    if let model = strongSelf.model {
-                                                        FirestoreManager.DBManager.uploadSession(session: model,
-                                                                                                 completion: ({
-                                                                                                    strongSelf.navigationController?.popViewController(animated: true)
-                                                                                                    //TODO reset session VC
-                                                                                                 }),
-                                                                                                 onError: ({
-                                                                                                    //TODO alert, hide spinner
-                                                                                                 }))
-                                                    } else {
-                                                        let alert = UIAlertController(title: "Ошибка!", message: "Сессия не найдена", preferredStyle: .alert)
-                                                        alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
-                                                        self?.present(alert, animated: true, completion: nil)
-                                                    }
+                                                    self?.sendResults()
                                                    })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         view.addSubview(navBar)
@@ -111,28 +97,18 @@ class SessionFinishViewController: UIViewController {
         let place = ReadPlace(ind: placePollView.result)
         let comment = commentTextField.text ?? ""
         
-        model?.mood = mood
-        model?.readPlace = place
-        model?.comment = comment
+        model.mood = mood
+        model.readPlace = place
+        model.comment = comment
         
-        if let model = model {
-            FirestoreManager.DBManager.uploadSession(session: model,
-                                                     completion: ({ [weak self] in
-                                                        self?.navigationController?.popViewController(animated: true)
-                                                        //TODO reset session VC
-                                                     }),
-                                                     onError: ({
-                                                        //TODO alert, hide spinner
-                                                     }))
-        } else {
-            alertError()
-        }
-    }
-    
-    private func alertError() {
-        let alert = UIAlertController(title: "Ошибка!", message: "Сессия не найдена", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+        FirestoreManager.DBManager.uploadSession(session: model,
+                                                 completion: ({ [weak self] in
+                                                    self?.navigationController?.popViewController(animated: true)
+                                                    //TODO reset session VC
+                                                 }),
+                                                 onError: ({
+                                                    //TODO alert, hide spinner
+                                                 }))
     }
     
     private func setupSpinner() {
