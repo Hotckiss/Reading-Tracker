@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "happy.png",
+      "filename" : "third place.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "happy-1.png",
+      "filename" : "third place-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "happy-2.png",
+      "filename" : "third place-2.png",
       "scale" : "3x"
     }
   ],
