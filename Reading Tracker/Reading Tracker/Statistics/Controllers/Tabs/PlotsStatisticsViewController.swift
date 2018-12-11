@@ -12,6 +12,10 @@ import Charts
 
 final class PlotsStatisticsViewController: UIViewController {
     private var readTimeBarChart: BarChartView!
+    private var sessions: [UploadSessionModel] = []
+    private var grouppedByDaySessions: [[UploadSessionModel]] = []
+    private var grouppedByMonthSessions: [[UploadSessionModel]] = []
+    private var booksMap: [String : BookModel] = [:]
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -19,6 +23,39 @@ final class PlotsStatisticsViewController: UIViewController {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func update(sessions: [UploadSessionModel], booksMap: [String : BookModel]) {
+        guard !sessions.isEmpty else {
+            return
+        }
+        
+        self.sessions = sessions
+        self.booksMap = booksMap
+        
+        let groupedSessions: [(UInt64, [UploadSessionModel])] = Dictionary(grouping: sessions) {
+            let daysSince1970 = UInt64($0.startTime.timeIntervalSince1970) / 86400
+            return daysSince1970
+        }
+        .sorted {
+            $0.key > $1.key
+        }
+        
+        grouppedByDaySessions = groupedSessions.map { $0.1 }
+        
+        let groupedSessionsMonth: [(Int, [UploadSessionModel])] = Dictionary(grouping: sessions) {
+            let cal = Calendar.current
+            let year = cal.component(.year, from: $0.startTime)
+            let month = cal.component(.month, from: $0.startTime)
+            return year * 12 + month
+            }
+            .sorted {
+                $0.key > $1.key
+        }
+        
+        grouppedByMonthSessions = groupedSessionsMonth.map {
+            $0.1
+        }
     }
     
     override func viewDidLoad() {
@@ -31,8 +68,10 @@ final class PlotsStatisticsViewController: UIViewController {
         readTimeBarChart.autoSetDimension(.height, toSize: 200)
         readTimeBarChart.animate(xAxisDuration: 0.5, yAxisDuration: 0.5, easingOption: .easeInExpo)
         readTimeBarChart.xAxis.drawGridLinesEnabled = false
+        readTimeBarChart.leftAxis.drawAxisLineEnabled = false
         readTimeBarChart.rightAxis.enabled = false
-        readTimeBarChart.chartDescription = nil
+        readTimeBarChart.chartDescription?.text = "Время чтения в день"
+        readTimeBarChart.legend.enabled = false
         readTimeBarChart.xAxis.labelPosition = .bottom
         readTimeBarChart.xAxis.granularity = 1
         let marker: BalloonMarker = BalloonMarker(color: UIColor.black, font: UIFont(name: "Helvetica", size: 12)!, textColor: UIColor.white, insets: UIEdgeInsets(top: 7.0, left: 7.0, bottom: 7.0, right: 7.0))
@@ -40,7 +79,7 @@ final class PlotsStatisticsViewController: UIViewController {
         readTimeBarChart.marker = marker
         self.readTimeBarChart = readTimeBarChart
 
-        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        let months = ["Jan 2018", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         let unitsSold = [20000.0, 4000.0, 6000.0, 3000.0, 10002.0, 10006.0, 4000.0, 18000.0, 2000.0, 4000.0, 5000.0, 4000.0]
         updateReadChart(dataPoints: months, values: unitsSold)
     }
@@ -55,7 +94,7 @@ final class PlotsStatisticsViewController: UIViewController {
             dataEntries.append(dataEntry)
         }
         
-        let chartDataSet = BarChartDataSet(values: dataEntries, label: "Время чтения в день")
+        let chartDataSet = BarChartDataSet(values: dataEntries, label: "")
         chartDataSet.colors = [UIColor(rgb: 0xedaf97)]
         let chartData = BarChartData(dataSets: [chartDataSet])
         chartData.setDrawValues(false)
@@ -67,19 +106,13 @@ final class PlotsStatisticsViewController: UIViewController {
     
     private class ToHrsFormatter: IAxisValueFormatter {
         func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-            let intSecs = Int(value)
-            let mins = (intSecs / 60) % 60
-            let hrs = intSecs / 3600
-            return "\(hrs) ч \(mins) мин"
+            return MarkersFormatter().secsToTimeStr(val: value)
         }
     }
 }
 
 
 private class MarkersFormatter {
-    init() {
-    }
-    
     func secsToTimeStr(val: Double) -> String {
         let intSecs = Int(val)
         let mins = (intSecs / 60) % 60
