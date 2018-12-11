@@ -12,6 +12,7 @@ public enum ReadPlace: String {
     case home = "home"
     case transport = "transport"
     case work = "work"
+    case thirdPlace = "third place"
     case unknown = "unknown"
     
     init(ind: Int?) {
@@ -23,6 +24,8 @@ public enum ReadPlace: String {
                 self = .transport
             case 2:
                 self = .work
+            case 3:
+                self = .thirdPlace
             default:
                 self = .unknown
             }
@@ -39,10 +42,12 @@ public enum ReadPlace: String {
             self = .transport
         case "work":
             self = .work
+        case "third place":
+            self = .thirdPlace
         default:
             self = .unknown
         }
     }
     
-    public static let all: [ReadPlace] = [.work, .transport, .home]
+    public static let all: [ReadPlace] = [.work, .transport, .home, .thirdPlace]
 }

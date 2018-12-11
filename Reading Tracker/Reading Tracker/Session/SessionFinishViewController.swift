@@ -104,13 +104,13 @@ class SessionFinishViewController: UIViewController {
         lineView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         lineView.autoSetDimension(.height, toSize: 1)
         
-        let moodPollView = PollView(frame: .zero, title: "Эмоции от чтения", options: [UIImage(named: "happy"), UIImage(named: "neutral"), UIImage(named: "sad")])
+        let moodPollView = PollView(frame: .zero, title: "Эмоции от чтения", options: [UIImage(named: "very sad"), UIImage(named: "sad"), UIImage(named: "neutral"), UIImage(named: "happy"), UIImage(named: "very happy")])
         view.addSubview(moodPollView)
         moodPollView.autoAlignAxis(toSuperviewAxis: .vertical)
         moodPollView.autoPinEdge(.top, to: .bottom, of: lineView, withOffset: 88)
         self.moodPollView = moodPollView
         
-        let placePollView = PollView(frame: .zero, title: "Место чтения", options: [UIImage(named: "home"), UIImage(named: "transport"), UIImage(named: "work")])
+        let placePollView = PollView(frame: .zero, title: "Место чтения", options: [UIImage(named: "home"), UIImage(named: "transport"), UIImage(named: "work"), UIImage(named: "third place")])
         view.addSubview(placePollView)
         placePollView.autoAlignAxis(toSuperviewAxis: .vertical)
         placePollView.autoPinEdge(.top, to: .bottom, of: moodPollView, withOffset: 88)
