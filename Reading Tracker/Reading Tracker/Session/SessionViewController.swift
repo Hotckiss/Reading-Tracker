@@ -18,8 +18,15 @@ final class SessionViewController: UIViewController {
     private var bookEmptyCell: BookEmptyCell?
     private var bookCell: BookFilledCell?
     private var handTimeInputButton: UIButton?
+    private var finishButton: UIButton?
+    private var finishButtonOverlay: UIView?
     private var handTimerView: HandTimerView?
-    private var isAutomaticTimeCounterEnabled: Bool = true
+    private var isAutomaticTimeCounterEnabled: Bool = true {
+        didSet {
+            finishButtonOverlay?.isHidden = !(isAutomaticTimeCounterEnabled && (sessionButton?.buttonState ?? .start) == .start)
+        }
+    }
+    
     private var bookModel: BookModel?
     
     private var hasBook: Bool = false {
@@ -27,8 +34,8 @@ final class SessionViewController: UIViewController {
             bookEmptyCell?.isHidden = hasBook
             bookCell?.isHidden = !hasBook
             sessionButton?.isPlaceholder = !hasBook
-            handTimeInputButton?.isUserInteractionEnabled = hasBook
             handTimeInputButton?.isHidden = !hasBook
+            finishButton?.isHidden = !hasBook
         }
     }
     
@@ -36,55 +43,122 @@ final class SessionViewController: UIViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .white
-        setupNavigationBarAndBookCell()
+        
         var bottomSpace: CGFloat = 49
         if #available(iOS 11.0, *) {
             bottomSpace += UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
         }
         
-        let sessionButton = SessionTimerButton(frame: .zero)
-        view.addSubview(sessionButton)
+        let navBar = NavigationBar()
+        navBar.configure(model: NavigationBarModel(title: "Новая запись о чтении",
+                                                   backButtonText: "Сброс",
+                                                   onBackButtonPressed: ({
+                                                    //TODO: reset
+                                                   })))
+        navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         
-        sessionButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 82 + bottomSpace)
+        view.addSubview(navBar)
+        navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
+        self.navBar = navBar
+        
+        let bookCell = BookFilledCell(frame: .zero)
+        bookCell.layer.shadowColor = UIColor.black.cgColor
+        bookCell.layer.shadowOpacity = 0.2
+        bookCell.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        if let bookModel = bookModel {
+            bookCell.configure(model: bookModel)
+        }
+        
+        view.addSubview(bookCell)
+        bookCell.autoPinEdge(toSuperviewEdge: .left)
+        bookCell.autoPinEdge(toSuperviewEdge: .right)
+        bookCell.autoPinEdge(.top, to: .bottom, of: navBar)
+        bookCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onBookCellTap)))
+        let bookEmptyCell = BookEmptyCell(frame: .zero)
+        self.bookCell = bookCell
+        
+        view.addSubview(bookEmptyCell)
+        bookEmptyCell.autoPinEdge(toSuperviewEdge: .left)
+        bookEmptyCell.autoPinEdge(toSuperviewEdge: .right)
+        bookEmptyCell.autoPinEdge(.top, to: .bottom, of: navBar)
+        bookEmptyCell.onAdd = { [weak self] in
+            let vc = AddBookViewController()
+            vc.onCompleted = { [weak self] bookModel in
+                self?.updateWithBook(book: bookModel)
+                self?.onBookAddedInSession?(bookModel)
+            }
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
+        self.bookEmptyCell = bookEmptyCell
+        
+        let handTimeInputButton = UIButton(forAutoLayout: ())
+        handTimeInputButton.addTarget(self, action: #selector(onHandTimeTap), for:.touchUpInside)
+        view.addSubview(handTimeInputButton)
+        handTimeInputButton.autoAlignAxis(toSuperviewAxis: .vertical)
+        handTimeInputButton.autoPinEdge(.top, to: .bottom, of: bookCell, withOffset: SizeDependent.instance.convertPadding(30))
+        self.handTimeInputButton = handTimeInputButton
+        
+        let sessionButton = SessionTimerButton(frame: .zero)
+        sessionButton.onStateChanged = { [weak self] state in
+            self?.finishButtonOverlay?.isHidden = !((self?.isAutomaticTimeCounterEnabled ?? true) && state == .start)
+        }
+        view.addSubview(sessionButton)
+        sessionButton.autoPinEdge(.top, to: .bottom, of: handTimeInputButton, withOffset: SizeDependent.instance.convertPadding(20))
         sessionButton.autoAlignAxis(toSuperviewAxis: .vertical)
         sessionButton.autoSetDimensions(to: SizeDependent.instance.convertSize(CGSize(width: 230, height: 230)))
         sessionButton.addTarget(self, action: #selector(onSessionButtonTap), for: .touchUpInside)
         sessionButton.buttonState = .start
-        
         self.sessionButton = sessionButton
         
-        let style = NSMutableParagraphStyle()
-        style.alignment = NSTextAlignment.center
+        let finishButton = UIButton(forAutoLayout: ())
         
-        let handTimeInputButton = UIButton(forAutoLayout: ())
-        let handTimeInputButtonTextAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!,
-            NSAttributedString.Key.paragraphStyle: style]
+        let finishButtonTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor.white,
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20)]
             as [NSAttributedString.Key : Any]
-        handTimeInputButton.setAttributedTitle(NSAttributedString(string: "Указать время вручную", attributes: handTimeInputButtonTextAttributes), for: [])
-        handTimeInputButton.addTarget(self, action: #selector(onHandTimeTap), for:.touchUpInside)
         
-        view.addSubview(handTimeInputButton)
-        handTimeInputButton.autoAlignAxis(toSuperviewAxis: .vertical)
-        handTimeInputButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: bottomSpace + 30)
+        finishButton.setAttributedTitle(NSAttributedString(string: "Завершить", attributes: finishButtonTextAttributes), for: .normal)
+        finishButton.backgroundColor = UIColor(rgb: 0x2f5870)
+        finishButton.layer.cornerRadius = 32
+        finishButton.layer.shadowRadius = 4
+        finishButton.layer.shadowColor = UIColor(rgb: 0x2f5870).cgColor
+        finishButton.layer.shadowOpacity = 0.33
+        finishButton.layer.shadowOffset = CGSize(width: 0.0, height: 4.0)
+        finishButton.addTarget(self, action: #selector(onFinishButtonTapped), for: .touchUpInside)
+        view.addSubview(finishButton)
+        finishButton.autoSetDimensions(to: CGSize(width: 155, height: 64))
+        finishButton.autoAlignAxis(toSuperviewAxis: .vertical)
+        finishButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: bottomSpace + SizeDependent.instance.convertPadding(20))
         
-        self.handTimeInputButton = handTimeInputButton
+        let overlay = UIView(forAutoLayout: ())
+        overlay.backgroundColor = .white//UIColor(rgb: 0x)
+        overlay.alpha = 0.5
+        overlay.layer.cornerRadius = 32
+        finishButton.addSubview(overlay)
+        overlay.autoPinEdgesToSuperviewEdges()
+        self.finishButtonOverlay = overlay
         
         let handTimerView = HandTimerView(frame: .zero)
         view.addSubview(handTimerView)
-        
-        handTimerView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 124 + bottomSpace)
+        handTimerView.autoPinEdge(.top, to: .bottom, of: handTimeInputButton, withOffset: SizeDependent.instance.convertPadding(20))
         handTimerView.autoAlignAxis(toSuperviewAxis: .vertical)
         handTimerView.autoSetDimensions(to: CGSize(width: 218, height: 162))
         self.handTimerView = handTimerView
         
         updateTimeInput(isHand: false)
-        
         hasBook = (bookModel != nil)
-        
+        isAutomaticTimeCounterEnabled = true
         setupSpinner()
         spinner?.show()
+    }
+    
+    @objc private func onFinishButtonTapped() {
+        guard let finishModel = generateModel() else {
+            return
+        }
+        
+        let vc = SessionFinishViewController(model: finishModel)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func onHandTimeTap() {
@@ -116,62 +190,6 @@ final class SessionViewController: UIViewController {
         } else {
             sessionButton.buttonState = .play
         }
-    }
-    
-    private func setupNavigationBarAndBookCell() {
-        let navBar = NavigationBar()
-        
-        navBar.configure(model: NavigationBarModel(title: "Новая запись о чтении",
-                                                   backButtonText: "Сброс",
-                                                    frontButtonText: "Готово",
-                                                    onBackButtonPressed: ({
-                                                        //TODO: reset
-                                                    }),
-                                                    onFrontButtonPressed: ({ [weak self] in
-                                                        guard let finishModel = self?.generateModel() else {
-                                                            return
-                                                        }
-                                                        
-                                                        let vc = SessionFinishViewController(model: finishModel)
-                                                        
-                                                        self?.navigationController?.pushViewController(vc, animated: true)
-                                                    })))
-        navBar.backgroundColor = UIColor(rgb: 0x2f5870)
-        
-        view.addSubview(navBar)
-        navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
-        self.navBar = navBar
-        
-        let bookCell = BookFilledCell(frame: .zero)
-        bookCell.layer.shadowColor = UIColor.black.cgColor
-        bookCell.layer.shadowOpacity = 0.2
-        bookCell.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
-        if let bookModel = bookModel {
-            bookCell.configure(model: bookModel)
-        }
-        
-        view.addSubview(bookCell)
-        bookCell.autoPinEdge(toSuperviewEdge: .left)
-        bookCell.autoPinEdge(toSuperviewEdge: .right)
-        bookCell.autoPinEdge(.top, to: .bottom, of: navBar)
-        bookCell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onBookCellTap)))
-        let bookEmptyCell = BookEmptyCell(frame: .zero)
-        
-        view.addSubview(bookEmptyCell)
-        bookEmptyCell.autoPinEdge(toSuperviewEdge: .left)
-        bookEmptyCell.autoPinEdge(toSuperviewEdge: .right)
-        bookEmptyCell.autoPinEdge(.top, to: .bottom, of: navBar)
-        bookEmptyCell.onAdd = { [weak self] in
-            let vc = AddBookViewController()
-            vc.onCompleted = { [weak self] bookModel in
-                self?.updateWithBook(book: bookModel)
-                self?.onBookAddedInSession?(bookModel)
-            }
-            self?.navigationController?.pushViewController(vc, animated: true)
-        }
-
-        self.bookEmptyCell = bookEmptyCell
-        self.bookCell = bookCell
     }
     
     @objc private func onBookCellTap() {
