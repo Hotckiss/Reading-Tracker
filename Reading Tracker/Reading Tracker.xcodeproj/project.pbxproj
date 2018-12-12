@@ -47,6 +47,7 @@
 		2F7CE0662194293700CFE6CF /* SessionTimerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7CE0652194293600CFE6CF /* SessionTimerButton.swift */; };
 		2FA1676021A890FF006E9712 /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA1675F21A890FF006E9712 /* SpinnerView.swift */; };
 		2FA1676221A963C1006E9712 /* OZONXMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA1676121A963C1006E9712 /* OZONXMLParser.swift */; };
+		2FA7E4CE21C1972E00B2A954 /* HandDateInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA7E4CD21C1972E00B2A954 /* HandDateInputView.swift */; };
 		2FAA8FB3216A152C0011F59D /* RegistrationLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FB2216A152C0011F59D /* RegistrationLoginViewController.swift */; };
 		2FAA8FB6216A21920011F59D /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FB5216A21920011F59D /* NavigationBar.swift */; };
 		2FAA8FB8216A32310011F59D /* RegistrationDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA8FB7216A32310011F59D /* RegistrationDraft.swift */; };
@@ -142,6 +143,7 @@
 		2F7CE0652194293600CFE6CF /* SessionTimerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTimerButton.swift; sourceTree = "<group>"; };
 		2FA1675F21A890FF006E9712 /* SpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
 		2FA1676121A963C1006E9712 /* OZONXMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OZONXMLParser.swift; sourceTree = "<group>"; };
+		2FA7E4CD21C1972E00B2A954 /* HandDateInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandDateInputView.swift; sourceTree = "<group>"; };
 		2FAA8FB2216A152C0011F59D /* RegistrationLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationLoginViewController.swift; sourceTree = "<group>"; };
 		2FAA8FB5216A21920011F59D /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		2FAA8FB7216A32310011F59D /* RegistrationDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationDraft.swift; sourceTree = "<group>"; };
@@ -433,6 +435,7 @@
 				2F7CE0652194293600CFE6CF /* SessionTimerButton.swift */,
 				2FFD1D062198CB1500779459 /* SessionFinishViewController.swift */,
 				2F62C5E021C0099E002119EA /* PollView.swift */,
+				2FA7E4CD21C1972E00B2A954 /* HandDateInputView.swift */,
 			);
 			path = Session;
 			sourceTree = "<group>";
@@ -829,6 +832,7 @@
 				2F1891DC2158B9760043BDCC /* UIColor+RGB.swift in Sources */,
 				2FEB6A9321A343FE00334802 /* QuestionarreViewController.swift in Sources */,
 				2F0C7E2D219F1D4100C28ECB /* ImageCompression.swift in Sources */,
+				2FA7E4CE21C1972E00B2A954 /* HandDateInputView.swift in Sources */,
 				2F074A2121BB0332002146F6 /* BookSessionsCell.swift in Sources */,
 				2FFD1D072198CB1500779459 /* SessionFinishViewController.swift in Sources */,
 				2FE450C1216FA53E008B2F22 /* MainInteractor.swift in Sources */,

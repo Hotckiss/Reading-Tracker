@@ -20,7 +20,7 @@ final class SessionViewController: UIViewController {
     private var handTimeInputButton: UIButton?
     private var finishButton: UIButton?
     private var finishButtonOverlay: UIView?
-    private var handTimerView: HandTimerView?
+    private var handDateInputView: HandDateInputView?
     private var isAutomaticTimeCounterEnabled: Bool = true {
         didSet {
             finishButtonOverlay?.isHidden = !(isAutomaticTimeCounterEnabled && (sessionButton?.buttonState ?? .start) == .start)
@@ -138,12 +138,12 @@ final class SessionViewController: UIViewController {
         overlay.autoPinEdgesToSuperviewEdges()
         self.finishButtonOverlay = overlay
         
-        let handTimerView = HandTimerView(frame: .zero)
-        view.addSubview(handTimerView)
-        handTimerView.autoPinEdge(.top, to: .bottom, of: handTimeInputButton, withOffset: SizeDependent.instance.convertPadding(20))
-        handTimerView.autoAlignAxis(toSuperviewAxis: .vertical)
-        handTimerView.autoSetDimensions(to: CGSize(width: 218, height: 162))
-        self.handTimerView = handTimerView
+        let handDateInputView = HandDateInputView(frame: .zero)
+        view.addSubview(handDateInputView)
+        handDateInputView.autoPinEdge(.top, to: .bottom, of: handTimeInputButton, withOffset: SizeDependent.instance.convertPadding(20))
+        handDateInputView.autoAlignAxis(toSuperviewAxis: .vertical)
+        handDateInputView.autoSetDimension(.width, toSize: min(326, UIScreen.main.bounds.width))
+        self.handDateInputView = handDateInputView
         
         updateTimeInput(isHand: false)
         hasBook = (bookModel != nil)
@@ -176,7 +176,7 @@ final class SessionViewController: UIViewController {
             NSAttributedString.Key.paragraphStyle: style]
             as [NSAttributedString.Key : Any]
         handTimeInputButton?.setAttributedTitle(NSAttributedString(string: isHand ? "Вернуться к таймеру" : "Указать время вручную", attributes: handTimeInputButtonTextAttributes), for: [])
-        handTimerView?.isHidden = !isHand
+        handDateInputView?.isHidden = !isHand
         sessionButton?.isHidden = isHand
     }
     
@@ -200,10 +200,9 @@ final class SessionViewController: UIViewController {
         guard hasBook,
             let bookModel = bookModel,
             let autoTime = sessionButton?.time,
-            let handTime = handTimerView?.time,
+            //let handTime = handTimerView?.time,
             let state = sessionButton?.buttonState,
-            (isAutomaticTimeCounterEnabled && autoTime > 0) ||
-                (!isAutomaticTimeCounterEnabled && handTime > 0),
+            (isAutomaticTimeCounterEnabled && autoTime > 0)/* || (!isAutomaticTimeCounterEnabled && handTime > 0)*/,
             (isAutomaticTimeCounterEnabled && (state == .pause)) ||
                 (!isAutomaticTimeCounterEnabled),
             let startTime = sessionButton?.startTime else {
@@ -211,7 +210,7 @@ final class SessionViewController: UIViewController {
                 return nil
         }
         
-        let time = isAutomaticTimeCounterEnabled ? autoTime : handTime
+        let time = isAutomaticTimeCounterEnabled ? autoTime : 1//handTime
         
         return SessionFinishModel(bookInfo: bookModel,
                                       time: time,
