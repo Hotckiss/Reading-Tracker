@@ -11,11 +11,14 @@ import UIKit
 import ActionSheetPicker_3_0
 
 final class HandDateInputView: UIView {
+    var startDate = Date()
+    var finishDate = Date()
+    
     private var dateLabel: UIButton?
     private var timeIntervalStartLabel: UIButton?
     private var timeIntervalFinishLabel: UIButton?
     private var durationLabel: UILabel?
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -25,6 +28,7 @@ final class HandDateInputView: UIView {
     private func setupSubviews() {
         let calendarIcon = UIImageView(image: UIImage(named: "calendar"))
         let dateLabel = UIButton(forAutoLayout: ())
+        dateLabel.addTarget(self, action: #selector(datePressed(_:)), for: .touchUpInside)
         let dateStack = UIStackView(arrangedSubviews: [calendarIcon, dateLabel])
         dateStack.axis = .horizontal
         dateStack.alignment = .center
@@ -59,11 +63,12 @@ final class HandDateInputView: UIView {
         timeIntervalSeparatorLabel.attributedText = NSAttributedString(string: " \u{2013} ", attributes: timeIntervalSeparatorAttributes)
         
         let timeIntervalStartLabel = UIButton(forAutoLayout: ())
+        timeIntervalStartLabel.addTarget(self, action: #selector(startTimePressed(_:)), for: .touchUpInside)
         self.timeIntervalStartLabel = timeIntervalStartLabel
         
         let timeIntervalFinishLabel = UIButton(forAutoLayout: ())
+        timeIntervalFinishLabel.addTarget(self, action: #selector(finishTimePressed(_:)), for: .touchUpInside)
         self.timeIntervalFinishLabel = timeIntervalFinishLabel
-        
         
         let timeIntervalStack = UIStackView(arrangedSubviews: [timeIntervalStartLabel, timeIntervalSeparatorLabel, timeIntervalFinishLabel])
         timeIntervalStack.axis = .horizontal
@@ -75,10 +80,57 @@ final class HandDateInputView: UIView {
         let durationLabel = UILabel(forAutoLayout: ())
         addSubview(durationLabel)
         durationLabel.autoAlignAxis(toSuperviewAxis: .vertical)
+        durationLabel.autoPinEdge(toSuperviewEdge: .bottom)
         durationLabel.autoPinEdge(.top, to: .bottom, of: timeIntervalPlate, withOffset: SizeDependent.instance.convertPadding(20))
         self.durationLabel = durationLabel
         
-        configure(startDate: Date(), finishDate: Date())
+        configure(startDate: startDate, finishDate: finishDate)
+    }
+    
+    @objc private func datePressed(_ sender: UIButton) {
+        let picker = ActionSheetDatePicker(title: "Дата чтения", datePickerMode: .date, selectedDate: startDate, doneBlock: { [weak self] picker, values, indexes in
+            print(values as! Date)
+            return
+        }, cancel: { ActionMultipleStringCancelBlock in return }, origin: sender)
+        
+        runPicker(picker)
+    }
+    
+    @objc private func startTimePressed(_ sender: UIButton) {
+        let picker = ActionSheetDatePicker(title: "Начало чтения", datePickerMode: .time, selectedDate: startDate, doneBlock: { [weak self] picker, values, indexes in
+            print(values as! Date)
+            return
+            }, cancel: { ActionMultipleStringCancelBlock in return }, origin: sender)
+        
+        runPicker(picker)
+    }
+    
+    @objc private func finishTimePressed(_ sender: UIButton) {
+        let picker = ActionSheetDatePicker(title: "Конец чтения", datePickerMode: .time, selectedDate: finishDate, doneBlock: { [weak self] picker, values, indexes in
+            print(values as! Date)
+            return
+            }, cancel: { ActionMultipleStringCancelBlock in return }, origin: sender)
+        
+        runPicker(picker)
+    }
+    
+    private func runPicker(_ picker: ActionSheetDatePicker?) {
+        picker?.locale = Locale(identifier: "ru_RU")
+        picker?.setTextColor(UIColor(rgb: 0x2f5870))
+        
+        let textAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17)]
+            as [NSAttributedString.Key : Any]
+        
+        let finishButton = UIButton(forAutoLayout: ())
+        finishButton.setAttributedTitle(NSAttributedString(string: "Готово", attributes: textAttributes), for: [])
+        picker?.setDoneButton(UIBarButtonItem(customView: finishButton))
+        
+        let closeButton = UIButton(forAutoLayout: ())
+        closeButton.setAttributedTitle(NSAttributedString(string: "Закрыть", attributes: textAttributes), for: [])
+        picker?.setCancelButton(UIBarButtonItem(customView: closeButton))
+        picker?.show()
     }
     
     func configure(startDate: Date, finishDate: Date) {
