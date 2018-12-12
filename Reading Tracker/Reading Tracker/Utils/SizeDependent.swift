@@ -59,10 +59,10 @@ final class SizeDependent {
         }
     }
     
-    func convertFont(_ fontSize: Int) -> Int {
+    func convertFont(_ fontSize: CGFloat) -> CGFloat {
         switch UIScreen.main.bounds.width {
         case 320:
-            return Int(Double(fontSize) * 0.8 + 1)
+            return CGFloat(fontSize * 0.8 + 1)
         case 375:
             return fontSize
         case 414:

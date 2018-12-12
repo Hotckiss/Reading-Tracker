@@ -12,8 +12,9 @@ import ActionSheetPicker_3_0
 
 final class HandDateInputView: UIView {
     private var dateLabel: UILabel?
+    private var timeIntervalLabel: UILabel?
     private var durationLabel: UILabel?
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -26,7 +27,7 @@ final class HandDateInputView: UIView {
         let dateStack = UIStackView(arrangedSubviews: [calendarIcon, dateLabel])
         dateStack.axis = .horizontal
         dateStack.alignment = .center
-        dateStack.spacing = 4
+        dateStack.spacing = 6
         
         addSubview(dateStack)
         dateStack.autoAlignAxis(toSuperviewMarginAxis: .vertical)
@@ -48,12 +49,81 @@ final class HandDateInputView: UIView {
         timeIntervalPlate.autoPinEdge(.top, to: .bottom, of: dateStack, withOffset: SizeDependent.instance.convertPadding(20))
         timeIntervalPlate.autoSetDimension(.height, toSize: 70)
         
-        let durationLabel = UILabel(forAutoLayout: ())
+        let timeIntervalLabel = UILabel(forAutoLayout: ())
+        timeIntervalPlate.addSubview(timeIntervalLabel)
+        timeIntervalLabel.autoCenterInSuperview()
+        self.timeIntervalLabel = timeIntervalLabel
         
+        let durationLabel = UILabel(forAutoLayout: ())
         addSubview(durationLabel)
         durationLabel.autoAlignAxis(toSuperviewAxis: .vertical)
         durationLabel.autoPinEdge(.top, to: .bottom, of: timeIntervalPlate, withOffset: SizeDependent.instance.convertPadding(20))
         self.durationLabel = durationLabel
+        
+        configure(startDate: Date(), finishDate: Date())
+    }
+    
+    func configure(startDate: Date, finishDate: Date) {
+        let dateString = format(startDate)
+        let dateTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: SizeDependent.instance.convertFont(20), weight: .medium)]
+            as [NSAttributedString.Key : Any]
+        dateLabel?.attributedText = NSAttributedString(string: dateString, attributes: dateTextAttributes)
+        
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateFormat = "HH : mm"
+        
+        let timeIntervalTextAttributesSmall = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: SizeDependent.instance.convertFont(24), weight: .light),
+            NSAttributedString.Key.baselineOffset: SizeDependent.instance.convertFont(8)]
+            as [NSAttributedString.Key : Any]
+        
+        let timeIntervalSeparatorAttributes = [NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)]
+        let timeIntervalTextAttributesBig = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: SizeDependent.instance.convertFont(48), weight: .light),
+                                             NSAttributedString.Key.baselineOffset: 0] as [NSAttributedString.Key : Any]
+        
+        let startTimeString = formatter.string(from: startDate)
+        let finishTimeString = formatter.string(from: finishDate)
+        let sepString = " \u{2013} "
+        let timeIntervalString = startTimeString + sepString + finishTimeString
+        
+        let intervalString = NSMutableAttributedString(string: timeIntervalString, attributes: timeIntervalTextAttributesSmall)
+        intervalString.addAttributes(timeIntervalTextAttributesBig, range: NSRange(location: 0, length: 2))
+        intervalString.addAttributes(timeIntervalTextAttributesBig, range: NSRange(location: startTimeString.count + sepString.count, length: 2))
+        intervalString.addAttributes(timeIntervalSeparatorAttributes, range: NSRange(location: startTimeString.count + 1, length: 1))
+        
+        timeIntervalLabel?.attributedText = intervalString
+        
+        let duration: UInt64 = UInt64(finishDate.timeIntervalSince1970 - startDate.timeIntervalSince1970)
+        
+        let mins = (duration / 60) % 60
+        let hrs = duration / 3600
+        
+        let durationText = String(format: "%d : %02d", hrs, mins)
+        
+        let durationTextAttributesSmall = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: SizeDependent.instance.convertFont(24), weight: .light),
+            NSAttributedString.Key.baselineOffset: SizeDependent.instance.convertFont(8)]
+            as [NSAttributedString.Key : Any]
+        
+        let durationTextAttributesBig = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: SizeDependent.instance.convertFont(48), weight: .light),
+            NSAttributedString.Key.baselineOffset: 0]
+            as [NSAttributedString.Key : Any]
+        
+        let durationAttributedText = NSMutableAttributedString(string: durationText, attributes: durationTextAttributesSmall)
+        durationAttributedText.addAttributes(durationTextAttributesBig, range: NSRange(location: 0, length: String(hrs).count))
+        durationLabel?.attributedText = durationAttributedText
+    }
+    
+    private func format(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateFormat = "d MMMM"
+        return formatter.string(from: date)
     }
     
     required init?(coder aDecoder: NSCoder) {
