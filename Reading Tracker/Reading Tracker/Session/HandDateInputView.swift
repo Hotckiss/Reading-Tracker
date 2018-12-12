@@ -12,7 +12,8 @@ import ActionSheetPicker_3_0
 
 final class HandDateInputView: UIView {
     private var dateLabel: UILabel?
-    private var timeIntervalLabel: UILabel?
+    private var timeIntervalStartLabel: UILabel?
+    private var timeIntervalFinishLabel: UILabel?
     private var durationLabel: UILabel?
 
     override init(frame: CGRect) {
@@ -49,10 +50,27 @@ final class HandDateInputView: UIView {
         timeIntervalPlate.autoPinEdge(.top, to: .bottom, of: dateStack, withOffset: SizeDependent.instance.convertPadding(20))
         timeIntervalPlate.autoSetDimension(.height, toSize: 70)
         
-        let timeIntervalLabel = UILabel(forAutoLayout: ())
-        timeIntervalPlate.addSubview(timeIntervalLabel)
-        timeIntervalLabel.autoCenterInSuperview()
-        self.timeIntervalLabel = timeIntervalLabel
+        let timeIntervalSeparatorLabel = UILabel(forAutoLayout: ())
+        let timeIntervalSeparatorAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: SizeDependent.instance.convertFont(24), weight: .light),
+            NSAttributedString.Key.baselineOffset: 0]
+            as [NSAttributedString.Key : Any]
+        timeIntervalSeparatorLabel.attributedText = NSAttributedString(string: " \u{2013} ", attributes: timeIntervalSeparatorAttributes)
+        
+        let timeIntervalStartLabel = UILabel(forAutoLayout: ())
+        self.timeIntervalStartLabel = timeIntervalStartLabel
+        
+        let timeIntervalFinishLabel = UILabel(forAutoLayout: ())
+        self.timeIntervalFinishLabel = timeIntervalFinishLabel
+        
+        
+        let timeIntervalStack = UIStackView(arrangedSubviews: [timeIntervalStartLabel, timeIntervalSeparatorLabel, timeIntervalFinishLabel])
+        timeIntervalStack.axis = .horizontal
+        timeIntervalStack.alignment = .center
+        timeIntervalStack.spacing = 4
+        timeIntervalPlate.addSubview(timeIntervalStack)
+        timeIntervalStack.autoCenterInSuperview()
         
         let durationLabel = UILabel(forAutoLayout: ())
         addSubview(durationLabel)
@@ -78,36 +96,31 @@ final class HandDateInputView: UIView {
         let timeIntervalTextAttributesSmall = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
             NSAttributedString.Key.font : UIFont.systemFont(ofSize: SizeDependent.instance.convertFont(24), weight: .light),
-            NSAttributedString.Key.baselineOffset: SizeDependent.instance.convertFont(8)]
+            NSAttributedString.Key.baselineOffset: SizeDependent.instance.convertPadding(8)]
             as [NSAttributedString.Key : Any]
         
-        let timeIntervalSeparatorAttributes = [NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)]
         let timeIntervalTextAttributesBig = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: SizeDependent.instance.convertFont(48), weight: .light),
                                              NSAttributedString.Key.baselineOffset: 0] as [NSAttributedString.Key : Any]
         
         let startTimeString = formatter.string(from: startDate)
+        let startTimeIntervalString = NSMutableAttributedString(string: startTimeString, attributes: timeIntervalTextAttributesSmall)
+        startTimeIntervalString.addAttributes(timeIntervalTextAttributesBig, range: NSRange(location: 0, length: 2))
+        timeIntervalStartLabel?.attributedText = startTimeIntervalString
+        
         let finishTimeString = formatter.string(from: finishDate)
-        let sepString = " \u{2013} "
-        let timeIntervalString = startTimeString + sepString + finishTimeString
-        
-        let intervalString = NSMutableAttributedString(string: timeIntervalString, attributes: timeIntervalTextAttributesSmall)
-        intervalString.addAttributes(timeIntervalTextAttributesBig, range: NSRange(location: 0, length: 2))
-        intervalString.addAttributes(timeIntervalTextAttributesBig, range: NSRange(location: startTimeString.count + sepString.count, length: 2))
-        intervalString.addAttributes(timeIntervalSeparatorAttributes, range: NSRange(location: startTimeString.count + 1, length: 1))
-        
-        timeIntervalLabel?.attributedText = intervalString
+        let finishTimeIntervalString = NSMutableAttributedString(string: finishTimeString, attributes: timeIntervalTextAttributesSmall)
+        finishTimeIntervalString.addAttributes(timeIntervalTextAttributesBig, range: NSRange(location: 0, length: 2))
+        timeIntervalFinishLabel?.attributedText = finishTimeIntervalString
         
         let duration: UInt64 = UInt64(finishDate.timeIntervalSince1970 - startDate.timeIntervalSince1970)
-        
         let mins = (duration / 60) % 60
         let hrs = duration / 3600
-        
         let durationText = String(format: "%d : %02d", hrs, mins)
         
         let durationTextAttributesSmall = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
             NSAttributedString.Key.font : UIFont.systemFont(ofSize: SizeDependent.instance.convertFont(24), weight: .light),
-            NSAttributedString.Key.baselineOffset: SizeDependent.instance.convertFont(8)]
+            NSAttributedString.Key.baselineOffset: SizeDependent.instance.convertPadding(8)]
             as [NSAttributedString.Key : Any]
         
         let durationTextAttributesBig = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: SizeDependent.instance.convertFont(48), weight: .light),
