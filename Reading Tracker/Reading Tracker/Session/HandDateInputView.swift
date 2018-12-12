@@ -11,9 +11,9 @@ import UIKit
 import ActionSheetPicker_3_0
 
 final class HandDateInputView: UIView {
-    private var dateLabel: UILabel?
-    private var timeIntervalStartLabel: UILabel?
-    private var timeIntervalFinishLabel: UILabel?
+    private var dateLabel: UIButton?
+    private var timeIntervalStartLabel: UIButton?
+    private var timeIntervalFinishLabel: UIButton?
     private var durationLabel: UILabel?
 
     override init(frame: CGRect) {
@@ -24,7 +24,7 @@ final class HandDateInputView: UIView {
     
     private func setupSubviews() {
         let calendarIcon = UIImageView(image: UIImage(named: "calendar"))
-        let dateLabel = UILabel(forAutoLayout: ())
+        let dateLabel = UIButton(forAutoLayout: ())
         let dateStack = UIStackView(arrangedSubviews: [calendarIcon, dateLabel])
         dateStack.axis = .horizontal
         dateStack.alignment = .center
@@ -58,10 +58,10 @@ final class HandDateInputView: UIView {
             as [NSAttributedString.Key : Any]
         timeIntervalSeparatorLabel.attributedText = NSAttributedString(string: " \u{2013} ", attributes: timeIntervalSeparatorAttributes)
         
-        let timeIntervalStartLabel = UILabel(forAutoLayout: ())
+        let timeIntervalStartLabel = UIButton(forAutoLayout: ())
         self.timeIntervalStartLabel = timeIntervalStartLabel
         
-        let timeIntervalFinishLabel = UILabel(forAutoLayout: ())
+        let timeIntervalFinishLabel = UIButton(forAutoLayout: ())
         self.timeIntervalFinishLabel = timeIntervalFinishLabel
         
         
@@ -87,7 +87,7 @@ final class HandDateInputView: UIView {
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
             NSAttributedString.Key.font : UIFont.systemFont(ofSize: SizeDependent.instance.convertFont(20), weight: .medium)]
             as [NSAttributedString.Key : Any]
-        dateLabel?.attributedText = NSAttributedString(string: dateString, attributes: dateTextAttributes)
+        dateLabel?.setAttributedTitle(NSAttributedString(string: dateString, attributes: dateTextAttributes), for: .normal)
         
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ru_RU")
@@ -105,12 +105,12 @@ final class HandDateInputView: UIView {
         let startTimeString = formatter.string(from: startDate)
         let startTimeIntervalString = NSMutableAttributedString(string: startTimeString, attributes: timeIntervalTextAttributesSmall)
         startTimeIntervalString.addAttributes(timeIntervalTextAttributesBig, range: NSRange(location: 0, length: 2))
-        timeIntervalStartLabel?.attributedText = startTimeIntervalString
+        timeIntervalStartLabel?.setAttributedTitle(startTimeIntervalString, for: .normal)
         
         let finishTimeString = formatter.string(from: finishDate)
         let finishTimeIntervalString = NSMutableAttributedString(string: finishTimeString, attributes: timeIntervalTextAttributesSmall)
         finishTimeIntervalString.addAttributes(timeIntervalTextAttributesBig, range: NSRange(location: 0, length: 2))
-        timeIntervalFinishLabel?.attributedText = finishTimeIntervalString
+        timeIntervalFinishLabel?.setAttributedTitle(finishTimeIntervalString, for: .normal)
         
         let duration: UInt64 = UInt64(finishDate.timeIntervalSince1970 - startDate.timeIntervalSince1970)
         let mins = (duration / 60) % 60
