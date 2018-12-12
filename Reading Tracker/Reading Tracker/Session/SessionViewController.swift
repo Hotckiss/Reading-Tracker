@@ -119,21 +119,21 @@ final class SessionViewController: UIViewController {
         
         finishButton.setAttributedTitle(NSAttributedString(string: "Завершить", attributes: finishButtonTextAttributes), for: .normal)
         finishButton.backgroundColor = UIColor(rgb: 0x2f5870)
-        finishButton.layer.cornerRadius = 32
+        finishButton.layer.cornerRadius = SizeDependent.instance.convertDimension(30)
         finishButton.layer.shadowRadius = 4
         finishButton.layer.shadowColor = UIColor(rgb: 0x2f5870).cgColor
         finishButton.layer.shadowOpacity = 0.33
         finishButton.layer.shadowOffset = CGSize(width: 0.0, height: 4.0)
         finishButton.addTarget(self, action: #selector(onFinishButtonTapped), for: .touchUpInside)
         view.addSubview(finishButton)
-        finishButton.autoSetDimensions(to: CGSize(width: 155, height: 64))
+        finishButton.autoSetDimensions(to: CGSize(width: 155, height: SizeDependent.instance.convertDimension(60)))
         finishButton.autoAlignAxis(toSuperviewAxis: .vertical)
         finishButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: bottomSpace + SizeDependent.instance.convertPadding(20))
         
         let overlay = UIView(forAutoLayout: ())
-        overlay.backgroundColor = .white//UIColor(rgb: 0x)
+        overlay.backgroundColor = .white
         overlay.alpha = 0.5
-        overlay.layer.cornerRadius = 32
+        overlay.layer.cornerRadius = SizeDependent.instance.convertDimension(30)
         finishButton.addSubview(overlay)
         overlay.autoPinEdgesToSuperviewEdges()
         self.finishButtonOverlay = overlay
