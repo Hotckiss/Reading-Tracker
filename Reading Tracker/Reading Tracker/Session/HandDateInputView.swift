@@ -25,7 +25,7 @@ final class HandDateInputView: UIView {
         setupSubviews()
     }
     
-    func getDates() -> (Date, Date) {
+    func getDates() -> (Date, Date, Int) {
         let calendar = Calendar.current
         
         var startRes = date
@@ -44,7 +44,10 @@ final class HandDateInputView: UIView {
         if finishRes < startRes {
             finishRes = calendar.date(byAdding: .day, value: 1, to: finishRes)!
         }
-        return (startRes, finishRes)
+        
+        let duration = Int(finishRes.timeIntervalSince1970 - startRes.timeIntervalSince1970)
+        
+        return (startRes, finishRes, duration)
     }
     
     private func setupSubviews() {
@@ -115,7 +118,6 @@ final class HandDateInputView: UIView {
                 self.date = selectedDate
                 self.configure(startDateTime: self.startDateTime, finishDateTime: self.finishDateTime, date: self.date)
             }
-            print(self.getDates())
             return
         }, cancel: { ActionMultipleStringCancelBlock in return }, origin: sender)
         
@@ -128,7 +130,6 @@ final class HandDateInputView: UIView {
                 self.startDateTime = selectedDate
                 self.configure(startDateTime: self.startDateTime, finishDateTime: self.finishDateTime, date: self.date)
             }
-            print(self.getDates())
             return
             }, cancel: { ActionMultipleStringCancelBlock in return }, origin: sender)
         
@@ -141,7 +142,6 @@ final class HandDateInputView: UIView {
                 self.finishDateTime = selectedDate
                 self.configure(startDateTime: self.startDateTime, finishDateTime: self.finishDateTime, date: self.date)
             }
-            print(self.getDates())
             return
             }, cancel: { ActionMultipleStringCancelBlock in return }, origin: sender)
         
