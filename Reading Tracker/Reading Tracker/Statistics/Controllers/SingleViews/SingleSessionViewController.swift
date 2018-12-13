@@ -221,7 +221,7 @@ final class SingleSessionViewController: UIViewController {
             as [NSAttributedString.Key : Any]
         
         let startTimeString = formatter.string(from: sessionModel.startTime)
-        let finishTimeString = formatter.string(from: Calendar.current.date(byAdding: .second, value: sessionModel.time, to: sessionModel.startTime)!)
+        let finishTimeString = formatter.string(from: sessionModel.finishTime)
         
         let startTimeAttributed = NSMutableAttributedString(string: startTimeString, attributes: textAttributesBig)
         startTimeAttributed.addAttributes(textAttributesSmall, range: NSRange(location: 2, length: 3))

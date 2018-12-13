@@ -126,7 +126,7 @@ class BookSessionTimesCell: UITableViewCell {
         formatter.dateFormat = "HH:mm"
         
         let startTimeString = formatter.string(from: model.startTime)
-        let finishTimeString = formatter.string(from: Calendar.current.date(byAdding: .second, value: model.time, to: model.startTime)!)
+        let finishTimeString = formatter.string(from: model.finishTime)
         
         let timeIntervalString = startTimeString + " \u{2013} " + finishTimeString
         dateLabel?.attributedText = NSAttributedString(string: format(model.startTime), attributes: dateTextAttributes)
