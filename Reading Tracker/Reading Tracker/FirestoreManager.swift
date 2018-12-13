@@ -357,6 +357,7 @@ final class FirestoreManager {
                 "end page": session.finishPage,
                 "duration": session.time,
                 "start time": Timestamp(date: session.startTime),
+                "finish time": Timestamp(date: session.finishTime),
                 "mood": session.mood.rawValue,
                 "place": session.readPlace.rawValue,
                 "comment": session.comment,
