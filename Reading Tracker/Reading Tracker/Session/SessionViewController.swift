@@ -200,21 +200,26 @@ final class SessionViewController: UIViewController {
         guard hasBook,
             let bookModel = bookModel,
             let autoTime = sessionButton?.time,
-            //let handTime = handTimerView?.time,
+            let (handStartDate, handFinishDate, handTime) = handDateInputView?.getDates(),
             let state = sessionButton?.buttonState,
-            (isAutomaticTimeCounterEnabled && autoTime > 0)/* || (!isAutomaticTimeCounterEnabled && handTime > 0)*/,
-            (isAutomaticTimeCounterEnabled && (state == .pause)) ||
-                (!isAutomaticTimeCounterEnabled),
+            (isAutomaticTimeCounterEnabled && state != .start) || !isAutomaticTimeCounterEnabled,
             let startTime = sessionButton?.startTime else {
                 showError()
                 return nil
         }
         
-        let time = isAutomaticTimeCounterEnabled ? autoTime : 1//handTime
-        
-        return SessionFinishModel(bookInfo: bookModel,
-                                      time: time,
+        if isAutomaticTimeCounterEnabled {
+            return SessionFinishModel(bookInfo: bookModel,
+                                      time: autoTime,
                                       startTime: startTime)
+        } else {
+            return SessionFinishModel(bookInfo: bookModel,
+                                      time: handTime,
+                                      startTime: handStartDate,
+                                      finishTime: handFinishDate)
+        }
+        
+        
     }
     
     private func showError() {
