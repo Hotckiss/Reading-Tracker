@@ -357,7 +357,7 @@ final class FirestoreManager {
                 "end page": session.finishPage,
                 "duration": session.time,
                 "start time": Timestamp(date: session.startTime),
-                "finish time": Timestamp(date: session.finishTime),
+                "end time": Timestamp(date: session.finishTime),
                 "mood": session.mood.rawValue,
                 "place": session.readPlace.rawValue,
                 "comment": session.comment,
@@ -423,6 +423,12 @@ final class FirestoreManager {
                             case "start time":
                                 if let time = value as? Timestamp {
                                     session.startTime = time.dateValue()
+                                } else {
+                                    onErrorClosure()
+                                }
+                            case "end time":
+                                if let time = value as? Timestamp {
+                                    session.finishTime = time.dateValue()
                                 } else {
                                     onErrorClosure()
                                 }
