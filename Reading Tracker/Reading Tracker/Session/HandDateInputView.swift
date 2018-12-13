@@ -11,9 +11,9 @@ import UIKit
 import ActionSheetPicker_3_0
 
 final class HandDateInputView: UIView {
-    var startDate = Date()
-    var finishDate = Date()
-    
+    private var date = Date()
+    private var startDateTime = Date()
+    private var finishDateTime = Date()
     private var dateLabel: UIButton?
     private var timeIntervalStartLabel: UIButton?
     private var timeIntervalFinishLabel: UIButton?
@@ -23,6 +23,28 @@ final class HandDateInputView: UIView {
         super.init(frame: frame)
         
         setupSubviews()
+    }
+    
+    func getDates() -> (Date, Date) {
+        let calendar = Calendar.current
+        
+        var startRes = date
+        var finishRes = date
+        
+        let startHrs = calendar.component(.hour, from: startDateTime)
+        let startMins = calendar.component(.minute, from: startDateTime)
+        let startSecs = calendar.component(.second, from: startDateTime)
+        startRes = calendar.date(bySettingHour: startHrs, minute: startMins, second: startSecs, of: startRes)!
+        
+        let finishHrs = calendar.component(.hour, from: finishDateTime)
+        let finishMins = calendar.component(.minute, from: finishDateTime)
+        let finishSecs = calendar.component(.second, from: finishDateTime)
+        finishRes = calendar.date(bySettingHour: finishHrs, minute: finishMins, second: finishSecs, of: finishRes)!
+        
+        if finishRes < startRes {
+            finishRes = calendar.date(byAdding: .day, value: 1, to: finishRes)!
+        }
+        return (startRes, finishRes)
     }
     
     private func setupSubviews() {
@@ -84,12 +106,16 @@ final class HandDateInputView: UIView {
         durationLabel.autoPinEdge(.top, to: .bottom, of: timeIntervalPlate, withOffset: SizeDependent.instance.convertPadding(20))
         self.durationLabel = durationLabel
         
-        configure(startDate: startDate, finishDate: finishDate)
+        configure(startDateTime: startDateTime, finishDateTime: finishDateTime, date: date)
     }
     
     @objc private func datePressed(_ sender: UIButton) {
-        let picker = ActionSheetDatePicker(title: "Дата чтения", datePickerMode: .date, selectedDate: startDate, doneBlock: { [weak self] picker, values, indexes in
-            print(values as! Date)
+        let picker = ActionSheetDatePicker(title: "Дата чтения", datePickerMode: .date, selectedDate: date, doneBlock: { picker, values, indexes in
+            if let selectedDate = values as? Date {
+                self.date = selectedDate
+                self.configure(startDateTime: self.startDateTime, finishDateTime: self.finishDateTime, date: self.date)
+            }
+            print(self.getDates())
             return
         }, cancel: { ActionMultipleStringCancelBlock in return }, origin: sender)
         
@@ -97,8 +123,12 @@ final class HandDateInputView: UIView {
     }
     
     @objc private func startTimePressed(_ sender: UIButton) {
-        let picker = ActionSheetDatePicker(title: "Начало чтения", datePickerMode: .time, selectedDate: startDate, doneBlock: { [weak self] picker, values, indexes in
-            print(values as! Date)
+        let picker = ActionSheetDatePicker(title: "Начало чтения", datePickerMode: .time, selectedDate: startDateTime, doneBlock: { picker, values, indexes in
+            if let selectedDate = values as? Date {
+                self.startDateTime = selectedDate
+                self.configure(startDateTime: self.startDateTime, finishDateTime: self.finishDateTime, date: self.date)
+            }
+            print(self.getDates())
             return
             }, cancel: { ActionMultipleStringCancelBlock in return }, origin: sender)
         
@@ -106,8 +136,12 @@ final class HandDateInputView: UIView {
     }
     
     @objc private func finishTimePressed(_ sender: UIButton) {
-        let picker = ActionSheetDatePicker(title: "Конец чтения", datePickerMode: .time, selectedDate: finishDate, doneBlock: { [weak self] picker, values, indexes in
-            print(values as! Date)
+        let picker = ActionSheetDatePicker(title: "Конец чтения", datePickerMode: .time, selectedDate: finishDateTime, doneBlock: { picker, values, indexes in
+            if let selectedDate = values as? Date {
+                self.finishDateTime = selectedDate
+                self.configure(startDateTime: self.startDateTime, finishDateTime: self.finishDateTime, date: self.date)
+            }
+            print(self.getDates())
             return
             }, cancel: { ActionMultipleStringCancelBlock in return }, origin: sender)
         
@@ -133,8 +167,8 @@ final class HandDateInputView: UIView {
         picker?.show()
     }
     
-    func configure(startDate: Date, finishDate: Date) {
-        let dateString = format(startDate)
+    func configure(startDateTime: Date, finishDateTime: Date, date: Date) {
+        let dateString = format(date)
         let dateTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
             NSAttributedString.Key.font : UIFont.systemFont(ofSize: SizeDependent.instance.convertFont(20), weight: .medium)]
@@ -154,17 +188,19 @@ final class HandDateInputView: UIView {
         let timeIntervalTextAttributesBig = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: SizeDependent.instance.convertFont(48), weight: .light),
                                              NSAttributedString.Key.baselineOffset: 0] as [NSAttributedString.Key : Any]
         
-        let startTimeString = formatter.string(from: startDate)
+        let startTimeString = formatter.string(from: startDateTime)
         let startTimeIntervalString = NSMutableAttributedString(string: startTimeString, attributes: timeIntervalTextAttributesSmall)
         startTimeIntervalString.addAttributes(timeIntervalTextAttributesBig, range: NSRange(location: 0, length: 2))
         timeIntervalStartLabel?.setAttributedTitle(startTimeIntervalString, for: .normal)
         
-        let finishTimeString = formatter.string(from: finishDate)
+        let finishTimeString = formatter.string(from: finishDateTime)
         let finishTimeIntervalString = NSMutableAttributedString(string: finishTimeString, attributes: timeIntervalTextAttributesSmall)
         finishTimeIntervalString.addAttributes(timeIntervalTextAttributesBig, range: NSRange(location: 0, length: 2))
         timeIntervalFinishLabel?.setAttributedTitle(finishTimeIntervalString, for: .normal)
         
-        let duration: UInt64 = UInt64(finishDate.timeIntervalSince1970 - startDate.timeIntervalSince1970)
+        let durationInt = Int64(finishDateTime.timeIntervalSince1970 - startDateTime.timeIntervalSince1970)
+        
+        let duration: UInt64 = UInt64(durationInt >= 0 ? durationInt : durationInt + 86400)
         let mins = (duration / 60) % 60
         let hrs = duration / 3600
         let durationText = String(format: "%d : %02d", hrs, mins)
