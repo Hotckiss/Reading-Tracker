@@ -15,9 +15,11 @@ final class PlotsStatisticsViewController: UIViewController {
     private var pagesCountChart: LineChartView!
     private var sessionsCountChart: LineChartView!
     private var sessions: [UploadSessionModel] = []
+    private var grouppedByHourSessions: [[UploadSessionModel]] = []
     private var grouppedByDaySessions: [[UploadSessionModel]] = []
     private var grouppedByMonthSessions: [[UploadSessionModel]] = []
     private var booksMap: [String : BookModel] = [:]
+    private var interval: StatsInterval = .allTime
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -28,6 +30,7 @@ final class PlotsStatisticsViewController: UIViewController {
     }
     
     func update(sessions: [UploadSessionModel], booksMap: [String : BookModel], interval: StatsInterval) {
+        self.interval = interval
         guard !sessions.isEmpty else {
             return
         }
@@ -35,7 +38,17 @@ final class PlotsStatisticsViewController: UIViewController {
         self.sessions = sessions
         self.booksMap = booksMap
         
-        let groupedSessions: [(UInt64, [UploadSessionModel])] = Dictionary(grouping: sessions) {
+        let groupedSessionsHour: [(UInt64, [UploadSessionModel])] = Dictionary(grouping: sessions) {
+            let daysSince1970 = UInt64($0.startTime.timeIntervalSince1970) / 3600
+            return daysSince1970
+            }
+            .sorted {
+                $0.key > $1.key
+        }
+        
+        grouppedByHourSessions = groupedSessionsHour.map { $0.1 }
+        
+        let groupedSessionsDay: [(UInt64, [UploadSessionModel])] = Dictionary(grouping: sessions) {
             let daysSince1970 = UInt64($0.startTime.timeIntervalSince1970) / 86400
             return daysSince1970
         }
@@ -43,7 +56,7 @@ final class PlotsStatisticsViewController: UIViewController {
             $0.key > $1.key
         }
         
-        grouppedByDaySessions = groupedSessions.map { $0.1 }
+        grouppedByDaySessions = groupedSessionsDay.map { $0.1 }
         
         let groupedSessionsMonth: [(Int, [UploadSessionModel])] = Dictionary(grouping: sessions) {
             let cal = Calendar.current
@@ -58,13 +71,29 @@ final class PlotsStatisticsViewController: UIViewController {
         grouppedByMonthSessions = groupedSessionsMonth.map {
             $0.1
         }
+        
+        updateCharts(interval: interval)
+    }
+    
+    private func updateCharts(interval: StatsInterval) {
+        let months = ["Jan 2018", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        let unitsSold = [20000.0, 4000.0, 6000.0, 3000.0, 10002.0, 10006.0, 4000.0, 18000.0, 2000.0, 4000.0, 5000.0, 4000.0]
+        if readTimeChart != nil {
+            updateReadChart(dataPoints: months, values: unitsSold)
+        }
+        
+        if pagesCountChart != nil {
+            updatePagesChart(dataPoints: months, values: unitsSold)
+        }
+        
+        if sessionsCountChart != nil {
+            updateSessionsChart(dataPoints: months, values: unitsSold)
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        let months = ["Jan 2018", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-        let unitsSold = [20000.0, 4000.0, 6000.0, 3000.0, 10002.0, 10006.0, 4000.0, 18000.0, 2000.0, 4000.0, 5000.0, 4000.0]
         
         var readTimeChart = LineChartView(forAutoLayout: ())
         view.addSubview(readTimeChart)
@@ -74,8 +103,6 @@ final class PlotsStatisticsViewController: UIViewController {
         setupChart(chart: &readTimeChart)
         self.readTimeChart = readTimeChart
 
-        updateReadChart(dataPoints: months, values: unitsSold)
-        
         var pagesCountChart = LineChartView(forAutoLayout: ())
         view.addSubview(pagesCountChart)
         pagesCountChart.autoPinEdge(toSuperviewEdge: .left)
@@ -85,8 +112,6 @@ final class PlotsStatisticsViewController: UIViewController {
         pagesCountChart.chartDescription?.text = "Страниц в день"
         setupChart(chart: &pagesCountChart)
         self.pagesCountChart = pagesCountChart
-        
-        updatePagesChart(dataPoints: months, values: unitsSold)
         
         var sessionsCountChart = LineChartView(forAutoLayout: ())
         view.addSubview(sessionsCountChart)
@@ -99,7 +124,7 @@ final class PlotsStatisticsViewController: UIViewController {
         setupChart(chart: &sessionsCountChart)
         self.sessionsCountChart = sessionsCountChart
         
-        updateSessionsChart(dataPoints: months, values: unitsSold)
+        updateCharts(interval: self.interval)
     }
     
     private func setupChart(chart: inout LineChartView) {
@@ -162,7 +187,7 @@ final class PlotsStatisticsViewController: UIViewController {
         let chartData = LineChartData(dataSets: [chartDataSet])
         chartData.setDrawValues(false)
         pagesCountChart.xAxis.valueFormatter = IndexAxisValueFormatter(values: dataPoints)
-        pagesCountChart.leftAxis.valueFormatter = ToHrsFormatter()
+        pagesCountChart.leftAxis.valueFormatter = ToPgsFormatter()
         pagesCountChart.data = chartData
         pagesCountChart.notifyDataSetChanged()
     }
@@ -188,7 +213,7 @@ final class PlotsStatisticsViewController: UIViewController {
         let chartData = LineChartData(dataSets: [chartDataSet])
         chartData.setDrawValues(false)
         sessionsCountChart.xAxis.valueFormatter = IndexAxisValueFormatter(values: dataPoints)
-        sessionsCountChart.leftAxis.valueFormatter = ToHrsFormatter()
+        sessionsCountChart.leftAxis.valueFormatter = ToSessFormatter()
         sessionsCountChart.data = chartData
         sessionsCountChart.notifyDataSetChanged()
     }
@@ -196,6 +221,18 @@ final class PlotsStatisticsViewController: UIViewController {
     private class ToHrsFormatter: IAxisValueFormatter {
         func stringForValue(_ value: Double, axis: AxisBase?) -> String {
             return MarkersFormatter().secsToTimeStr(val: value)
+        }
+    }
+    
+    private class ToPgsFormatter: IAxisValueFormatter {
+        func stringForValue(_ value: Double, axis: AxisBase?) -> String {
+            return MarkersFormatter().pagesStr(val: value)
+        }
+    }
+    
+    private class ToSessFormatter: IAxisValueFormatter {
+        func stringForValue(_ value: Double, axis: AxisBase?) -> String {
+            return MarkersFormatter().sessionsStr(val: value)
         }
     }
 }
@@ -207,6 +244,14 @@ private class MarkersFormatter {
         let mins = (intSecs / 60) % 60
         let hrs = intSecs / 3600
         return "\(hrs) ч \(mins) мин"
+    }
+    
+    func pagesStr(val: Double) -> String {
+        return "\(Int(val)) стр"
+    }
+    
+    func sessionsStr(val: Double) -> String {
+        return "\(Int(val)) подх"
     }
 }
 
