@@ -230,20 +230,78 @@ final class PlotsStatisticsViewController: UIViewController {
             }
         case .lastWeek:
             var days: [String] = []
-            let numOfDays = 7
+            let currentDate = Date()
+            let cal = Calendar.current
+            let numOfDays = cal.range(of: .day, in: .month, for: cal.date(byAdding: .month, value: -1, to: currentDate)!)!.count
             for i in 1...numOfDays {
                 days.append(String(i))
             }
+            
             if readTimeChart != nil {
-                updateReadChart(dataPoints: days, values: unitsSold)
+                var vals: [Double] = []
+                for _ in 1...numOfDays {
+                    vals.append(0)
+                }
+                
+                for sessionsInDay in grouppedByDaySessions {
+                    guard !sessionsInDay.isEmpty else {
+                        continue
+                    }
+                    
+                    if cal.date(byAdding: .month, value: 1, to: sessionsInDay[0].startTime)! >= currentDate {
+                        for session in sessionsInDay {
+                            let dayNumber =  cal.component(.day, from: session.startTime)
+                            vals[dayNumber - 1] += Double(session.time)
+                        }
+                    }
+                }
+                
+                let (xLabels, yVals) = shiftLastWeek(days: days, vals: vals)
+                updateReadChart(dataPoints: xLabels, values: yVals)
             }
             
             if pagesCountChart != nil {
-                updatePagesChart(dataPoints: days, values: unitsSold)
+                var vals: [Double] = []
+                for _ in 1...numOfDays {
+                    vals.append(0)
+                }
+                
+                for sessionsInDay in grouppedByDaySessions {
+                    guard !sessionsInDay.isEmpty else {
+                        continue
+                    }
+                    
+                    if cal.date(byAdding: .month, value: 1, to: sessionsInDay[0].startTime)! >= currentDate {
+                        for session in sessionsInDay {
+                            let dayNumber =  cal.component(.day, from: session.startTime)
+                            vals[dayNumber - 1] += Double(abs(session.finishPage - session.startPage))
+                        }
+                    }
+                }
+                
+                let (xLabels, yVals) = shiftLastWeek(days: days, vals: vals)
+                updatePagesChart(dataPoints: xLabels, values: yVals)
             }
             
             if sessionsCountChart != nil {
-                updateSessionsChart(dataPoints: days, values: unitsSold)
+                var vals: [Double] = []
+                for _ in 1...numOfDays {
+                    vals.append(0)
+                }
+                
+                for sessionsInDay in grouppedByDaySessions {
+                    guard !sessionsInDay.isEmpty else {
+                        continue
+                    }
+                    
+                    if cal.date(byAdding: .month, value: 1, to: sessionsInDay[0].startTime)! >= currentDate {
+                        let dayNumber =  cal.component(.day, from: sessionsInDay[0].startTime)
+                        vals[dayNumber - 1] += Double(sessionsInDay.count)
+                    }
+                }
+                
+                let (xLabels, yVals) = shiftLastWeek(days: days, vals: vals)
+                updateSessionsChart(dataPoints: xLabels, values: yVals)
             }
         case .lastDay:
             var hours: [String] = []
@@ -301,6 +359,25 @@ final class PlotsStatisticsViewController: UIViewController {
         }
         
         return (xLabels, yVals)
+    }
+    
+    private func shiftLastWeek(days: [String], vals: [Double]) -> ([String], [Double]) {
+        let cal = Calendar.current
+        let startDayNumber = cal.component(.day, from: cal.date(byAdding: .month, value: -1, to: Date())!) % days.count
+        
+        var xLabels: [String] = []
+        var yVals: [Double] = []
+        for i in startDayNumber..<days.count {
+            xLabels.append(days[i])
+            yVals.append(vals[i])
+        }
+        
+        for i in 0..<startDayNumber {
+            xLabels.append(days[i])
+            yVals.append(vals[i])
+        }
+        
+        return (Array(xLabels[xLabels.count-7..<xLabels.count]), Array(yVals[yVals.count-7..<yVals.count]))
     }
     
     override func viewDidLoad() {
