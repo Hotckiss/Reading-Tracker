@@ -11,7 +11,9 @@ import UIKit
 import Charts
 
 final class PlotsStatisticsViewController: UIViewController {
-    private var readTimeBarChart: BarChartView!
+    private var readTimeChart: LineChartView!
+    private var pagesCountChart: LineChartView!
+    private var sessionsCountChart: LineChartView!
     private var sessions: [UploadSessionModel] = []
     private var grouppedByDaySessions: [[UploadSessionModel]] = []
     private var grouppedByMonthSessions: [[UploadSessionModel]] = []
@@ -61,47 +63,134 @@ final class PlotsStatisticsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        
-        let readTimeBarChart = BarChartView(forAutoLayout: ())
-        view.addSubview(readTimeBarChart)
-        readTimeBarChart.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0))
-        readTimeBarChart.autoSetDimension(.height, toSize: 200)
-        readTimeBarChart.animate(xAxisDuration: 0.5, yAxisDuration: 0.5, easingOption: .easeInExpo)
-        readTimeBarChart.xAxis.drawGridLinesEnabled = false
-        readTimeBarChart.leftAxis.drawAxisLineEnabled = false
-        readTimeBarChart.rightAxis.enabled = false
-        readTimeBarChart.chartDescription?.text = "Время чтения в день"
-        readTimeBarChart.legend.enabled = false
-        readTimeBarChart.xAxis.labelPosition = .bottom
-        readTimeBarChart.xAxis.granularity = 1
-        let marker: BalloonMarker = BalloonMarker(color: UIColor.black, font: UIFont(name: "Helvetica", size: 12)!, textColor: UIColor.white, insets: UIEdgeInsets(top: 7.0, left: 7.0, bottom: 7.0, right: 7.0))
-        marker.minimumSize = CGSize(width: 75.0, height: 35.0)
-        readTimeBarChart.marker = marker
-        self.readTimeBarChart = readTimeBarChart
-
         let months = ["Jan 2018", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         let unitsSold = [20000.0, 4000.0, 6000.0, 3000.0, 10002.0, 10006.0, 4000.0, 18000.0, 2000.0, 4000.0, 5000.0, 4000.0]
+        
+        var readTimeChart = LineChartView(forAutoLayout: ())
+        view.addSubview(readTimeChart)
+        readTimeChart.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0), excludingEdge: .bottom)
+        readTimeChart.autoSetDimension(.height, toSize: 200)
+        readTimeChart.chartDescription?.text = "Время чтения в день"
+        setupChart(chart: &readTimeChart)
+        self.readTimeChart = readTimeChart
+
         updateReadChart(dataPoints: months, values: unitsSold)
+        
+        var pagesCountChart = LineChartView(forAutoLayout: ())
+        view.addSubview(pagesCountChart)
+        pagesCountChart.autoPinEdge(toSuperviewEdge: .left)
+        pagesCountChart.autoPinEdge(toSuperviewEdge: .right)
+        pagesCountChart.autoPinEdge(.top, to: .bottom, of: readTimeChart, withOffset: 32)
+        pagesCountChart.autoSetDimension(.height, toSize: 200)
+        pagesCountChart.chartDescription?.text = "Страниц в день"
+        setupChart(chart: &pagesCountChart)
+        self.pagesCountChart = pagesCountChart
+        
+        updatePagesChart(dataPoints: months, values: unitsSold)
+        
+        var sessionsCountChart = LineChartView(forAutoLayout: ())
+        view.addSubview(sessionsCountChart)
+        sessionsCountChart.autoPinEdge(toSuperviewEdge: .left)
+        sessionsCountChart.autoPinEdge(toSuperviewEdge: .right)
+        sessionsCountChart.autoPinEdge(toSuperviewEdge: .bottom)
+        sessionsCountChart.autoPinEdge(.top, to: .bottom, of: pagesCountChart, withOffset: 32)
+        sessionsCountChart.autoSetDimension(.height, toSize: 200)
+        sessionsCountChart.chartDescription?.text = "Подходов в день"
+        setupChart(chart: &sessionsCountChart)
+        self.sessionsCountChart = sessionsCountChart
+        
+        updateSessionsChart(dataPoints: months, values: unitsSold)
+    }
+    
+    private func setupChart(chart: inout LineChartView) {
+        chart.animate(xAxisDuration: 0.5, yAxisDuration: 0.5, easingOption: .easeInExpo)
+        chart.xAxis.drawGridLinesEnabled = false
+        chart.leftAxis.drawAxisLineEnabled = false
+        chart.rightAxis.enabled = false
+        chart.legend.enabled = false
+        chart.xAxis.labelPosition = .bottom
+        chart.xAxis.granularity = 1
+        let marker: BalloonMarker = BalloonMarker(color: UIColor.black, font: UIFont(name: "Helvetica", size: 12)!, textColor: UIColor.white, insets: UIEdgeInsets(top: 7.0, left: 7.0, bottom: 7.0, right: 7.0))
+        marker.minimumSize = CGSize(width: 75.0, height: 35.0)
+        chart.marker = marker
     }
     
     func updateReadChart(dataPoints: [String], values: [Double]) {
-        readTimeBarChart.noDataText = "Нет данных."
+        readTimeChart.noDataText = "Нет данных."
         
-        var dataEntries: [BarChartDataEntry] = []
+        var dataEntries: [ChartDataEntry] = []
         
         for i in 0..<dataPoints.count {
-            let dataEntry = BarChartDataEntry(x: Double(i), y: values[i])
+            let dataEntry = ChartDataEntry(x: Double(i), y: values[i])
             dataEntries.append(dataEntry)
         }
         
-        let chartDataSet = BarChartDataSet(values: dataEntries, label: "")
+        let chartDataSet = LineChartDataSet(values: dataEntries, label: "")
         chartDataSet.colors = [UIColor(rgb: 0xedaf97)]
-        let chartData = BarChartData(dataSets: [chartDataSet])
+        chartDataSet.fillColor = UIColor(rgb: 0xedaf97).withAlphaComponent(0.4)
+        chartDataSet.drawFilledEnabled = true
+        chartDataSet.circleRadius = 3.0
+        chartDataSet.circleColors = [UIColor(rgb: 0xedaf97)]
+        chartDataSet.lineWidth = 1.5
+        chartDataSet.setDrawHighlightIndicators(false)
+        let chartData = LineChartData(dataSets: [chartDataSet])
         chartData.setDrawValues(false)
-        readTimeBarChart.xAxis.valueFormatter = IndexAxisValueFormatter(values: dataPoints)
-        readTimeBarChart.leftAxis.valueFormatter = ToHrsFormatter()
-        readTimeBarChart.data = chartData
-        readTimeBarChart.notifyDataSetChanged()
+        readTimeChart.xAxis.valueFormatter = IndexAxisValueFormatter(values: dataPoints)
+        readTimeChart.leftAxis.valueFormatter = ToHrsFormatter()
+        readTimeChart.data = chartData
+        readTimeChart.notifyDataSetChanged()
+    }
+    
+    func updatePagesChart(dataPoints: [String], values: [Double]) {
+        pagesCountChart.noDataText = "Нет данных."
+        
+        var dataEntries: [ChartDataEntry] = []
+        
+        for i in 0..<dataPoints.count {
+            let dataEntry = ChartDataEntry(x: Double(i), y: values[i])
+            dataEntries.append(dataEntry)
+        }
+        
+        let chartDataSet = LineChartDataSet(values: dataEntries, label: "")
+        chartDataSet.colors = [UIColor(rgb: 0x2f5870)]
+        chartDataSet.fillColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.4)
+        chartDataSet.drawFilledEnabled = true
+        chartDataSet.circleRadius = 3.0
+        chartDataSet.circleColors = [UIColor(rgb: 0x2f5870)]
+        chartDataSet.lineWidth = 1.5
+        chartDataSet.setDrawHighlightIndicators(false)
+        let chartData = LineChartData(dataSets: [chartDataSet])
+        chartData.setDrawValues(false)
+        pagesCountChart.xAxis.valueFormatter = IndexAxisValueFormatter(values: dataPoints)
+        pagesCountChart.leftAxis.valueFormatter = ToHrsFormatter()
+        pagesCountChart.data = chartData
+        pagesCountChart.notifyDataSetChanged()
+    }
+    
+    func updateSessionsChart(dataPoints: [String], values: [Double]) {
+        sessionsCountChart.noDataText = "Нет данных."
+        
+        var dataEntries: [ChartDataEntry] = []
+        
+        for i in 0..<dataPoints.count {
+            let dataEntry = ChartDataEntry(x: Double(i), y: values[i])
+            dataEntries.append(dataEntry)
+        }
+        
+        let chartDataSet = LineChartDataSet(values: dataEntries, label: "")
+        chartDataSet.colors = [UIColor(rgb: 0x8aa753)]
+        chartDataSet.fillColor = UIColor(rgb: 0x8aa753).withAlphaComponent(0.4)
+        chartDataSet.drawFilledEnabled = true
+        chartDataSet.circleRadius = 3.0
+        chartDataSet.circleColors = [UIColor(rgb: 0x8aa753)]
+        chartDataSet.lineWidth = 1.5
+        chartDataSet.setDrawHighlightIndicators(false)
+        let chartData = LineChartData(dataSets: [chartDataSet])
+        chartData.setDrawValues(false)
+        sessionsCountChart.xAxis.valueFormatter = IndexAxisValueFormatter(values: dataPoints)
+        sessionsCountChart.leftAxis.valueFormatter = ToHrsFormatter()
+        sessionsCountChart.data = chartData
+        sessionsCountChart.notifyDataSetChanged()
     }
     
     private class ToHrsFormatter: IAxisValueFormatter {
