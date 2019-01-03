@@ -93,9 +93,10 @@ final class PlotsStatisticsViewController: UIViewController {
             }
         case .lastYear:
             let months = ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"]
+            let currentDate = Date()
+            let cal = Calendar.current
+            
             if readTimeChart != nil {
-                let currentDate = Date()
-                let cal = Calendar.current
                 var vals: [Double] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                 
                 for sessionsInMonth in grouppedByMonthSessions {
@@ -111,29 +112,46 @@ final class PlotsStatisticsViewController: UIViewController {
                     }
                 }
                 
-                let startMonthNumber =  cal.component(.month, from: currentDate) % 12
-                
-                var xLabels: [String] = []
-                var yVals: [Double] = []
-                for i in startMonthNumber..<12 {
-                    xLabels.append(months[i])
-                    yVals.append(vals[i])
-                }
-                
-                for i in 0..<startMonthNumber {
-                    xLabels.append(months[i])
-                    yVals.append(vals[i])
-                }
-                
+                let (xLabels, yVals) = shiftLastYear(months: months, vals: vals)
                 updateReadChart(dataPoints: xLabels, values: yVals)
             }
             
             if pagesCountChart != nil {
-                updatePagesChart(dataPoints: months, values: unitsSold)
+                var vals: [Double] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                
+                for sessionsInMonth in grouppedByMonthSessions {
+                    guard !sessionsInMonth.isEmpty else {
+                        continue
+                    }
+                    
+                    if cal.date(byAdding: .year, value: 1, to: sessionsInMonth[0].startTime)! >= currentDate {
+                        for session in sessionsInMonth {
+                            let monthNumber =  cal.component(.month, from: session.startTime)
+                            vals[monthNumber - 1] += Double(abs(session.finishPage - session.startPage))
+                        }
+                    }
+                }
+                
+                let (xLabels, yVals) = shiftLastYear(months: months, vals: vals)
+                updatePagesChart(dataPoints: xLabels, values: yVals)
             }
             
             if sessionsCountChart != nil {
-                updateSessionsChart(dataPoints: months, values: unitsSold)
+                var vals: [Double] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                
+                for sessionsInMonth in grouppedByMonthSessions {
+                    guard !sessionsInMonth.isEmpty else {
+                        continue
+                    }
+                    
+                    if cal.date(byAdding: .year, value: 1, to: sessionsInMonth[0].startTime)! >= currentDate {
+                        let monthNumber =  cal.component(.month, from: sessionsInMonth[0].startTime)
+                        vals[monthNumber - 1] = Double(sessionsInMonth.count)
+                    }
+                }
+                
+                let (xLabels, yVals) = shiftLastYear(months: months, vals: vals)
+                updateSessionsChart(dataPoints: xLabels, values: yVals)
             }
         case .lastMonth:
             var days: [String] = []
@@ -189,6 +207,24 @@ final class PlotsStatisticsViewController: UIViewController {
         }
     }
     
+    private func shiftLastYear(months: [String], vals: [Double]) -> ([String], [Double]) {
+        let cal = Calendar.current
+        let startMonthNumber = cal.component(.month, from: Date()) % 12
+        
+        var xLabels: [String] = []
+        var yVals: [Double] = []
+        for i in startMonthNumber..<12 {
+            xLabels.append(months[i])
+            yVals.append(vals[i])
+        }
+        
+        for i in 0..<startMonthNumber {
+            xLabels.append(months[i])
+            yVals.append(vals[i])
+        }
+        
+        return (xLabels, yVals)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
