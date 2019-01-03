@@ -76,18 +76,116 @@ final class PlotsStatisticsViewController: UIViewController {
     }
     
     private func updateCharts(interval: StatsInterval) {
-        let months = ["Jan 2018", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         let unitsSold = [20000.0, 4000.0, 6000.0, 3000.0, 10002.0, 10006.0, 4000.0, 18000.0, 2000.0, 4000.0, 5000.0, 4000.0]
-        if readTimeChart != nil {
-            updateReadChart(dataPoints: months, values: unitsSold)
-        }
-        
-        if pagesCountChart != nil {
-            updatePagesChart(dataPoints: months, values: unitsSold)
-        }
-        
-        if sessionsCountChart != nil {
-            updateSessionsChart(dataPoints: months, values: unitsSold)
+        switch interval {
+        case .allTime:
+            let months = ["Jan 2018", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+            if readTimeChart != nil {
+                updateReadChart(dataPoints: months, values: unitsSold)
+            }
+            
+            if pagesCountChart != nil {
+                updatePagesChart(dataPoints: months, values: unitsSold)
+            }
+            
+            if sessionsCountChart != nil {
+                updateSessionsChart(dataPoints: months, values: unitsSold)
+            }
+        case .lastYear:
+            let months = ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"]
+            if readTimeChart != nil {
+                let currentDate = Date()
+                let cal = Calendar.current
+                var vals: [Double] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                
+                for sessionsInMonth in grouppedByMonthSessions {
+                    guard !sessionsInMonth.isEmpty else {
+                        continue
+                    }
+                    
+                    if cal.date(byAdding: .year, value: 1, to: sessionsInMonth[0].startTime)! >= currentDate {
+                        for session in sessionsInMonth {
+                            let monthNumber =  cal.component(.month, from: session.startTime)
+                            vals[monthNumber - 1] += Double(session.time)
+                        }
+                    }
+                }
+                
+                let startMonthNumber =  cal.component(.month, from: currentDate) % 12
+                
+                var xLabels: [String] = []
+                var yVals: [Double] = []
+                for i in startMonthNumber..<12 {
+                    xLabels.append(months[i])
+                    yVals.append(vals[i])
+                }
+                
+                for i in 0..<startMonthNumber {
+                    xLabels.append(months[i])
+                    yVals.append(vals[i])
+                }
+                
+                updateReadChart(dataPoints: xLabels, values: yVals)
+            }
+            
+            if pagesCountChart != nil {
+                updatePagesChart(dataPoints: months, values: unitsSold)
+            }
+            
+            if sessionsCountChart != nil {
+                updateSessionsChart(dataPoints: months, values: unitsSold)
+            }
+        case .lastMonth:
+            var days: [String] = []
+            let numOfDays = Calendar.current.range(of: .day, in: .month, for: Date())!.count
+            for i in 1...numOfDays {
+                days.append(String(i))
+            }
+            if readTimeChart != nil {
+                updateReadChart(dataPoints: days, values: unitsSold)
+            }
+            
+            if pagesCountChart != nil {
+                updatePagesChart(dataPoints: days, values: unitsSold)
+            }
+            
+            if sessionsCountChart != nil {
+                updateSessionsChart(dataPoints: days, values: unitsSold)
+            }
+        case .lastWeek:
+            var days: [String] = []
+            let numOfDays = 7
+            for i in 1...numOfDays {
+                days.append(String(i))
+            }
+            if readTimeChart != nil {
+                updateReadChart(dataPoints: days, values: unitsSold)
+            }
+            
+            if pagesCountChart != nil {
+                updatePagesChart(dataPoints: days, values: unitsSold)
+            }
+            
+            if sessionsCountChart != nil {
+                updateSessionsChart(dataPoints: days, values: unitsSold)
+            }
+        case .lastDay:
+            var hours: [String] = []
+            let numOfHrs = 24
+            for i in 1...numOfHrs {
+                hours.append(String(i))
+            }
+            if readTimeChart != nil {
+                updateReadChart(dataPoints: hours, values: unitsSold)
+            }
+            
+            if pagesCountChart != nil {
+                updatePagesChart(dataPoints: hours, values: unitsSold)
+            }
+            
+            if sessionsCountChart != nil {
+                updateSessionsChart(dataPoints: hours, values: unitsSold)
+            }
         }
     }
     
