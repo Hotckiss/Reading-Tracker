@@ -509,6 +509,7 @@ final class PlotsStatisticsViewController: UIViewController {
         chart.animate(xAxisDuration: 0.5, yAxisDuration: 0.5, easingOption: .easeInExpo)
         chart.xAxis.drawGridLinesEnabled = false
         chart.leftAxis.drawAxisLineEnabled = false
+        chart.leftAxis.drawGridLinesEnabled = false
         chart.rightAxis.enabled = false
         chart.legend.enabled = false
         chart.xAxis.labelPosition = .bottom
