@@ -513,6 +513,7 @@ final class PlotsStatisticsViewController: UIViewController {
         chart.legend.enabled = false
         chart.xAxis.labelPosition = .bottom
         chart.xAxis.granularity = 1
+        chart.leftAxis.granularity = 1
     }
     
     func updateReadChart(dataPoints: [String], values: [Double]) {
