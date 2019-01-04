@@ -305,20 +305,56 @@ final class PlotsStatisticsViewController: UIViewController {
             }
         case .lastDay:
             var hours: [String] = []
+            
             let numOfHrs = 24
-            for i in 1...numOfHrs {
+            for i in 0..<numOfHrs {
                 hours.append(String(i))
             }
+            
+            
             if readTimeChart != nil {
-                updateReadChart(dataPoints: hours, values: unitsSold)
+                var vals: [Double] = []
+                for _ in 0..<numOfHrs {
+                    vals.append(0)
+                }
+                
+                for session in sessions {
+                    if Calendar.current.compare(Date(), to: session.startTime, toGranularity: Calendar.Component.day) == .orderedSame {
+                        let hour = Calendar.current.component(.hour, from: session.startTime)
+                        vals[hour] += Double(session.time)
+                    }
+                }
+                updateReadChart(dataPoints: hours, values: vals)
             }
             
             if pagesCountChart != nil {
-                updatePagesChart(dataPoints: hours, values: unitsSold)
+                var vals: [Double] = []
+                for _ in 0..<numOfHrs {
+                    vals.append(0)
+                }
+                
+                for session in sessions {
+                    if Calendar.current.compare(Date(), to: session.startTime, toGranularity: Calendar.Component.day) == .orderedSame {
+                        let hour = Calendar.current.component(.hour, from: session.startTime)
+                        vals[hour] += Double(abs(session.finishPage - session.startPage))
+                    }
+                }
+                updatePagesChart(dataPoints: hours, values: vals)
             }
             
             if sessionsCountChart != nil {
-                updateSessionsChart(dataPoints: hours, values: unitsSold)
+                var vals: [Double] = []
+                for _ in 0..<numOfHrs {
+                    vals.append(0)
+                }
+                
+                for session in sessions {
+                    if Calendar.current.compare(Date(), to: session.startTime, toGranularity: Calendar.Component.day) == .orderedSame {
+                        let hour = Calendar.current.component(.hour, from: session.startTime)
+                        vals[hour] += 1.0
+                    }
+                }
+                updateSessionsChart(dataPoints: hours, values: vals)
             }
         }
     }
