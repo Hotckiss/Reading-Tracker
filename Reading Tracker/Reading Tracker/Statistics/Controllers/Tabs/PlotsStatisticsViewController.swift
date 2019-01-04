@@ -15,7 +15,6 @@ final class PlotsStatisticsViewController: UIViewController {
     private var pagesCountChart: LineChartView!
     private var sessionsCountChart: LineChartView!
     private var sessions: [UploadSessionModel] = []
-    private var grouppedByHourSessions: [[UploadSessionModel]] = []
     private var grouppedByDaySessions: [[UploadSessionModel]] = []
     private var grouppedByMonthSessions: [[UploadSessionModel]] = []
     private var booksMap: [String : BookModel] = [:]
@@ -37,16 +36,6 @@ final class PlotsStatisticsViewController: UIViewController {
         
         self.sessions = sessions
         self.booksMap = booksMap
-        
-        let groupedSessionsHour: [(UInt64, [UploadSessionModel])] = Dictionary(grouping: sessions) {
-            let daysSince1970 = UInt64($0.startTime.timeIntervalSince1970) / 3600
-            return daysSince1970
-            }
-            .sorted {
-                $0.key > $1.key
-        }
-        
-        grouppedByHourSessions = groupedSessionsHour.map { $0.1 }
         
         let groupedSessionsDay: [(UInt64, [UploadSessionModel])] = Dictionary(grouping: sessions) {
             let daysSince1970 = UInt64($0.startTime.timeIntervalSince1970) / 86400
@@ -76,20 +65,75 @@ final class PlotsStatisticsViewController: UIViewController {
     }
     
     private func updateCharts(interval: StatsInterval) {
-        let unitsSold = [20000.0, 4000.0, 6000.0, 3000.0, 10002.0, 10006.0, 4000.0, 18000.0, 2000.0, 4000.0, 5000.0, 4000.0]
+        guard !sessions.isEmpty else {
+            return
+        }
+        
         switch interval {
         case .allTime:
-            let months = ["Jan 2018", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+            let monthsMap = ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"]
+            let currentDate = Date()
+            let minDate = sessions.map({ $0.startTime }).min() ?? currentDate
+            let minDateMonth = Calendar.current.component(.year, from: minDate) * 12 +
+                Calendar.current.component(.month, from: minDate) - 1
+            
+            let currentDateMonth = Calendar.current.component(.year, from: currentDate) * 12 +
+                Calendar.current.component(.month, from: currentDate) - 1
+            
+            let groupedSessionsMonth: [Int: [UploadSessionModel]] = Dictionary(grouping: sessions) {
+                let cal = Calendar.current
+                let year = cal.component(.year, from: $0.startTime)
+                let month = cal.component(.month, from: $0.startTime)
+                return year * 12 + (month - 1)
+            }
+            
             if readTimeChart != nil {
-                updateReadChart(dataPoints: months, values: unitsSold)
+                var xLabels: [String] = []
+                var yVals: [Double] = []
+                
+                for month in minDateMonth...currentDateMonth {
+                    let label = monthsMap[month % 12] + ((month % 12 == 0) ? " \(month / 12)": "")
+                    var val: Double = 0
+                    for session in groupedSessionsMonth[month] ?? [] {
+                        val += Double(session.time)
+                    }
+                    
+                    xLabels.append(label)
+                    yVals.append(val)
+                }
+                
+                updateReadChart(dataPoints: xLabels, values: yVals)
             }
             
             if pagesCountChart != nil {
-                updatePagesChart(dataPoints: months, values: unitsSold)
+                var xLabels: [String] = []
+                var yVals: [Double] = []
+                
+                for month in minDateMonth...currentDateMonth {
+                    let label = monthsMap[month % 12] + ((month % 12 == 0) ? " \(month / 12)": "")
+                    var val: Double = 0
+                    for session in groupedSessionsMonth[month] ?? [] {
+                        val += Double(abs(session.finishPage - session.startPage))
+                    }
+                    
+                    xLabels.append(label)
+                    yVals.append(val)
+                }
+                updatePagesChart(dataPoints: xLabels, values: yVals)
             }
             
             if sessionsCountChart != nil {
-                updateSessionsChart(dataPoints: months, values: unitsSold)
+                var xLabels: [String] = []
+                var yVals: [Double] = []
+                
+                for month in minDateMonth...currentDateMonth {
+                    let label = monthsMap[month % 12] + ((month % 12 == 0) ? " \(month / 12)": "")
+                    let val: Double = Double((groupedSessionsMonth[month] ?? []).count)
+                    
+                    xLabels.append(label)
+                    yVals.append(val)
+                }
+                updateSessionsChart(dataPoints: xLabels, values: yVals)
             }
         case .lastYear:
             let months = ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"]
@@ -424,7 +468,10 @@ final class PlotsStatisticsViewController: UIViewController {
         view.addSubview(readTimeChart)
         readTimeChart.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0), excludingEdge: .bottom)
         readTimeChart.autoSetDimension(.height, toSize: 200)
-        readTimeChart.chartDescription?.text = "Время чтения в день"
+        readTimeChart.chartDescription?.text = "Время чтения"
+        let marker1: BalloonMarker = BalloonMarker(color: UIColor.black, font: UIFont(name: "Helvetica", size: 12)!, textColor: UIColor.white, insets: UIEdgeInsets(top: 7.0, left: 7.0, bottom: 7.0, right: 7.0), formatter: ToHrsFormatter())
+        marker1.minimumSize = CGSize(width: 75.0, height: 35.0)
+        readTimeChart.marker = marker1
         setupChart(chart: &readTimeChart)
         self.readTimeChart = readTimeChart
 
@@ -434,7 +481,10 @@ final class PlotsStatisticsViewController: UIViewController {
         pagesCountChart.autoPinEdge(toSuperviewEdge: .right)
         pagesCountChart.autoPinEdge(.top, to: .bottom, of: readTimeChart, withOffset: 32)
         pagesCountChart.autoSetDimension(.height, toSize: 200)
-        pagesCountChart.chartDescription?.text = "Страниц в день"
+        pagesCountChart.chartDescription?.text = "Страницы"
+        let marker2: BalloonMarker = BalloonMarker(color: UIColor.black, font: UIFont(name: "Helvetica", size: 12)!, textColor: UIColor.white, insets: UIEdgeInsets(top: 7.0, left: 7.0, bottom: 7.0, right: 7.0), formatter: ToPgsFormatter())
+        marker2.minimumSize = CGSize(width: 75.0, height: 35.0)
+        pagesCountChart.marker = marker2
         setupChart(chart: &pagesCountChart)
         self.pagesCountChart = pagesCountChart
         
@@ -445,7 +495,10 @@ final class PlotsStatisticsViewController: UIViewController {
         sessionsCountChart.autoPinEdge(toSuperviewEdge: .bottom)
         sessionsCountChart.autoPinEdge(.top, to: .bottom, of: pagesCountChart, withOffset: 32)
         sessionsCountChart.autoSetDimension(.height, toSize: 200)
-        sessionsCountChart.chartDescription?.text = "Подходов в день"
+        sessionsCountChart.chartDescription?.text = "Подходы"
+        let marker3: BalloonMarker = BalloonMarker(color: UIColor.black, font: UIFont(name: "Helvetica", size: 12)!, textColor: UIColor.white, insets: UIEdgeInsets(top: 7.0, left: 7.0, bottom: 7.0, right: 7.0), formatter: ToSessFormatter())
+        marker3.minimumSize = CGSize(width: 75.0, height: 35.0)
+        sessionsCountChart.marker = marker3
         setupChart(chart: &sessionsCountChart)
         self.sessionsCountChart = sessionsCountChart
         
@@ -460,9 +513,6 @@ final class PlotsStatisticsViewController: UIViewController {
         chart.legend.enabled = false
         chart.xAxis.labelPosition = .bottom
         chart.xAxis.granularity = 1
-        let marker: BalloonMarker = BalloonMarker(color: UIColor.black, font: UIFont(name: "Helvetica", size: 12)!, textColor: UIColor.white, insets: UIEdgeInsets(top: 7.0, left: 7.0, bottom: 7.0, right: 7.0))
-        marker.minimumSize = CGSize(width: 75.0, height: 35.0)
-        chart.marker = marker
     }
     
     func updateReadChart(dataPoints: [String], values: [Double]) {
@@ -560,23 +610,22 @@ final class PlotsStatisticsViewController: UIViewController {
             return MarkersFormatter().sessionsStr(val: value)
         }
     }
-}
-
-
-private class MarkersFormatter {
-    func secsToTimeStr(val: Double) -> String {
-        let intSecs = Int(val)
-        let mins = (intSecs / 60) % 60
-        let hrs = intSecs / 3600
-        return "\(hrs) ч \(mins) мин"
-    }
     
-    func pagesStr(val: Double) -> String {
-        return "\(Int(val)) стр"
-    }
-    
-    func sessionsStr(val: Double) -> String {
-        return "\(Int(val)) подх"
+    private class MarkersFormatter {
+        func secsToTimeStr(val: Double) -> String {
+            let intSecs = Int(val)
+            let mins = (intSecs / 60) % 60
+            let hrs = intSecs / 3600
+            return "\(hrs) ч \(mins) мин"
+        }
+        
+        func pagesStr(val: Double) -> String {
+            return "\(Int(val)) стр"
+        }
+        
+        func sessionsStr(val: Double) -> String {
+            return "\(Int(val)) подх"
+        }
     }
 }
 
@@ -604,9 +653,11 @@ open class BalloonMarker: MarkerImage
     fileprivate var _labelSize: CGSize = CGSize()
     fileprivate var _paragraphStyle: NSMutableParagraphStyle?
     fileprivate var _drawAttributes = [NSAttributedString.Key : AnyObject]()
+    private var formatter: IAxisValueFormatter
     
-    public init(color: UIColor, font: UIFont, textColor: UIColor, insets: UIEdgeInsets)
+    public init(color: UIColor, font: UIFont, textColor: UIColor, insets: UIEdgeInsets, formatter: IAxisValueFormatter)
     {
+        self.formatter = formatter
         super.init()
         
         self.color = color
@@ -758,7 +809,7 @@ open class BalloonMarker: MarkerImage
     }
     
     open override func refreshContent(entry: ChartDataEntry, highlight: Highlight) {
-        setLabel(MarkersFormatter().secsToTimeStr(val: entry.y))
+        setLabel(formatter.stringForValue(entry.y, axis: nil))
     }
     
     open func setLabel(_ label: String)
