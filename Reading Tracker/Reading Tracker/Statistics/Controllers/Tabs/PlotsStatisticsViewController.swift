@@ -14,6 +14,7 @@ final class PlotsStatisticsViewController: UIViewController {
     private var readTimeChart: LineChartView!
     private var pagesCountChart: LineChartView!
     private var sessionsCountChart: LineChartView!
+    private var readTimeBarChart: BarChart!
     private var sessions: [UploadSessionModel] = []
     private var grouppedByDaySessions: [[UploadSessionModel]] = []
     private var grouppedByMonthSessions: [[UploadSessionModel]] = []
@@ -62,6 +63,50 @@ final class PlotsStatisticsViewController: UIViewController {
     }
     
     private func updateCharts(interval: StatsInterval) {
+        if readTimeChart != nil {
+            readTimeChart.highlightValue(nil)
+        }
+        
+        if pagesCountChart != nil {
+            pagesCountChart.highlightValue(nil)
+        }
+        
+        if sessionsCountChart != nil {
+            sessionsCountChart.highlightValue(nil)
+        }
+        
+        if readTimeBarChart != nil {
+            var vals: [Double] = [0, 0, 0, 0]
+            
+            for session in sessions {
+                let sessionTime = Calendar.current.component(.hour, from: session.startTime)
+                if sessionTime >= 5 && sessionTime <= 9 {
+                    vals[0] += 1.0
+                }
+                
+                if sessionTime >= 10 && sessionTime <= 17 {
+                    vals[1] += 1.0
+                }
+                
+                if sessionTime >= 18 && sessionTime <= 23 {
+                    vals[2] += 1.0
+                }
+                
+                if sessionTime <= 4 {
+                    vals[3] += 1.0
+                }
+            }
+            
+            if !sessions.isEmpty {
+                for i in 0..<vals.count {
+                    vals[i] /= Double(sessions.count)
+                }
+                
+                updateReadBarChart(values: vals)
+            } else {
+                updateReadBarChart(values: [0.0, 0.0, 0.0, 0.0])
+            }
+        }
         switch interval {
         case .allTime:
             let monthsMap = ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"]
@@ -485,7 +530,6 @@ final class PlotsStatisticsViewController: UIViewController {
         view.addSubview(sessionsCountChart)
         sessionsCountChart.autoPinEdge(toSuperviewEdge: .left)
         sessionsCountChart.autoPinEdge(toSuperviewEdge: .right)
-        sessionsCountChart.autoPinEdge(toSuperviewEdge: .bottom)
         sessionsCountChart.autoPinEdge(.top, to: .bottom, of: pagesCountChart, withOffset: 32)
         sessionsCountChart.autoSetDimension(.height, toSize: 200)
         sessionsCountChart.chartDescription?.text = "Подходы"
@@ -495,10 +539,32 @@ final class PlotsStatisticsViewController: UIViewController {
         setupChart(chart: &sessionsCountChart)
         self.sessionsCountChart = sessionsCountChart
         
+        let readTimeBarChart = BarChart(icons: [UIImage(named: "morning"),
+                                                UIImage(named: "day"),
+                                                UIImage(named: "evening"),
+                                                UIImage(named: "night")],
+                                        values: [0, 0, 0, 0],
+                                        colorsBottom: [UIColor(rgb: 0xedaf97),
+                                                       UIColor(rgb: 0xedaf97),
+                                                       UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+                                                       UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)],
+                                        colorsTop: [UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+                                                    UIColor(rgb: 0xedaf97),
+                                                    UIColor(rgb: 0xedaf97),
+                                                    UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)])
+        view.addSubview(readTimeBarChart)
+        readTimeBarChart.autoPinEdge(toSuperviewEdge: .left, withInset: PlotsStatisticsViewController.doubleOffset() / 2)
+        readTimeBarChart.autoPinEdge(toSuperviewEdge: .right, withInset: PlotsStatisticsViewController.doubleOffset() / 2)
+        readTimeBarChart.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16)
+        readTimeBarChart.autoPinEdge(.top, to: .bottom, of: sessionsCountChart, withOffset: 32)
+        readTimeBarChart.autoSetDimension(.height, toSize: 200)
+        self.readTimeBarChart = readTimeBarChart
+        
         updateCharts(interval: self.interval)
     }
     
     private func setupChart(chart: inout LineChartView) {
+        chart.noDataText = "Нет данных."
         chart.animate(xAxisDuration: 0.5, yAxisDuration: 0.5, easingOption: .easeInExpo)
         chart.xAxis.drawGridLinesEnabled = false
         chart.leftAxis.drawAxisLineEnabled = false
@@ -512,8 +578,6 @@ final class PlotsStatisticsViewController: UIViewController {
     }
     
     func updateReadChart(dataPoints: [String], values: [Double]) {
-        readTimeChart.noDataText = "Нет данных."
-        
         var dataEntries: [ChartDataEntry] = []
         
         for i in 0..<dataPoints.count {
@@ -538,8 +602,6 @@ final class PlotsStatisticsViewController: UIViewController {
     }
     
     func updatePagesChart(dataPoints: [String], values: [Double]) {
-        pagesCountChart.noDataText = "Нет данных."
-        
         var dataEntries: [ChartDataEntry] = []
         
         for i in 0..<dataPoints.count {
@@ -564,8 +626,6 @@ final class PlotsStatisticsViewController: UIViewController {
     }
     
     func updateSessionsChart(dataPoints: [String], values: [Double]) {
-        sessionsCountChart.noDataText = "Нет данных."
-        
         var dataEntries: [ChartDataEntry] = []
         
         for i in 0..<dataPoints.count {
@@ -587,6 +647,18 @@ final class PlotsStatisticsViewController: UIViewController {
         sessionsCountChart.leftAxis.valueFormatter = ToSessFormatter()
         sessionsCountChart.data = chartData
         sessionsCountChart.notifyDataSetChanged()
+    }
+    
+    func updateReadBarChart(values: [Double]) {
+        readTimeBarChart.update(values: values,
+                                colorsBottom: [UIColor(rgb: 0xedaf97),
+                                               UIColor(rgb: 0xedaf97),
+                                               UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+                                               UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)],
+                                colorsTop: [UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+                                            UIColor(rgb: 0xedaf97),
+                                            UIColor(rgb: 0xedaf97),
+                                            UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)])
     }
     
     private class ToHrsFormatter: IAxisValueFormatter {
@@ -622,6 +694,112 @@ final class PlotsStatisticsViewController: UIViewController {
         func sessionsStr(val: Double) -> String {
             return "\(Int(val)) подх"
         }
+    }
+    
+    private class BarChart: UIView {
+        private var items: [BarItem] = []
+        init(icons: [UIImage?], values: [Double], colorsBottom: [UIColor], colorsTop: [UIColor]) {
+            super.init(frame: .zero)
+            
+            var items: [BarItem] = []
+            for i in 0..<icons.count {
+                items.append(BarItem(icon: icons[i], value: values[i], colorBottom: colorsBottom[i], colorTop: colorsTop[i]))
+            }
+            
+            let stackView = UIStackView(arrangedSubviews: items)
+            stackView.axis = .horizontal
+            stackView.distribution = .fillEqually
+            addSubview(stackView)
+            stackView.autoPinEdgesToSuperviewEdges()
+            
+            self.items = items
+        }
+        
+        func update(values: [Double], colorsBottom: [UIColor], colorsTop: [UIColor]) {
+            for (i, item) in items.enumerated() {
+                item.update(value: values[i], colorBottom: colorsBottom[i], colorTop: colorsTop[i])
+            }
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+    }
+    
+    private class BarItem: UIView {
+        private var barView: UIView?
+        private var label: UILabel?
+        private var barViewHeight: NSLayoutConstraint?
+        
+        init(icon: UIImage?, value: Double, colorBottom: UIColor, colorTop: UIColor) {
+            super.init(frame: .zero)
+            
+            let textLabel = UILabel(forAutoLayout: ())
+            textLabel.textAlignment = .center
+            textLabel.text = "\(round(value * 100.0))%"
+            addSubview(textLabel)
+            textLabel.autoAlignAxis(toSuperviewAxis: .vertical)
+            textLabel.autoPinEdge(toSuperviewEdge: .bottom)
+            
+            let barView = UIView(forAutoLayout: ())
+            let height: CGFloat = 143.67
+            let actualHeight = CGFloat(value) * height
+            
+            let gradient = CAGradientLayer()
+            gradient.frame = CGRect(x: 0, y: 0, width: (UIScreen.main.bounds.width - doubleOffset()) / 4.0, height: actualHeight)
+            gradient.colors = [colorBottom.cgColor, colorTop.cgColor]
+            barView.layer.addSublayer(gradient)
+            
+            addSubview(barView)
+            barView.autoPinEdge(toSuperviewEdge: .left)
+            barView.autoPinEdge(toSuperviewEdge: .right)
+            barView.autoPinEdge(.bottom, to: .top, of: textLabel, withOffset: -4)
+            barViewHeight = barView.autoSetDimension(.height, toSize: actualHeight)
+            self.barView = barView
+            self.label = textLabel
+            
+            let iconView = UIImageView(image: icon)
+            addSubview(iconView)
+            iconView.contentMode = .scaleAspectFit
+            iconView.autoAlignAxis(toSuperviewAxis: .vertical)
+            iconView.autoPinEdge(.bottom, to: .top, of: barView, withOffset: -10)
+            iconView.autoSetDimension(.height, toSize: 22)
+        }
+        
+        func update(value: Double, colorBottom: UIColor, colorTop: UIColor) {
+            guard let barLayers = barView?.layer.sublayers else {
+                return
+            }
+            
+            for sublayer in barLayers {
+                sublayer.removeFromSuperlayer()
+            }
+            
+            let height: CGFloat = 143.67
+            let actualHeight = CGFloat(value) * height
+            
+            let gradient = CAGradientLayer()
+            gradient.frame = CGRect(x: 0, y: 0, width: (UIScreen.main.bounds.width - doubleOffset()) / 4.0, height: actualHeight)
+            gradient.colors = [colorBottom.cgColor, colorTop.cgColor]
+            barView?.layer.addSublayer(gradient)
+            barViewHeight?.constant = actualHeight
+            label?.text = "\(Int(round(value * 100.0)))%"
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+    }
+    
+    private static func doubleOffset() -> CGFloat {
+        let width = Int(UIScreen.main.bounds.width)
+        var ans: Int = 40
+        
+        while (width - ans) % 4 != 0 {
+            ans += 1
+        }
+        
+        return CGFloat(ans)
     }
 }
 
