@@ -30,9 +30,6 @@ final class PlotsStatisticsViewController: UIViewController {
     
     func update(sessions: [UploadSessionModel], booksMap: [String : BookModel], interval: StatsInterval) {
         self.interval = interval
-        guard !sessions.isEmpty else {
-            return
-        }
         
         self.sessions = sessions
         self.booksMap = booksMap
@@ -65,10 +62,6 @@ final class PlotsStatisticsViewController: UIViewController {
     }
     
     private func updateCharts(interval: StatsInterval) {
-        guard !sessions.isEmpty else {
-            return
-        }
-        
         switch interval {
         case .allTime:
             let monthsMap = ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"]
@@ -515,6 +508,7 @@ final class PlotsStatisticsViewController: UIViewController {
         chart.xAxis.labelPosition = .bottom
         chart.xAxis.granularity = 1
         chart.leftAxis.granularity = 1
+        chart.leftAxis.axisMinimum = 0.0
     }
     
     func updateReadChart(dataPoints: [String], values: [Double]) {
