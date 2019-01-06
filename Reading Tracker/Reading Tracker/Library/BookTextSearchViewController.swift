@@ -113,8 +113,19 @@ class BookTextSearchViewController: UIViewController {
         
          APIManager.instance.book.get(bookQuery: query) { [weak self] result in
             self?.spinner?.hide()
-         //let response = BooksList.GetBooks.Response(result: result)
-         //self?.presenter?.presentGetBooks(response: response)
+            
+            switch result {
+            case .success(let booksList):
+                guard !booksList.isEmpty else {
+                    self?.alertError(reason: "По вашему запросу ничего не найдено")
+                    return
+                }
+                
+                break
+            case .failure(let error):
+                self?.alertError(reason: error.localizedDescription)
+                break
+            }
          }
     }
     
