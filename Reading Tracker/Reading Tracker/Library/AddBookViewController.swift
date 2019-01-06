@@ -141,7 +141,7 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
                 strongSelf.present(imagePicker, animated: true, completion: nil)
             }
         })))
-        alert.addAction(UIAlertAction(title: "Сканировать ICBN", style: .default, handler: ({ [weak self] _ in
+        alert.addAction(UIAlertAction(title: "Сканировать ISBN", style: .default, handler: ({ [weak self] _ in
             let vc = BarcodeScannerViewController()
             vc.codeDelegate = self
             vc.errorDelegate = self

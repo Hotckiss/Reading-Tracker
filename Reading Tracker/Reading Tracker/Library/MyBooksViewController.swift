@@ -237,23 +237,35 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     @objc private func addBook() {
-        APIManager.instance.book.get(bookQuery: getBookQuery()) { [weak self] result in
-            //let response = BooksList.GetBooks.Response(result: result)
-            //self?.presenter?.presentGetBooks(response: response)
-        }
-        /*let vc = AddBookViewController()
-        vc.onCompleted = { [weak self] book in
-            self?.pushBook(book: book)
-        }
-        navigationController?.pushViewController(vc, animated: true)*/
-    }
-    
-    private func getBookQuery() -> BookQuery {
-        return BookQuery(searchText: "war+and+peace",
-                         startIndex: 0,
-                         maxResults: 40,
-                         filter: .paidEbooks,
-                         orderBy: .relevance)
+        let title = "Добавить фото обложки книги?"
+        let msg = "Добавить можно лишь информацию о книге, которую вы читаете: название, автор, обложка."
+        let alert = UIAlertController(title: title, message: msg, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Найти по штрих-коду", style: .default, handler: ({ [weak self] _ in
+            
+        })))
+        
+        alert.addAction(UIAlertAction(title: "Найти по названию", style: .default, handler: ({ [weak self] _ in
+            let query = BookQuery(searchText: "war+and+peace",
+                                  startIndex: 0,
+                                  maxResults: 40,
+                                  filter: .paidEbooks,
+                                  orderBy: .relevance)
+            
+            APIManager.instance.book.get(bookQuery: query) { [weak self] result in
+                //let response = BooksList.GetBooks.Response(result: result)
+                //self?.presenter?.presentGetBooks(response: response)
+            }
+        })))
+        alert.addAction(UIAlertAction(title: "Ввести вручную", style: .default, handler: ({ [weak self] _ in
+            let vc = AddBookViewController()
+            vc.onCompleted = { [weak self] book in
+                self?.pushBook(book: book)
+            }
+            self?.navigationController?.pushViewController(vc, animated: true)
+        })))
+        
+        alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
