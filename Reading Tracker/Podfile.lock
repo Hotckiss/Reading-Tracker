@@ -1,5 +1,7 @@
 PODS:
   - ActionSheetPicker-3.0 (2.3.0)
+  - Alamofire (4.7.3)
+  - Anchorage (4.2.4)
   - BarcodeScanner (4.1.3)
   - Bolts (1.9.0):
     - Bolts/AppLinks (= 1.9.0)
@@ -160,12 +162,21 @@ PODS:
   - GTMSessionFetcher/Core (1.2.0)
   - GTMSessionFetcher/Full (1.2.0):
     - GTMSessionFetcher/Core (= 1.2.0)
+  - IGListKit (3.4.0):
+    - IGListKit/Default (= 3.4.0)
+  - IGListKit/Default (3.4.0):
+    - IGListKit/Diffing
+  - IGListKit/Diffing (3.4.0)
+  - Kingfisher (4.9.0)
   - leveldb-library (1.20)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
+  - ObjcExceptionBridging (1.0.1):
+    - ObjcExceptionBridging/ObjcExceptionBridging (= 1.0.1)
+  - ObjcExceptionBridging/ObjcExceptionBridging (1.0.1)
   - Protobuf (3.6.1)
   - PureLayout (3.1.2)
   - RxSwift (4.2.0)
@@ -175,14 +186,21 @@ PODS:
   - SDWebImage/GIF (4.4.2):
     - FLAnimatedImage (~> 1.0)
     - SDWebImage/Core
+  - SwiftyJSON (4.1.0)
   - SwiftyXMLParser (4.0.0)
   - TwitterCore (3.2.0)
   - TwitterKit (3.4.0):
     - TwitterCore (>= 3.1.0)
   - VK-ios-sdk (1.4.6)
+  - XCGLogger (6.0.4):
+    - XCGLogger/Core (= 6.0.4)
+  - XCGLogger/Core (6.0.4):
+    - ObjcExceptionBridging
 
 DEPENDENCIES:
   - ActionSheetPicker-3.0
+  - Alamofire
+  - Anchorage
   - BarcodeScanner
   - Charts
   - FBSDKCoreKit
@@ -196,17 +214,23 @@ DEPENDENCIES:
   - Firebase/Storage
   - FirebaseUI/Storage
   - GoogleSignIn
+  - IGListKit
+  - Kingfisher
   - PureLayout
   - RxSwift
   - SDWebImage
   - SDWebImage/GIF
+  - SwiftyJSON
   - SwiftyXMLParser
   - TwitterKit
   - VK-ios-sdk
+  - XCGLogger
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - ActionSheetPicker-3.0
+    - Alamofire
+    - Anchorage
     - BarcodeScanner
     - Bolts
     - BoringSSL
@@ -236,19 +260,26 @@ SPEC REPOS:
     - gRPC-RxLibrary
     - GTMOAuth2
     - GTMSessionFetcher
+    - IGListKit
+    - Kingfisher
     - leveldb-library
     - nanopb
+    - ObjcExceptionBridging
     - Protobuf
     - PureLayout
     - RxSwift
     - SDWebImage
+    - SwiftyJSON
     - SwiftyXMLParser
     - TwitterCore
     - TwitterKit
     - VK-ios-sdk
+    - XCGLogger
 
 SPEC CHECKSUMS:
   ActionSheetPicker-3.0: eef157d75e151f255c5333d26656c7fbfe905a51
+  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  Anchorage: f855157310859280c706cc0b9c9281c21702f515
   BarcodeScanner: fce1ad2b3f28286b1ab5091fe0979789618bee27
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   BoringSSL: e10f92a27043805c01071fe815a5cd98ae8212e7
@@ -278,17 +309,22 @@ SPEC CHECKSUMS:
   gRPC-RxLibrary: c4c826507ad3c8c8fab6887f153938eb04b86d59
   GTMOAuth2: c77fe325e4acd453837e72d91e3b5f13116857b2
   GTMSessionFetcher: 0c4baf0a73acd0041bf9f71ea018deedab5ea84e
+  IGListKit: 7a5d788e9fb746bcd402baa8e8b24bc3bd2a5a07
+  Kingfisher: 64539b51826b778206daa6ed815d12653caa69dd
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
   PureLayout: 4634d0b61e3b5021166e8ec7c18e9e0ca0720c8b
   RxSwift: 99e10317ddfcc7fbe01356aafd118fde4a0be104
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
+  SwiftyJSON: c29297daf073d2aa016295d5809cdd68045c39b3
   SwiftyXMLParser: 8065da2e715e86aeba677a34fad8c252db5128bb
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: bc7bd086b9b724a1d888745a054e1d0b1ecc4f3f
   VK-ios-sdk: 7fd48bc5aaa6b96c3197c1987eb6593f2ea67331
+  XCGLogger: 4fc1bc0bdd5828cb8dc8da7a843536cda1bea8f3
 
-PODFILE CHECKSUM: 6bcf600db98b4bc57b88320afdf9612399914342
+PODFILE CHECKSUM: e8eabcbcd3b836536a1afe335374d2e1176a8d15
 
 COCOAPODS: 1.5.3

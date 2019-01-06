@@ -237,11 +237,23 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     @objc private func addBook() {
-        let vc = AddBookViewController()
+        APIManager.instance.book.get(bookQuery: getBookQuery()) { [weak self] result in
+            //let response = BooksList.GetBooks.Response(result: result)
+            //self?.presenter?.presentGetBooks(response: response)
+        }
+        /*let vc = AddBookViewController()
         vc.onCompleted = { [weak self] book in
             self?.pushBook(book: book)
         }
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)*/
+    }
+    
+    private func getBookQuery() -> BookQuery {
+        return BookQuery(searchText: "war+and+peace",
+                         startIndex: 0,
+                         maxResults: 40,
+                         filter: .paidEbooks,
+                         orderBy: .relevance)
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {

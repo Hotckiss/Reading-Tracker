@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         // Override point for customization after application launch.
         
         configLibraries()
+        APIManager.instance.startNetworkReachabilityObserver()
         
         let mainViewController = MainViewController()
         let interactor = MainInteractor()

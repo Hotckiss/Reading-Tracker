@@ -26,6 +26,12 @@ target 'Reading Tracker' do
   pod 'BarcodeScanner'
   pod 'SwiftyXMLParser'
   pod 'Charts'
+  pod 'Alamofire'
+  pod 'SwiftyJSON'
+  pod 'Kingfisher'
+  pod 'IGListKit'
+  pod 'XCGLogger'
+  pod 'Anchorage'
   target 'Reading TrackerTests' do
     inherit! :search_paths
     # Pods for testing

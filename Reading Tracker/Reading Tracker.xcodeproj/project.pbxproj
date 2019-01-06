@@ -19,6 +19,10 @@
 		2F1891E421590A680043BDCC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F1891E321590A670043BDCC /* GoogleService-Info.plist */; };
 		2F1891E521590A680043BDCC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F1891E321590A670043BDCC /* GoogleService-Info.plist */; };
 		2F1891E621590A680043BDCC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F1891E321590A670043BDCC /* GoogleService-Info.plist */; };
+		2F2A9D5121E2938500672E1A /* BookParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2A9D5021E2938500672E1A /* BookParser.swift */; };
+		2F2A9D5321E294C900672E1A /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2A9D5221E294C900672E1A /* Result.swift */; };
+		2F2A9D5521E295C700672E1A /* Queries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2A9D5421E295C700672E1A /* Queries.swift */; };
+		2F2A9D5721E2987400672E1A /* BookAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2A9D5621E2987400672E1A /* BookAPI.swift */; };
 		2F30E3B221BBE6B200C1A562 /* SingleBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30E3B121BBE6B200C1A562 /* SingleBookViewController.swift */; };
 		2F30E3B421BC3C0300C1A562 /* BookCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30E3B321BC3C0300C1A562 /* BookCommentsViewController.swift */; };
 		2F30E3B721BC45E700C1A562 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30E3B621BC45E700C1A562 /* CommentCell.swift */; };
@@ -33,6 +37,7 @@
 		2F412CE121ABEF58007C491B /* SizeDependent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F412CE021ABEF58007C491B /* SizeDependent.swift */; };
 		2F43CB5321B9B7810008B593 /* SingleSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F43CB5221B9B7810008B593 /* SingleSessionViewController.swift */; };
 		2F43CB5521B9CBF00008B593 /* PluralRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F43CB5421B9CBF00008B593 /* PluralRule.swift */; };
+		2F4C69A921E255B900EF7C7E /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F4C69A821E255B900EF7C7E /* APIManager.swift */; };
 		2F62C5E121C0099E002119EA /* PollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F62C5E021C0099E002119EA /* PollView.swift */; };
 		2F62C5E321C009D2002119EA /* Mood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F62C5E221C009D2002119EA /* Mood.swift */; };
 		2F62C5E521C009EB002119EA /* ReadPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F62C5E421C009EB002119EA /* ReadPlace.swift */; };
@@ -115,6 +120,10 @@
 		2F1891DE2158BCC10043BDCC /* RTTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTTextView.swift; sourceTree = "<group>"; };
 		2F1891E12158EF2E0043BDCC /* AuthorizationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationInteractor.swift; sourceTree = "<group>"; };
 		2F1891E321590A670043BDCC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2F2A9D5021E2938500672E1A /* BookParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookParser.swift; sourceTree = "<group>"; };
+		2F2A9D5221E294C900672E1A /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		2F2A9D5421E295C700672E1A /* Queries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queries.swift; sourceTree = "<group>"; };
+		2F2A9D5621E2987400672E1A /* BookAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookAPI.swift; sourceTree = "<group>"; };
 		2F30E3B121BBE6B200C1A562 /* SingleBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleBookViewController.swift; sourceTree = "<group>"; };
 		2F30E3B321BC3C0300C1A562 /* BookCommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCommentsViewController.swift; sourceTree = "<group>"; };
 		2F30E3B621BC45E700C1A562 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
@@ -129,6 +138,7 @@
 		2F412CE021ABEF58007C491B /* SizeDependent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeDependent.swift; sourceTree = "<group>"; };
 		2F43CB5221B9B7810008B593 /* SingleSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSessionViewController.swift; sourceTree = "<group>"; };
 		2F43CB5421B9CBF00008B593 /* PluralRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluralRule.swift; sourceTree = "<group>"; };
+		2F4C69A821E255B900EF7C7E /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		2F62C5E021C0099E002119EA /* PollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollView.swift; sourceTree = "<group>"; };
 		2F62C5E221C009D2002119EA /* Mood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mood.swift; sourceTree = "<group>"; };
 		2F62C5E421C009EB002119EA /* ReadPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadPlace.swift; sourceTree = "<group>"; };
@@ -319,6 +329,18 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		2F4C69A721E255A400EF7C7E /* GoogleBooksAPI */ = {
+			isa = PBXGroup;
+			children = (
+				2F4C69A821E255B900EF7C7E /* APIManager.swift */,
+				2F2A9D5021E2938500672E1A /* BookParser.swift */,
+				2F2A9D5221E294C900672E1A /* Result.swift */,
+				2F2A9D5421E295C700672E1A /* Queries.swift */,
+				2F2A9D5621E2987400672E1A /* BookAPI.swift */,
+			);
+			path = GoogleBooksAPI;
+			sourceTree = "<group>";
+		};
 		2F71B322218EFACD00E4E80F /* Registration */ = {
 			isa = PBXGroup;
 			children = (
@@ -371,6 +393,7 @@
 		2FE6C5A121581BDE005A7A68 /* Reading Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				2F4C69A721E255A400EF7C7E /* GoogleBooksAPI */,
 				2F71B32D218F963B00E4E80F /* Profile */,
 				2FED199921748F2900AFFF99 /* Library */,
 				2FED199821748F2100AFFF99 /* Session */,
@@ -703,6 +726,8 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Reading Tracker/Pods-Reading Tracker-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/ActionSheetPicker-3.0/ActionSheetPicker_3_0.framework",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Anchorage/Anchorage.framework",
 				"${BUILT_PRODUCTS_DIR}/BarcodeScanner/BarcodeScanner.framework",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
@@ -715,14 +740,19 @@
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/IGListKit/IGListKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/ObjcExceptionBridging/ObjcExceptionBridging.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/PureLayout/PureLayout.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyXMLParser/SwiftyXMLParser.framework",
 				"${PODS_ROOT}/TwitterCore/iOS/TwitterCore.framework",
 				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework",
 				"${BUILT_PRODUCTS_DIR}/VK-ios-sdk/VK_ios_sdk.framework",
+				"${BUILT_PRODUCTS_DIR}/XCGLogger/XCGLogger.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
@@ -733,6 +763,8 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ActionSheetPicker_3_0.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Anchorage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BarcodeScanner.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
@@ -745,14 +777,19 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IGListKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjcExceptionBridging.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PureLayout.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyXMLParser.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TwitterCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TwitterKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VK_ios_sdk.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XCGLogger.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
@@ -791,6 +828,7 @@
 				2FC9561F21AB448B00E52CE6 /* AddBookView.swift in Sources */,
 				2FFD1D052198BCA100779459 /* HandTimerView.swift in Sources */,
 				2F71B326218F3A2700E4E80F /* OnLiginStuff.swift in Sources */,
+				2F2A9D5121E2938500672E1A /* BookParser.swift in Sources */,
 				2F1891DF2158BCC10043BDCC /* RTTextView.swift in Sources */,
 				2FAA8FBA216A34650011F59D /* RegistrationAboutSelfViewController.swift in Sources */,
 				2F62C5E121C0099E002119EA /* PollView.swift in Sources */,
@@ -801,11 +839,14 @@
 				2FAA8FC0216A8B4A0011F59D /* RegistrationInteractor.swift in Sources */,
 				2FAA8FBE216A792A0011F59D /* RegistrationFavoritesViewController.swift in Sources */,
 				2F71B32F218F965000E4E80F /* ProfileViewController.swift in Sources */,
+				2F2A9D5521E295C700672E1A /* Queries.swift in Sources */,
 				2FC9562321AB44E900E52CE6 /* EditBookViewController.swift in Sources */,
 				2F43CB5321B9B7810008B593 /* SingleSessionViewController.swift in Sources */,
+				2F4C69A921E255B900EF7C7E /* APIManager.swift in Sources */,
 				2FE6C5A521581BDE005A7A68 /* MainViewController.swift in Sources */,
 				2F30E3B921BC581700C1A562 /* BookSessionsViewController.swift in Sources */,
 				2FFD1D032198BC6E00779459 /* PageTextField.swift in Sources */,
+				2F2A9D5321E294C900672E1A /* Result.swift in Sources */,
 				2F30E3B721BC45E700C1A562 /* CommentCell.swift in Sources */,
 				2FED199D21748FB000AFFF99 /* MyBooksViewController.swift in Sources */,
 				2F71B32C218F684900E4E80F /* LoginPasswordAuthorizationViewController.swift in Sources */,
@@ -829,6 +870,7 @@
 				2F71B324218EFAFF00E4E80F /* RegistrationViewController.swift in Sources */,
 				2F0C7E2B219F0F7D00C28ECB /* FirebaseStorageManager.swift in Sources */,
 				2F3AA2AD21B31AB600CCE35D /* BooksStatisticsViewController.swift in Sources */,
+				2F2A9D5721E2987400672E1A /* BookAPI.swift in Sources */,
 				2F1891DC2158B9760043BDCC /* UIColor+RGB.swift in Sources */,
 				2FEB6A9321A343FE00334802 /* QuestionarreViewController.swift in Sources */,
 				2F0C7E2D219F1D4100C28ECB /* ImageCompression.swift in Sources */,
