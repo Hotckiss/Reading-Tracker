@@ -27,31 +27,27 @@ class BookCellAPI: UITableViewCell {
     }
     
     private func setupSubviews() {
+        let coverImageView = UIImageView(image: nil)
+        coverImageView.contentMode = .scaleAspectFit
+        addSubview(coverImageView)
+        coverImageView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+        coverImageView.autoPinEdge(toSuperviewEdge: .top, withInset: 10)
+        coverImageView.autoSetDimensions(to: CGSize(width: 70, height: 100))
+        
         let titleLabel = UILabel(forAutoLayout: ())
         titleLabel.numberOfLines = 0
+        addSubview(titleLabel)
+        titleLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        titleLabel.autoPinEdge(.right, to: .left, of: coverImageView, withOffset: -16)
+        titleLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 20)
         
         let authorLabel = UILabel(forAutoLayout: ())
         authorLabel.numberOfLines = 0
-        
-        let coverImageView = UIImageView(image: nil)
-        coverImageView.contentMode = .scaleAspectFill
-        
-        addSubview(titleLabel)
-        
-        titleLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
-        titleLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16 + 70 + 16)
-        titleLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 20)
-        
         addSubview(authorLabel)
-        
         authorLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
-        authorLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16 + 70 + 16)
+        authorLabel.autoPinEdge(.right, to: .left, of: coverImageView, withOffset: -16)
         authorLabel.autoPinEdge(.top, to: .bottom, of: titleLabel, withOffset: 5)
-        
-        addSubview(coverImageView)
-        
-        coverImageView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 16), excludingEdge: .left)
-        coverImageView.autoSetDimensions(to: CGSize(width: 70, height: 100))
+        authorLabel.autoPinEdge(toSuperviewEdge: .bottom, withInset: 48)
         
         self.titleLabel = titleLabel
         self.authorLabel = authorLabel
@@ -62,12 +58,12 @@ class BookCellAPI: UITableViewCell {
         
         let titleTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .medium)]
             as [NSAttributedString.Key : Any]
         
         let authorTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 14.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14, weight: .medium)]
             as [NSAttributedString.Key : Any]
         
         titleLabel?.attributedText = NSAttributedString(string: model.title ?? "Без названия", attributes: titleTextAttributes)
