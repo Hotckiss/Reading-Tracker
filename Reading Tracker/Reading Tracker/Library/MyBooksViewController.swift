@@ -247,17 +247,6 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         alert.addAction(UIAlertAction(title: "Найти по названию", style: .default, handler: ({ [weak self] _ in
             let vc = BookTextSearchViewController()
             self?.navigationController?.pushViewController(vc, animated: true)
-            
-            /*let query = BookQuery(searchText: "war+and+peace",
-                                  startIndex: 0,
-                                  maxResults: 40,
-                                  filter: .paidEbooks,
-                                  orderBy: .relevance)
-            
-            APIManager.instance.book.get(bookQuery: query) { [weak self] result in
-                //let response = BooksList.GetBooks.Response(result: result)
-                //self?.presenter?.presentGetBooks(response: response)
-            }*/
         })))
         alert.addAction(UIAlertAction(title: "Ввести вручную", style: .default, handler: ({ [weak self] _ in
             let vc = AddBookViewController()

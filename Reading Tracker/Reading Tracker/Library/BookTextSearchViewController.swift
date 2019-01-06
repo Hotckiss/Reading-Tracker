@@ -12,7 +12,7 @@ import RxSwift
 import Firebase
 
 class BookTextSearchViewController: UIViewController {
-    private var spinner: UIActivityIndicatorView?
+    private var spinner: SpinnerView?
     private var searchTextField: RTTextField?
     private let searchTextFieldDelegate = FinishTextFieldDelegate()
     
@@ -34,13 +34,10 @@ class BookTextSearchViewController: UIViewController {
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
         
-        let spinner = UIActivityIndicatorView()
+        let spinner = SpinnerView()
         view.addSubview(spinner)
         
         spinner.autoCenterInSuperview()
-        spinner.backgroundColor = UIColor(rgb: 0xad5205).withAlphaComponent(0.7)
-        spinner.layer.cornerRadius = 8
-        spinner.autoSetDimensions(to: CGSize(width: 64, height: 64))
         self.spinner = spinner
         
         let iconView = UIImageView(image: UIImage(named: "search"))
@@ -100,9 +97,30 @@ class BookTextSearchViewController: UIViewController {
     }
     
     @objc private func onSearchButtonTapped() {
-        //todo: --
         let text = searchTextField?.text ?? ""
-        print("Text: \(text)")
-        navigationController?.popViewController(animated: true)
+        
+        guard !text.isEmpty else {
+            alertError(reason: "Введите непустой запрос")
+            return 
+        }
+        
+        let query = BookQuery(searchText: text,
+         startIndex: 0,
+         maxResults: 40,
+         filter: .paidEbooks,
+         orderBy: .relevance)
+         spinner?.show()
+        
+         APIManager.instance.book.get(bookQuery: query) { [weak self] result in
+            self?.spinner?.hide()
+         //let response = BooksList.GetBooks.Response(result: result)
+         //self?.presenter?.presentGetBooks(response: response)
+         }
+    }
+    
+    private func alertError(reason: String) {
+        let alert = UIAlertController(title: "Ошибка!", message: reason, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
 }
