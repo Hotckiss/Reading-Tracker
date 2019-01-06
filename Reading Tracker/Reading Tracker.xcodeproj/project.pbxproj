@@ -24,6 +24,8 @@
 		2F2A9D5521E295C700672E1A /* Queries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2A9D5421E295C700672E1A /* Queries.swift */; };
 		2F2A9D5721E2987400672E1A /* BookAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2A9D5621E2987400672E1A /* BookAPI.swift */; };
 		2F2A9D5921E29F4A00672E1A /* BookTextSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2A9D5821E29F4A00672E1A /* BookTextSearchViewController.swift */; };
+		2F2A9D5B21E2A7A800672E1A /* BookTextSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2A9D5A21E2A7A800672E1A /* BookTextSearchResultViewController.swift */; };
+		2F2A9D5D21E2A7EF00672E1A /* BookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2A9D5C21E2A7EF00672E1A /* BookCell.swift */; };
 		2F30E3B221BBE6B200C1A562 /* SingleBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30E3B121BBE6B200C1A562 /* SingleBookViewController.swift */; };
 		2F30E3B421BC3C0300C1A562 /* BookCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30E3B321BC3C0300C1A562 /* BookCommentsViewController.swift */; };
 		2F30E3B721BC45E700C1A562 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30E3B621BC45E700C1A562 /* CommentCell.swift */; };
@@ -126,6 +128,8 @@
 		2F2A9D5421E295C700672E1A /* Queries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queries.swift; sourceTree = "<group>"; };
 		2F2A9D5621E2987400672E1A /* BookAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookAPI.swift; sourceTree = "<group>"; };
 		2F2A9D5821E29F4A00672E1A /* BookTextSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTextSearchViewController.swift; sourceTree = "<group>"; };
+		2F2A9D5A21E2A7A800672E1A /* BookTextSearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTextSearchResultViewController.swift; sourceTree = "<group>"; };
+		2F2A9D5C21E2A7EF00672E1A /* BookCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCell.swift; sourceTree = "<group>"; };
 		2F30E3B121BBE6B200C1A562 /* SingleBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleBookViewController.swift; sourceTree = "<group>"; };
 		2F30E3B321BC3C0300C1A562 /* BookCommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCommentsViewController.swift; sourceTree = "<group>"; };
 		2F30E3B621BC45E700C1A562 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
@@ -475,6 +479,8 @@
 				2FC9562021AB44B500E52CE6 /* AddedBookView.swift */,
 				2FC9562221AB44E900E52CE6 /* EditBookViewController.swift */,
 				2F2A9D5821E29F4A00672E1A /* BookTextSearchViewController.swift */,
+				2F2A9D5A21E2A7A800672E1A /* BookTextSearchResultViewController.swift */,
+				2F2A9D5C21E2A7EF00672E1A /* BookCell.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -821,6 +827,7 @@
 				2F3AA2A621B2F9D700CCE35D /* PeriodSelectionView.swift in Sources */,
 				2FC9561B21AB41EA00E52CE6 /* TextFieldDelegates.swift in Sources */,
 				2F71B328218F3FFE00E4E80F /* OfflineCodeSignUpViewController.swift in Sources */,
+				2F2A9D5B21E2A7A800672E1A /* BookTextSearchResultViewController.swift in Sources */,
 				2F43CB5521B9CBF00008B593 /* PluralRule.swift in Sources */,
 				2F2A9D5921E29F4A00672E1A /* BookTextSearchViewController.swift in Sources */,
 				2F62C5E321C009D2002119EA /* Mood.swift in Sources */,
@@ -843,6 +850,7 @@
 				2FAA8FC0216A8B4A0011F59D /* RegistrationInteractor.swift in Sources */,
 				2FAA8FBE216A792A0011F59D /* RegistrationFavoritesViewController.swift in Sources */,
 				2F71B32F218F965000E4E80F /* ProfileViewController.swift in Sources */,
+				2F2A9D5D21E2A7EF00672E1A /* BookCell.swift in Sources */,
 				2F2A9D5521E295C700672E1A /* Queries.swift in Sources */,
 				2FC9562321AB44E900E52CE6 /* EditBookViewController.swift in Sources */,
 				2F43CB5321B9B7810008B593 /* SingleSessionViewController.swift in Sources */,
