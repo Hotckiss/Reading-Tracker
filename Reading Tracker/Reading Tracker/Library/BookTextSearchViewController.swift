@@ -121,10 +121,11 @@ class BookTextSearchViewController: UIViewController {
                     return
                 }
                 
-                break
+                let vc = BookTextSearchResultViewController()
+                vc.update(books: booksList)
+                self?.navigationController?.pushViewController(vc, animated: true)
             case .failure(let error):
                 self?.alertError(reason: error.localizedDescription)
-                break
             }
          }
     }
