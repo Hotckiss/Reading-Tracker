@@ -46,26 +46,26 @@ class SessionCell: UITableViewCell {
     private func setupSubviews() {
         let dateLabel = UILabel(forAutoLayout: ())
         dateLabel.numberOfLines = 1
-        addSubview(dateLabel)
+        contentView.addSubview(dateLabel)
         dateLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         dateLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 20)
         
         let dayOfWeekLabel = UILabel(forAutoLayout: ())
         dayOfWeekLabel.numberOfLines = 1
-        addSubview(dayOfWeekLabel)
+        contentView.addSubview(dayOfWeekLabel)
         dayOfWeekLabel.autoPinEdge(.left, to: .right, of: dateLabel, withOffset: 4)
         dayOfWeekLabel.autoAlignAxis(.horizontal, toSameAxisOf: dateLabel)
         
         let titleLabel = UILabel(forAutoLayout: ())
         titleLabel.numberOfLines = 0
-        addSubview(titleLabel)
+        contentView.addSubview(titleLabel)
         titleLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         titleLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         titleLabel.autoPinEdge(.top, to: .bottom, of: dateLabel, withOffset: 16)
         
         let authorLabel = UILabel(forAutoLayout: ())
         authorLabel.numberOfLines = 0
-        addSubview(authorLabel)
+        contentView.addSubview(authorLabel)
         authorLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         authorLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         authorLabel.autoPinEdge(.top, to: .bottom, of: titleLabel)
@@ -99,7 +99,7 @@ class SessionCell: UITableViewCell {
         minsTextLabel.attributedText = NSAttributedString(string: "мин", attributes: timeDescriptionTextAttributes)
         
         [minsTextLabel, minsNumLabel, hrsTextLabel, hrsNumLabel].forEach { [weak self] label in
-            self?.addSubview(label)
+            self?.contentView.addSubview(label)
         }
         
         minsTextLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 24)
@@ -166,7 +166,7 @@ class SessionCell: UITableViewCell {
             commentView.image = UIImage(named: "commentIcon")
             commentView.alpha = 0.5
             self.commentView = commentView
-            addSubview(commentView)
+            contentView.addSubview(commentView)
             commentView.autoSetDimensions(to: CGSize(width: 16, height: 16))
             commentView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
             commentView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16)
@@ -178,7 +178,7 @@ class SessionCell: UITableViewCell {
             placeView.image = UIImage(named: model.sessionInfo.readPlace.rawValue)
             placeView.alpha = 0.5
             self.placeView = placeView
-            addSubview(placeView)
+            contentView.addSubview(placeView)
             placeView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16)
             placeView.autoSetDimensions(to: CGSize(width: 16, height: 16))
             
@@ -196,7 +196,7 @@ class SessionCell: UITableViewCell {
             moodView.image = UIImage(named: model.sessionInfo.mood.rawValue)
             moodView.alpha = 0.5
             self.moodView = moodView
-            addSubview(moodView)
+            contentView.addSubview(moodView)
             moodView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16)
             moodView.autoSetDimensions(to: CGSize(width: 16, height: 16))
             

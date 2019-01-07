@@ -162,11 +162,11 @@ final class HandDateInputView: UIView {
             NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17)]
             as [NSAttributedString.Key : Any]
         
-        let finishButton = UIButton(forAutoLayout: ())
+        let finishButton = UIButton(frame: CGRect(x: 0, y: 0, width: 70, height: 35))
         finishButton.setAttributedTitle(NSAttributedString(string: "Готово", attributes: textAttributes), for: [])
         picker?.setDoneButton(UIBarButtonItem(customView: finishButton))
         
-        let closeButton = UIButton(forAutoLayout: ())
+        let closeButton = UIButton(frame: CGRect(x: 0, y: 0, width: 70, height: 35))
         closeButton.setAttributedTitle(NSAttributedString(string: "Закрыть", attributes: textAttributes), for: [])
         picker?.setCancelButton(UIBarButtonItem(customView: closeButton))
         picker?.show()

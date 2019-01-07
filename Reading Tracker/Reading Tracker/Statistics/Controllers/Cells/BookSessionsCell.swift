@@ -45,14 +45,14 @@ class BookSessionsCell: UITableViewCell {
     private func setupSubviews() {
         let titleLabel = UILabel(forAutoLayout: ())
         titleLabel.numberOfLines = 1
-        addSubview(titleLabel)
+        contentView.addSubview(titleLabel)
         titleLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         titleLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         titleLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 16)
         
         let authorLabel = UILabel(forAutoLayout: ())
         authorLabel.numberOfLines = 1
-        addSubview(authorLabel)
+        contentView.addSubview(authorLabel)
         authorLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         authorLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         authorLabel.autoPinEdge(.top, to: .bottom, of: titleLabel)
@@ -83,7 +83,7 @@ class BookSessionsCell: UITableViewCell {
         minsTextLabel.attributedText = NSAttributedString(string: "мин", attributes: timeDescriptionTextAttributes)
         
         [minsTextLabel, minsNumLabel, hrsTextLabel, hrsNumLabel].forEach { [weak self] label in
-            self?.addSubview(label)
+            self?.contentView.addSubview(label)
         }
         
         minsTextLabel.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16)
@@ -105,7 +105,7 @@ class BookSessionsCell: UITableViewCell {
         self.attemptsTextLabel = attemptsTextLabel
         
         [attemptsTextLabel, attemptsNumLabel].forEach { [weak self] label in
-            self?.addSubview(label)
+            self?.contentView.addSubview(label)
         }
         
         attemptsTextLabel.autoPinEdge(.left, to: .right, of: attemptsNumLabel, withOffset: 6)

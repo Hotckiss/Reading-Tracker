@@ -61,6 +61,8 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         tableView.separatorColor = UIColor(rgb: 0x2f5870)
         tableView.isScrollEnabled = false
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 120
         tableViewHeightConstraint = tableView.autoSetDimension(.height, toSize: 0)
         self.tableView = tableView
         
@@ -115,6 +117,10 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 42.0
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

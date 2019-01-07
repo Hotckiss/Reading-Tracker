@@ -29,21 +29,21 @@ class BookCellAPI: UITableViewCell {
     private func setupSubviews() {
         let coverImageView = UIImageView(image: nil)
         coverImageView.contentMode = .scaleAspectFit
-        addSubview(coverImageView)
+        contentView.addSubview(coverImageView)
         coverImageView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         coverImageView.autoPinEdge(toSuperviewEdge: .top, withInset: 10)
         coverImageView.autoSetDimensions(to: CGSize(width: 70, height: 100))
         
         let titleLabel = UILabel(forAutoLayout: ())
         titleLabel.numberOfLines = 0
-        addSubview(titleLabel)
+        contentView.addSubview(titleLabel)
         titleLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         titleLabel.autoPinEdge(.right, to: .left, of: coverImageView, withOffset: -16)
         titleLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 20)
         
         let authorLabel = UILabel(forAutoLayout: ())
         authorLabel.numberOfLines = 0
-        addSubview(authorLabel)
+        contentView.addSubview(authorLabel)
         authorLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         authorLabel.autoPinEdge(.right, to: .left, of: coverImageView, withOffset: -16)
         authorLabel.autoPinEdge(.top, to: .bottom, of: titleLabel, withOffset: 5)
@@ -52,6 +52,7 @@ class BookCellAPI: UITableViewCell {
         self.titleLabel = titleLabel
         self.authorLabel = authorLabel
         self.coverImageView = coverImageView
+        print(contentView)
     }
     
     func configure(model: BookModelAPI) {
@@ -83,7 +84,7 @@ class BookCellAPI: UITableViewCell {
     }
     
     func markAsAdded() {
-        backgroundColor = UIColor(rgb: 0x8aff53).withAlphaComponent(0.5)
+        contentView.backgroundColor = UIColor(rgb: 0x8aff53).withAlphaComponent(0.5)
     }
     
     func image() -> UIImage? {

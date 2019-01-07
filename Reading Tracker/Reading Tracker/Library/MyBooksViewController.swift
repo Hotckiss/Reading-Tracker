@@ -64,9 +64,9 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        var bottomSpace: CGFloat = 0
+        var bottomSpace: CGFloat = 49
         if #available(iOS 11.0, *) {
-            bottomSpace = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
+            bottomSpace += UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
         }
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .white
@@ -74,7 +74,7 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         
         let tableView = UITableView(forAutoLayout: ())
         view.addSubview(tableView)
-        tableViewTopConstraint = tableView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: UIApplication.shared.statusBarFrame.height + 4 + 32 + 4, left: 0, bottom: 0, right: 0))[0]
+        tableViewTopConstraint = tableView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: UIApplication.shared.statusBarFrame.height + 4 + 32 + 4, left: 0, bottom: bottomSpace, right: 0))[0]
         tableView.register(BookCell.self, forCellReuseIdentifier: "bookCell")
         tableView.tableFooterView = UIView()
         tableView.delegate = self
@@ -82,6 +82,8 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         tableView.backgroundColor = .white
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         tableView.separatorColor = UIColor(rgb: 0x2f5870)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 190
         self.tableView = tableView
         
         let addButton = UIButton(forAutoLayout: ())
@@ -99,7 +101,7 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         view.bringSubviewToFront(addButton)
         addButton.autoSetDimensions(to: CGSize(width: 60, height: 60))
         addButton.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
-        addButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16 + 49 + bottomSpace)
+        addButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16 + bottomSpace)
         self.addButton = addButton
         
         let line = CAShapeLayer()

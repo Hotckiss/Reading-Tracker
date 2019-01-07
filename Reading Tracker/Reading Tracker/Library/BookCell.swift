@@ -50,19 +50,19 @@ class BookCell: UITableViewCell {
         let coverImageView = UIImageView(image: model.image)
         coverImageView.contentMode = .scaleAspectFill
         
-        addSubview(titleLabel)
+        contentView.addSubview(titleLabel)
         
         titleLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         titleLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16 + 70 + 16)
         titleLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 20)
         
-        addSubview(authorLabel)
+        contentView.addSubview(authorLabel)
         
         authorLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         authorLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16 + 70 + 16)
         authorLabel.autoPinEdge(.top, to: .bottom, of: titleLabel, withOffset: 5)
         
-        addSubview(coverImageView)
+        contentView.addSubview(coverImageView)
         
         coverImageView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 16), excludingEdge: .left)
         coverImageView.autoSetDimensions(to: CGSize(width: 70, height: 100))

@@ -29,13 +29,13 @@ class CommentCell: UITableViewCell {
     private func setupSubviews() {
         let dateLabel = UILabel(forAutoLayout: ())
         dateLabel.numberOfLines = 1
-        addSubview(dateLabel)
+        contentView.addSubview(dateLabel)
         dateLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         dateLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 32)
         
         let dayOfWeekLabel = UILabel(forAutoLayout: ())
         dayOfWeekLabel.numberOfLines = 1
-        addSubview(dayOfWeekLabel)
+        contentView.addSubview(dayOfWeekLabel)
         dayOfWeekLabel.autoPinEdge(.left, to: .right, of: dateLabel, withOffset: 4)
         dayOfWeekLabel.autoAlignAxis(.horizontal, toSameAxisOf: dateLabel)
         self.dateLabel = dateLabel
@@ -43,14 +43,14 @@ class CommentCell: UITableViewCell {
         
         let pagesLabel = UILabel(forAutoLayout: ())
         pagesLabel.numberOfLines = 1
-        addSubview(pagesLabel)
+        contentView.addSubview(pagesLabel)
         pagesLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         pagesLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 32)
         self.pagesLabel = pagesLabel
         
         let commentLabel = UILabel(forAutoLayout: ())
         commentLabel.numberOfLines = 0
-        addSubview(commentLabel)
+        contentView.addSubview(commentLabel)
         commentLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         commentLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         commentLabel.autoPinEdge(.top, to: .bottom, of: dateLabel)

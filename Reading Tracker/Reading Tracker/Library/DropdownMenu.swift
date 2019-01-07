@@ -80,14 +80,14 @@ class DropdownMenu: UIView {
         
         let textAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 17.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17, weight: .medium)]
             as [NSAttributedString.Key : Any]
         
-        let finishButton = UIButton(forAutoLayout: ())
+        let finishButton = UIButton(frame: CGRect(x: 0, y: 0, width: 70, height: 35))
         finishButton.setAttributedTitle(NSAttributedString(string: "Готово", attributes: textAttributes), for: [])
         picker?.setDoneButton(UIBarButtonItem(customView: finishButton))
         
-        let closeButton = UIButton(forAutoLayout: ())
+        let closeButton = UIButton(frame: CGRect(x: 0, y: 0, width: 70, height: 35))
         closeButton.setAttributedTitle(NSAttributedString(string: "Закрыть", attributes: textAttributes), for: [])
         picker?.setCancelButton(UIBarButtonItem(customView: closeButton))
         picker?.show()

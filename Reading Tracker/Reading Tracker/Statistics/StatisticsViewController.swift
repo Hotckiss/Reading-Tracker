@@ -201,14 +201,14 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
             
             let textAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 17.0)!]
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17, weight: .medium)]
                 as [NSAttributedString.Key : Any]
             
-            let finishButton = UIButton(forAutoLayout: ())
+            let finishButton = UIButton(frame: CGRect(x: 0, y: 0, width: 70, height: 35))
             finishButton.setAttributedTitle(NSAttributedString(string: "Готово", attributes: textAttributes), for: [])
             picker?.setDoneButton(UIBarButtonItem(customView: finishButton))
             
-            let closeButton = UIButton(forAutoLayout: ())
+            let closeButton = UIButton(frame: CGRect(x: 0, y: 0, width: 70, height: 35))
             closeButton.setAttributedTitle(NSAttributedString(string: "Закрыть", attributes: textAttributes), for: [])
             picker?.setCancelButton(UIBarButtonItem(customView: closeButton))
             picker?.show()
@@ -221,13 +221,17 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         periodView.autoPinEdge(toSuperviewEdge: .right)
         self.periodView = periodView
         
+        var bottomSpace: CGFloat = 49
+        if #available(iOS 11.0, *) {
+            bottomSpace += UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
+        }
         contentView = UIScrollView(frame: .zero)
         contentView.isScrollEnabled = true
         contentView.alwaysBounceVertical = true
         contentView.delegate = self
         contentView.showsVerticalScrollIndicator = false
         view.addSubview(contentView)
-        contentView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
+        contentView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 0, bottom: bottomSpace, right: 0), excludingEdge: .top)
         contentView.autoPinEdge(.top, to: .bottom, of: periodView)
         
         let overall = OverallStatsView(frame: .zero)

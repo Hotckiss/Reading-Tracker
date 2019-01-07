@@ -32,19 +32,19 @@ class BookSessionTimesCell: UITableViewCell {
     private func setupSubviews() {
         let dateLabel = UILabel(forAutoLayout: ())
         dateLabel.numberOfLines = 1
-        addSubview(dateLabel)
+        contentView.addSubview(dateLabel)
         dateLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         dateLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 20)
         
         let dayOfWeekLabel = UILabel(forAutoLayout: ())
         dayOfWeekLabel.numberOfLines = 1
-        addSubview(dayOfWeekLabel)
+        contentView.addSubview(dayOfWeekLabel)
         dayOfWeekLabel.autoPinEdge(.left, to: .right, of: dateLabel, withOffset: 4)
         dayOfWeekLabel.autoAlignAxis(.horizontal, toSameAxisOf: dateLabel)
         
         let timeIntervalLabel = UILabel(forAutoLayout: ())
         timeIntervalLabel.numberOfLines = 0
-        addSubview(timeIntervalLabel)
+        contentView.addSubview(timeIntervalLabel)
         timeIntervalLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         timeIntervalLabel.autoPinEdge(toSuperviewEdge: .bottom, withInset: 20)
         timeIntervalLabel.autoPinEdge(.top, to: .bottom, of: dateLabel, withOffset: 16)
@@ -77,7 +77,7 @@ class BookSessionTimesCell: UITableViewCell {
         minsTextLabel.attributedText = NSAttributedString(string: "мин", attributes: timeDescriptionTextAttributes)
         
         [minsTextLabel, minsNumLabel, hrsTextLabel, hrsNumLabel].forEach { [weak self] label in
-            self?.addSubview(label)
+            self?.contentView.addSubview(label)
         }
         
         minsTextLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 24)

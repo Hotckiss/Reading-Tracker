@@ -33,6 +33,11 @@ final class BookTextSearchResultViewController: UIViewController, UITableViewDel
         super.viewDidLoad()
         view.backgroundColor = .white
         
+        var bottomSpace: CGFloat = 49
+        if #available(iOS 11.0, *) {
+            bottomSpace += UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
+        }
+        
         let navBar = NavigationBar()
         navBar.configure(model: NavigationBarModel(title: "Результаты поиска",
                                                    backButtonText: "Назад",
@@ -48,7 +53,7 @@ final class BookTextSearchResultViewController: UIViewController, UITableViewDel
         let tableView = UITableView(forAutoLayout: ())
         view.addSubview(tableView)
         tableView.autoPinEdge(.top, to: .bottom, of: navBar)
-        tableView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
+        tableView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 0, bottom: bottomSpace, right: 0), excludingEdge: .top)
         tableView.register(BookCellAPI.self, forCellReuseIdentifier: "bookCellAPI")
         tableView.tableFooterView = UIView()
         tableView.delegate = self
@@ -56,6 +61,8 @@ final class BookTextSearchResultViewController: UIViewController, UITableViewDel
         tableView.backgroundColor = .white
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         tableView.separatorColor = UIColor(rgb: 0x2f5870)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 190
         self.tableView = tableView
     }
     

@@ -71,7 +71,8 @@ final class BookSessionsViewController: UIViewController, UITableViewDelegate, U
         tableView.backgroundColor = .white
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         tableView.separatorColor = UIColor(rgb: 0x2f5870)
-        
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 120
         view.bringSubviewToFront(bookCell)
     }
     

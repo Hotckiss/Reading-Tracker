@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import Firebase
-import ActionSheetPicker_3_0
 
 public struct ProfileOption {
     public let title: String
@@ -39,6 +38,10 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     private func setupNavigationBar() {
+        var bottomSpace: CGFloat = 49
+        if #available(iOS 11.0, *) {
+            bottomSpace += UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
+        }
         let navBar = NavigationBar()
         
         navBar.configure(model: NavigationBarModel(title: "Профиль читателя",
@@ -53,7 +56,7 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         
         tableView = UITableView(forAutoLayout: ())
         view.addSubview(tableView)
-        tableView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: UIApplication.shared.statusBarFrame.height + 4 + 32 + 4, left: 0, bottom: 0, right: 0))
+        tableView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: UIApplication.shared.statusBarFrame.height + 4 + 32 + 4, left: 0, bottom: bottomSpace, right: 0))
         tableView.register(ProfileCell.self, forCellReuseIdentifier: "profileCell")
         tableView.tableFooterView = UIView()
         tableView.delegate = self
@@ -61,6 +64,8 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         tableView.backgroundColor = .white
         tableView.separatorInset = .zero
         tableView.separatorColor = UIColor(rgb: 0x2f5870)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 190
     }
     
     private func setupSpinner() {
@@ -128,7 +133,7 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
             titleLabel.attributedText = NSAttributedString(string: model.title, attributes: titleTextAttributes)
             titleLabel.numberOfLines = 0
             
-            addSubview(titleLabel)
+            contentView.addSubview(titleLabel)
             
             titleLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
             titleLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
@@ -143,7 +148,7 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
             
             subtitleLabel.attributedText = NSAttributedString(string: model.subtitle, attributes: subtitleTextAttributes)
             subtitleLabel.numberOfLines = 0
-            addSubview(subtitleLabel)
+            contentView.addSubview(subtitleLabel)
             
             subtitleLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
             subtitleLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)

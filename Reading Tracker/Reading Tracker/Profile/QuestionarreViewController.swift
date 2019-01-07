@@ -257,10 +257,15 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         view.backgroundColor = .white
         setupNavigationBar()
         
+        var bottomSpace: CGFloat = 49
+        if #available(iOS 11.0, *) {
+            bottomSpace += UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
+        }
+        
         let tableView = UITableView(forAutoLayout: ())
         view.addSubview(tableView)
         tableView.autoPinEdge(.top, to: .bottom, of: navBar)
-        tableViewBottomConstraint = tableView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)[1]
+        tableViewBottomConstraint = tableView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 0, bottom: bottomSpace, right: 0), excludingEdge: .top)[1]
         tableView.register(SectionCell.self, forCellReuseIdentifier: "sectionCell")
         tableView.register(TextFieldCell.self, forCellReuseIdentifier: "textFieldCell")
         tableView.register(LongTextFieldCell.self, forCellReuseIdentifier: "longTextFieldCell")
@@ -273,6 +278,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         tableView.separatorColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 190
         self.tableView = tableView
         
         setupSpinner()
@@ -328,10 +334,24 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         return 2
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 42.0
+    }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "sectionCell") as! SectionCell
-        cell.configure(model: (section == 0) ? "О себе" : "О предпочтениях")
-        return cell.contentView
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 42))
+        let titleLabel = UILabel(forAutoLayout: ())
+        let titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .medium)]
+            as [NSAttributedString.Key : Any]
+        
+        titleLabel.attributedText = NSAttributedString(string: (section == 0) ? "О себе" : "О предпочтениях", attributes: titleTextAttributes)
+        titleLabel.numberOfLines = 0
+        headerView.addSubview(titleLabel)
+        headerView.backgroundColor = .white
+        titleLabel.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 16, left: 16, bottom: 0, right: 16))
+        return headerView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -497,7 +517,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             field.text = model.text
             field.returnKeyType = .done
             field.delegate = self
-            addSubview(field)
+            contentView.addSubview(field)
             field.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 32, left: 8, bottom: 8, right: 8))
             self.field = field
             field.addTarget(self, action: #selector(fieldChanged(_:)), for: .editingChanged)
@@ -548,7 +568,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             let field = UITextView(frame: .zero)
             field.delegate = self
             field.isScrollEnabled = false
-            addSubview(field)
+            contentView.addSubview(field)
             field.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 32, left: 8, bottom: 8, right: 8))
             field.font = UIFont.systemFont(ofSize: 20)
             field.returnKeyType = .done
@@ -562,7 +582,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             
             placeholder.attributedText = NSAttributedString(string: model.placeholder, attributes: textAttributes)
             
-            addSubview(placeholder)
+            contentView.addSubview(placeholder)
             placeholder.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
             placeholder.autoPinEdge(toSuperviewEdge: .top, withInset: 32 + 4)
             self.placeholder = placeholder
@@ -664,7 +684,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                 mainButton.setAttributedTitle(NSAttributedString(string: model.title, attributes: mainTextAttributes1), for: [])
             }
             mainButton.contentHorizontalAlignment = .left
-            addSubview(mainButton)
+            contentView.addSubview(mainButton)
             mainButton.autoSetDimension(.height, toSize: 32)
             mainButton.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 32, left: 16, bottom: 8, right: 16))
             
@@ -722,14 +742,14 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             
             let textAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 17.0)!]
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17, weight: .medium)]
                 as [NSAttributedString.Key : Any]
             
-            let finishButton = UIButton(forAutoLayout: ())
+            let finishButton = UIButton(frame: CGRect(x: 0, y: 0, width: 70, height: 35))
             finishButton.setAttributedTitle(NSAttributedString(string: "Готово", attributes: textAttributes), for: [])
             picker?.setDoneButton(UIBarButtonItem(customView: finishButton))
             
-            let closeButton = UIButton(forAutoLayout: ())
+            let closeButton = UIButton(frame: CGRect(x: 0, y: 0, width: 70, height: 35))
             closeButton.setAttributedTitle(NSAttributedString(string: "Закрыть", attributes: textAttributes), for: [])
             picker?.setCancelButton(UIBarButtonItem(customView: closeButton))
             picker?.show()

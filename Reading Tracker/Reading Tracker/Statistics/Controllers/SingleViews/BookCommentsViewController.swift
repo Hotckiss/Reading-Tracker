@@ -72,7 +72,8 @@ final class BookCommentsViewController: UIViewController, UITableViewDelegate, U
         tableView.dataSource = self
         tableView.backgroundColor = .white
         tableView.separatorStyle = .none
-        
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 120
         view.bringSubviewToFront(bookCell)
     }
     
