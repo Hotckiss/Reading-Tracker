@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 final class SessionViewController: UIViewController {
+    var onSessionUploaded: ((UploadSessionModel) -> Void)?
     var onBookAddedInSession: ((BookModel) -> Void)?
     var onBookSelectFromLibraryRequest: (() -> Void)?
     private var spinner: SpinnerView?
@@ -158,6 +159,9 @@ final class SessionViewController: UIViewController {
         }
         
         let vc = SessionFinishViewController(model: finishModel)
+        vc.onCompleted = { [weak self] usm in
+            self?.onSessionUploaded?(usm)
+        }
         navigationController?.pushViewController(vc, animated: true)
     }
     

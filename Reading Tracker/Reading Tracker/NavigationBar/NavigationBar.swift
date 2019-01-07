@@ -85,6 +85,11 @@ public class NavigationBar: UIView {
         titleLabel?.text = model.title
     }
     
+    public func setFrontButtonImage(image: UIImage?) {
+        frontButton?.setTitle("", for: [])
+        frontButton?.setImage(image, for: [])
+    }
+    
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

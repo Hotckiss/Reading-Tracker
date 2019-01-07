@@ -23,18 +23,16 @@ public struct ProfileOption {
 }
 
 final class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    public var onExit: (() -> Void)? = nil
-    public var booksStorage: [BookModel] = []
+    var onExit: (() -> Void)?
     private var spinner: UIActivityIndicatorView?
     private var profileOptions: [ProfileOption] = [ProfileOption(title: "Анкета участника исследования", subtitle: "Заполняя анкету, вы учавствуете в научном исследовании читателей и их интересов"),
-                                                   ProfileOption(title: "Статистика"),
+                                                   ProfileOption(title: "О приложении"),
                                                    ProfileOption(title: "Настройки"),
                                                    ProfileOption(title: "Выход")]
     private var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .white
         setupNavigationBar()
         setupSpinner()
@@ -43,7 +41,11 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
     private func setupNavigationBar() {
         let navBar = NavigationBar()
         
-        navBar.configure(model: NavigationBarModel(title: "Профиль читателя"))
+        navBar.configure(model: NavigationBarModel(title: "Профиль читателя",
+                                                   backButtonText: "Назад",
+                                                   onBackButtonPressed: ({ [weak self] in
+                                                    self?.navigationController?.popViewController(animated: true)
+                                                   })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         
         view.addSubview(navBar)
@@ -92,8 +94,8 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
             let qVC = QuestionarreViewController()
             navigationController?.pushViewController(qVC, animated: true)
         } else if indexPath.row == 1 {
-            let sVC = StatisticsViewController(books: booksStorage)
-            navigationController?.pushViewController(sVC, animated: true)
+            //let sVC = StatisticsViewController(books: booksStorage)
+            //navigationController?.pushViewController(sVC, animated: true)
         } else if indexPath.row == 3 {
             onExit?()
         }

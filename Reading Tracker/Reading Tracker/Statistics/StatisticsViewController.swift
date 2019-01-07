@@ -87,6 +87,7 @@ public enum StatsInterval {
 }
 
 final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
+    var onExit: (() -> Void)?
     private var navBar: NavigationBar?
     private var periodView: PeriodSelectionView?
     private var contentView: UIScrollView!
@@ -103,9 +104,11 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     private var overallView: OverallStatsView?
     private var currentInterval: StatsInterval = .allTime
     
-    convenience init(books: [BookModel]) {
+    convenience init() {
         self.init(nibName: nil, bundle: nil)
-        
+    }
+    
+    func updateBooksStorage(books: [BookModel]) {
         for book in books {
             booksMap[book.id] = book
         }
@@ -161,13 +164,17 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .white
         let navBar = NavigationBar()
         
-        navBar.configure(model: NavigationBarModel(title: "Чтение", backButtonText: "Назад", onBackButtonPressed: ({ [weak self] in
-            self?.navigationController?.popViewController(animated: true)
+        navBar.configure(model: NavigationBarModel(title: "Статистика", onFrontButtonPressed: ({ [weak self] in
+            let profileVC = ProfileViewController()
+            profileVC.onExit = self?.onExit
+            self?.navigationController?.pushViewController(profileVC, animated: true)
         })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
+        navBar.setFrontButtonImage(image: UIImage(named: "profile"))
         
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
@@ -266,13 +273,18 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
                     self?.sessions = sessions
                     self?.update()
                 },
-                                                          onError: ({ [weak self] in
-                                                            //self?.spinner?.hide()
-                                                          }))
+                onError: ({ [weak self] in
+                    //self?.spinner?.hide()
+                }))
             } else {
                 self?.sessions = []
             }
         }
+        update()
+    }
+    
+    func pushSession(session: UploadSessionModel) {
+        sessions.append(session)
         update()
     }
     

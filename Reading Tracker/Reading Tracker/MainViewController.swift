@@ -38,25 +38,21 @@ final class MainViewController: UIViewController {
     
     private func setupSubviews() {
         
-        let profileVC = ProfileViewController()
-        profileVC.onExit = exitAction
+        let statsVC = StatisticsViewController()
+        statsVC.onExit = exitAction
         let libraryVC = MyBooksViewController()
         let sessionVC = SessionViewController()
         
-        profileVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "profileTabBar"), selectedImage: UIImage(named: "profileTabBar"))
-        profileVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
+        statsVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "statsTabBar"), selectedImage: UIImage(named: "statsTabBar"))
+        statsVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         libraryVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "libraryTabBar"), selectedImage: UIImage(named: "libraryTabBar"))
         libraryVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         sessionVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "sessionTabBar"), selectedImage: UIImage(named: "sessionTabBar"))
         sessionVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         
-        sessionVC.onBookAddedInSession = { bookModel in
-            libraryVC.pushBook(book: bookModel)
-        }
-        
         libraryVC.onBooksListUpdated = { list in
             sessionVC.updateWithBook(book: list.first)
-            profileVC.booksStorage = list
+            statsVC.updateBooksStorage(books: list)
         }
         
         libraryVC.onTapToStartSession = { [weak self] book in
@@ -73,7 +69,15 @@ final class MainViewController: UIViewController {
             self?.mainTabBarController.selectedIndex = 2
         }
         
-        let controllers = [profileVC, sessionVC, libraryVC]
+        sessionVC.onBookAddedInSession = { bookModel in
+            libraryVC.pushBook(book: bookModel)
+        }
+        
+        sessionVC.onSessionUploaded = { usm in
+            statsVC.pushSession(session: usm)
+        }
+        
+        let controllers = [statsVC, sessionVC, libraryVC]
         
         mainTabBarController.viewControllers = controllers.map{ UINavigationController.init(rootViewController: $0)}
         mainTabBarController.selectedIndex = 1

@@ -10,7 +10,8 @@ import Foundation
 import UIKit
 
 class SessionFinishViewController: UIViewController {
-    var model: SessionFinishModel
+    var onCompleted: ((UploadSessionModel) -> Void)?
+    private var model: SessionFinishModel
     private var spinner: UIActivityIndicatorView?
     private var commentTextField: RTTextField!
     private let commentTextFieldDelegate = FinishTextFieldDelegate()
@@ -138,6 +139,21 @@ class SessionFinishViewController: UIViewController {
         FirestoreManager.DBManager.uploadSession(session: model,
                                                  completion: ({ [weak self] in
                                                     self?.navigationController?.popViewController(animated: true)
+                                                    guard let model = self?.model else {
+                                                        return
+                                                    }
+                                                    
+                                                    let usm = UploadSessionModel(bookId: model.bookInfo.id,
+                                                                                 startPage: model.startPage,
+                                                                                 finishPage: model.finishPage,
+                                                                                 time: model.time,
+                                                                                 startTime: model.startTime,
+                                                                                 finishTime: model.finishTime,
+                                                                                 mood: mood,
+                                                                                 readPlace: place,
+                                                                                 comment: comment)
+                                                    
+                                                    self?.onCompleted?(usm)
                                                     //TODO reset session VC
                                                  }),
                                                  onError: ({
