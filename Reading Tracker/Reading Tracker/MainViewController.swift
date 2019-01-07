@@ -73,8 +73,9 @@ final class MainViewController: UIViewController {
             libraryVC.pushBook(book: bookModel)
         }
         
-        sessionVC.onSessionUploaded = { usm in
+        sessionVC.onSessionUploaded = { [weak self] usm in
             statsVC.pushSession(session: usm)
+            self?.mainTabBarController.selectedIndex = 0
         }
         
         let controllers = [statsVC, sessionVC, libraryVC]
