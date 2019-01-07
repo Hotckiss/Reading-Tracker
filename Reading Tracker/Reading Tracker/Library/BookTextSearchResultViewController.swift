@@ -14,6 +14,7 @@ final class BookTextSearchResultViewController: UIViewController, UITableViewDel
     private var navBar: NavigationBar?
     private var tableView: UITableView?
     private var books: [BookModelAPI] = []
+    private var added: [Int: Bool] = [:]
     
     convenience init() {
         self.init(nibName: nil, bundle: nil)
@@ -59,6 +60,7 @@ final class BookTextSearchResultViewController: UIViewController, UITableViewDel
     
     func update(books: [BookModelAPI]) {
         self.books = books
+        self.added = [:]
         tableView?.reloadData()
     }
     
@@ -73,6 +75,23 @@ final class BookTextSearchResultViewController: UIViewController, UITableViewDel
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let isAdded = added[indexPath.row] ?? false
+        if isAdded {
+            return
+        }
+        
         let book = books[indexPath.row]
+        let alert = UIAlertController(title: "Добавление книги", message: "Добавить книгу в библиотеку?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Да", style: .default, handler: ({ [weak self] _ in
+            guard !isAdded else {
+                return
+            }
+            
+            self?.added[indexPath.row] = true
+            let cell = self?.tableView?.cellForRow(at: indexPath) as? BookCellAPI
+            cell?.markAsAdded()
+        })))
+        alert.addAction(UIAlertAction(title: "Нет", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
 }

@@ -81,4 +81,8 @@ class BookCellAPI: UITableViewCell {
             imageView.kf.setImage(with: URL(string: thumbnail), options: [.transition(imageTransition)])
         }
     }
+    
+    func markAsAdded() {
+        backgroundColor = UIColor(rgb: 0x8aff53).withAlphaComponent(0.5)
+    }
 }
