@@ -161,6 +161,8 @@ final class SessionViewController: UIViewController {
         let vc = SessionFinishViewController(model: finishModel)
         vc.onCompleted = { [weak self] usm in
             self?.onSessionUploaded?(usm)
+            self?.handDateInputView?.reset()
+            self?.sessionButton?.reset()
         }
         navigationController?.pushViewController(vc, animated: true)
     }
