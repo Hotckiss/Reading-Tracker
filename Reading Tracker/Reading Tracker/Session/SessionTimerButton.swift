@@ -64,6 +64,13 @@ public final class SessionTimerButton: UIButton {
         }
     }
     
+    func reset() {
+        isPlaceholder = false
+        time = 0
+        startTime = nil
+        buttonState = .start
+    }
+    
     override public init(frame: CGRect) {
         super.init(frame: frame)
         setupButton(radius: 115)

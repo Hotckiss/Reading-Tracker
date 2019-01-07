@@ -25,6 +25,11 @@ final class HandDateInputView: UIView {
         setupSubviews()
     }
     
+    func reset() {
+        let currentTime = Date()
+        configure(startDateTime: currentTime, finishDateTime: currentTime, date: currentTime)
+    }
+    
     func getDates() -> (Date, Date, Int) {
         let calendar = Calendar.current
         
