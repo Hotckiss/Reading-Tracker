@@ -26,14 +26,15 @@ final class BookAPIImplementation: BookAPI {
         let url =
             baseURL +
                 "/volumes?" +
-                "filter=\(bookQuery.filter.rawValue)&" +
+                //"filter=\(bookQuery.filter.rawValue)&" +
                 "q=\(bookQuery.searchText)&" +
                 "orderBy=\(bookQuery.orderBy.rawValue)&" +
                 "startIndex=\(bookQuery.startIndex)&" +
         "maxResults=\(bookQuery.maxResults)"
         
+        let encodedURLStrig = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         let apiModel = APIModel(method: .get,
-                                url: url,
+                                url: encodedURLStrig,
                                 headers: nil,
                                 params: nil,
                                 paramsEncoding: .json)
