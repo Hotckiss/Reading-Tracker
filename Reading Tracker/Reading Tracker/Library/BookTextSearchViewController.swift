@@ -12,6 +12,7 @@ import RxSwift
 import Firebase
 
 class BookTextSearchViewController: UIViewController {
+    var onAdd: ((BookModel) -> Void)?
     private var spinner: SpinnerView?
     private var searchTextField: RTTextField?
     private let searchTextFieldDelegate = FinishTextFieldDelegate()
@@ -122,6 +123,7 @@ class BookTextSearchViewController: UIViewController {
                 }
                 
                 let vc = BookTextSearchResultViewController()
+                vc.onAdd = self?.onAdd
                 vc.update(books: booksList)
                 self?.navigationController?.pushViewController(vc, animated: true)
             case .failure(let error):

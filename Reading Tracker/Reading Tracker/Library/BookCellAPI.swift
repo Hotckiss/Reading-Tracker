@@ -85,4 +85,8 @@ class BookCellAPI: UITableViewCell {
     func markAsAdded() {
         backgroundColor = UIColor(rgb: 0x8aff53).withAlphaComponent(0.5)
     }
+    
+    func image() -> UIImage? {
+        return coverImageView?.image
+    }
 }

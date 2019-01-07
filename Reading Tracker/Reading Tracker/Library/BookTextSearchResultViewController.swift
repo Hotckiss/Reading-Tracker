@@ -11,6 +11,7 @@ import UIKit
 import Firebase
 
 final class BookTextSearchResultViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    var onAdd: ((BookModel) -> Void)?
     private var navBar: NavigationBar?
     private var tableView: UITableView?
     private var books: [BookModelAPI] = []
@@ -87,9 +88,23 @@ final class BookTextSearchResultViewController: UIViewController, UITableViewDel
                 return
             }
             
-            self?.added[indexPath.row] = true
             let cell = self?.tableView?.cellForRow(at: indexPath) as? BookCellAPI
             cell?.markAsAdded()
+            
+            var model = BookModel(title: book.title ?? "",
+                                  author: book.authors?.first ?? "",
+                                  image: cell?.image(),
+                                  lastUpdated: Date(),
+                                  type: .ebook)
+            
+            model.id = FirestoreManager.DBManager.addBook(book: model, completion: ({ bookId in
+                FirebaseStorageManager.DBManager.uploadCover(cover: model.image, bookId: bookId, completion: ({ [weak self] in
+                    self?.onAdd?(model)
+                }), onError: nil)
+            }))
+            
+            self?.added[indexPath.row] = true
+            
         })))
         alert.addAction(UIAlertAction(title: "Нет", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)

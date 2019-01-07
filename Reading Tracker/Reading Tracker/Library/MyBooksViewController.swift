@@ -166,6 +166,9 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         
         alert.addAction(UIAlertAction(title: "Найти по названию", style: .default, handler: ({ [weak self] _ in
             let vc = BookTextSearchViewController()
+            vc.onAdd = { [weak self] book in
+                self?.pushBook(book: book)
+            }
             self?.navigationController?.pushViewController(vc, animated: true)
         })))
         alert.addAction(UIAlertAction(title: "Ввести вручную", style: .default, handler: ({ [weak self] _ in
