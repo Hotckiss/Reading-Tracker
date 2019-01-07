@@ -9,8 +9,10 @@
 import Foundation
 import UIKit
 import Firebase
+import BarcodeScanner
 
-final class MyBooksViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+final class MyBooksViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,
+BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissalDelegate {
     var onBooksListUpdated: (([BookModel]) -> Void)?
     var onTapToStartSession: ((BookModel) -> Void)?
     private var spinner: SpinnerView?
@@ -161,7 +163,12 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         let msg = "Добавить можно лишь информацию о книге, которую вы читаете: название, автор, обложка."
         let alert = UIAlertController(title: title, message: msg, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Найти по штрих-коду", style: .default, handler: ({ [weak self] _ in
+            let vc = BarcodeScannerViewController()
+            vc.codeDelegate = self
+            vc.errorDelegate = self
+            vc.dismissalDelegate = self
             
+            self?.present(vc, animated: true, completion: nil)
         })))
         
         alert.addAction(UIAlertAction(title: "Найти по названию", style: .default, handler: ({ [weak self] _ in
@@ -181,6 +188,53 @@ final class MyBooksViewController: UIViewController, UITableViewDelegate, UITabl
         
         alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
+        controller.dismiss(animated: true, completion: nil)
+        spinner?.show()
+        let queryText = "isbn:" + code
+        
+        let query = BookQuery(searchText: queryText,
+                              startIndex: 0,
+                              maxResults: 40,
+                              filter: .paidEbooks,
+                              orderBy: .relevance)
+        
+        APIManager.instance.book.get(bookQuery: query) { [weak self] result in
+            self?.spinner?.hide()
+            
+            switch result {
+            case .success(let booksList):
+                guard !booksList.isEmpty else {
+                    self?.alertError(reason: "По вашему запросу ничего не найдено")
+                    return
+                }
+                
+                let vc = BookTextSearchResultViewController()
+                vc.onAdd = { [weak self] book in
+                    self?.pushBook(book: book)
+                }
+                vc.update(books: booksList)
+                self?.navigationController?.pushViewController(vc, animated: true)
+            case .failure(let error):
+                self?.alertError(reason: error.localizedDescription)
+            }
+        }
+    }
+    
+    private func alertError(reason: String) {
+        let alert = UIAlertController(title: "Ошибка!", message: reason, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func scanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {
+        print(error)
+    }
+    
+    func scannerDidDismiss(_ controller: BarcodeScannerViewController) {
+        controller.dismiss(animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
