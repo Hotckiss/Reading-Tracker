@@ -15,6 +15,8 @@ public final class OverallStatsView: UIView {
     var hrsNumLabel: UILabel?
     var minsNumLabel: UILabel?
     var approachesNumLabel: UILabel?
+    var booksTextLabel: UILabel?
+    var approachesTextLabel: UILabel?
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,22 +25,9 @@ public final class OverallStatsView: UIView {
         style.maximumLineHeight = SizeDependent.instance.convertPadding(20)
         
         let textSize = CGFloat(SizeDependent.instance.convertFont(18))
-        let booksDescriptionTextAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: textSize)!,
-            NSAttributedString.Key.paragraphStyle: style,
-            NSAttributedString.Key.baselineOffset: -4]
-            as [NSAttributedString.Key : Any]
         
         let timeDescriptionTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: textSize)!,
-            NSAttributedString.Key.paragraphStyle: style,
-            NSAttributedString.Key.baselineOffset: -4]
-            as [NSAttributedString.Key : Any]
-        
-        let approachesDescriptionTextAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
             NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: textSize)!,
             NSAttributedString.Key.paragraphStyle: style,
             NSAttributedString.Key.baselineOffset: -4]
@@ -48,7 +37,7 @@ public final class OverallStatsView: UIView {
         self.booksNumLabel = booksNumLabel
         
         let booksTextLabel = UILabel(forAutoLayout: ())
-        booksTextLabel.attributedText = NSAttributedString(string: "книг", attributes: booksDescriptionTextAttributes)
+        self.booksTextLabel = booksTextLabel
         
         let hrsNumLabel = UILabel(forAutoLayout: ())
         self.hrsNumLabel = hrsNumLabel
@@ -66,7 +55,7 @@ public final class OverallStatsView: UIView {
         self.approachesNumLabel = approachesNumLabel
         
         let approachesTextLabel = UILabel(forAutoLayout: ())
-        approachesTextLabel.attributedText = NSAttributedString(string: "подходов", attributes: approachesDescriptionTextAttributes)
+        self.approachesTextLabel = approachesTextLabel
         
         [booksNumLabel, booksTextLabel, hrsNumLabel, hrsTextLabel, minsNumLabel, minsTextLabel, approachesNumLabel, approachesTextLabel].forEach(({ label in
             label.textAlignment = .center
@@ -101,6 +90,7 @@ public final class OverallStatsView: UIView {
         style.maximumLineHeight = SizeDependent.instance.convertPadding(36)
         
         let textSize = CGFloat(SizeDependent.instance.convertFont(36))
+        let textSizeSmall = CGFloat(SizeDependent.instance.convertFont(18))
         let booksNumTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
             NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: textSize)!,
@@ -122,6 +112,20 @@ public final class OverallStatsView: UIView {
             NSAttributedString.Key.baselineOffset: -8]
             as [NSAttributedString.Key : Any]
         
+        let booksDescriptionTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: textSizeSmall)!,
+            NSAttributedString.Key.paragraphStyle: style,
+            NSAttributedString.Key.baselineOffset: -4]
+            as [NSAttributedString.Key : Any]
+        
+        let approachesDescriptionTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: textSizeSmall)!,
+            NSAttributedString.Key.paragraphStyle: style,
+            NSAttributedString.Key.baselineOffset: -4]
+            as [NSAttributedString.Key : Any]
+        
         booksNumLabel?.attributedText = NSAttributedString(string: String(booksCount), attributes: booksNumTextAttributes)
         
         hrsNumLabel?.attributedText = NSAttributedString(string: String(minsCount / 60), attributes: timeNumTextAttributes)
@@ -129,6 +133,10 @@ public final class OverallStatsView: UIView {
         minsNumLabel?.attributedText = NSAttributedString(string: String(minsCount % 60), attributes: timeNumTextAttributes)
         
         approachesNumLabel?.attributedText = NSAttributedString(string: String(approachesCount), attributes: approachesNumTextAttributes)
+        
+        booksTextLabel?.attributedText = NSAttributedString(string: PluralRule().formatBooksWord(count: booksCount), attributes: booksDescriptionTextAttributes)
+        
+        approachesTextLabel?.attributedText = NSAttributedString(string: PluralRule().formatAttemptsWord(count: approachesCount), attributes: approachesDescriptionTextAttributes)
     }
     
     required init?(coder aDecoder: NSCoder) {

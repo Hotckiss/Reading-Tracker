@@ -40,6 +40,11 @@ public struct PluralRule {
         }
     }
     
+    public func formatCardinalWord(_ num: Int, categoryToString: [PluralCategory: String]) -> String {
+        let category = numToCategory(num)
+        return categoryToString[category] ?? ""
+    }
+    
     public func formatBooks(count: Int) -> String {
         return formatCardinal(
             count,
@@ -48,6 +53,30 @@ public struct PluralRule {
                 .few: "книги",
                 .many: "книг",
                 .other: "книги"
+            ]
+        )
+    }
+    
+    public func formatBooksWord(count: Int) -> String {
+        return formatCardinalWord(
+            count,
+            categoryToString: [
+                .one: "книга",
+                .few: "книги",
+                .many: "книг",
+                .other: "книги"
+            ]
+        )
+    }
+    
+    public func formatAttemptsWord(count: Int) -> String {
+        return formatCardinalWord(
+            count,
+            categoryToString: [
+                .one: "подход",
+                .few: "подхода",
+                .many: "подходов",
+                .other: "подхода"
             ]
         )
     }
