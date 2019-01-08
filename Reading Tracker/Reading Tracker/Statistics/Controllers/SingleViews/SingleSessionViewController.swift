@@ -204,6 +204,7 @@ final class SingleSessionViewController: UIViewController {
             guard let strongSelf = self else {
                 return
             }
+            
             let vc = EditSessionTimeViewController()
             vc.configure(book: strongSelf.bookModel, startDate: strongSelf.sessionModel.startTime, finishDate: strongSelf.sessionModel.finishTime, sessionId: strongSelf.sessionModel.sessionId)
             vc.onUpdate = { [weak self] ustp in
@@ -222,7 +223,17 @@ final class SingleSessionViewController: UIViewController {
         })))
         
         alert.addAction(UIAlertAction(title: "Изменить оценку", style: .default, handler: ({ [weak self] _ in
+            guard let strongSelf = self else {
+                return
+            }
+            
             let vc = EditSessionMarkViewController()
+            vc.configure(package: UpdateSessionMarkPackage(startPage: strongSelf.sessionModel.startPage,
+                                                           finishPage: strongSelf.sessionModel.finishPage,
+                                                           comment: strongSelf.sessionModel.comment,
+                                                           mood: strongSelf.sessionModel.mood,
+                                                           place: strongSelf.sessionModel.readPlace))
+            
             self?.navigationController?.pushViewController(vc, animated: true)
         })))
         

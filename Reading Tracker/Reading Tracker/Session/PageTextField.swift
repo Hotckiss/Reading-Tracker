@@ -41,12 +41,7 @@ final class PageTextField: UIView, UITextFieldDelegate {
         emptyPlaceholder.attributedText = NSAttributedString(string: "Начальная\nстраница", attributes: placeholderTextAttributes)
         
         let textField = RTTextField(frame: .zero)
-        let textFieldAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
-            as [NSAttributedString.Key : Any]
         
-        textField.defaultTextAttributes = textFieldAttributes
         textField.textAlignment = .center
         textField.keyboardType = .decimalPad
         let bottomLine = UIView(forAutoLayout: ())
@@ -70,7 +65,11 @@ final class PageTextField: UIView, UITextFieldDelegate {
         let accessoryView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 40))
         accessoryView.backgroundColor = UIColor(rgb: 0xe5e5e5)
         let finishButton = UIButton(forAutoLayout: ())
-        finishButton.setAttributedTitle(NSAttributedString(string: "Готово", attributes: textFieldAttributes), for: [])
+        let finishButtonAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+            as [NSAttributedString.Key : Any]
+        finishButton.setAttributedTitle(NSAttributedString(string: "Готово", attributes: finishButtonAttributes), for: [])
         textField.inputAccessoryView = accessoryView
         accessoryView.addSubview(finishButton)
         finishButton.addTarget(self, action: #selector(hideKeyboard), for: .touchUpInside)
@@ -118,6 +117,12 @@ final class PageTextField: UIView, UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         topPlaceholder.isHidden = false
         emptyPlaceholder.isHidden = true
+    }
+    
+    func setup(value: Int) {
+        topPlaceholder.isHidden = false
+        emptyPlaceholder.isHidden = true
+        textField.text = String(value)
     }
     
     required init?(coder aDecoder: NSCoder) {

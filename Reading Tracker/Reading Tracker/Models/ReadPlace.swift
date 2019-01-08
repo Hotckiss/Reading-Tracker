@@ -49,5 +49,20 @@ public enum ReadPlace: String {
         }
     }
     
+    func index() -> Int {
+        switch self {
+        case .home:
+            return 0
+        case .transport:
+            return 1
+        case .work:
+            return 2
+        case .thirdPlace:
+            return 3
+        case .unknown:
+            return -1
+        }
+    }
+    
     public static let all: [ReadPlace] = [.work, .transport, .home, .thirdPlace]
 }

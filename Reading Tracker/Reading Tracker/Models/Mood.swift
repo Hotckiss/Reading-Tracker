@@ -54,5 +54,22 @@ public enum Mood: String {
         }
     }
     
+    func index() -> Int {
+        switch self {
+        case .verySad:
+            return 0
+        case .sad:
+            return 1
+        case .neutral:
+            return 2
+        case .happy:
+            return 3
+        case .veryHappy:
+            return 4
+        case .unknown:
+            return -1
+        }
+    }
+    
     public static let all: [Mood] = [.verySad, .sad, .neutral, .happy, .veryHappy]
 }

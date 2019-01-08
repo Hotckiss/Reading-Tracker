@@ -68,6 +68,17 @@ class PollView: UIView {
         result = sender.index
     }
     
+    func setup(index: Int) {
+        result = index
+        for (i, button) in buttons.enumerated() {
+            if i == index {
+                button.imageView?.tintColor = UIColor(rgb: 0x2f5870)
+            } else {
+                button.imageView?.tintColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
+            }
+        }
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

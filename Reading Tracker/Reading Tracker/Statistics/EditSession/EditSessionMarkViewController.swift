@@ -9,6 +9,14 @@
 import Foundation
 import UIKit
 
+struct UpdateSessionMarkPackage {
+    var startPage: Int
+    var finishPage: Int
+    var comment: String
+    var mood: Mood
+    var place: ReadPlace
+}
+
 class EditSessionMarkViewController: UIViewController {
     var onCompleted: ((UploadSessionModel) -> Void)?
     private var spinner: SpinnerView?
@@ -18,6 +26,7 @@ class EditSessionMarkViewController: UIViewController {
     private var placePollView: PollView!
     private var startPageTextField: PageTextField?
     private var finishPageTextField: PageTextField?
+    private var package: UpdateSessionMarkPackage?
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -114,6 +123,24 @@ class EditSessionMarkViewController: UIViewController {
         self.placePollView = placePollView
         
         setupSpinner()
+        
+        if let usmp = self.package {
+            configure(package: usmp)
+        }
+    }
+    
+    func configure(package: UpdateSessionMarkPackage) {
+        self.package = package
+        startPageTextField?.setup(value: package.startPage)
+        finishPageTextField?.setup(value: package.finishPage)
+        commentTextField?.text = package.comment
+        if package.mood != .unknown {
+            moodPollView?.setup(index: package.mood.index())
+        }
+        
+        if package.place != .unknown {
+            placePollView?.setup(index: package.place.index())
+        }
     }
     
     private func sendResults() {
