@@ -10,25 +10,18 @@ import UIKit
 import PureLayout
 import RxSwift
 import Firebase
+import GoogleSignIn
 
-class LoginPasswordAuthorizationViewController: UIViewController {
+class LoginPasswordAuthorizationViewController: UIViewController, GIDSignInUIDelegate {
     private var spinner: UIActivityIndicatorView?
     private var emailTextField: RTTextField?
     private var passwordTextField: RTTextField?
     private let emailTextFieldDelegate = IntermediateTextFieldDelegate()
     private let passwordTextFieldDelegate = FinishTextFieldDelegate()
-    private var codeButtonBottomConstraint: NSLayoutConstraint?
-    
-    deinit {
-        NotificationCenter.default.removeObserver(UIResponder.keyboardWillShowNotification)
-        NotificationCenter.default.removeObserver(UIResponder.keyboardWillHideNotification)
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
+        GIDSignIn.sharedInstance().uiDelegate = self
         setupSubviews()
     }
     
@@ -36,17 +29,6 @@ class LoginPasswordAuthorizationViewController: UIViewController {
         navigationController?.navigationBar.isHidden = true
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         view.backgroundColor = .white
-    }
-    
-    @objc func keyboardWillShow(notification: Notification) {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            codeButtonBottomConstraint?.constant = -(keyboardSize.height + 16)
-        }
-        
-    }
-    
-    @objc func keyboardWillHide(notification: Notification) {
-        codeButtonBottomConstraint?.constant = -100
     }
     
     private func setupSubviews() {
@@ -148,10 +130,15 @@ class LoginPasswordAuthorizationViewController: UIViewController {
         activateButton.layer.shadowOffset = CGSize(width: 0.0, height: 4.0)
         activateButton.addTarget(self, action: #selector(onActivateButtonTapped), for: .touchUpInside)
         view.addSubview(activateButton)
-        codeButtonBottomConstraint = activateButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 100)
-        activateButton.autoSetDimensions(to: CGSize(width: 295, height: 64))
+        activateButton.autoPinEdge(.top, to: .bottom, of: lineView2, withOffset: SizeDependent.instance.convertPadding(50))
+        activateButton.autoSetDimensions(to: CGSize(width: 157, height: 64))
         activateButton.autoAlignAxis(toSuperviewAxis: .vertical)
         
+        let signInButtonGoogle: GIDSignInButton = GIDSignInButton(forAutoLayout: ())
+        view.addSubview(signInButtonGoogle)
+        signInButtonGoogle.autoAlignAxis(toSuperviewAxis: .vertical)
+        signInButtonGoogle.autoPinEdge(.top, to: .bottom, of: activateButton, withOffset: SizeDependent.instance.convertPadding(64))
+        //signInButtonGoogle.style = .iconOnly
     }
     
     @objc private func onEyeButtonPressed() {

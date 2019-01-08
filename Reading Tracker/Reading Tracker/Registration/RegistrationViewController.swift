@@ -14,17 +14,17 @@ import GoogleSignIn
 import FBSDKLoginKit
 import TwitterKit
 
-class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLoginButtonDelegate {
+class RegistrationViewController: UIViewController/*, GIDSignInUIDelegate, FBSDKLoginButtonDelegate*/ {
     private let disposeBag = DisposeBag()
     
     private var spinner: UIActivityIndicatorView?
     private var greetingImage: UIImageView?
     private var loginButton: UIButton?
     private var codeButton: UIButton?
-    private var stackView: UIStackView?
+    //private var stackView: UIStackView?
     override func viewDidLoad() {
         super.viewDidLoad()
-        GIDSignIn.sharedInstance().uiDelegate = self
+        //GIDSignIn.sharedInstance().uiDelegate = self
         setupSubviews()
     }
     
@@ -45,7 +45,7 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLo
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
         setupGreeting()
-        setupSignInButtons()
+        //setupSignInButtons()
         setupRegisterButton()
         setupLoginButton()
         
@@ -60,7 +60,7 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLo
         self.spinner = spinner
     }
     
-    private func setupSignInButtons() {
+    /*private func setupSignInButtons() {
         guard let greetingImage = greetingImage else {
             return
         }
@@ -120,10 +120,10 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLo
     
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
         // log out...
-    }
+    }*/
     
     private func setupRegisterButton() {
-        guard let stackView = stackView else {
+        guard let greetingImage = greetingImage else {
             return
         }
         
@@ -140,7 +140,7 @@ class RegistrationViewController: UIViewController, GIDSignInUIDelegate, FBSDKLo
         codeButton.addTarget(self, action: #selector(onCodeButtonTapped), for: .touchUpInside)
         
         view.addSubview(codeButton)
-        codeButton.autoPinEdge(.top, to: .bottom, of: stackView, withOffset: 40)
+        codeButton.autoPinEdge(.top, to: .bottom, of: greetingImage, withOffset: 40)
         codeButton.autoSetDimensions(to: CGSize(width: 223, height: 64))
         codeButton.autoAlignAxis(toSuperviewAxis: .vertical)
         
