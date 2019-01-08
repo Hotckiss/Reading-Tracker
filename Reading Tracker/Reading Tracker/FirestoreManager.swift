@@ -194,6 +194,7 @@ final class FirestoreManager {
             .collection(uid)
             .addDocument(data: [
             "title": book.title,
+            "is deleted": false,
             "author": book.author,
             "last updated": Timestamp(date: book.lastUpdated),
             "type": book.type.rawValue
@@ -231,6 +232,12 @@ final class FirestoreManager {
                             if key == "last updated" {
                                 if let time = value as? Timestamp {
                                     book.lastUpdated = time.dateValue()
+                                }
+                                continue
+                            }
+                            if key == "is deleted" {
+                                if let isDeleted = value as? Bool {
+                                    book.isDeleted = isDeleted
                                 }
                                 continue
                             }
@@ -285,7 +292,6 @@ final class FirestoreManager {
         }
     }
     
-    //TODO remove cover
     public func removeBook(book: BookModel, onSuccess: (() -> Void)? = nil, onError: (() -> Void)? = nil) {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
@@ -295,7 +301,9 @@ final class FirestoreManager {
             .document("libraries")
             .collection(uid)
             .document(book.id)
-            .delete() { err in
+            .setData([
+                "is deleted": true
+            ], merge: true) { err in
                 if let err = err {
                     print("Error removing document: \(err)")
                     onError?()

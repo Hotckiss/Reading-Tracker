@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 final class BookFilledCell: UIButton {
-    private var model: BookModel = BookModel(title: "", author: "")
+    private var model: BookModel = BookModel()
     private var titleTextLabel: UILabel?
     private var authorLabel: UILabel?
     private var coverImageView: UIImageView?

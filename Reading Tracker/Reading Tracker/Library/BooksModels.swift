@@ -73,18 +73,21 @@ public struct BookModel {
     public var image: UIImage
     public var lastUpdated: Date
     public var type: BookType
+    public var isDeleted: Bool
     
     public init(id: String = "",
                 title: String = "",
                 author: String = "",
                 image: UIImage? = nil,
                 lastUpdated: Date = Date.distantPast,
-                type: BookType = .unknown) {
+                type: BookType = .unknown,
+                isDeleted: Bool = false) {
         self.id = id
         self.title = title
         self.author = author
         self.image = image ?? UIImage(named: "bookPlaceholder")!
         self.lastUpdated = lastUpdated
         self.type = type
+        self.isDeleted = isDeleted
     }
 }

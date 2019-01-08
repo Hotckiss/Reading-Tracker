@@ -144,7 +144,7 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
     }
     
     public func update(booksList: [BookModel]) {
-        if booksList.isEmpty {
+        if booksList.filter({ !$0.isDeleted }).isEmpty {
             emptyNavBar?.isHidden = false
             tableView?.isHidden = true
             line?.isHidden = false
@@ -245,10 +245,16 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
                 return
             }
             
-            let vc = EditBookViewController(model: strongSelf.books[indexpath.row])
+            let vc = EditBookViewController(model: strongSelf.books.filter({ !$0.isDeleted })[indexpath.row])
             
             vc.onCompleted = { [weak self] updatedBook in
-                strongSelf.books[indexpath.row] = updatedBook
+                let oldBook = strongSelf.books.filter({ !$0.isDeleted })[indexpath.row]
+                for i in 0..<strongSelf.books.count {
+                    if strongSelf.books[i].id == oldBook.id {
+                        strongSelf.books[i] = updatedBook
+                        break
+                    }
+                }
                 self?.update()
             }
             
@@ -262,14 +268,20 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
                 return
             }
             
-            FirestoreManager.DBManager.removeBook(book: strongSelf.books[indexPath.row], onSuccess: ({
-                strongSelf.books.remove(at: indexPath.row)
+            FirestoreManager.DBManager.removeBook(book: strongSelf.books.filter({ !$0.isDeleted })[indexPath.row], onSuccess: ({
+                let oldBook = strongSelf.books.filter({ !$0.isDeleted })[indexpath.row]
+                for i in 0..<strongSelf.books.count {
+                    if strongSelf.books[i].id == oldBook.id {
+                        strongSelf.books[i].isDeleted = true
+                        break
+                    }
+                }
                 tableView.deleteRows(at: [indexPath], with: .automatic)
                 if indexPath.row == 0 {
                     strongSelf.onBooksListUpdated?(strongSelf.books)
                 }
                 
-                if strongSelf.books.isEmpty {
+                if strongSelf.books.filter({ !$0.isDeleted }).isEmpty {
                     strongSelf.update()
                 }
             }), onError: ({
@@ -312,24 +324,18 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         self.spinner = spinner
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return books.count
+        return books.filter({ !$0.isDeleted }).count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "bookCell") as! BookCell
-        cell.configure(model: books[indexPath.row])
+        cell.configure(model: books.filter({ !$0.isDeleted })[indexPath.row])
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let book = books[indexPath.row]
+        let book = books.filter({ !$0.isDeleted })[indexPath.row]
         onTapToStartSession?(book)
     }
 }
