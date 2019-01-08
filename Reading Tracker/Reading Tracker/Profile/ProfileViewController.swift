@@ -23,7 +23,7 @@ public struct ProfileOption {
 
 final class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var onExit: (() -> Void)?
-    private var spinner: UIActivityIndicatorView?
+    private var spinner: SpinnerView?
     private var profileOptions: [ProfileOption] = [ProfileOption(title: "Анкета участника исследования", subtitle: "Заполняя анкету, вы учавствуете в научном исследовании читателей и их интересов"),
                                                    ProfileOption(title: "О приложении"),
                                                    ProfileOption(title: "Настройки"),
@@ -69,14 +69,11 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     private func setupSpinner() {
-        let spinner = UIActivityIndicatorView()
+        let spinner = SpinnerView(frame: .zero)
         view.addSubview(spinner)
         
         view.bringSubviewToFront(spinner)
-        spinner.autoCenterInSuperview()
-        spinner.backgroundColor = UIColor(rgb: 0x555555).withAlphaComponent(0.7)
-        spinner.layer.cornerRadius = 8
-        spinner.autoSetDimensions(to: CGSize(width: 64, height: 64))
+        spinner.autoPinEdgesToSuperviewEdges()
         self.spinner = spinner
     }
     

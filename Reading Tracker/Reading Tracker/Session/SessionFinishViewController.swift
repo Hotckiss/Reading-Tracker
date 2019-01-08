@@ -12,7 +12,7 @@ import UIKit
 class SessionFinishViewController: UIViewController {
     var onCompleted: ((UploadSessionModel) -> Void)?
     private var model: SessionFinishModel
-    private var spinner: UIActivityIndicatorView?
+    private var spinner: SpinnerView?
     private var commentTextField: RTTextField!
     private let commentTextFieldDelegate = FinishTextFieldDelegate()
     private var moodPollView: PollView!
@@ -34,6 +34,7 @@ class SessionFinishViewController: UIViewController {
         view.backgroundColor = .white
         
         setupSubviews()
+        setupSpinner()
     }
     
     private func setupSubviews() {
@@ -50,8 +51,6 @@ class SessionFinishViewController: UIViewController {
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
-        
-        setupSpinner()
         
         let placeholderTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
@@ -155,7 +154,6 @@ class SessionFinishViewController: UIViewController {
                                                                                  comment: comment)
                                                     
                                                     self?.onCompleted?(usm)
-                                                    //TODO reset session VC
                                                  }),
                                                  onError: ({
                                                     //TODO alert, hide spinner
@@ -169,13 +167,11 @@ class SessionFinishViewController: UIViewController {
     }
     
     private func setupSpinner() {
-        let spinner = UIActivityIndicatorView()
+        let spinner = SpinnerView(frame: .zero)
         view.addSubview(spinner)
         
-        spinner.autoCenterInSuperview()
-        spinner.backgroundColor = UIColor(rgb: 0xad5205).withAlphaComponent(0.7)
-        spinner.layer.cornerRadius = 8
-        spinner.autoSetDimensions(to: CGSize(width: 64, height: 64))
+        view.bringSubviewToFront(spinner)
+        spinner.autoPinEdgesToSuperviewEdges()
         self.spinner = spinner
     }
 }

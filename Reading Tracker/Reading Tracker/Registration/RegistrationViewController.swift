@@ -17,7 +17,7 @@ import TwitterKit
 class RegistrationViewController: UIViewController/*, GIDSignInUIDelegate, FBSDKLoginButtonDelegate*/ {
     private let disposeBag = DisposeBag()
     
-    private var spinner: UIActivityIndicatorView?
+    private var spinner: SpinnerView?
     private var greetingImage: UIImageView?
     private var loginButton: UIButton?
     private var codeButton: UIButton?
@@ -48,16 +48,7 @@ class RegistrationViewController: UIViewController/*, GIDSignInUIDelegate, FBSDK
         //setupSignInButtons()
         setupRegisterButton()
         setupLoginButton()
-        
-        let spinner = UIActivityIndicatorView()
-        
-        view.addSubview(spinner)
-        
-        spinner.autoCenterInSuperview()
-        spinner.backgroundColor = UIColor(rgb: 0xad5205).withAlphaComponent(0.7)
-        spinner.layer.cornerRadius = 8
-        spinner.autoSetDimensions(to: CGSize(width: 64, height: 64))
-        self.spinner = spinner
+        setupSpinner()
     }
     
     /*private func setupSignInButtons() {
@@ -195,5 +186,14 @@ class RegistrationViewController: UIViewController/*, GIDSignInUIDelegate, FBSDK
     @objc private func onCodeButtonTapped() {
         let vc = OfflineCodeSignUpViewController()
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    private func setupSpinner() {
+        let spinner = SpinnerView(frame: .zero)
+        view.addSubview(spinner)
+        
+        view.bringSubviewToFront(spinner)
+        spinner.autoPinEdgesToSuperviewEdges()
+        self.spinner = spinner
     }
 }

@@ -12,7 +12,6 @@ import RxSwift
 import Firebase
 
 final class MainViewController: UIViewController {
-    private var spinner: UIActivityIndicatorView?
     let mainTabBarController = AnimatedTabBarController()
     var interactor: MainInteractor?
     
@@ -22,7 +21,6 @@ final class MainViewController: UIViewController {
         view.backgroundColor = .white
         
         setupSubviews()
-        setupSpinner()
         
         if let name = interactor?.userData?.firstName,
             !name.isEmpty {
@@ -102,18 +100,6 @@ final class MainViewController: UIViewController {
         }), onFinishLoad: ({ [weak self] in
             //self?.spinner?.stopAnimating()
         }))
-    }
-    
-    private func setupSpinner() {
-        let spinner = UIActivityIndicatorView()
-        view.addSubview(spinner)
-        
-        view.bringSubviewToFront(spinner)
-        spinner.autoCenterInSuperview()
-        spinner.backgroundColor = UIColor(rgb: 0x555555).withAlphaComponent(0.7)
-        spinner.layer.cornerRadius = 8
-        spinner.autoSetDimensions(to: CGSize(width: 64, height: 64))
-        self.spinner = spinner
     }
     
     override func viewWillAppear(_ animated: Bool) {

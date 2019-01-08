@@ -12,7 +12,7 @@ import RxSwift
 import Firebase
 
 class OfflineCodeSignUpViewController: UIViewController {
-    private var spinner: UIActivityIndicatorView?
+    private var spinner: SpinnerView?
     private var codeTextField: RTTextField?
     private let codeTextFieldDelegate = FinishTextFieldDelegate()
     private var codeButtonBottomConstraint: NSLayoutConstraint?
@@ -28,6 +28,16 @@ class OfflineCodeSignUpViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         setupSubviews()
+        setupSpinner()
+    }
+    
+    private func setupSpinner() {
+        let spinner = SpinnerView(frame: .zero)
+        view.addSubview(spinner)
+        
+        view.bringSubviewToFront(spinner)
+        spinner.autoPinEdgesToSuperviewEdges()
+        self.spinner = spinner
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,15 +68,6 @@ class OfflineCodeSignUpViewController: UIViewController {
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
-        
-        let spinner = UIActivityIndicatorView()
-        view.addSubview(spinner)
-        
-        spinner.autoCenterInSuperview()
-        spinner.backgroundColor = UIColor(rgb: 0xad5205).withAlphaComponent(0.7)
-        spinner.layer.cornerRadius = 8
-        spinner.autoSetDimensions(to: CGSize(width: 64, height: 64))
-        self.spinner = spinner
         
         let placeholderTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),

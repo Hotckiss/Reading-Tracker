@@ -13,7 +13,7 @@ import Firebase
 import GoogleSignIn
 
 class LoginPasswordAuthorizationViewController: UIViewController, GIDSignInUIDelegate {
-    private var spinner: UIActivityIndicatorView?
+    private var spinner: SpinnerView?
     private var emailTextField: RTTextField?
     private var passwordTextField: RTTextField?
     private let emailTextFieldDelegate = IntermediateTextFieldDelegate()
@@ -23,6 +23,16 @@ class LoginPasswordAuthorizationViewController: UIViewController, GIDSignInUIDel
         super.viewDidLoad()
         GIDSignIn.sharedInstance().uiDelegate = self
         setupSubviews()
+        setupSpinner()
+    }
+    
+    private func setupSpinner() {
+        let spinner = SpinnerView(frame: .zero)
+        view.addSubview(spinner)
+        
+        view.bringSubviewToFront(spinner)
+        spinner.autoPinEdgesToSuperviewEdges()
+        self.spinner = spinner
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,15 +52,6 @@ class LoginPasswordAuthorizationViewController: UIViewController, GIDSignInUIDel
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
-        
-        let spinner = UIActivityIndicatorView()
-        view.addSubview(spinner)
-        
-        spinner.autoCenterInSuperview()
-        spinner.backgroundColor = UIColor(rgb: 0xad5205).withAlphaComponent(0.7)
-        spinner.layer.cornerRadius = 8
-        spinner.autoSetDimensions(to: CGSize(width: 64, height: 64))
-        self.spinner = spinner
         
         let placeholderTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
@@ -152,7 +153,7 @@ class LoginPasswordAuthorizationViewController: UIViewController, GIDSignInUIDel
     @objc private func onActivateButtonTapped() {
         let email = emailTextField?.text ?? ""
         let password = passwordTextField?.text ?? ""
-        self.spinner?.startAnimating()
+        self.spinner?.show()
         
         Auth.auth().signIn(withEmail: email, password: password) { (authResult, errorRaw) in
             let errorClosure = { (text: String) in
@@ -163,14 +164,14 @@ class LoginPasswordAuthorizationViewController: UIViewController, GIDSignInUIDel
             
             
             if let error = errorRaw {
-                self.spinner?.stopAnimating()
+                self.spinner?.hide()
                 errorClosure(error.localizedDescription)
                 return
             }
             
             if let user = authResult {
                 //todo: upload ALL info
-                self.spinner?.stopAnimating()
+                self.spinner?.hide()
                 self.navigationController?.popToRootViewController(animated: true)
             }
         }

@@ -14,7 +14,7 @@ import Firebase
 class AuthorizationViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
-    private var spinner: UIActivityIndicatorView?
+    private var spinner: SpinnerView?
     private var greetingImage: UIImageView?
     //private var authorizationForm: UIStackView?
     private var loginButton: UIButton?
@@ -58,14 +58,15 @@ class AuthorizationViewController: UIViewController {
         setupRegisterButton()
         setupLoginButton()
         
-        let spinner = UIActivityIndicatorView()
-        
+        setupSpinner()
+    }
+    
+    private func setupSpinner() {
+        let spinner = SpinnerView(frame: .zero)
         view.addSubview(spinner)
         
-        spinner.autoCenterInSuperview()
-        spinner.backgroundColor = UIColor(rgb: 0xad5205).withAlphaComponent(0.7)
-        spinner.layer.cornerRadius = 8
-        spinner.autoSetDimensions(to: CGSize(width: 64, height: 64))
+        view.bringSubviewToFront(spinner)
+        spinner.autoPinEdgesToSuperviewEdges()
         self.spinner = spinner
     }
     
