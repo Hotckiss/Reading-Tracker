@@ -9,7 +9,14 @@
 import Foundation
 import UIKit
 
+struct UpdatedSessionTimePackage {
+    var newStartDate: Date
+    var newFinishDate: Date
+    var newDuration: Int
+}
+
 final class EditSessionTimeViewController: UIViewController {
+    var onUpdate: ((UpdatedSessionTimePackage) -> Void)?
     private var spinner: SpinnerView?
     private var navBar: NavigationBar?
     private var bookCell: BookFilledCell?
@@ -92,9 +99,14 @@ final class EditSessionTimeViewController: UIViewController {
         FirestoreManager.DBManager.updateSessionTime(sessionId: sessionId,
                                                      session: model,
                                                      completion: ({ [weak self] in
-                                                        //TODO: throw updated time to stats
+                                                        self?.spinner?.hide()
+                                                        let pack = UpdatedSessionTimePackage(newStartDate: model.startTime,
+                                                                                             newFinishDate: model.finishTime,
+                                                                                             newDuration: model.time)
+                                                        self?.onUpdate?(pack)
                                                         self?.navigationController?.popViewController(animated: true)
                                                      }), onError: ({ [weak self] in
+                                                        self?.spinner?.hide()
                                                         self?.showError(msg: "Ошибка загрузки сессии")
                                                      }))
     }

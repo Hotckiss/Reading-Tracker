@@ -205,6 +205,17 @@ final class SingleSessionViewController: UIViewController {
             }
             let vc = EditSessionTimeViewController()
             vc.configure(book: strongSelf.bookModel, startDate: strongSelf.sessionModel.startTime, finishDate: strongSelf.sessionModel.finishTime, sessionId: strongSelf.sessionModel.sessionId)
+            vc.onUpdate = { [weak self] ustp in
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                strongSelf.sessionModel.startTime = ustp.newStartDate
+                strongSelf.sessionModel.finishTime = ustp.newFinishDate
+                strongSelf.sessionModel.time = ustp.newDuration
+                strongSelf.configure(sessionModel: strongSelf.sessionModel)
+                //TODO: throw to all statistics
+            }
             self?.navigationController?.pushViewController(vc, animated: true)
         })))
         
