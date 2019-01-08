@@ -59,7 +59,8 @@ final class SingleSessionViewController: UIViewController {
                                                    onBackButtonPressed: ({ [weak self] in
                                                     self?.navigationController?.popViewController(animated: true)
                                                    }), onFrontButtonPressed: ({ [weak self] in
-                                                    print("TODO: edit alert")
+                                                    //TODO: --
+                                                    self?.showEditDialog()
                                                    })))
         navBar.setFrontButtonImage(image: UIImage(named: "vdots"))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
@@ -193,6 +194,19 @@ final class SingleSessionViewController: UIViewController {
         
         configure(sessionModel: sessionModel)
         setupSpinner()
+    }
+    
+    private func showEditDialog() {
+        let title = "Запись о чтении"
+        let alert = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Изменить время", style: .default, handler: ({ [weak self] _ in
+        })))
+        
+        alert.addAction(UIAlertAction(title: "Изменить оценку", style: .default, handler: ({ [weak self] _ in
+        })))
+        
+        alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     func configure(sessionModel: UploadSessionModel) {
