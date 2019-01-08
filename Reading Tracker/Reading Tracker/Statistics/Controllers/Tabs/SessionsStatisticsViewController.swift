@@ -12,6 +12,8 @@ import Firebase
 
 final class SessionsStatisticsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var onRequestReload: ((UploadSessionModel) -> Void)?
+    var onDelete: ((UploadSessionModel) -> Void)?
+    
     private var spinner: SpinnerView?
     private var sessions: [UploadSessionModel] = []
     private var booksMap: [String : BookModel] = [:]
@@ -74,7 +76,18 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteRowAction = UITableViewRowAction(style: UITableViewRowAction.Style.default, title: "Удалить", handler: { [weak self] action, indexpath in
-            //TODO: REMOVE
+            guard let strongSelf = self else {
+                return
+            }
+            let session: UploadSessionModel
+            if indexpath.section == 0 {
+                session = strongSelf.sessions[strongSelf.indexOfLongestSession]
+            } else {
+                session = strongSelf.sessions[indexpath.row]
+            }
+            
+            FirestoreManager.DBManager.removeSession(sessionId: session.sessionId)
+            strongSelf.onDelete?(session)
         })
         return [deleteRowAction]
     }

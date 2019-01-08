@@ -116,10 +116,26 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
                     for i in 0..<strongSelf.sessions.count {
                         if strongSelf.sessions[i].sessionId == session.sessionId {
                             strongSelf.sessions[i] = session
-                            strongSelf.update()
                             break
                         }
                     }
+                    
+                    strongSelf.update()
+                }
+                
+                vc.onDelete = { [weak self] session in
+                    guard let strongSelf = self else {
+                        return
+                    }
+                    
+                    for i in 0..<strongSelf.sessions.count {
+                        if strongSelf.sessions[i].sessionId == session.sessionId {
+                            strongSelf.sessions.remove(at: i)
+                            break
+                        }
+                    }
+                    
+                    strongSelf.update()
                 }
             }
         }

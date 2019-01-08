@@ -423,6 +423,18 @@ final class FirestoreManager {
         }
     }
     
+    public func removeSession(sessionId: String) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        db.collection("statistics")
+            .document("sessions")
+            .collection(uid)
+            .document(sessionId)
+            .delete()
+    }
+    
     func uploadOZONCatalog(books: [OZONBook]) {
         print("Starting upload...")
         var progress = 0
