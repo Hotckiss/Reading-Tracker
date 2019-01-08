@@ -55,15 +55,14 @@ final class SingleSessionViewController: UIViewController {
         let navBar = NavigationBar()
         
         navBar.configure(model: NavigationBarModel(title: "Запись о чтении",
-                                                   backButtonText: "Назад",
                                                    frontButtonText: "",
                                                    onBackButtonPressed: ({ [weak self] in
                                                     self?.navigationController?.popViewController(animated: true)
                                                    }), onFrontButtonPressed: ({ [weak self] in
-                                                    //TODO: --
                                                     self?.showEditDialog()
                                                    })))
         navBar.setFrontButtonImage(image: UIImage(named: "vdots"))
+        navBar.setBackButtonImage(image: UIImage(named: "back"))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         
         view.addSubview(navBar)

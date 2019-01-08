@@ -37,11 +37,10 @@ class RegistrationViewController: UIViewController/*, GIDSignInUIDelegate, FBSDK
     private func setupSubviews() {
         let navBar = NavigationBar(frame: .zero)
         navBar.configure(model: NavigationBarModel(title: "",
-                                                   backButtonText: "Назад",
                                                    onBackButtonPressed: ({ [weak self] in
                                                     self?.navigationController?.popViewController(animated: true)
-                                                   })
-                                                   ))
+                                                   })))
+        navBar.setBackButtonImage(image: UIImage(named: "back"))
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
         setupGreeting()

@@ -52,7 +52,6 @@ final class SessionViewController: UIViewController {
         
         let navBar = NavigationBar()
         navBar.configure(model: NavigationBarModel(title: "Новая запись о чтении",
-                                                   backButtonText: "Сброс",
                                                    onBackButtonPressed: ({
                                                     let alert = UIAlertController(title: "Сбросить сессию?", message: nil, preferredStyle: .alert)
                                                     alert.addAction(UIAlertAction(title: "Отмена", style: .default, handler: nil))
@@ -62,7 +61,7 @@ final class SessionViewController: UIViewController {
                                                     self.present(alert, animated: true, completion: nil)
                                                    })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
-        
+        navBar.setBackButtonImage(image: UIImage(named: "close"))
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
         self.navBar = navBar

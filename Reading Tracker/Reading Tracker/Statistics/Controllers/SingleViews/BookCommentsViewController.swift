@@ -40,12 +40,11 @@ final class BookCommentsViewController: UIViewController, UITableViewDelegate, U
         let navBar = NavigationBar()
         
         navBar.configure(model: NavigationBarModel(title: "Комментарии к книге",
-                                                   backButtonText: "Назад",
                                                    onBackButtonPressed: ({ [weak self] in
                                                     self?.navigationController?.popViewController(animated: true)
                                                    })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
-        
+        navBar.setBackButtonImage(image: UIImage(named: "back"))
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
         self.navBar = navBar

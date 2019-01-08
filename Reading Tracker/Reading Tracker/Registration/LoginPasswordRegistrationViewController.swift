@@ -62,12 +62,12 @@ class LoginPasswordRegistrationViewController: UIViewController {
     private func setupSubviews() {
         let navBar = NavigationBar(frame: .zero)
         navBar.configure(model: NavigationBarModel(title: "Регистрация",
-                                                   backButtonText: "Назад",
                                                    onBackButtonPressed: ({ [weak self] in
                                                     self?.navigationController?.popViewController(animated: true)
                                                    })
         ))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
+        navBar.setBackButtonImage(image: UIImage(named: "back"))
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
         

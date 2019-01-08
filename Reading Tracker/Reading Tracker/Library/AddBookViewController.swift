@@ -28,7 +28,9 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         view.backgroundColor = .white
         
         let navBar = NavigationBar()
-        navBar.configure(model: NavigationBarModel(title: "Новая книга", backButtonText: "Назад", frontButtonText: "Готово", onBackButtonPressed: ({ [weak self] in
+        navBar.configure(model: NavigationBarModel(title: "Новая книга",
+                                                   frontButtonText: "Готово",
+                                                   onBackButtonPressed: ({ [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }), onFrontButtonPressed: ({ [weak self] in
             self?.spinner?.show()
@@ -72,6 +74,7 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
             }))
         })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
+        navBar.setBackButtonImage(image: UIImage(named: "back"))
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
         self.navBar = navBar
