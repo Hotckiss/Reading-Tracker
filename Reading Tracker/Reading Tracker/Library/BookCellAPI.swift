@@ -52,7 +52,6 @@ class BookCellAPI: UITableViewCell {
         self.titleLabel = titleLabel
         self.authorLabel = authorLabel
         self.coverImageView = coverImageView
-        print(contentView)
     }
     
     func configure(model: BookModelAPI) {
