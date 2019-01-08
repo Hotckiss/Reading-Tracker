@@ -62,14 +62,14 @@ class SessionFinishViewController: UIViewController {
         separatorLabel.attributedText = NSAttributedString(string: "\u{2013}", attributes: placeholderTextAttributes)
         view.addSubview(separatorLabel)
         separatorLabel.autoAlignAxis(toSuperviewAxis: .vertical)
-        separatorLabel.autoPinEdge(.top, to: .bottom, of: navBar, withOffset: 92)
+        separatorLabel.autoPinEdge(.top, to: .bottom, of: navBar, withOffset: SizeDependent.instance.convertPadding(92))
         
         let startPageTextField = PageTextField(frame: .zero)
         startPageTextField.configure(placeholder: "Начальная\nстраница")
         
         view.addSubview(startPageTextField)
         startPageTextField.autoPinEdge(.right, to: .left, of: separatorLabel, withOffset: -20)
-        startPageTextField.autoPinEdge(.top, to: .bottom, of: navBar, withOffset: 40)
+        startPageTextField.autoPinEdge(.top, to: .bottom, of: navBar, withOffset: SizeDependent.instance.convertPadding(40))
         startPageTextField.autoSetDimensions(to: CGSize(width: 86, height: 92))
         self.startPageTextField = startPageTextField
         let finishPageTextField = PageTextField(frame: .zero)
@@ -77,7 +77,7 @@ class SessionFinishViewController: UIViewController {
         
         view.addSubview(finishPageTextField)
         finishPageTextField.autoPinEdge(.left, to: .right, of: separatorLabel, withOffset: 20)
-        finishPageTextField.autoPinEdge(.top, to: .bottom, of: navBar, withOffset: 40)
+        finishPageTextField.autoPinEdge(.top, to: .bottom, of: navBar, withOffset: SizeDependent.instance.convertPadding(40))
         finishPageTextField.autoSetDimensions(to: CGSize(width: 86, height: 92))
         self.finishPageTextField = finishPageTextField
         
@@ -90,7 +90,7 @@ class SessionFinishViewController: UIViewController {
         
         view.addSubview(commentTextField)
         commentTextField.autoAlignAxis(toSuperviewAxis: .vertical)
-        commentTextField.autoPinEdge(.top, to: .bottom, of: separatorLabel, withOffset: 46)
+        commentTextField.autoPinEdge(.top, to: .bottom, of: separatorLabel, withOffset: SizeDependent.instance.convertPadding(46))
         commentTextField.autoPinEdge(toSuperviewEdge: .right)
         commentTextField.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         
@@ -100,7 +100,7 @@ class SessionFinishViewController: UIViewController {
         lineView.backgroundColor = UIColor(rgb: 0x2f5870)
         
         view.addSubview(lineView)
-        lineView.autoPinEdge(.top, to: .bottom, of: commentTextField, withOffset: 8)
+        lineView.autoPinEdge(.top, to: .bottom, of: commentTextField, withOffset: SizeDependent.instance.convertPadding(8))
         lineView.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         lineView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         lineView.autoSetDimension(.height, toSize: 1)
@@ -108,13 +108,13 @@ class SessionFinishViewController: UIViewController {
         let moodPollView = PollView(frame: .zero, title: "Эмоции от чтения", options: [UIImage(named: "very sad"), UIImage(named: "sad"), UIImage(named: "neutral"), UIImage(named: "happy"), UIImage(named: "very happy")])
         view.addSubview(moodPollView)
         moodPollView.autoAlignAxis(toSuperviewAxis: .vertical)
-        moodPollView.autoPinEdge(.top, to: .bottom, of: lineView, withOffset: 88)
+        moodPollView.autoPinEdge(.top, to: .bottom, of: lineView, withOffset: SizeDependent.instance.convertPadding(88))
         self.moodPollView = moodPollView
         
         let placePollView = PollView(frame: .zero, title: "Место чтения", options: [UIImage(named: "home"), UIImage(named: "transport"), UIImage(named: "work"), UIImage(named: "third place")])
         view.addSubview(placePollView)
         placePollView.autoAlignAxis(toSuperviewAxis: .vertical)
-        placePollView.autoPinEdge(.top, to: .bottom, of: moodPollView, withOffset: 88)
+        placePollView.autoPinEdge(.top, to: .bottom, of: moodPollView, withOffset: SizeDependent.instance.convertPadding(88))
         self.placePollView = placePollView
     }
     
