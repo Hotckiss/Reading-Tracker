@@ -13,7 +13,7 @@ public struct SessionCellModel {
     var book: BookModel
     var sessionInfo: UploadSessionModel
     
-    public init(sessionInfo: UploadSessionModel = UploadSessionModel(), book: BookModel = BookModel()) {
+    public init(sessionInfo: UploadSessionModel, book: BookModel) {
         self.book = book
         self.sessionInfo = sessionInfo
     }

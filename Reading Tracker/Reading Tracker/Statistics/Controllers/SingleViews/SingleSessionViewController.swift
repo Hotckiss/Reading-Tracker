@@ -204,7 +204,7 @@ final class SingleSessionViewController: UIViewController {
                 return
             }
             let vc = EditSessionTimeViewController()
-            vc.configure(book: strongSelf.bookModel, startDate: strongSelf.sessionModel.startTime, finishDate: strongSelf.sessionModel.finishTime)
+            vc.configure(book: strongSelf.bookModel, startDate: strongSelf.sessionModel.startTime, finishDate: strongSelf.sessionModel.finishTime, sessionId: strongSelf.sessionModel.sessionId)
             self?.navigationController?.pushViewController(vc, animated: true)
         })))
         

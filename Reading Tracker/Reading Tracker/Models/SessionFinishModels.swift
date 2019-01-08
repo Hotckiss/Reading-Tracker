@@ -41,6 +41,7 @@ public struct SessionFinishModel {
 }
 
 public struct UploadSessionModel {
+    var sessionId: String
     var bookId: String
     var startPage: Int
     var finishPage: Int
@@ -51,7 +52,8 @@ public struct UploadSessionModel {
     var readPlace: ReadPlace
     var comment: String
     
-    public init(bookId: String = "",
+    public init(sessionId: String,
+                bookId: String = "",
                 startPage: Int = 1,
                 finishPage: Int = 2,
                 time: Int = 0,
@@ -60,6 +62,7 @@ public struct UploadSessionModel {
                 mood: Mood = .unknown,
                 readPlace: ReadPlace = .unknown,
                 comment: String = "") {
+        self.sessionId = sessionId
         self.bookId = bookId
         self.startPage = startPage
         self.finishPage = finishPage

@@ -137,13 +137,14 @@ class SessionFinishViewController: UIViewController {
         model.comment = comment
         
         FirestoreManager.DBManager.uploadSession(session: model,
-                                                 completion: ({ [weak self] in
+                                                 completion: ({ [weak self] sessionId in
                                                     self?.navigationController?.popViewController(animated: true)
                                                     guard let model = self?.model else {
                                                         return
                                                     }
                                                     
-                                                    let usm = UploadSessionModel(bookId: model.bookInfo.id,
+                                                    let usm = UploadSessionModel(sessionId: sessionId,
+                                                                                 bookId: model.bookInfo.id,
                                                                                  startPage: model.startPage,
                                                                                  finishPage: model.finishPage,
                                                                                  time: model.time,

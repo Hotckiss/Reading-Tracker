@@ -343,12 +343,12 @@ final class FirestoreManager {
         }
     }
     
-    public func uploadSession(session: SessionFinishModel, completion: (() -> Void)?, onError: (() -> Void)?) {
+    public func uploadSession(session: SessionFinishModel, completion: ((String) -> Void)?, onError: (() -> Void)?) {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
         
-        db.collection("statistics")
+        let ref = db.collection("statistics")
             .document("sessions")
             .collection(uid)
             .addDocument(data: [
@@ -367,9 +367,10 @@ final class FirestoreManager {
                     onError?()
                 } else {
                     print("Document successfully written!")
-                    completion?()
                 }
         }
+        
+        completion?(ref.documentID)
     }
     
     func uploadOZONCatalog(books: [OZONBook]) {
@@ -412,7 +413,7 @@ final class FirestoreManager {
                     var res: [UploadSessionModel] = []
                     for document in querySnapshot!.documents {
                         let data = document.data()
-                        var session = UploadSessionModel()
+                        var session = UploadSessionModel(sessionId: document.documentID)
                         for (key, value) in data {
                             let onErrorClosure = {
                                 print("Document error format")

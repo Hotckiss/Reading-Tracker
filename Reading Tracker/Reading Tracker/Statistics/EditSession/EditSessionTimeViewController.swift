@@ -18,6 +18,7 @@ final class EditSessionTimeViewController: UIViewController {
     private var bookModel: BookModel = BookModel()
     private var startTime = Date()
     private var finishTime = Date()
+    private var sessionId = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,7 +80,7 @@ final class EditSessionTimeViewController: UIViewController {
         handDateInputView.autoSetDimension(.width, toSize: min(326, UIScreen.main.bounds.width))
         self.handDateInputView = handDateInputView
         setupSpinner()
-        configure(book: self.bookModel, startDate: self.startTime, finishDate: self.finishTime)
+        configure(book: self.bookModel, startDate: self.startTime, finishDate: self.finishTime, sessionId: self.sessionId)
     }
     
     @objc private func onFinishButtonTapped() {
@@ -92,7 +93,8 @@ final class EditSessionTimeViewController: UIViewController {
     }
     
     private func generateModel() -> SessionFinishModel? {
-        guard let (handStartDate, handFinishDate, handTime) = handDateInputView?.getDates() else {
+        guard !sessionId.isEmpty,
+            let (handStartDate, handFinishDate, handTime) = handDateInputView?.getDates() else {
                 showError()
                 return nil
         }
@@ -118,7 +120,8 @@ final class EditSessionTimeViewController: UIViewController {
         self.spinner = spinner
     }
     
-    func configure(book: BookModel, startDate: Date, finishDate: Date) {
+    func configure(book: BookModel, startDate: Date, finishDate: Date, sessionId: String) {
+        self.sessionId = sessionId
         self.bookModel = book
         self.startTime = startDate
         self.finishTime = finishDate
