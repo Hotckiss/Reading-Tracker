@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 final class SingleSessionViewController: UIViewController {
+    var onEdited: ((UploadSessionModel) -> Void)?
     private var contentView: UIView!
     private var scrollView: UIScrollView!
     private var spinner: SpinnerView?
@@ -214,6 +215,7 @@ final class SingleSessionViewController: UIViewController {
                 strongSelf.sessionModel.finishTime = ustp.newFinishDate
                 strongSelf.sessionModel.time = ustp.newDuration
                 strongSelf.configure(sessionModel: strongSelf.sessionModel)
+                strongSelf.onEdited?(strongSelf.sessionModel)
                 //TODO: throw to all statistics
             }
             self?.navigationController?.pushViewController(vc, animated: true)
@@ -375,10 +377,10 @@ final class SingleSessionViewController: UIViewController {
         var cal = Calendar(identifier: .gregorian)
         cal.locale = Locale(identifier: "ru_RU")
         let weekDay = cal.component(.weekday, from: date)
-        return SingleSessionViewController.weedDayMap[weekDay]!
+        return SingleSessionViewController.weekDayMap[weekDay]!
     }
     
-    static let weedDayMap: [Int: String] = [
+    static let weekDayMap: [Int: String] = [
         1: "воскресенье",
         2: "понедельник",
         3: "вторник",

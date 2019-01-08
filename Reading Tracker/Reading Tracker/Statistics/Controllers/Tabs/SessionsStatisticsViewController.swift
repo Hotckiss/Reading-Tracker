@@ -17,6 +17,7 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
     private var indexOfLongestSession: Int = 0
     private var tableView: UITableView?
     private var tableViewHeightConstraint: NSLayoutConstraint?
+    private var interval: StatsInterval = .allTime
     init() {
         super.init(nibName: nil, bundle: nil)
     }
@@ -24,6 +25,7 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
     func update(sessions: [UploadSessionModel], booksMap: [String : BookModel], interval: StatsInterval) {
         self.sessions = sessions
         self.booksMap = booksMap
+        self.interval = interval
         indexOfLongestSession = 0
         for (index, session) in sessions.enumerated() {
             if session.time > sessions[indexOfLongestSession].time {
@@ -71,7 +73,7 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteRowAction = UITableViewRowAction(style: UITableViewRowAction.Style.default, title: "Удалить", handler: { [weak self] action, indexpath in
-            //REMOVE
+            //TODO: REMOVE
         })
         return [deleteRowAction]
     }
@@ -111,6 +113,21 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
         let session = sessions[dataIndex]
         if let book = booksMap[sessions[dataIndex].bookId] {
             let vc = SingleSessionViewController(model: book, sessionModel: session)
+            vc.onEdited = { [weak self] session in
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                for i in 0..<strongSelf.sessions.count {
+                    if strongSelf.sessions[i].sessionId == session.sessionId {
+                        strongSelf.sessions[i] = session
+                        strongSelf.update(sessions: strongSelf.sessions,
+                                          booksMap: strongSelf.booksMap,
+                                          interval: strongSelf.interval)
+                        //TODO: update other tabs.........
+                    }
+                }
+            }
             navigationController?.pushViewController(vc, animated: true)
         }
     }

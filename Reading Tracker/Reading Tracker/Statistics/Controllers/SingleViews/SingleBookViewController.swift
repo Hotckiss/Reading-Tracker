@@ -401,10 +401,10 @@ final class SingleBookViewController: UIViewController {
         var cal = Calendar(identifier: .gregorian)
         cal.locale = Locale(identifier: "ru_RU")
         let weekDay = cal.component(.weekday, from: date)
-        return SingleSessionViewController.weedDayMap[weekDay]!
+        return SingleBookViewController.weekDayMap[weekDay]!
     }
     
-    static let weedDayMap: [Int: String] = [
+    static let weekDayMap: [Int: String] = [
         1: "воскресенье",
         2: "понедельник",
         3: "вторник",
