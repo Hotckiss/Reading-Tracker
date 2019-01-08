@@ -91,6 +91,12 @@ public class NavigationBar: UIView {
         frontButton?.contentEdgeInsets = UIEdgeInsets(top: 4, left: 12, bottom: 4, right: 4)
     }
     
+    public func setBackButtonImage(image: UIImage?) {
+        backButton?.setTitle("", for: [])
+        backButton?.setImage(image, for: [])
+        backButton?.contentEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 12)
+    }
+    
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
