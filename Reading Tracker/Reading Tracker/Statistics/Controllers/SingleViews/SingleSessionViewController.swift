@@ -200,7 +200,11 @@ final class SingleSessionViewController: UIViewController {
         let title = "Запись о чтении"
         let alert = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Изменить время", style: .default, handler: ({ [weak self] _ in
+            guard let strongSelf = self else {
+                return
+            }
             let vc = EditSessionTimeViewController()
+            vc.configure(book: strongSelf.bookModel, startDate: strongSelf.sessionModel.startTime, finishDate: strongSelf.sessionModel.finishTime)
             self?.navigationController?.pushViewController(vc, animated: true)
         })))
         

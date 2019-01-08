@@ -15,7 +15,9 @@ final class EditSessionTimeViewController: UIViewController {
     private var bookCell: BookFilledCell?
     private var finishButton: UIButton?
     private var handDateInputView: HandDateInputView?
-    private var bookModel: BookModel?
+    private var bookModel: BookModel = BookModel()
+    private var startTime = Date()
+    private var finishTime = Date()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,9 +44,6 @@ final class EditSessionTimeViewController: UIViewController {
         bookCell.layer.shadowColor = UIColor.black.cgColor
         bookCell.layer.shadowOpacity = 0.2
         bookCell.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
-        if let bookModel = bookModel {
-            bookCell.configure(model: bookModel)
-        }
         
         view.addSubview(bookCell)
         bookCell.autoPinEdge(toSuperviewEdge: .left)
@@ -80,6 +79,7 @@ final class EditSessionTimeViewController: UIViewController {
         handDateInputView.autoSetDimension(.width, toSize: min(326, UIScreen.main.bounds.width))
         self.handDateInputView = handDateInputView
         setupSpinner()
+        configure(book: self.bookModel, startDate: self.startTime, finishDate: self.finishTime)
     }
     
     @objc private func onFinishButtonTapped() {
@@ -92,8 +92,7 @@ final class EditSessionTimeViewController: UIViewController {
     }
     
     private func generateModel() -> SessionFinishModel? {
-        guard let bookModel = bookModel,
-            let (handStartDate, handFinishDate, handTime) = handDateInputView?.getDates() else {
+        guard let (handStartDate, handFinishDate, handTime) = handDateInputView?.getDates() else {
                 showError()
                 return nil
         }
@@ -117,6 +116,14 @@ final class EditSessionTimeViewController: UIViewController {
         view.bringSubviewToFront(spinner)
         spinner.autoPinEdgesToSuperviewEdges()
         self.spinner = spinner
+    }
+    
+    func configure(book: BookModel, startDate: Date, finishDate: Date) {
+        self.bookModel = book
+        self.startTime = startDate
+        self.finishTime = finishDate
+        bookCell?.configure(model: book)
+        handDateInputView?.configure(startDateTime: startDate, finishDateTime: finishDate, date: startDate)
     }
     
     func updateWithBook(book: BookModel?) {
