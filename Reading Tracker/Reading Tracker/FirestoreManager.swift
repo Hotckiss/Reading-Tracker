@@ -373,6 +373,30 @@ final class FirestoreManager {
         completion?(ref.documentID)
     }
     
+    public func updateSessionTime(sessionId: String, session: SessionFinishModel, completion: (() -> Void)?, onError: (() -> Void)?) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        db.collection("statistics")
+            .document("sessions")
+            .collection(uid)
+            .document(sessionId)
+            .setData([
+                "duration": session.time,
+                "start time": Timestamp(date: session.startTime),
+                "end time": Timestamp(date: session.finishTime),
+                ], merge: true) { error in
+                    if let error = error {
+                        print("Error writing document: \(error.localizedDescription)")
+                        onError?()
+                    } else {
+                        print("Document successfully written!")
+                        completion?()
+                    }
+        }
+    }
+    
     func uploadOZONCatalog(books: [OZONBook]) {
         print("Starting upload...")
         var progress = 0

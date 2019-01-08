@@ -223,6 +223,10 @@ final class HandDateInputView: UIView {
         let durationAttributedText = NSMutableAttributedString(string: durationText, attributes: durationTextAttributesSmall)
         durationAttributedText.addAttributes(durationTextAttributesBig, range: NSRange(location: 0, length: String(hrs).count))
         durationLabel?.attributedText = durationAttributedText
+        
+        self.startDateTime = startDateTime
+        self.finishDateTime = finishDateTime
+        self.date = date
     }
     
     private func format(_ date: Date) -> String {

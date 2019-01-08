@@ -84,8 +84,19 @@ final class EditSessionTimeViewController: UIViewController {
     }
     
     @objc private func onFinishButtonTapped() {
-        //TODO: save
-        navigationController?.popViewController(animated: true)
+        spinner?.show()
+        guard let model = generateModel() else {
+            return
+        }
+        
+        FirestoreManager.DBManager.updateSessionTime(sessionId: sessionId,
+                                                     session: model,
+                                                     completion: ({ [weak self] in
+                                                        //TODO: throw updated time to stats
+                                                        self?.navigationController?.popViewController(animated: true)
+                                                     }), onError: ({ [weak self] in
+                                                        self?.showError(msg: "Ошибка загрузки сессии")
+                                                     }))
     }
     
     @objc private func onBookCellTap() {
@@ -95,7 +106,7 @@ final class EditSessionTimeViewController: UIViewController {
     private func generateModel() -> SessionFinishModel? {
         guard !sessionId.isEmpty,
             let (handStartDate, handFinishDate, handTime) = handDateInputView?.getDates() else {
-                showError()
+                showError(msg: "Не все поля заполнены")
                 return nil
         }
         
@@ -105,8 +116,8 @@ final class EditSessionTimeViewController: UIViewController {
                                   finishTime: handFinishDate)
     }
     
-    private func showError() {
-        let alert = UIAlertController(title: "Ошибка!", message: "Не все поля заполнены", preferredStyle: .alert)
+    private func showError(msg: String) {
+        let alert = UIAlertController(title: "Ошибка!", message: msg, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
