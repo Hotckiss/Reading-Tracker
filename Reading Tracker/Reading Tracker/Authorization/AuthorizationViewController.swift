@@ -88,7 +88,7 @@ class AuthorizationViewController: UIViewController {
         registerButton.addTarget(self, action: #selector(onRegisterButtonTapped), for: .touchUpInside)
         
         view.addSubview(registerButton)
-        registerButton.autoPinEdge(.top, to: .bottom, of: greetingImage, withOffset: 115)
+        registerButton.autoPinEdge(.top, to: .bottom, of: greetingImage, withOffset: SizeDependent.instance.convertPadding(115))
         registerButton.autoSetDimensions(to: CGSize(width: 243, height: 64))
         registerButton.autoAlignAxis(toSuperviewAxis: .vertical)
         
@@ -129,7 +129,7 @@ class AuthorizationViewController: UIViewController {
         loginButton.addTarget(self, action: #selector(onLoginButtonTapped), for: .touchUpInside)
         
         view.addSubview(loginButton)
-        loginButton.autoPinEdge(.top, to: .bottom, of: registerButton, withOffset: 40)
+        loginButton.autoPinEdge(.top, to: .bottom, of: registerButton, withOffset: SizeDependent.instance.convertPadding(40))
         loginButton.autoSetDimensions(to: CGSize(width: 144, height: 64))
         loginButton.autoAlignAxis(toSuperviewAxis: .vertical)
         

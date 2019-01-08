@@ -41,7 +41,7 @@ final class BookFilledCell: UIButton {
         titleLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 20)
         
         let authorLabel = UILabel(forAutoLayout: ())
-        authorLabel.numberOfLines = 2
+        authorLabel.numberOfLines = 1
         addSubview(authorLabel)
         authorLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         authorLabel.autoPinEdge(.right, to: .left, of: coverImageView, withOffset: -16)
