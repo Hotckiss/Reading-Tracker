@@ -222,6 +222,8 @@ final class SingleSessionViewController: UIViewController {
         })))
         
         alert.addAction(UIAlertAction(title: "Изменить оценку", style: .default, handler: ({ [weak self] _ in
+            let vc = EditSessionMarkViewController()
+            self?.navigationController?.pushViewController(vc, animated: true)
         })))
         
         alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))

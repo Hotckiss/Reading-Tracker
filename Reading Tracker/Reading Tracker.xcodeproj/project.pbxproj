@@ -29,6 +29,7 @@
 		2F2A9D5F21E2A85100672E1A /* BooksModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2A9D5E21E2A85100672E1A /* BooksModels.swift */; };
 		2F2A9D6121E2AA9C00672E1A /* BookCellAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2A9D6021E2AA9C00672E1A /* BookCellAPI.swift */; };
 		2F2A9D6421E4EC6E00672E1A /* EditSessionTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2A9D6321E4EC6E00672E1A /* EditSessionTimeViewController.swift */; };
+		2F2A9D6621E50E9400672E1A /* EditSessionMarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2A9D6521E50E9400672E1A /* EditSessionMarkViewController.swift */; };
 		2F30E3B221BBE6B200C1A562 /* SingleBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30E3B121BBE6B200C1A562 /* SingleBookViewController.swift */; };
 		2F30E3B421BC3C0300C1A562 /* BookCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30E3B321BC3C0300C1A562 /* BookCommentsViewController.swift */; };
 		2F30E3B721BC45E700C1A562 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30E3B621BC45E700C1A562 /* CommentCell.swift */; };
@@ -136,6 +137,7 @@
 		2F2A9D5E21E2A85100672E1A /* BooksModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksModels.swift; sourceTree = "<group>"; };
 		2F2A9D6021E2AA9C00672E1A /* BookCellAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCellAPI.swift; sourceTree = "<group>"; };
 		2F2A9D6321E4EC6E00672E1A /* EditSessionTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSessionTimeViewController.swift; sourceTree = "<group>"; };
+		2F2A9D6521E50E9400672E1A /* EditSessionMarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSessionMarkViewController.swift; sourceTree = "<group>"; };
 		2F30E3B121BBE6B200C1A562 /* SingleBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleBookViewController.swift; sourceTree = "<group>"; };
 		2F30E3B321BC3C0300C1A562 /* BookCommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCommentsViewController.swift; sourceTree = "<group>"; };
 		2F30E3B621BC45E700C1A562 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 			isa = PBXGroup;
 			children = (
 				2F2A9D6321E4EC6E00672E1A /* EditSessionTimeViewController.swift */,
+				2F2A9D6521E50E9400672E1A /* EditSessionMarkViewController.swift */,
 			);
 			path = EditSession;
 			sourceTree = "<group>";
@@ -907,6 +910,7 @@
 				2FEB6A9321A343FE00334802 /* QuestionarreViewController.swift in Sources */,
 				2F0C7E2D219F1D4100C28ECB /* ImageCompression.swift in Sources */,
 				2FA7E4CE21C1972E00B2A954 /* HandDateInputView.swift in Sources */,
+				2F2A9D6621E50E9400672E1A /* EditSessionMarkViewController.swift in Sources */,
 				2F074A2121BB0332002146F6 /* BookSessionsCell.swift in Sources */,
 				2FFD1D072198CB1500779459 /* SessionFinishViewController.swift in Sources */,
 				2FE450C1216FA53E008B2F22 /* MainInteractor.swift in Sources */,
