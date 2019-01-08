@@ -43,6 +43,7 @@ final class FirebaseStorageManager {
         }
         
         let imageRef = rootReference.child("covers/\(uid)/\(bookId)/cover.png")
+        SDImageCache.shared().removeImage(forKey: imageRef.fullPath)
         imageView.sd_setImage(with: imageRef, placeholderImage: UIImage(named: "bookPlaceholder")!) { (image, error, cacheType, storageReference) in
             onImageReceived?(image ?? UIImage(named: "bookPlaceholder")!)
         }
