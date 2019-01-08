@@ -55,7 +55,6 @@ final class SingleSessionViewController: UIViewController {
         let navBar = NavigationBar()
         
         navBar.configure(model: NavigationBarModel(title: "Запись о чтении",
-                                                   frontButtonText: "",
                                                    onBackButtonPressed: ({ [weak self] in
                                                     self?.navigationController?.popViewController(animated: true)
                                                    }), onFrontButtonPressed: ({ [weak self] in

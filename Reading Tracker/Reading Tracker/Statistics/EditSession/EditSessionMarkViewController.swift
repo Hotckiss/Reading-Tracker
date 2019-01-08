@@ -47,7 +47,6 @@ class EditSessionMarkViewController: UIViewController {
     private func setupSubviews() {
         let navBar = NavigationBar(frame: .zero)
         navBar.configure(model: NavigationBarModel(title: "Оценка чтения",
-                                                   frontButtonText: "Готово",
                                                    onBackButtonPressed: ({ [weak self] in
                                                     self?.navigationController?.popViewController(animated: true)
                                                    }),
@@ -56,6 +55,7 @@ class EditSessionMarkViewController: UIViewController {
                                                    })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         navBar.setBackButtonImage(image: UIImage(named: "back"))
+        navBar.setFrontButtonImage(image: UIImage(named: "tick"))
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
         

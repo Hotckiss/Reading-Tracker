@@ -38,7 +38,6 @@ final class EditBookViewController: UIViewController, UIImagePickerControllerDel
         
         let navBar = NavigationBar()
         navBar.configure(model: NavigationBarModel(title: "Редактировать книгу",
-                                                   frontButtonText: "Готово",
                                                    onBackButtonPressed: ({ [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }), onFrontButtonPressed: ({ [weak self] in
@@ -95,6 +94,7 @@ final class EditBookViewController: UIViewController, UIImagePickerControllerDel
         })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         navBar.setBackButtonImage(image: UIImage(named: "back"))
+        navBar.setFrontButtonImage(image: UIImage(named: "tick"))
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
         self.navBar = navBar

@@ -40,7 +40,6 @@ class SessionFinishViewController: UIViewController {
     private func setupSubviews() {
         let navBar = NavigationBar(frame: .zero)
         navBar.configure(model: NavigationBarModel(title: "Оцените чтение",
-                                                   frontButtonText: "Готово",
                                                    onBackButtonPressed: ({ [weak self] in
                                                     self?.navigationController?.popViewController(animated: true)
                                                    }),
@@ -49,6 +48,7 @@ class SessionFinishViewController: UIViewController {
                                                    })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         navBar.setBackButtonImage(image: UIImage(named: "back"))
+        navBar.setFrontButtonImage(image: UIImage(named: "tick"))
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
         

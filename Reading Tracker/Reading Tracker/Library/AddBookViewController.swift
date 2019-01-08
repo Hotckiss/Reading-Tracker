@@ -29,7 +29,6 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         
         let navBar = NavigationBar()
         navBar.configure(model: NavigationBarModel(title: "Новая книга",
-                                                   frontButtonText: "Готово",
                                                    onBackButtonPressed: ({ [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }), onFrontButtonPressed: ({ [weak self] in
@@ -75,6 +74,7 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         navBar.setBackButtonImage(image: UIImage(named: "back"))
+        navBar.setFrontButtonImage(image: UIImage(named: "tick"))
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
         self.navBar = navBar
