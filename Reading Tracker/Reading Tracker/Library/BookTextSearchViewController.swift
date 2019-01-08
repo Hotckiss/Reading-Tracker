@@ -35,12 +35,6 @@ class BookTextSearchViewController: UIViewController {
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
         
-        let spinner = SpinnerView()
-        view.addSubview(spinner)
-        
-        spinner.autoCenterInSuperview()
-        self.spinner = spinner
-        
         let iconView = UIImageView(image: UIImage(named: "search"))
         view.addSubview(iconView)
         iconView.autoSetDimensions(to: CGSize(width: 22, height: 22))
@@ -95,6 +89,16 @@ class BookTextSearchViewController: UIViewController {
         searchButton.autoAlignAxis(toSuperviewAxis: .vertical)
         searchButton.autoPinEdge(.top, to: .bottom, of: lineView, withOffset: 64)
         
+        setupSpinner()
+    }
+    
+    private func setupSpinner() {
+        let spinner = SpinnerView(frame: .zero)
+        view.addSubview(spinner)
+        
+        view.bringSubviewToFront(spinner)
+        spinner.autoPinEdgesToSuperviewEdges()
+        self.spinner = spinner
     }
     
     @objc private func onSearchButtonTapped() {

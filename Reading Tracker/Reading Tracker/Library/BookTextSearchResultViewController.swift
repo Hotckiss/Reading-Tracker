@@ -12,6 +12,7 @@ import Firebase
 
 final class BookTextSearchResultViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var onAdd: ((BookModel) -> Void)?
+    private var spinner: SpinnerView?
     private var navBar: NavigationBar?
     private var tableView: UITableView?
     private var books: [BookModelAPI] = []
@@ -64,6 +65,17 @@ final class BookTextSearchResultViewController: UIViewController, UITableViewDel
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 190
         self.tableView = tableView
+        
+        setupSpinner()
+    }
+    
+    private func setupSpinner() {
+        let spinner = SpinnerView(frame: .zero)
+        view.addSubview(spinner)
+        
+        view.bringSubviewToFront(spinner)
+        spinner.autoPinEdgesToSuperviewEdges()
+        self.spinner = spinner
     }
     
     func update(books: [BookModelAPI]) {
@@ -94,9 +106,9 @@ final class BookTextSearchResultViewController: UIViewController, UITableViewDel
             guard !isAdded else {
                 return
             }
+            self?.spinner?.show()
             
             let cell = self?.tableView?.cellForRow(at: indexPath) as? BookCellAPI
-            cell?.markAsAdded()
             
             var model = BookModel(title: book.title ?? "",
                                   author: book.authors?.first ?? "",
@@ -107,11 +119,12 @@ final class BookTextSearchResultViewController: UIViewController, UITableViewDel
             model.id = FirestoreManager.DBManager.addBook(book: model, completion: ({ bookId in
                 FirebaseStorageManager.DBManager.uploadCover(cover: model.image, bookId: bookId, completion: ({ [weak self] in
                     self?.onAdd?(model)
+                    self?.spinner?.hide()
+                    cell?.markAsAdded()
                 }), onError: nil)
             }))
             
             self?.added[indexPath.row] = true
-            
         })))
         alert.addAction(UIAlertAction(title: "Нет", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
