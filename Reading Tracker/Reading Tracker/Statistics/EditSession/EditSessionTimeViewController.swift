@@ -149,7 +149,14 @@ final class EditSessionTimeViewController: UIViewController {
         self.startTime = startDate
         self.finishTime = finishDate
         bookCell?.configure(model: book)
-        handDateInputView?.configure(startDateTime: startDate, finishDateTime: finishDate, date: startDate)
+        
+        let calendar = Calendar.current
+        var finish = startTime
+        let finishHrs = calendar.component(.hour, from: finishDate)
+        let finishMins = calendar.component(.minute, from: finishDate)
+        let finishSecs = calendar.component(.second, from: finishDate)
+        finish = calendar.date(bySettingHour: finishHrs, minute: finishMins, second: finishSecs, of: finish)!
+        handDateInputView?.configure(startDateTime: startDate, finishDateTime: finish, date: startDate)
     }
     
     func updateWithBook(book: BookModel?) {
