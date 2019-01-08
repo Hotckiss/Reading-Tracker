@@ -360,7 +360,7 @@ final class FirestoreManager {
                 "end time": Timestamp(date: session.finishTime),
                 "mood": session.mood.rawValue,
                 "place": session.readPlace.rawValue,
-                "comment": session.comment,
+                "comment": session.comment
             ]) { error in
                 if let error = error {
                     print("Error writing document: \(error.localizedDescription)")
@@ -385,7 +385,33 @@ final class FirestoreManager {
             .setData([
                 "duration": session.time,
                 "start time": Timestamp(date: session.startTime),
-                "end time": Timestamp(date: session.finishTime),
+                "end time": Timestamp(date: session.finishTime)
+                ], merge: true) { error in
+                    if let error = error {
+                        print("Error writing document: \(error.localizedDescription)")
+                        onError?()
+                    } else {
+                        print("Document successfully written!")
+                        completion?()
+                    }
+        }
+    }
+    
+    public func updateSessionMark(sessionId: String, package: UpdateSessionMarkPackage, completion: (() -> Void)?, onError: (() -> Void)?) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        db.collection("statistics")
+            .document("sessions")
+            .collection(uid)
+            .document(sessionId)
+            .setData([
+                "start page": package.startPage,
+                "end page": package.finishPage,
+                "mood": package.mood.rawValue,
+                "place": package.place.rawValue,
+                "comment": package.comment
                 ], merge: true) { error in
                     if let error = error {
                         print("Error writing document: \(error.localizedDescription)")

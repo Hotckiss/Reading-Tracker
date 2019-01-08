@@ -217,7 +217,6 @@ final class SingleSessionViewController: UIViewController {
                 strongSelf.sessionModel.time = ustp.newDuration
                 strongSelf.configure(sessionModel: strongSelf.sessionModel)
                 strongSelf.onEdited?(strongSelf.sessionModel)
-                //TODO: throw to all statistics
             }
             self?.navigationController?.pushViewController(vc, animated: true)
         })))
@@ -228,12 +227,24 @@ final class SingleSessionViewController: UIViewController {
             }
             
             let vc = EditSessionMarkViewController()
-            vc.configure(package: UpdateSessionMarkPackage(startPage: strongSelf.sessionModel.startPage,
+            vc.configure(sessionId: strongSelf.sessionModel.sessionId,
+                         package: UpdateSessionMarkPackage(startPage: strongSelf.sessionModel.startPage,
                                                            finishPage: strongSelf.sessionModel.finishPage,
                                                            comment: strongSelf.sessionModel.comment,
                                                            mood: strongSelf.sessionModel.mood,
                                                            place: strongSelf.sessionModel.readPlace))
-            
+            vc.onUpdate = { [weak self] usmp in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.sessionModel.startPage = usmp.startPage
+                strongSelf.sessionModel.finishPage = usmp.finishPage
+                strongSelf.sessionModel.comment = usmp.comment
+                strongSelf.sessionModel.mood = usmp.mood
+                strongSelf.sessionModel.readPlace = usmp.place
+                strongSelf.configure(sessionModel: strongSelf.sessionModel)
+                strongSelf.onEdited?(strongSelf.sessionModel)
+            }
             self?.navigationController?.pushViewController(vc, animated: true)
         })))
         

@@ -18,7 +18,7 @@ struct UpdateSessionMarkPackage {
 }
 
 class EditSessionMarkViewController: UIViewController {
-    var onCompleted: ((UploadSessionModel) -> Void)?
+    var onUpdate: ((UpdateSessionMarkPackage) -> Void)?
     private var spinner: SpinnerView?
     private var commentTextField: RTTextField!
     private let commentTextFieldDelegate = FinishTextFieldDelegate()
@@ -27,6 +27,7 @@ class EditSessionMarkViewController: UIViewController {
     private var startPageTextField: PageTextField?
     private var finishPageTextField: PageTextField?
     private var package: UpdateSessionMarkPackage?
+    private var sessionId = ""
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -125,11 +126,12 @@ class EditSessionMarkViewController: UIViewController {
         setupSpinner()
         
         if let usmp = self.package {
-            configure(package: usmp)
+            configure(sessionId: self.sessionId, package: usmp)
         }
     }
     
-    func configure(package: UpdateSessionMarkPackage) {
+    func configure(sessionId: String, package: UpdateSessionMarkPackage) {
+        self.sessionId = sessionId
         self.package = package
         startPageTextField?.setup(value: package.startPage)
         finishPageTextField?.setup(value: package.finishPage)
@@ -144,52 +146,42 @@ class EditSessionMarkViewController: UIViewController {
     }
     
     private func sendResults() {
-        print("TODO: update")
-        /*guard let start = startPageTextField?.page,
+        guard !sessionId.isEmpty,
+            let start = startPageTextField?.page,
             let finish = finishPageTextField?.page,
             start < finish else {
-                self.showError()
+                self.showError(msg: "Пожалуйста, ведите страницы")
                 return
         }
         
-        model.startPage = start
-        model.finishPage = finish
+        package?.startPage = start
+        package?.finishPage = finish
         let mood = Mood(ind: moodPollView.result)
         let place = ReadPlace(ind: placePollView.result)
         let comment = commentTextField.text ?? ""
         
-        model.mood = mood
-        model.readPlace = place
-        model.comment = comment
+        package?.mood = mood
+        package?.place = place
+        package?.comment = comment
         
-        FirestoreManager.DBManager.uploadSession(session: model,
-                                                 completion: ({ [weak self] sessionId in
-                                                    self?.navigationController?.popViewController(animated: true)
-                                                    guard let model = self?.model else {
-                                                        return
-                                                    }
-                                                    
-                                                    let usm = UploadSessionModel(sessionId: sessionId,
-                                                                                 bookId: model.bookInfo.id,
-                                                                                 startPage: model.startPage,
-                                                                                 finishPage: model.finishPage,
-                                                                                 time: model.time,
-                                                                                 startTime: model.startTime,
-                                                                                 finishTime: model.finishTime,
-                                                                                 mood: mood,
-                                                                                 readPlace: place,
-                                                                                 comment: comment)
-                                                    
-                                                    self?.onCompleted?(usm)
-                                                    //TODO reset session VC
-                                                 }),
-                                                 onError: ({
-                                                    //TODO alert, hide spinner
-                                                 }))*/
+        if let usmp = self.package {
+            spinner?.show()
+            FirestoreManager.DBManager.updateSessionMark(sessionId: sessionId,
+                                                         package: usmp,
+                                                         completion: ({ [weak self] in
+                                                            self?.spinner?.hide()
+                                                            self?.onUpdate?(usmp)
+                                                            self?.navigationController?.popViewController(animated: true)
+                                                         }),
+                                                         onError: ({ [weak self] in
+                                                            self?.spinner?.hide()
+                                                            self?.showError(msg: "Ошибка загрузки сессии")
+                                                         }))
+        }
     }
     
-    private func showError() {
-        let alert = UIAlertController(title: "Ошибка!", message: "Пожалуйста, ведите страницы", preferredStyle: .alert)
+    private func showError(msg: String) {
+        let alert = UIAlertController(title: "Ошибка!", message: msg, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
