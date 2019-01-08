@@ -76,6 +76,7 @@ final class SingleSessionViewController: UIViewController {
         let contentView = UIView(frame: .zero)
         scrollView.addSubview(contentView)
         contentView.autoMatch(.width, to: .width, of: scrollView)
+        contentView.autoPinEdgesToSuperviewEdges()
         self.contentView = contentView
         
         let bookCell = BookFilledCell(frame: .zero)
