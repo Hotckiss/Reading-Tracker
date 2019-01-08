@@ -54,7 +54,12 @@ final class SessionViewController: UIViewController {
         navBar.configure(model: NavigationBarModel(title: "Новая запись о чтении",
                                                    backButtonText: "Сброс",
                                                    onBackButtonPressed: ({
-                                                    //TODO: reset
+                                                    let alert = UIAlertController(title: "Сбросить сессию?", message: nil, preferredStyle: .alert)
+                                                    alert.addAction(UIAlertAction(title: "Отмена", style: .default, handler: nil))
+                                                    alert.addAction(UIAlertAction(title: "Сбросить", style: .destructive, handler: ({ [weak self] _ in
+                                                        self?.reset()
+                                                    })))
+                                                    self.present(alert, animated: true, completion: nil)
                                                    })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         
@@ -165,6 +170,15 @@ final class SessionViewController: UIViewController {
             self?.sessionButton?.reset()
         }
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    private func reset() {
+        if hasBook {
+            handDateInputView?.reset()
+            sessionButton?.reset()
+            isAutomaticTimeCounterEnabled = true
+            updateTimeInput(isHand: !isAutomaticTimeCounterEnabled)
+        }
     }
     
     @objc private func onHandTimeTap() {
