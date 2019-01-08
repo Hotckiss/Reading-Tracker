@@ -28,6 +28,7 @@
 		2F2A9D5D21E2A7EF00672E1A /* BookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2A9D5C21E2A7EF00672E1A /* BookCell.swift */; };
 		2F2A9D5F21E2A85100672E1A /* BooksModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2A9D5E21E2A85100672E1A /* BooksModels.swift */; };
 		2F2A9D6121E2AA9C00672E1A /* BookCellAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2A9D6021E2AA9C00672E1A /* BookCellAPI.swift */; };
+		2F2A9D6421E4EC6E00672E1A /* EditSessionTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2A9D6321E4EC6E00672E1A /* EditSessionTimeViewController.swift */; };
 		2F30E3B221BBE6B200C1A562 /* SingleBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30E3B121BBE6B200C1A562 /* SingleBookViewController.swift */; };
 		2F30E3B421BC3C0300C1A562 /* BookCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30E3B321BC3C0300C1A562 /* BookCommentsViewController.swift */; };
 		2F30E3B721BC45E700C1A562 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F30E3B621BC45E700C1A562 /* CommentCell.swift */; };
@@ -134,6 +135,7 @@
 		2F2A9D5C21E2A7EF00672E1A /* BookCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCell.swift; sourceTree = "<group>"; };
 		2F2A9D5E21E2A85100672E1A /* BooksModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksModels.swift; sourceTree = "<group>"; };
 		2F2A9D6021E2AA9C00672E1A /* BookCellAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCellAPI.swift; sourceTree = "<group>"; };
+		2F2A9D6321E4EC6E00672E1A /* EditSessionTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSessionTimeViewController.swift; sourceTree = "<group>"; };
 		2F30E3B121BBE6B200C1A562 /* SingleBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleBookViewController.swift; sourceTree = "<group>"; };
 		2F30E3B321BC3C0300C1A562 /* BookCommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCommentsViewController.swift; sourceTree = "<group>"; };
 		2F30E3B621BC45E700C1A562 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
@@ -284,6 +286,14 @@
 				2F71B32B218F684900E4E80F /* LoginPasswordAuthorizationViewController.swift */,
 			);
 			path = Authorization;
+			sourceTree = "<group>";
+		};
+		2F2A9D6221E4EC4800672E1A /* EditSession */ = {
+			isa = PBXGroup;
+			children = (
+				2F2A9D6321E4EC6E00672E1A /* EditSessionTimeViewController.swift */,
+			);
+			path = EditSession;
 			sourceTree = "<group>";
 		};
 		2F30E3AF21BBE63900C1A562 /* Tabs */ = {
@@ -450,6 +460,7 @@
 		2FED199721748F1200AFFF99 /* Statistics */ = {
 			isa = PBXGroup;
 			children = (
+				2F2A9D6221E4EC4800672E1A /* EditSession */,
 				2F3AA2A921B31A5500CCE35D /* Controllers */,
 				2F412CDB21ABEF03007C491B /* Views */,
 				2FED19A021748FE300AFFF99 /* StatisticsViewController.swift */,
@@ -887,6 +898,7 @@
 				2FA1676021A890FF006E9712 /* SpinnerView.swift in Sources */,
 				2FAA8FB8216A32310011F59D /* RegistrationDraft.swift in Sources */,
 				2F3AA2AB21B31AA400CCE35D /* SessionsStatisticsViewController.swift in Sources */,
+				2F2A9D6421E4EC6E00672E1A /* EditSessionTimeViewController.swift in Sources */,
 				2F71B324218EFAFF00E4E80F /* RegistrationViewController.swift in Sources */,
 				2F0C7E2B219F0F7D00C28ECB /* FirebaseStorageManager.swift in Sources */,
 				2F3AA2AD21B31AB600CCE35D /* BooksStatisticsViewController.swift in Sources */,
