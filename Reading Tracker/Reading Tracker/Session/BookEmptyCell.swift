@@ -30,7 +30,7 @@ final class BookEmptyCell: UIView {
         
         let titleTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: SizeDependent.instance.convertFont(20), weight: .medium)]
             as [NSAttributedString.Key : Any]
         
         titleTextLabel.attributedText = NSAttributedString(string: "Для начала добавьте книгу, которую сейчас читаете", attributes: titleTextAttributes)

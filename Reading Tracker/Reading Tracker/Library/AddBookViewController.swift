@@ -26,8 +26,55 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setupNavigationBar()
-        setupSpinner()
+        
+        let navBar = NavigationBar()
+        navBar.configure(model: NavigationBarModel(title: "Новая книга", backButtonText: "Назад", frontButtonText: "Готово", onBackButtonPressed: ({ [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }), onFrontButtonPressed: ({ [weak self] in
+            self?.spinner?.show()
+            var type: BookType = .unknown
+            if let index = self?.mediaDropdown?.selectedIndex {
+                switch index {
+                case 0:
+                    type = .paper
+                case 1:
+                    type = .ebook
+                case 2:
+                    type = .smartphone
+                case 3:
+                    type = .tab
+                default:
+                    break
+                }
+            }
+            var model = BookModel(title: self?.nameTextField?.text ?? "",
+                                  author: self?.authorTextField?.text ?? "",
+                                  image: self?.addedBookStub?.imageStub?.image,
+                                  lastUpdated: Date(),
+                                  type: type)
+            
+            if model.title.isEmpty {
+                self?.spinner?.hide()
+                let alert = UIAlertController(title: "Ошибка!", message: "Пустое название книги", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+                self?.present(alert, animated: true, completion: nil)
+                return
+            }
+            
+            model.id = FirestoreManager.DBManager.addBook(book: model, completion: ({ bookId in
+                FirebaseStorageManager.DBManager.uploadCover(cover: model.image ?? UIImage(named: "bookPlaceholder")!, bookId: bookId, completion: ({ [weak self] in
+                    self?.spinner?.hide()
+                    self?.onCompleted?(model)
+                    self?.navigationController?.popViewController(animated: true)
+                }), onError: ({ [weak self] in
+                    self?.spinner?.hide()
+                }))
+            }))
+        })))
+        navBar.backgroundColor = UIColor(rgb: 0x2f5870)
+        view.addSubview(navBar)
+        navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
+        self.navBar = navBar
         
         let placeholderTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
@@ -44,7 +91,9 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         
         view.addSubview(nameTextField)
         nameTextField.autoAlignAxis(toSuperviewAxis: .vertical)
-        nameTextField.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 124, left: 16, bottom: 0, right: 16), excludingEdge: .bottom)
+        nameTextField.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        nameTextField.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+        nameTextField.autoPinEdge(.top, to: .bottom, of: navBar, withOffset: SizeDependent.instance.convertPadding(48))
         
         let lineView = UIView(frame: .zero)
         lineView.backgroundColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
@@ -68,7 +117,7 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         authorTextField.autoAlignAxis(toSuperviewAxis: .vertical)
         authorTextField.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         authorTextField.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
-        authorTextField.autoPinEdge(.top, to: .bottom, of: lineView, withOffset: 59)
+        authorTextField.autoPinEdge(.top, to: .bottom, of: lineView, withOffset: SizeDependent.instance.convertPadding(48))
         
         let lineView2 = UIView(frame: .zero)
         lineView2.backgroundColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
@@ -84,14 +133,14 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         view.addSubview(mediaDropdown)
         mediaDropdown.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         mediaDropdown.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
-        mediaDropdown.autoPinEdge(.top, to: .bottom, of: lineView2, withOffset: 59)
+        mediaDropdown.autoPinEdge(.top, to: .bottom, of: lineView2, withOffset: SizeDependent.instance.convertPadding(32))
         mediaDropdown.autoSetDimension(.height, toSize: 33)
         self.mediaDropdown = mediaDropdown
         
         let bookStub = AddBookView(frame: .zero)
         view.addSubview(bookStub)
         bookStub.autoAlignAxis(toSuperviewAxis: .vertical)
-        bookStub.autoPinEdge(.top, to: .bottom, of: lineView2, withOffset: 59 + 32 + 9 + 58)
+        bookStub.autoPinEdge(.top, to: .bottom, of: lineView2, withOffset: SizeDependent.instance.convertPadding(32 * 2) + 32 + 9)
         bookStub.autoSetDimensions(to: CGSize(width: 84, height: 101))
         bookStub.addTarget(self, action: #selector(onAddCover), for: .touchUpInside)
         self.bookStub = bookStub
@@ -99,12 +148,13 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         let addedBookStub = AddedBookView(frame: .zero, image: nil)
         view.addSubview(addedBookStub)
         addedBookStub.autoAlignAxis(toSuperviewAxis: .vertical)
-        addedBookStub.autoPinEdge(.top, to: .bottom, of: lineView2, withOffset: 59 + 32 + 9 + 32)
+        addedBookStub.autoPinEdge(.top, to: .bottom, of: lineView2, withOffset: SizeDependent.instance.convertPadding(32 * 2) + 32 + 9)
         addedBookStub.autoSetDimensions(to: CGSize(width: 155, height: 255))
         addedBookStub.addTarget(self, action: #selector(onAddCover), for: .touchUpInside)
         self.addedBookStub = addedBookStub
         
         updateCover(hasBook: false)
+        setupSpinner()
     }
     
     private func updateCover(hasBook: Bool) {
@@ -186,57 +236,6 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         let image = info[.originalImage] as? UIImage
         updateCover(hasBook: true)
         addedBookStub?.imageStub?.image = image
-    }
-    
-    private func setupNavigationBar() {
-        let navBar = NavigationBar()
-        navBar.configure(model: NavigationBarModel(title: "Новая книга", backButtonText: "Назад", frontButtonText: "Готово", onBackButtonPressed: ({ [weak self] in
-            self?.navigationController?.popViewController(animated: true)
-        }), onFrontButtonPressed: ({ [weak self] in
-            self?.spinner?.show()
-            var type: BookType = .unknown
-            if let index = self?.mediaDropdown?.selectedIndex {
-                switch index {
-                case 0:
-                    type = .paper
-                case 1:
-                    type = .ebook
-                case 2:
-                    type = .smartphone
-                case 3:
-                    type = .tab
-                default:
-                    break
-                }
-            }
-            var model = BookModel(title: self?.nameTextField?.text ?? "",
-                                  author: self?.authorTextField?.text ?? "",
-                                  image: self?.addedBookStub?.imageStub?.image,
-                                  lastUpdated: Date(),
-                                  type: type)
-            
-            if model.title.isEmpty {
-                self?.spinner?.hide()
-                let alert = UIAlertController(title: "Ошибка!", message: "Пустое название книги", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
-                self?.present(alert, animated: true, completion: nil)
-                return
-            }
-            
-            model.id = FirestoreManager.DBManager.addBook(book: model, completion: ({ bookId in
-                FirebaseStorageManager.DBManager.uploadCover(cover: model.image ?? UIImage(named: "bookPlaceholder")!, bookId: bookId, completion: ({ [weak self] in
-                    self?.spinner?.hide()
-                    self?.onCompleted?(model)
-                    self?.navigationController?.popViewController(animated: true)
-                }), onError: ({ [weak self] in
-                    self?.spinner?.hide()
-                }))
-            }))
-        })))
-        navBar.backgroundColor = UIColor(rgb: 0x2f5870)
-        view.addSubview(navBar)
-        navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
-        self.navBar = navBar
     }
     
     private func setupSpinner() {
