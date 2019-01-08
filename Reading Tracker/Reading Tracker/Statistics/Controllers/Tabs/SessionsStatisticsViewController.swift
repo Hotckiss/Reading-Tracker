@@ -11,6 +11,7 @@ import UIKit
 import Firebase
 
 final class SessionsStatisticsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    var onRequestReload: ((UploadSessionModel) -> Void)?
     private var spinner: SpinnerView?
     private var sessions: [UploadSessionModel] = []
     private var booksMap: [String : BookModel] = [:]
@@ -114,19 +115,7 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
         if let book = booksMap[sessions[dataIndex].bookId] {
             let vc = SingleSessionViewController(model: book, sessionModel: session)
             vc.onEdited = { [weak self] session in
-                guard let strongSelf = self else {
-                    return
-                }
-                
-                for i in 0..<strongSelf.sessions.count {
-                    if strongSelf.sessions[i].sessionId == session.sessionId {
-                        strongSelf.sessions[i] = session
-                        strongSelf.update(sessions: strongSelf.sessions,
-                                          booksMap: strongSelf.booksMap,
-                                          interval: strongSelf.interval)
-                        //TODO: update other tabs.........
-                    }
-                }
+                self?.onRequestReload?(session)
             }
             navigationController?.pushViewController(vc, animated: true)
         }

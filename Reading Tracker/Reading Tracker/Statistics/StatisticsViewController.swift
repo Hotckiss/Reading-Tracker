@@ -106,6 +106,23 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     
     convenience init() {
         self.init(nibName: nil, bundle: nil)
+        for subViewController in childsVC {
+            if let vc = subViewController as? SessionsStatisticsViewController {
+                vc.onRequestReload = { [weak self] session in
+                    guard let strongSelf = self else {
+                        return
+                    }
+                    
+                    for i in 0..<strongSelf.sessions.count {
+                        if strongSelf.sessions[i].sessionId == session.sessionId {
+                            strongSelf.sessions[i] = session
+                            strongSelf.update()
+                            break
+                        }
+                    }
+                }
+            }
+        }
     }
     
     func updateBooksStorage(books: [BookModel]) {
