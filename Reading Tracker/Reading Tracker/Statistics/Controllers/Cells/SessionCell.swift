@@ -150,8 +150,10 @@ class SessionCell: UITableViewCell {
         
         dateLabel?.attributedText = NSAttributedString(string: format(model.sessionInfo.startTime), attributes: dateTextAttributes)
         dayOfWeekLabel?.attributedText = NSAttributedString(string: getDayOfWeek(model.sessionInfo.startTime), attributes: dayOfWeekTextAttributes)
-        titleLabel?.attributedText = NSAttributedString(string: model.book.title, attributes: titleTextAttributes)
-        authorLabel?.attributedText = NSAttributedString(string: model.book.author, attributes: authorTextAttributes)
+        let title = (model.book.title.isEmpty ? "Без названия" : model.book.title)
+        let author = (model.book.author.isEmpty ? "Автор не указан" : model.book.author)
+        titleLabel?.attributedText = NSAttributedString(string: title, attributes: titleTextAttributes)
+        authorLabel?.attributedText = NSAttributedString(string: author, attributes: authorTextAttributes)
         minsNumLabel?.attributedText = NSAttributedString(string: String((model.sessionInfo.time / 60) % 60), attributes: timeNumTextAttributes)
         hrsNumLabel?.attributedText = NSAttributedString(string: String(model.sessionInfo.time / 3600), attributes: timeNumTextAttributes)
         

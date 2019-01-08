@@ -91,7 +91,7 @@ final class BooksStatisticsViewController: UIViewController, UITableViewDelegate
         }
         
         keys = Array(summSessions.keys)
-        tableViewHeightConstraint?.constant = CGFloat(groupedSessions.count * 118 + 3 * 42 + 118 * 2)
+        tableViewHeightConstraint?.constant = sessions.isEmpty ? 0 : CGFloat(groupedSessions.count * 118 + 3 * 42 + 118 * 2)
         tableView?.reloadData()
     }
     

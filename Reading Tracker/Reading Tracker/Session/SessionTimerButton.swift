@@ -33,9 +33,10 @@ public final class SessionTimerButton: UIButton {
     public var isPlaceholder: Bool = false {
         didSet {
             isUserInteractionEnabled = !isPlaceholder
+            let textSize = SizeDependent.instance.convertFont(42)
             let titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor : isPlaceholder ? UIColor(rgb: 0xbdbdbd) : UIColor(rgb: 0xedaf97),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 42.0)!]
+                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: textSize)!]
                 as [NSAttributedString.Key : Any]
             titleView?.attributedText = NSAttributedString(string: "Начать\nчтение", attributes: titleTextAttributes)
             
@@ -84,9 +85,10 @@ public final class SessionTimerButton: UIButton {
         
         let titleView = UILabel(forAutoLayout: ())
         titleView.numberOfLines = 0
+        let textSize = SizeDependent.instance.convertFont(42)
         let titleTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 42.0)!]
+            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: textSize)!]
             as [NSAttributedString.Key : Any]
         titleView.textAlignment = .center
         titleView.attributedText = NSAttributedString(string: "Начать\nчтение", attributes: titleTextAttributes)
