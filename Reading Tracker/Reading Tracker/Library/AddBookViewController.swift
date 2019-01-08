@@ -8,10 +8,8 @@
 
 import Foundation
 import UIKit
-import BarcodeScanner
 
-final class AddBookViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissalDelegate {
+final class AddBookViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var onCompleted: ((BookModel) -> Void)?
     private var spinner: SpinnerView?
     private var navBar: NavigationBar?
@@ -194,44 +192,8 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
                 strongSelf.present(imagePicker, animated: true, completion: nil)
             }
         })))
-        alert.addAction(UIAlertAction(title: "Сканировать ISBN", style: .default, handler: ({ [weak self] _ in
-            let vc = BarcodeScannerViewController()
-            vc.codeDelegate = self
-            vc.errorDelegate = self
-            vc.dismissalDelegate = self
-            
-            self?.present(vc, animated: true, completion: nil)
-        })))
         alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
-    }
-    
-    func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
-        controller.dismiss(animated: true, completion: nil)
-        spinner?.show()
-        FirestoreManager.DBManager.downloadOZONBook(ozonId: code, onSuccess: ({ [weak self] model, url in
-            self?.spinner?.hide()
-            let alert = UIAlertController(title: "Успех!", message: "Загрузить книгу \(model.title)?", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Да", style: .default, handler: ({ [weak self] _ in
-                self?.nameTextField?.text = model.title
-                self?.authorTextField?.text = model.author
-                self?.addedBookStub?.imageStub?.downloaded(from: url)
-                self?.updateCover(hasBook: true)
-                })))
-            alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
-            self?.present(alert, animated: true, completion: nil)
-        }), onFail: ({ [weak self] in
-            self?.spinner?.hide()
-            self?.alertError(reason: "Книга не найдена")
-        }))
-    }
-    
-    func scanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {
-        print(error)
-    }
-    
-    func scannerDidDismiss(_ controller: BarcodeScannerViewController) {
-        controller.dismiss(animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -248,9 +210,6 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         view.bringSubviewToFront(spinner)
         spinner.autoPinEdgesToSuperviewEdges()
         self.spinner = spinner
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
     }
 
     private func alertError(reason: String) {
