@@ -88,6 +88,7 @@ public class NavigationBar: UIView {
     public func setFrontButtonImage(image: UIImage?) {
         frontButton?.setTitle("", for: [])
         frontButton?.setImage(image, for: [])
+        frontButton?.contentEdgeInsets = UIEdgeInsets(top: 4, left: 12, bottom: 4, right: 4)
     }
     
     required public init?(coder aDecoder: NSCoder) {

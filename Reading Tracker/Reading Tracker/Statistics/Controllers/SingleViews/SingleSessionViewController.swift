@@ -58,7 +58,10 @@ final class SingleSessionViewController: UIViewController {
                                                    frontButtonText: "",
                                                    onBackButtonPressed: ({ [weak self] in
                                                     self?.navigationController?.popViewController(animated: true)
+                                                   }), onFrontButtonPressed: ({ [weak self] in
+                                                    print("TODO: edit alert")
                                                    })))
+        navBar.setFrontButtonImage(image: UIImage(named: "vdots"))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         
         view.addSubview(navBar)
