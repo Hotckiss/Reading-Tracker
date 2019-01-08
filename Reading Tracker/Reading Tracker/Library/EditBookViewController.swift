@@ -227,7 +227,7 @@ final class EditBookViewController: UIViewController, UIImagePickerControllerDel
             }
             
             FirestoreManager.DBManager.updateBook(book: newModel, onCompleted: ({ [weak self] in
-                FirebaseStorageManager.DBManager.uploadCover(cover: newModel.image, bookId: newModel.id, completion: ({ [weak self] in
+                FirebaseStorageManager.DBManager.uploadCover(cover: newModel.image ?? UIImage(named: "bookPlaceholder")!, bookId: newModel.id, completion: ({ [weak self] in
                     self?.spinner?.hide()
                     self?.onCompleted?(newModel)
                     self?.navigationController?.popViewController(animated: true)

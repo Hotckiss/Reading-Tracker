@@ -224,7 +224,7 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
             }
             
             model.id = FirestoreManager.DBManager.addBook(book: model, completion: ({ bookId in
-                FirebaseStorageManager.DBManager.uploadCover(cover: model.image, bookId: bookId, completion: ({ [weak self] in
+                FirebaseStorageManager.DBManager.uploadCover(cover: model.image ?? UIImage(named: "bookPlaceholder")!, bookId: bookId, completion: ({ [weak self] in
                     self?.spinner?.hide()
                     self?.onCompleted?(model)
                     self?.navigationController?.popViewController(animated: true)

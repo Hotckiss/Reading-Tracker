@@ -72,9 +72,13 @@ class BookCell: UITableViewCell {
         titleLabel?.attributedText = NSAttributedString(string: title, attributes: titleTextAttributes)
         authorLabel?.attributedText = NSAttributedString(string: author, attributes: authorTextAttributes)
         if let imageView = coverImageView {
-            FirebaseStorageManager.DBManager.downloadCover(into: imageView, bookId: model.id, onImageReceived: ({ img in
-                self.model.image = img
-            }))
+            if let img = model.image {
+                imageView.image = img
+            } else {
+                FirebaseStorageManager.DBManager.downloadCover(into: imageView, bookId: model.id, onImageReceived: ({ img in
+                    self.model.image = img
+                }))
+            }
         }
     }
 }

@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import GoogleSignIn
+import SDWebImage
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
@@ -19,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         
         configLibraries()
         APIManager.instance.startNetworkReachabilityObserver()
-        
+        SDImageCache.shared().config.shouldCacheImagesInMemory = false
         let mainViewController = MainViewController()
         let interactor = MainInteractor()
         mainVC = mainViewController

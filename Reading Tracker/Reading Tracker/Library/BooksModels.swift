@@ -70,7 +70,7 @@ public struct BookModel {
     public var id: String
     public var title: String
     public var author: String
-    public var image: UIImage
+    public var image: UIImage?
     public var lastUpdated: Date
     public var type: BookType
     public var isDeleted: Bool
@@ -85,7 +85,7 @@ public struct BookModel {
         self.id = id
         self.title = title
         self.author = author
-        self.image = image ?? UIImage(named: "bookPlaceholder")!
+        self.image = image
         self.lastUpdated = lastUpdated
         self.type = type
         self.isDeleted = isDeleted
