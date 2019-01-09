@@ -69,11 +69,8 @@ final class SingleBookViewController: UIViewController {
         scrollView.showsVerticalScrollIndicator = true
         scrollView.alwaysBounceVertical = true
         view.addSubview(scrollView)
-        scrollView.isUserInteractionEnabled = true;
-        scrollView.isExclusiveTouch = true;
-        //scrollView.touc
-        //scrollView.delaysContentTouches = false
-        //scrollView.canCancelContentTouches = false
+        scrollView.isUserInteractionEnabled = true
+        scrollView.isExclusiveTouch = true
         scrollView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 0, bottom: bottomSpace, right: 0), excludingEdge: .top)
         scrollView.autoPinEdge(.top, to: .bottom, of: navBar)
         self.scrollView = scrollView
@@ -194,10 +191,16 @@ final class SingleBookViewController: UIViewController {
             as [NSAttributedString.Key : Any]
         
         let pagesCount = (summary.maxPage ?? 0) - (summary.minPage ?? 0)
-        let pagesString = PluralRule().formatPages(count: pagesCount) + ", " +
-            String(summary.minPage ?? 0) +
-            " \u{2013} " +
-            String(summary.maxPage ?? 0)
+        let pagesProgress: String
+        if summary.pagesCount > 0 {
+            let percent: Int = Int(round(100.0 * Double(pagesCount) / Double(summary.pagesCount)))
+            pagesProgress = "\(max(min(percent, 100), 0))%"
+        } else {
+            pagesProgress = String(summary.minPage ?? 0) +
+                " \u{2013} " +
+                String(summary.maxPage ?? 0)
+        }
+        let pagesString = PluralRule().formatPages(count: pagesCount) + ", " + pagesProgress
         
         let pagesAttributed = NSMutableAttributedString(string: pagesString, attributes: pagesTextAttributesSmall)
         pagesAttributed.addAttributes(pagesTextAttributesBig, range: NSRange(location: 0, length: String(pagesCount).count))

@@ -20,6 +20,7 @@ struct SessionsSummModel {
     var attempts: Int = 0
     var moodsCounts: [String: Int] = [:]
     var placesCounts: [String: Int] = [:]
+    var pagesCount: Int = 0
 }
 
 final class BooksStatisticsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -73,6 +74,8 @@ final class BooksStatisticsViewController: UIViewController, UITableViewDelegate
                     ssm.placesCounts[session.readPlace.rawValue] = currentValue + 1
                 }
             }
+            
+            ssm.pagesCount = booksMap[key]?.pagesCount ?? 0
             summSessions[key] = ssm
         }
         var maxTimeCnt = 0

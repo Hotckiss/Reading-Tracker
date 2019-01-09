@@ -57,17 +57,17 @@ class SessionCell: UITableViewCell {
         dayOfWeekLabel.autoAlignAxis(.horizontal, toSameAxisOf: dateLabel)
         
         let titleLabel = UILabel(forAutoLayout: ())
-        titleLabel.numberOfLines = 0
+        titleLabel.numberOfLines = 1
         contentView.addSubview(titleLabel)
         titleLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         titleLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         titleLabel.autoPinEdge(.top, to: .bottom, of: dateLabel, withOffset: 16)
         
         let authorLabel = UILabel(forAutoLayout: ())
-        authorLabel.numberOfLines = 0
+        authorLabel.numberOfLines = 1
         contentView.addSubview(authorLabel)
         authorLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
-        authorLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+        authorLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16 * 3 + 8 * 3 + 16)
         authorLabel.autoPinEdge(.top, to: .bottom, of: titleLabel)
         authorLabel.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16)
         self.dateLabel = dateLabel
