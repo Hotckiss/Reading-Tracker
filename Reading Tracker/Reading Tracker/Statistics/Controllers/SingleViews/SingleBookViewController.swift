@@ -102,7 +102,7 @@ final class SingleBookViewController: UIViewController {
         
         let timeDescriptionTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 24.0)!,
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 24, weight: .regular),
             NSAttributedString.Key.baselineOffset: 2]
             as [NSAttributedString.Key : Any]
         
@@ -155,7 +155,7 @@ final class SingleBookViewController: UIViewController {
         
         let timeNumTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 48.0)!,
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 48, weight: .medium),
             NSAttributedString.Key.paragraphStyle: style,
             NSAttributedString.Key.baselineOffset: -8]
             as [NSAttributedString.Key : Any]
@@ -165,12 +165,12 @@ final class SingleBookViewController: UIViewController {
         
         let attemptsTextAttributesBig = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 48.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 48, weight: .medium)]
             as [NSAttributedString.Key : Any]
         
         let attemptsTextAttributesSmall = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 24.0)!,
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 24, weight: .regular),
             NSAttributedString.Key.baselineOffset: 8]
             as [NSAttributedString.Key : Any]
         
@@ -183,12 +183,12 @@ final class SingleBookViewController: UIViewController {
 
         let pagesTextAttributesSmall = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 24.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 24, weight: .regular)]
             as [NSAttributedString.Key : Any]
         
         let pagesTextAttributesBig = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 48.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 48, weight: .regular)]
             as [NSAttributedString.Key : Any]
         
         let pagesCount = (summary.maxPage ?? 0) - (summary.minPage ?? 0)
@@ -326,7 +326,7 @@ final class SingleBookViewController: UIViewController {
         
         let commButtonTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .medium)]
             as [NSAttributedString.Key : Any]
         
         let commButtonTitle = UILabel(forAutoLayout: ())
@@ -340,7 +340,7 @@ final class SingleBookViewController: UIViewController {
             cntLabel.textAlignment = .center
             let cntTextAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!]
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14, weight: .regular)]
                 as [NSAttributedString.Key : Any]
             
             cntLabel.attributedText = NSAttributedString(string: String(commentsCount), attributes: cntTextAttributes)

@@ -121,7 +121,7 @@ class RegistrationViewController: UIViewController/*, GIDSignInUIDelegate, FBSDK
         
         let buttonTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 24.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 24, weight: .medium)]
             as [NSAttributedString.Key : Any]
         
         codeButton.setAttributedTitle(NSAttributedString(string: "Код участника", attributes: buttonTextAttributes), for: .normal)
@@ -159,7 +159,7 @@ class RegistrationViewController: UIViewController/*, GIDSignInUIDelegate, FBSDK
         
         let buttonTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor.white,
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .medium)]
             as [NSAttributedString.Key : Any]
         
         loginButton.setAttributedTitle(NSAttributedString(string: "Логин и пароль", attributes: buttonTextAttributes), for: .normal)

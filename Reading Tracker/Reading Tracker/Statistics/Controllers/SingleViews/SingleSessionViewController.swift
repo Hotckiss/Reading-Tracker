@@ -115,12 +115,12 @@ final class SingleSessionViewController: UIViewController {
         
         let dateTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .medium)]
             as [NSAttributedString.Key : Any]
         
         let dayOfWeekTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14, weight: .regular)]
             as [NSAttributedString.Key : Any]
         
         dateLabel.attributedText = NSAttributedString(string: format(sessionModel.startTime), attributes: dateTextAttributes)
@@ -128,7 +128,7 @@ final class SingleSessionViewController: UIViewController {
         
         let timeDescriptionTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 24.0)!,
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 24, weight: .regular),
             NSAttributedString.Key.baselineOffset: 2]
             as [NSAttributedString.Key : Any]
         
@@ -168,7 +168,7 @@ final class SingleSessionViewController: UIViewController {
         
         let separatorTextAttributesBig = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 24.0)!,
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 24, weight: .regular),
             NSAttributedString.Key.baselineOffset: 2]
             as [NSAttributedString.Key : Any]
         
@@ -256,7 +256,7 @@ final class SingleSessionViewController: UIViewController {
         
         let timeNumTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 48.0)!,
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 48, weight: .medium),
             NSAttributedString.Key.paragraphStyle: style,
             NSAttributedString.Key.baselineOffset: -8]
             as [NSAttributedString.Key : Any]
@@ -270,12 +270,12 @@ final class SingleSessionViewController: UIViewController {
         
         let textAttributesBig = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 48.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 48, weight: .medium)]
             as [NSAttributedString.Key : Any]
         
         let textAttributesSmall = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 24.0)!,
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 24, weight: .regular),
             NSAttributedString.Key.baselineOffset: 8]
             as [NSAttributedString.Key : Any]
         
@@ -292,7 +292,7 @@ final class SingleSessionViewController: UIViewController {
         
         let pagesTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 24.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 24, weight: .regular)]
             as [NSAttributedString.Key : Any]
         
         let pagesCount = sessionModel.finishPage - sessionModel.startPage

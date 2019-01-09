@@ -32,7 +32,7 @@ final class PageTextField: UIView, UITextFieldDelegate {
         topPlaceholder.numberOfLines = 0
         let placeholderTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14, weight: .regular)]
             as [NSAttributedString.Key : Any]
         topPlaceholder.attributedText = NSAttributedString(string: "Начальная\nстраница", attributes: placeholderTextAttributes)
         
@@ -67,7 +67,7 @@ final class PageTextField: UIView, UITextFieldDelegate {
         let finishButton = UIButton(forAutoLayout: ())
         let finishButtonAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .medium)]
             as [NSAttributedString.Key : Any]
         finishButton.setAttributedTitle(NSAttributedString(string: "Готово", attributes: finishButtonAttributes), for: [])
         textField.inputAccessoryView = accessoryView
@@ -96,7 +96,7 @@ final class PageTextField: UIView, UITextFieldDelegate {
     func configure(placeholder: String) {
         let placeholderTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14, weight: .regular)]
             as [NSAttributedString.Key : Any]
         
         topPlaceholder.attributedText = NSAttributedString(string: placeholder, attributes: placeholderTextAttributes)

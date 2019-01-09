@@ -36,7 +36,7 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
             }
         }
         
-        tableViewHeightConstraint?.constant = sessions.isEmpty ? 0 : CGFloat(sessions.count * 118 + 2 * 42 + 118)
+        tableViewHeightConstraint?.constant = sessions.isEmpty ? 0 : CGFloat(sessions.count * 110 + 2 * 42 + 110)
         tableView?.reloadData()
         
         //tableView?.frame.size = tableView?.contentSize ?? CGSize()
@@ -149,7 +149,7 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        tableViewHeightConstraint?.constant = sessions.isEmpty ? 0 : CGFloat(sessions.count * 118 + 2 * 42 + 118)
+        tableViewHeightConstraint?.constant = sessions.isEmpty ? 0 : CGFloat(sessions.count * 110 + 2 * 42 + 110)
         tableView?.reloadData()
     }
 }

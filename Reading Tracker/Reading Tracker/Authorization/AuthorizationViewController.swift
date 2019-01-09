@@ -79,7 +79,7 @@ class AuthorizationViewController: UIViewController {
         
         let buttonTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 24.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 24, weight: .medium)]
             as [NSAttributedString.Key : Any]
         
         registerButton.setAttributedTitle(NSAttributedString(string: "Регистрация", attributes: buttonTextAttributes), for: .normal)
@@ -118,7 +118,7 @@ class AuthorizationViewController: UIViewController {
         
         let buttonTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor.white,
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 24.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 24, weight: .medium)]
             as [NSAttributedString.Key : Any]
         
         loginButton.setAttributedTitle(NSAttributedString(string: "Войти", attributes: buttonTextAttributes), for: .normal)

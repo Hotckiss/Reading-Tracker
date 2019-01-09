@@ -120,7 +120,7 @@ class RegistrationLoginViewController: UIViewController {
         
         let buttonTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x1f1f1f),
-            NSAttributedString.Key.font : UIFont(name: "AvenirNext-Bold", size: 27.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 27, weight: .bold)]
             as [NSAttributedString.Key : Any]
         
         finishButton.setAttributedTitle(NSAttributedString(string: "Далее", attributes: buttonTextAttributes), for: .normal)

@@ -73,7 +73,7 @@ class LoginPasswordRegistrationViewController: UIViewController {
         
         let placeholderTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .regular)]
             as [NSAttributedString.Key : Any]
         
         let emailTextField = RTTextField(padding: .zero)
@@ -137,7 +137,7 @@ class LoginPasswordRegistrationViewController: UIViewController {
         
         let buttonTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor.white,
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .medium)]
             as [NSAttributedString.Key : Any]
         
         activateButton.setAttributedTitle(NSAttributedString(string: "Зарегистрироваться", attributes: buttonTextAttributes), for: .normal)

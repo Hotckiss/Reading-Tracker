@@ -343,7 +343,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         let titleLabel = UILabel(forAutoLayout: ())
         let titleTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .medium)]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .regular)]
             as [NSAttributedString.Key : Any]
         
         titleLabel.attributedText = NSAttributedString(string: (section == 0) ? "О себе" : "О предпочтениях", attributes: titleTextAttributes)
@@ -465,7 +465,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             
             let titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .medium)]
                 as [NSAttributedString.Key : Any]
             
             titleLabel.attributedText = NSAttributedString(string: model, attributes: titleTextAttributes)
@@ -481,7 +481,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             
             let titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .medium)]
                 as [NSAttributedString.Key : Any]
             
             titleLabel?.attributedText = NSAttributedString(string: model, attributes: titleTextAttributes)
@@ -510,7 +510,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             
             let textAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .regular)]
                 as [NSAttributedString.Key : Any]
             
             field.attributedPlaceholder = NSAttributedString(string: model.placeholder, attributes: textAttributes)
@@ -537,7 +537,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             self.onUpdate = onUpdate
             let textAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .regular)]
                 as [NSAttributedString.Key : Any]
             
             field.attributedPlaceholder = NSAttributedString(string: model.placeholder, attributes: textAttributes)
@@ -577,7 +577,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             let placeholder = UILabel(frame: .zero)
             let textAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .regular)]
                 as [NSAttributedString.Key : Any]
             
             placeholder.attributedText = NSAttributedString(string: model.placeholder, attributes: textAttributes)
@@ -592,7 +592,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             
             let textFieldAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .medium)]
                 as [NSAttributedString.Key : Any]
             
             let accessoryView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 40))
@@ -640,7 +640,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             self.onUpdate = onUpdate
             let textAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .regular)]
                 as [NSAttributedString.Key : Any]
             
             placeholder?.attributedText = NSAttributedString(string: model.placeholder, attributes: textAttributes)
@@ -669,12 +669,12 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
         private func setupSubviews() {
             let mainTextAttributes1 = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .regular)]
                 as [NSAttributedString.Key : Any]
             
             let mainTextAttributes2 = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .medium)]
                 as [NSAttributedString.Key : Any]
             
             let mainButton = UIButton(forAutoLayout: ())
@@ -704,12 +704,12 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
             self.onUpdate = onUpdate
             let mainTextAttributes1 = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .regular)]
                 as [NSAttributedString.Key : Any]
             
             let mainTextAttributes2 = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .medium)]
                 as [NSAttributedString.Key : Any]
             
             if let ind = model.selectedIndex {
@@ -725,7 +725,7 @@ final class QuestionarreViewController: UIViewController, UITableViewDelegate, U
                     picker, values, indexes in
                     let textAttributes = [
                         NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-                        NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+                        NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .medium)]
                         as [NSAttributedString.Key : Any]
                     if let values = values,
                         let optionIndex = values.first as? Int,

@@ -71,7 +71,7 @@ class OfflineCodeSignUpViewController: UIViewController {
         
         let placeholderTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .regular)]
             as [NSAttributedString.Key : Any]
         
         let codeTextField = RTTextField(padding: .zero)
@@ -101,7 +101,7 @@ class OfflineCodeSignUpViewController: UIViewController {
         
         let buttonTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor.white,
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .medium)]
             as [NSAttributedString.Key : Any]
         
         activateButton.setAttributedTitle(NSAttributedString(string: "Активировать код", attributes: buttonTextAttributes), for: .normal)

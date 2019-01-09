@@ -302,7 +302,7 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         
         let titleTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 24.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 24, weight: .regular)]
             as [NSAttributedString.Key : Any]
         let emptyLabel = UILabel(forAutoLayout: ())
         emptyLabel.numberOfLines = 0

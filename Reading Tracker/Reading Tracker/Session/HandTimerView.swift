@@ -34,7 +34,7 @@ final class HandTimerView: UIView {
         
         let textAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!,
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14, weight: .regular),
             NSAttributedString.Key.paragraphStyle: style]
             
             as [NSAttributedString.Key : Any]
@@ -202,7 +202,7 @@ final class HandTimerView: UIView {
         
         let timerTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 64.0)!,
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 64, weight: .regular),
             NSAttributedString.Key.baselineOffset: 4]
             as [NSAttributedString.Key : Any]
         
@@ -228,7 +228,7 @@ final class HandTimerView: UIView {
     private func setTime(hrsLabel: UILabel, minsLabel: UILabel) {
         let timerTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 64.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 64, weight: .regular)]
             as [NSAttributedString.Key : Any]
         
         hrsLabel.attributedText = NSAttributedString(string: "\(hours)", attributes: timerTextAttributes)

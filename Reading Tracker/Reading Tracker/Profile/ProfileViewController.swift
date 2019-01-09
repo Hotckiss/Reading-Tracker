@@ -123,7 +123,7 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
             
             let titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .medium)]
                 as [NSAttributedString.Key : Any]
             
             titleLabel.attributedText = NSAttributedString(string: model.title, attributes: titleTextAttributes)
@@ -139,7 +139,7 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
             
             let subtitleTextAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 16.0)!]
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 16, weight: .regular)]
                 as [NSAttributedString.Key : Any]
             
             subtitleLabel.attributedText = NSAttributedString(string: model.subtitle, attributes: subtitleTextAttributes)
@@ -160,12 +160,12 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
             
             let titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .medium)]
                 as [NSAttributedString.Key : Any]
             
             let subtitleTextAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 16.0)!]
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 16, weight: .regular)]
                 as [NSAttributedString.Key : Any]
             
             titleLabel?.attributedText = NSAttributedString(string: model.title, attributes: titleTextAttributes)

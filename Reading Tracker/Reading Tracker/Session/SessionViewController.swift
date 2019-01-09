@@ -195,7 +195,7 @@ final class SessionViewController: UIViewController {
         
         let handTimeInputButtonTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!,
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14, weight: .regular),
             NSAttributedString.Key.paragraphStyle: style]
             as [NSAttributedString.Key : Any]
         handTimeInputButton?.setAttributedTitle(NSAttributedString(string: isHand ? "Вернуться к таймеру" : "Указать время вручную", attributes: handTimeInputButtonTextAttributes), for: [])

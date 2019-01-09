@@ -36,7 +36,7 @@ public final class SessionTimerButton: UIButton {
             let textSize = SizeDependent.instance.convertFont(42)
             let titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor : isPlaceholder ? UIColor(rgb: 0xbdbdbd) : UIColor(rgb: 0xedaf97),
-                NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: textSize)!]
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: textSize, weight: .medium)]
                 as [NSAttributedString.Key : Any]
             titleView?.attributedText = NSAttributedString(string: "Начать\nчтение", attributes: titleTextAttributes)
             
@@ -88,7 +88,7 @@ public final class SessionTimerButton: UIButton {
         let textSize = SizeDependent.instance.convertFont(42)
         let titleTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: textSize)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: textSize, weight: .medium)]
             as [NSAttributedString.Key : Any]
         titleView.textAlignment = .center
         titleView.attributedText = NSAttributedString(string: "Начать\nчтение", attributes: titleTextAttributes)
@@ -102,12 +102,12 @@ public final class SessionTimerButton: UIButton {
         timerView.textAlignment = .center
         let timerTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 64.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 64, weight: .regular)]
             as [NSAttributedString.Key : Any]
         
         let text = NSMutableAttributedString(string: "00", attributes: timerTextAttributes)
-        text.addAttribute(NSAttributedString.Key.font, value: UIFont(name: "Avenir-Light", size: 32.0)!, range: NSRange(location: 1, length: 1))
-        text.addAttribute(NSAttributedString.Key.baselineOffset, value: UIFont(name: "Avenir-Light", size: 64.0)!.xHeight - UIFont(name: "Avenir-Light", size: 32.0)!.xHeight, range: NSRange(location: 1, length: 1))
+        text.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 32, weight: .regular), range: NSRange(location: 1, length: 1))
+        text.addAttribute(NSAttributedString.Key.baselineOffset, value: UIFont.systemFont(ofSize: 64, weight: .regular).xHeight - UIFont.systemFont(ofSize: 32, weight: .regular).xHeight, range: NSRange(location: 1, length: 1))
         timerView.attributedText = text
         
         addSubview(timerView)
@@ -126,14 +126,14 @@ public final class SessionTimerButton: UIButton {
         
         let timerTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 64.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 64, weight: .regular)]
             as [NSAttributedString.Key : Any]
         
         let mins = time / 60
         let secs = time % 60
         let text = NSMutableAttributedString(string: "\(mins)\(secs)", attributes: timerTextAttributes)
-        text.addAttribute(NSAttributedString.Key.font, value: UIFont(name: "Avenir-Light", size: 32.0)!, range: NSRange(location: String(mins).count, length: String(secs).count))
-        text.addAttribute(NSAttributedString.Key.baselineOffset, value: UIFont(name: "Avenir-Light", size: 64.0)!.xHeight - UIFont(name: "Avenir-Light", size: 32.0)!.xHeight, range: NSRange(location: String(mins).count, length: String(secs).count))
+        text.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 32, weight: .regular), range: NSRange(location: String(mins).count, length: String(secs).count))
+        text.addAttribute(NSAttributedString.Key.baselineOffset, value: UIFont.systemFont(ofSize: 64, weight: .regular).xHeight - UIFont.systemFont(ofSize: 32, weight: .regular).xHeight, range: NSRange(location: String(mins).count, length: String(secs).count))
         timerView?.attributedText = text
     }
     

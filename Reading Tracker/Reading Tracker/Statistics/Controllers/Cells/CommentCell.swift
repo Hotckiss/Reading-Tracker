@@ -61,12 +61,12 @@ class CommentCell: UITableViewCell {
     func configure(model: UploadSessionModel) {
         let dateTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 20.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .medium)]
             as [NSAttributedString.Key : Any]
         
         let dayOfWeekTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14, weight: .regular)]
             as [NSAttributedString.Key : Any]
         
         dateLabel?.attributedText = NSAttributedString(string: format(model.startTime), attributes: dateTextAttributes)
@@ -78,7 +78,7 @@ class CommentCell: UITableViewCell {
         
         let pagesTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: (isSmallScreen ? 16.0 : 20.0))!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: (isSmallScreen ? 16.0 : 20.0), weight: .regular)]
             as [NSAttributedString.Key : Any]
         
         pagesLabel?.attributedText = NSAttributedString(string: pagesString, attributes: pagesTextAttributes)

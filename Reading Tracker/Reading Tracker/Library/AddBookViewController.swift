@@ -81,7 +81,7 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
         
         let placeholderTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 20.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .regular)]
             as [NSAttributedString.Key : Any]
         
         let nameTextField = RTTextField(padding: .zero)

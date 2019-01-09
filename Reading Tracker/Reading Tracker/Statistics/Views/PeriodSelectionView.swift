@@ -40,7 +40,7 @@ public final class PeriodSelectionView: UIView {
     func update(title: String) {
         let textAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 18)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18, weight: .medium)]
             as [NSAttributedString.Key : Any]
         
         titleLabel?.attributedText = NSAttributedString(string: title, attributes: textAttributes)

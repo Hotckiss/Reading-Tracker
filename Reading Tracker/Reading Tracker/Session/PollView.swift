@@ -21,7 +21,7 @@ class PollView: UIView {
         
         let titleTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!,
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14, weight: .regular),
             NSAttributedString.Key.paragraphStyle: style]
             as [NSAttributedString.Key : Any]
         

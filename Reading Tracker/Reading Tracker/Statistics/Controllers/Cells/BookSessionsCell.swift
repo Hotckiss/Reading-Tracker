@@ -65,9 +65,9 @@ class BookSessionsCell: UITableViewCell {
         
         let timeDescriptionTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: textSize)!,
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: textSize, weight: .regular),
             NSAttributedString.Key.paragraphStyle: style,
-            NSAttributedString.Key.baselineOffset: -4]
+            NSAttributedString.Key.baselineOffset: -2]
             as [NSAttributedString.Key : Any]
         
         let hrsNumLabel = UILabel(forAutoLayout: ())
@@ -124,14 +124,14 @@ class BookSessionsCell: UITableViewCell {
         
         let timeNumTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: textSize)!,
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: textSize, weight: .medium),
             NSAttributedString.Key.paragraphStyle: style,
-            NSAttributedString.Key.baselineOffset: -8]
+            NSAttributedString.Key.baselineOffset: -6]
             as [NSAttributedString.Key : Any]
         
         let attemptsNumTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: textSize)!,
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: textSize, weight: .medium),
             NSAttributedString.Key.paragraphStyle: style,
             NSAttributedString.Key.baselineOffset: -8]
             as [NSAttributedString.Key : Any]
@@ -141,19 +141,19 @@ class BookSessionsCell: UITableViewCell {
         let textSizeSmall = CGFloat(SizeDependent.instance.convertFont(18))
         let attemptsDescriptionTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: textSizeSmall)!,
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: textSizeSmall, weight: .regular),
             NSAttributedString.Key.paragraphStyle: styleSmall,
-            NSAttributedString.Key.baselineOffset: -4]
+            NSAttributedString.Key.baselineOffset: -2]
             as [NSAttributedString.Key : Any]
         
         let titleTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Medium", size: 14.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14, weight: .medium)]
             as [NSAttributedString.Key : Any]
         
         let authorTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-            NSAttributedString.Key.font : UIFont(name: "Avenir-Light", size: 14.0)!]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14, weight: .regular)]
             as [NSAttributedString.Key : Any]
         
         titleLabel?.attributedText = NSAttributedString(string: model.book.title, attributes: titleTextAttributes)
