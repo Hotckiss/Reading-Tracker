@@ -70,6 +70,7 @@ public struct BookModel {
     public var id: String
     public var title: String
     public var author: String
+    public var pagesCount: Int
     public var image: UIImage?
     public var lastUpdated: Date
     public var type: BookType
@@ -78,6 +79,7 @@ public struct BookModel {
     public init(id: String = "",
                 title: String = "",
                 author: String = "",
+                pagesCount: Int = 0,
                 image: UIImage? = nil,
                 lastUpdated: Date = Date.distantPast,
                 type: BookType = .unknown,
@@ -85,6 +87,7 @@ public struct BookModel {
         self.id = id
         self.title = title
         self.author = author
+        self.pagesCount = pagesCount
         self.image = image
         self.lastUpdated = lastUpdated
         self.type = type

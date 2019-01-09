@@ -67,6 +67,7 @@ final class EditBookViewController: UIViewController, UIImagePickerControllerDel
             let newModel = BookModel(id: strongSelf.model.id,
                                      title: self?.nameTextField?.text ?? "",
                                      author: self?.authorTextField?.text ?? "",
+                                     pagesCount: Int(self?.pagesCountTextField?.text ?? "") ?? 0,
                                      image: self?.addedBookStub?.imageStub?.image,
                                      lastUpdated: Date(),
                                      type: type)
@@ -183,6 +184,7 @@ final class EditBookViewController: UIViewController, UIImagePickerControllerDel
         pagesCountTextField.autocorrectionType = .no
         pagesCountTextField.returnKeyType = .done
         pagesCountTextField.keyboardType = .decimalPad
+        pagesCountTextField.text = String(model.pagesCount)
         self.pagesCountTextField = pagesCountTextField
         
         view.addSubview(pagesCountTextField)

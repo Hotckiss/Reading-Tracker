@@ -194,6 +194,7 @@ final class FirestoreManager {
             .collection(uid)
             .addDocument(data: [
             "title": book.title,
+            "pages count": book.pagesCount,
             "is deleted": false,
             "author": book.author,
             "last updated": Timestamp(date: book.lastUpdated),
@@ -232,6 +233,12 @@ final class FirestoreManager {
                             if key == "last updated" {
                                 if let time = value as? Timestamp {
                                     book.lastUpdated = time.dateValue()
+                                }
+                                continue
+                            }
+                            if key == "pages count" {
+                                if let pagesCount = value as? Int {
+                                    book.pagesCount = pagesCount
                                 }
                                 continue
                             }
@@ -279,6 +286,7 @@ final class FirestoreManager {
             .setData([
                 "title": book.title,
                 "author": book.author,
+                "pages count": book.pagesCount,
                 "last updated": Timestamp(date: book.lastUpdated),
                 "type": book.type.rawValue
             ], merge: true) { error in

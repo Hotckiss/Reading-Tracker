@@ -49,6 +49,7 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
             }
             var model = BookModel(title: self?.nameTextField?.text ?? "",
                                   author: self?.authorTextField?.text ?? "",
+                                  pagesCount: Int(self?.pagesCountTextField?.text ?? "") ?? 0,
                                   image: self?.addedBookStub?.imageStub?.image,
                                   lastUpdated: Date(),
                                   type: type)
