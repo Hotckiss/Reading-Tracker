@@ -25,6 +25,7 @@ final class SingleBookViewController: UIViewController {
     private var attemptsLabel: UILabel!
     
     private var pagesLabel: UILabel?
+    private var progressBar: UIProgressView?
     
     private var freqLabel: UILabel?
     private var freqPlaceView: UIImageView?
@@ -207,12 +208,31 @@ final class SingleBookViewController: UIViewController {
         
         pagesLabel?.attributedText = pagesAttributed
         
+        progressBar?.removeFromSuperview()
+        var lastViewOfPages: UIView? = pagesLabel
+        if summary.pagesCount > 0,
+           let pagesView = pagesLabel {
+            let pagesCount = (summary.maxPage ?? 0) - (summary.minPage ?? 0)
+            let percent: Float = Float(pagesCount) / Float(summary.pagesCount)
+            let progressView = UIProgressView(forAutoLayout: ())
+            progressView.tintColor = UIColor(rgb: 0x2f5870)
+            progressView.trackTintColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.3)
+            progressView.setProgress(percent, animated: true)
+            contentView.addSubview(progressView)
+            progressView.autoSetDimension(.height, toSize: 8)
+            progressView.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+            progressView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+            progressView.autoPinEdge(.top, to: .bottom, of: pagesView, withOffset: 4)
+            self.progressBar = progressView
+            lastViewOfPages = progressView
+        }
+        
         [freqLabel, freqPlaceView, freqMoodView].forEach { label in
             label?.removeFromSuperview()
         }
         
         if summary.moodsCounts.count + summary.placesCounts.count > 0,
-            let pagesView = pagesLabel {
+            let pagesView = lastViewOfPages {
             if !summary.moodsCounts.isEmpty {
                 var maxMoodCount = -1
                 var maxMoodKey = ""
@@ -275,7 +295,7 @@ final class SingleBookViewController: UIViewController {
             }
         }
         
-        let endOfSectionView: UIView! = freqLabel ?? (pagesLabel ?? attemptsLabel)
+        let endOfSectionView: UIView! = freqLabel ?? (lastViewOfPages ?? attemptsLabel)
         
         let lineView2 = UIView(frame: .zero)
         lineView2.backgroundColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
