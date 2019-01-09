@@ -17,6 +17,7 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
     private var addedBookStub: AddedBookView?
     private var nameTextField: RTTextField?
     private var authorTextField: RTTextField?
+    private var pagesCountTextField: RTTextField?
     private var nameTextFieldDelegate = IntermediateTextFieldDelegate()
     private var authorTextFieldDelegate = FinishTextFieldDelegate()
     private var mediaDropdown: DropdownMenu?
@@ -100,7 +101,7 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
         lineView.backgroundColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
         
         view.addSubview(lineView)
-        lineView.autoPinEdge(.top, to: .bottom, of: nameTextField, withOffset: 8)
+        lineView.autoPinEdge(.top, to: .bottom, of: nameTextField, withOffset: 4)
         lineView.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         lineView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         lineView.autoSetDimension(.height, toSize: 1)
@@ -118,13 +119,13 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
         authorTextField.autoAlignAxis(toSuperviewAxis: .vertical)
         authorTextField.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         authorTextField.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
-        authorTextField.autoPinEdge(.top, to: .bottom, of: lineView, withOffset: SizeDependent.instance.convertPadding(48))
+        authorTextField.autoPinEdge(.top, to: .bottom, of: lineView, withOffset: SizeDependent.instance.convertPadding(36))
         
         let lineView2 = UIView(frame: .zero)
         lineView2.backgroundColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
         
         view.addSubview(lineView2)
-        lineView2.autoPinEdge(.top, to: .bottom, of: authorTextField, withOffset: 8)
+        lineView2.autoPinEdge(.top, to: .bottom, of: authorTextField, withOffset: 4)
         lineView2.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         lineView2.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         lineView2.autoSetDimension(.height, toSize: 1)
@@ -137,6 +138,27 @@ final class AddBookViewController: UIViewController, UIImagePickerControllerDele
         mediaDropdown.autoPinEdge(.top, to: .bottom, of: lineView2, withOffset: SizeDependent.instance.convertPadding(32))
         mediaDropdown.autoSetDimension(.height, toSize: 33)
         self.mediaDropdown = mediaDropdown
+        
+        let pagesCountTextField = RTTextField(padding: .zero)
+        pagesCountTextField.attributedPlaceholder = NSAttributedString(string: "Стр.", attributes: placeholderTextAttributes)
+        pagesCountTextField.backgroundColor = .clear
+        pagesCountTextField.autocorrectionType = .no
+        pagesCountTextField.returnKeyType = .done
+        pagesCountTextField.keyboardType = .decimalPad
+        self.pagesCountTextField = pagesCountTextField
+        
+        view.addSubview(pagesCountTextField)
+        pagesCountTextField.autoPinEdge(.top, to: .bottom, of: mediaDropdown, withOffset: SizeDependent.instance.convertDimension(40))
+        pagesCountTextField.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+        pagesCountTextField.autoSetDimensions(to: CGSize(width: 64, height: 40))
+        
+        let lineView3 = UIView(frame: .zero)
+        lineView3.backgroundColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
+        
+        view.addSubview(lineView3)
+        lineView3.autoPinEdge(.top, to: .bottom, of: pagesCountTextField, withOffset: 4)
+        lineView3.autoSetDimensions(to: CGSize(width: 64, height: 1))
+        lineView3.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         
         let bookStub = AddBookView(frame: .zero)
         view.addSubview(bookStub)
