@@ -104,7 +104,7 @@ final class SessionViewController: UIViewController {
         handTimeInputButton.addTarget(self, action: #selector(onHandTimeTap), for:.touchUpInside)
         view.addSubview(handTimeInputButton)
         handTimeInputButton.autoAlignAxis(toSuperviewAxis: .vertical)
-        handTimeInputButton.autoPinEdge(.top, to: .bottom, of: bookCell, withOffset: SizeDependent.instance.convertPadding(30))
+        handTimeInputButton.autoPinEdge(.top, to: .bottom, of: bookCell, withOffset: SizeDependent.instance.convertPadding(20))
         self.handTimeInputButton = handTimeInputButton
         
         let sessionButton = SessionTimerButton(frame: .zero)
@@ -112,7 +112,7 @@ final class SessionViewController: UIViewController {
             self?.finishButtonOverlay?.isHidden = !((self?.isAutomaticTimeCounterEnabled ?? true) && state == .start)
         }
         view.addSubview(sessionButton)
-        sessionButton.autoPinEdge(.top, to: .bottom, of: handTimeInputButton, withOffset: SizeDependent.instance.convertPadding(20))
+        sessionButton.autoPinEdge(.top, to: .bottom, of: handTimeInputButton, withOffset: SizeDependent.instance.convertPadding(16))
         sessionButton.autoAlignAxis(toSuperviewAxis: .vertical)
         sessionButton.autoSetDimensions(to: SizeDependent.instance.convertSize(CGSize(width: 230, height: 230)))
         sessionButton.addTarget(self, action: #selector(onSessionButtonTap), for: .touchUpInside)
@@ -149,7 +149,7 @@ final class SessionViewController: UIViewController {
         
         let handDateInputView = HandDateInputView(frame: .zero)
         view.addSubview(handDateInputView)
-        handDateInputView.autoPinEdge(.top, to: .bottom, of: handTimeInputButton, withOffset: SizeDependent.instance.convertPadding(20))
+        handDateInputView.autoPinEdge(.top, to: .bottom, of: handTimeInputButton, withOffset: SizeDependent.instance.convertPadding(16))
         handDateInputView.autoAlignAxis(toSuperviewAxis: .vertical)
         handDateInputView.autoSetDimension(.width, toSize: min(326, UIScreen.main.bounds.width))
         self.handDateInputView = handDateInputView
