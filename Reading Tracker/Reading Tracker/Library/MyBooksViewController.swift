@@ -33,7 +33,9 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
                 FirestoreManager.DBManager.getAllBooks(completion: { [weak self] result in
                     self?.isLoaded = true
                     self?.spinner?.hide()
-                    self?.books = result
+                    self?.books = result.sorted {
+                        $0.lastUpdated > $1.lastUpdated
+                    }
                     self?.update()
                     }, onError: ({ [weak self] in
                         self?.isLoaded = true

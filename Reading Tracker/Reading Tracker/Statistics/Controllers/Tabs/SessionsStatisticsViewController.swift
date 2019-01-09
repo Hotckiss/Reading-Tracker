@@ -26,12 +26,14 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
     }
     
     func update(sessions: [UploadSessionModel], booksMap: [String : BookModel], interval: StatsInterval) {
-        self.sessions = sessions
+        self.sessions = sessions.sorted {
+            $0.startTime > $1.startTime
+        }
         self.booksMap = booksMap
         self.interval = interval
         indexOfLongestSession = 0
-        for (index, session) in sessions.enumerated() {
-            if session.time > sessions[indexOfLongestSession].time {
+        for (index, session) in self.sessions.enumerated() {
+            if session.time > self.sessions[indexOfLongestSession].time {
                 indexOfLongestSession = index
             }
         }
