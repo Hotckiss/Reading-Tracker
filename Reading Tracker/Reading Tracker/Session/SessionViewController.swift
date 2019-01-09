@@ -32,6 +32,10 @@ final class SessionViewController: UIViewController {
     
     private var hasBook: Bool = false {
         didSet {
+            if hasBook == false {
+                updateTimeInput(isHand: false)
+                isAutomaticTimeCounterEnabled = true
+            }
             bookEmptyCell?.isHidden = hasBook
             bookCell?.isHidden = !hasBook
             sessionButton?.isPlaceholder = !hasBook
