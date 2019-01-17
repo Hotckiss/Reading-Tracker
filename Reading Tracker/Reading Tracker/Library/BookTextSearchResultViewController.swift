@@ -112,7 +112,7 @@ final class BookTextSearchResultViewController: UIViewController, UITableViewDel
             
             var model = BookModel(title: book.title ?? "",
                                   author: book.authors?.first ?? "",
-                                  pagesCount: 0,
+                                  pagesCount: book.pagesCount,
                                   image: cell?.image(),
                                   lastUpdated: Date(),
                                   type: .ebook)

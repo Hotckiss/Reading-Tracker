@@ -18,6 +18,7 @@ struct BookModelAPI {
     var averageRating: Double?
     var smallThumbnail: String?
     var thumbnail: String?
+    var pagesCount: Int
     
     init(title: String?,
          authors: [String]?,
@@ -26,7 +27,8 @@ struct BookModelAPI {
          description: String?,
          averageRating: Double?,
          smallThumbnail: String?,
-         thumbnail: String?) {
+         thumbnail: String?,
+         pagesCount: Int) {
         self.title = title
         self.authors = authors
         self.subtitle = subtitle
@@ -35,6 +37,7 @@ struct BookModelAPI {
         self.averageRating = averageRating
         self.smallThumbnail = smallThumbnail
         self.thumbnail = thumbnail
+        self.pagesCount = pagesCount
     }
 }
 
@@ -50,7 +53,8 @@ class BookParser {
                                       description: item["volumeInfo"]["description"].string,
                                       averageRating: item["volumeInfo"]["averageRating"].double,
                                       smallThumbnail: item["volumeInfo"]["imageLinks"]["smallThumbnail"].string,
-                                      thumbnail: item["volumeInfo"]["imageLinks"]["thumbnail"].string))
+                                      thumbnail: item["volumeInfo"]["imageLinks"]["thumbnail"].string,
+                                      pagesCount: item["volumeInfo"]["pageCount"].int ?? 0))
         }
         return books
     }
