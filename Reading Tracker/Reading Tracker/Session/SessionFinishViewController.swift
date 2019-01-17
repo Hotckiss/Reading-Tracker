@@ -119,10 +119,19 @@ class SessionFinishViewController: UIViewController {
     
     private func sendResults() {
         guard let start = startPageTextField?.page,
-            let finish = finishPageTextField?.page,
-            start < finish else {
-                self.showError()
+            let finish = finishPageTextField?.page else {
+                self.showError(reason: "Пожалуйста, ведите страницы")
                 return
+        }
+        
+        guard start <= finish else {
+            self.showError(reason: "Первая страница должна быть не более последней")
+            return
+        }
+        
+        guard (finish <= model.bookInfo.pagesCount) || (model.bookInfo.pagesCount == 0) else {
+            self.showError(reason: "Последняя страница превышает общее число страниц")
+            return
         }
         
         model.startPage = start
@@ -160,8 +169,8 @@ class SessionFinishViewController: UIViewController {
                                                  }))
     }
     
-    private func showError() {
-        let alert = UIAlertController(title: "Ошибка!", message: "Пожалуйста, ведите страницы", preferredStyle: .alert)
+    private func showError(reason: String) {
+        let alert = UIAlertController(title: "Ошибка!", message: reason, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
