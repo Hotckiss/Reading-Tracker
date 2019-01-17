@@ -136,13 +136,15 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         update()
     }
     
-    public func updateBookAfterSession(id: String, lastPage: Int) {
+    public func updateBookAfterSession(usm: UploadSessionModel) {
         var newFirstBook: BookModel?
         
         for i in 0..<books.count {
-            if books[i].id == id {
+            if books[i].id == usm.bookId {
                 books[i].lastUpdated = Date()
-                books[i].lastReadPage = lastPage
+                books[i].lastReadPage = usm.finishPage
+                books[i].totalPages += (usm.finishPage - usm.startPage)
+                books[i].totalSeconds += usm.time
                 newFirstBook = books[i]
                 books.remove(at: i)
                 break

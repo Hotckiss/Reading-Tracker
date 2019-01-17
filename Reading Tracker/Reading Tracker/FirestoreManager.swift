@@ -199,7 +199,9 @@ final class FirestoreManager {
             "author": book.author,
             "last updated": Timestamp(date: book.lastUpdated),
             "type": book.type.rawValue,
-            "last page": book.lastReadPage
+            "last page": book.lastReadPage,
+            "total seconds": 0,
+            "total pages": 0
             ]) { error in
                 if let error = error {
                     print("Error writing document: \(error.localizedDescription)")
@@ -231,30 +233,48 @@ final class FirestoreManager {
                         var book = BookModel()
                         book.id = id
                         for (key, value) in data {
+                            if key == "total seconds" {
+                                if let secs = value as? Int {
+                                    book.totalSeconds = secs
+                                }
+                                continue
+                            }
+                            
+                            if key == "total pages" {
+                                if let pages = value as? Int {
+                                    book.totalPages = pages
+                                }
+                                continue
+                            }
+                            
                             if key == "last page" {
                                 if let page = value as? Int {
                                     book.lastReadPage = page
                                 }
                                 continue
                             }
+                            
                             if key == "last updated" {
                                 if let time = value as? Timestamp {
                                     book.lastUpdated = time.dateValue()
                                 }
                                 continue
                             }
+                            
                             if key == "pages count" {
                                 if let pagesCount = value as? Int {
                                     book.pagesCount = pagesCount
                                 }
                                 continue
                             }
+                            
                             if key == "is deleted" {
                                 if let isDeleted = value as? Bool {
                                     book.isDeleted = isDeleted
                                 }
                                 continue
                             }
+                            
                             guard let stringValue = value as? String else {
                                 print("Document error format")
                                 onError?()
@@ -307,7 +327,12 @@ final class FirestoreManager {
         }
     }
     
-    public func updateBookAfterSession(bookId: String, lastReadPage: Int, onCompleted: (() -> Void)?, onError: (() -> Void)?) {
+    public func updateBookAfterSession(book: BookModel,
+                                       firstReadPage: Int,
+                                       lastReadPage: Int,
+                                       time: Int,
+                                       onCompleted: (() -> Void)?,
+                                       onError: (() -> Void)?) {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
@@ -315,10 +340,12 @@ final class FirestoreManager {
         db.collection("books")
             .document("libraries")
             .collection(uid)
-            .document(bookId)
+            .document(book.id)
             .setData([
                 "last page": lastReadPage,
-                "last updated": Timestamp(date: Date())
+                "last updated": Timestamp(date: Date()),
+                "total seconds": book.totalSeconds + time,
+                "total pages": book.totalPages + (lastReadPage - firstReadPage)
             ], merge: true) { error in
                 if let error = error {
                     print("Error writing document: \(error.localizedDescription)")

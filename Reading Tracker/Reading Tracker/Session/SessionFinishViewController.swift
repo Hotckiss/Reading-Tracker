@@ -78,6 +78,12 @@ class SessionFinishViewController: UIViewController {
         finishPageTextField.autoPinEdge(.left, to: .right, of: separatorLabel, withOffset: 20)
         finishPageTextField.autoPinEdge(.top, to: .bottom, of: navBar, withOffset: SizeDependent.instance.convertPadding(40))
         finishPageTextField.autoSetDimensions(to: CGSize(width: 86, height: 92))
+        let autoTime = Int(round(Double(model.time) * model.bookInfo.averagePages))
+        var autoLastPage = model.bookInfo.lastReadPage + autoTime
+        if model.bookInfo.totalPages > 0 {
+            autoLastPage = min(model.bookInfo.pagesCount, autoLastPage)
+        }
+        finishPageTextField.setup(value: autoLastPage)
         self.finishPageTextField = finishPageTextField
         
         let commentTextField = RTTextField(padding: .zero)
@@ -143,13 +149,17 @@ class SessionFinishViewController: UIViewController {
         model.mood = mood
         model.readPlace = place
         model.comment = comment
-        let bookId = model.bookInfo.id
+        
+        let bookModel = model.bookInfo
+        let time = model.time
         FirestoreManager.DBManager.uploadSession(session: model,
                                                  completion: ({ [weak self] sessionId in
                                                     FirestoreManager
                                                         .DBManager
-                                                        .updateBookAfterSession(bookId: bookId,
+                                                        .updateBookAfterSession(book: bookModel,
+                                                                                firstReadPage: start,
                                                                            lastReadPage: finish,
+                                                                           time: time,
                                                                            onCompleted: ({
                                                                             self?.navigationController?.popViewController(animated: true)
                                                                             guard let model = self?.model else {
