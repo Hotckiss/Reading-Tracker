@@ -121,6 +121,7 @@ final class BookTextSearchResultViewController: UIViewController, UITableViewDel
                 FirebaseStorageManager.DBManager.uploadCover(cover: model.image ?? UIImage(named: "bookPlaceholder")!, bookId: bookId, completion: ({ [weak self] in
                     self?.onAdd?(model)
                     self?.spinner?.hide()
+                    self?.navigationController?.popToRootViewController(animated: true)
                 }), onError: nil)
             }))
             
