@@ -65,15 +65,15 @@ class SessionFinishViewController: UIViewController {
         
         let startPageTextField = PageTextField(frame: .zero)
         startPageTextField.configure(placeholder: "Начальная\nстраница")
-        
         view.addSubview(startPageTextField)
         startPageTextField.autoPinEdge(.right, to: .left, of: separatorLabel, withOffset: -20)
         startPageTextField.autoPinEdge(.top, to: .bottom, of: navBar, withOffset: SizeDependent.instance.convertPadding(40))
         startPageTextField.autoSetDimensions(to: CGSize(width: 86, height: 92))
+        startPageTextField.setup(value: model.bookInfo.lastReadPage)
         self.startPageTextField = startPageTextField
+        
         let finishPageTextField = PageTextField(frame: .zero)
         finishPageTextField.configure(placeholder: "Конечная\nстраница")
-        
         view.addSubview(finishPageTextField)
         finishPageTextField.autoPinEdge(.left, to: .right, of: separatorLabel, withOffset: 20)
         finishPageTextField.autoPinEdge(.top, to: .bottom, of: navBar, withOffset: SizeDependent.instance.convertPadding(40))
@@ -143,30 +143,35 @@ class SessionFinishViewController: UIViewController {
         model.mood = mood
         model.readPlace = place
         model.comment = comment
-        
+        let bookId = model.bookInfo.id
         FirestoreManager.DBManager.uploadSession(session: model,
                                                  completion: ({ [weak self] sessionId in
-                                                    self?.navigationController?.popViewController(animated: true)
-                                                    guard let model = self?.model else {
-                                                        return
-                                                    }
-                                                    
-                                                    let usm = UploadSessionModel(sessionId: sessionId,
-                                                                                 bookId: model.bookInfo.id,
-                                                                                 startPage: model.startPage,
-                                                                                 finishPage: model.finishPage,
-                                                                                 time: model.time,
-                                                                                 startTime: model.startTime,
-                                                                                 finishTime: model.finishTime,
-                                                                                 mood: mood,
-                                                                                 readPlace: place,
-                                                                                 comment: comment)
-                                                    
-                                                    self?.onCompleted?(usm)
+                                                    FirestoreManager
+                                                        .DBManager
+                                                        .updateBookAfterSession(bookId: bookId,
+                                                                           lastReadPage: finish,
+                                                                           onCompleted: ({
+                                                                            self?.navigationController?.popViewController(animated: true)
+                                                                            guard let model = self?.model else {
+                                                                                return
+                                                                            }
+                                                                            
+                                                                            let usm = UploadSessionModel(sessionId: sessionId,
+                                                                                                         bookId: model.bookInfo.id,
+                                                                                                         startPage: model.startPage,
+                                                                                                         finishPage: model.finishPage,
+                                                                                                         time: model.time,
+                                                                                                         startTime: model.startTime,
+                                                                                                         finishTime: model.finishTime,
+                                                                                                         mood: mood,
+                                                                                                         readPlace: place,
+                                                                                                         comment: comment)
+                                                                            
+                                                                            self?.onCompleted?(usm)
+                                                                           }),
+                                                                           onError: nil)
                                                  }),
-                                                 onError: ({
-                                                    //TODO alert, hide spinner
-                                                 }))
+                                                 onError: nil)
     }
     
     private func showError(reason: String) {

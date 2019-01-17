@@ -75,6 +75,7 @@ public struct BookModel {
     public var lastUpdated: Date
     public var type: BookType
     public var isDeleted: Bool
+    public var lastReadPage: Int
     
     public init(id: String = "",
                 title: String = "",
@@ -83,7 +84,8 @@ public struct BookModel {
                 image: UIImage? = nil,
                 lastUpdated: Date = Date.distantPast,
                 type: BookType = .unknown,
-                isDeleted: Bool = false) {
+                isDeleted: Bool = false,
+                lastReadPage: Int = 1) {
         self.id = id
         self.title = title
         self.author = author
@@ -92,5 +94,6 @@ public struct BookModel {
         self.lastUpdated = lastUpdated
         self.type = type
         self.isDeleted = isDeleted
+        self.lastReadPage = lastReadPage
     }
 }

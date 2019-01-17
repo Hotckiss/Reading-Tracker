@@ -74,6 +74,7 @@ final class MainViewController: UIViewController {
         
         sessionVC.onSessionUploaded = { [weak self] usm in
             statsVC.pushSession(session: usm)
+            libraryVC.updateBookAfterSession(id: usm.bookId, lastPage: usm.finishPage)
             self?.mainTabBarController.selectedIndex = 0
         }
         

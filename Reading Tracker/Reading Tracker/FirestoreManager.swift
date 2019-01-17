@@ -198,7 +198,8 @@ final class FirestoreManager {
             "is deleted": false,
             "author": book.author,
             "last updated": Timestamp(date: book.lastUpdated),
-            "type": book.type.rawValue
+            "type": book.type.rawValue,
+            "last page": book.lastReadPage
             ]) { error in
                 if let error = error {
                     print("Error writing document: \(error.localizedDescription)")
@@ -230,6 +231,12 @@ final class FirestoreManager {
                         var book = BookModel()
                         book.id = id
                         for (key, value) in data {
+                            if key == "last page" {
+                                if let page = value as? Int {
+                                    book.lastReadPage = page
+                                }
+                                continue
+                            }
                             if key == "last updated" {
                                 if let time = value as? Timestamp {
                                     book.lastUpdated = time.dateValue()
@@ -289,6 +296,29 @@ final class FirestoreManager {
                 "pages count": book.pagesCount,
                 "last updated": Timestamp(date: book.lastUpdated),
                 "type": book.type.rawValue
+            ], merge: true) { error in
+                if let error = error {
+                    print("Error writing document: \(error.localizedDescription)")
+                    onError?()
+                } else {
+                    print("Document successfully written!")
+                    onCompleted?()
+                }
+        }
+    }
+    
+    public func updateBookAfterSession(bookId: String, lastReadPage: Int, onCompleted: (() -> Void)?, onError: (() -> Void)?) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        db.collection("books")
+            .document("libraries")
+            .collection(uid)
+            .document(bookId)
+            .setData([
+                "last page": lastReadPage,
+                "last updated": Timestamp(date: Date())
             ], merge: true) { error in
                 if let error = error {
                     print("Error writing document: \(error.localizedDescription)")

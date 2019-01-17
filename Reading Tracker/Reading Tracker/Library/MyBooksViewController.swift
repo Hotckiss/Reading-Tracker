@@ -136,6 +136,23 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         update()
     }
     
+    public func updateBookAfterSession(id: String, lastPage: Int) {
+        var newFirstBook: BookModel?
+        
+        for i in 0..<books.count {
+            if books[i].id == id {
+                books[i].lastUpdated = Date()
+                books[i].lastReadPage = lastPage
+                newFirstBook = books[i]
+                books.remove(at: i)
+                break
+            }
+        }
+        if let book = newFirstBook {
+            pushBook(book: book)
+        }
+    }
+    
     public func pushBook(book: BookModel) {
         books.insert(book, at: 0)
         update()
