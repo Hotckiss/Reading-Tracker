@@ -18,17 +18,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Дневник читателя" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vUh-O7-exx">
-                                <rect key="frame" x="29" y="91" width="317" height="266"/>
-                                <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="36"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="titleImage" translatesAutoresizingMaskIntoConstraints="NO" id="bDo-Wi-II3">
+                                <rect key="frame" x="31.5" y="255.5" width="312" height="156"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="156" id="2wO-Wa-94P"/>
+                                    <constraint firstAttribute="width" constant="312" id="QgJ-Ks-xmK"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.18431372549019609" green="0.34509803921568627" blue="0.4392156862745098" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="vUh-O7-exx" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="4cS-Tj-xs7"/>
-                            <constraint firstItem="vUh-O7-exx" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="T1A-Hk-LpZ"/>
+                            <constraint firstItem="bDo-Wi-II3" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="l7w-6e-lft"/>
+                            <constraint firstItem="bDo-Wi-II3" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="m3Y-nJ-OBP"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -38,4 +39,7 @@
             <point key="canvasLocation" x="132" y="103.89805097451276"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="titleImage" width="292.25" height="145.25"/>
+    </resources>
 </document>
