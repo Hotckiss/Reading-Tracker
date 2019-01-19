@@ -95,7 +95,7 @@ final class FirestoreManager {
                 var q = Questionarrie()
                 for (key, value) in data {
                     guard let stringValue = value as? String else {
-                        print("Document error format")
+                        print("Document error format in questionarrie")
                         onError?()
                         return
                     }
@@ -144,7 +144,7 @@ final class FirestoreManager {
                 var user = UserModel()
                 for (key, value) in data {
                     guard let stringValue = value as? String else {
-                        print("Document error format")
+                        print("Document error format in user profile")
                         onError?()
                         return
                     }
@@ -276,7 +276,7 @@ final class FirestoreManager {
                             }
                             
                             guard let stringValue = value as? String else {
-                                print("Document error format")
+                                print("Document error format in library")
                                 onError?()
                                 return
                             }
@@ -391,7 +391,7 @@ final class FirestoreManager {
                     var url = ""
                     for (key, value) in data {
                         guard let stringValue = value as? String else {
-                            print("Document error format")
+                            print("Document error format in ozon")
                             onFail?()
                             return
                         }
@@ -551,7 +551,7 @@ final class FirestoreManager {
                         var session = UploadSessionModel(sessionId: document.documentID)
                         for (key, value) in data {
                             let onErrorClosure = {
-                                print("Document error format")
+                                print("Document error format in sessions")
                                 onError?()
                                 return
                             }

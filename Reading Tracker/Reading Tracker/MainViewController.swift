@@ -84,6 +84,12 @@ final class MainViewController: UIViewController {
         mainTabBarController.selectedIndex = 1
         mainTabBarController.tabBar.barTintColor = UIColor(rgb: 0x2f5870)
         mainTabBarController.tabBar.tintColor = .white
+        if let items = mainTabBarController.tabBar.items {
+            for item in items {
+                item.title = nil
+                item.imageInsets = .zero
+            }
+        }
         addChild(mainTabBarController)
         view.addSubview(mainTabBarController.view)
         mainTabBarController.didMove(toParent: self)
