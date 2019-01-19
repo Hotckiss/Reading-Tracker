@@ -22,11 +22,11 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setupNavigationBar()
+        setupSubviews()
         setupSpinner()
     }
     
-    private func setupNavigationBar() {
+    private func setupSubviews() {
         var bottomSpace: CGFloat = 49
         if #available(iOS 11.0, *) {
             bottomSpace += UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
