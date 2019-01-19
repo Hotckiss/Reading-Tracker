@@ -184,7 +184,7 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
     @objc private func addBook() {
         let title = "Добавить фото обложки книги?"
         let msg = "Добавить можно лишь информацию о книге, которую вы читаете: название, автор, обложка."
-        let alert = UIAlertController(title: title, message: msg, preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: title, message: msg, preferredStyle: AlertDialogHelper.alertStyle)
         alert.addAction(UIAlertAction(title: "Найти по штрих-коду", style: .default, handler: ({ [weak self] _ in
             let vc = BarcodeScannerViewController()
             vc.codeDelegate = self
