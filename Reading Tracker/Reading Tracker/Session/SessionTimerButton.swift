@@ -71,6 +71,7 @@ public final class SessionTimerButton: UIButton {
     func reset() {
         isPlaceholder = false
         time = 0
+        setTimeText()
         startTime = nil
         buttonState = .start
     }
