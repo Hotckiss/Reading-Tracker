@@ -65,9 +65,6 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         self.spinner = spinner
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return profileOptions.count
     }

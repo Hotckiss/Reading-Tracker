@@ -32,6 +32,47 @@ final class AboutViewController: UIViewController {
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
         
+        let aboutLabel = UILabel(forAutoLayout: ())
+        aboutLabel.textAlignment = .center
+        aboutLabel.font = UIFont.systemFont(ofSize: 17)
+        aboutLabel.textColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.7)
+        aboutLabel.numberOfLines = 0
+        let text = "Дневник читетеля\nAndrey Kirilenko\nSaint-Petersburg, HSE, 2019"
+        aboutLabel.text = text
+        
+        view.addSubview(aboutLabel)
+        aboutLabel.autoPinEdge(toSuperviewEdge: .bottom, withInset: bottomSpace + 16)
+        aboutLabel.autoAlignAxis(toSuperviewAxis: .vertical)
+        
+        
+        let descriptionLabel = UILabel(forAutoLayout: ())
+        descriptionLabel.textAlignment = .center
+        descriptionLabel.font = UIFont.systemFont(ofSize: 19, weight: .medium)
+        descriptionLabel.textColor = UIColor(rgb: 0x2f5870)
+        descriptionLabel.numberOfLines = 0
+        let descriptionText = "Ссылка на анкету\nучастника эксперимента"
+        descriptionLabel.text = descriptionText
+        
+        view.addSubview(descriptionLabel)
+        descriptionLabel.autoPinEdge(.top, to: .bottom, of: navBar, withOffset: 16)
+        descriptionLabel.autoAlignAxis(toSuperviewAxis: .vertical)
+        
+        let linkTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x0000ff),
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17)]
+            as [NSAttributedString.Key : Any]
+        
+        let linkLabel = UILabel(forAutoLayout: ())
+        linkLabel.numberOfLines = 0
+        let attrText = NSMutableAttributedString(string: "link", attributes: linkTextAttributes)
+        attrText.addAttribute(.underlineStyle, value: 1, range: NSRange(location: 0, length: attrText.length))
+        linkLabel.attributedText = attrText
+        
+        view.addSubview(linkLabel)
+        linkLabel.autoPinEdge(.top, to: .bottom, of: descriptionLabel, withOffset: 16)
+        linkLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        linkLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+        
         setupSpinner()
     }
     
