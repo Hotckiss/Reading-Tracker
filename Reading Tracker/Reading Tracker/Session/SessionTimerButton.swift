@@ -35,8 +35,9 @@ public final class SessionTimerButton: UIButton {
     
     public var isPlaceholder: Bool = false {
         didSet {
+            let scale = SizeDependent.instance.scale(230, persentage: 55)
             isUserInteractionEnabled = !isPlaceholder
-            let textSize = SizeDependent.instance.convertFont(42)
+            let textSize = 42 * scale
             let titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor : isPlaceholder ? UIColor(rgb: 0xbdbdbd) : UIColor(rgb: 0xedaf97),
                 NSAttributedString.Key.font : UIFont.systemFont(ofSize: textSize, weight: .medium)]
@@ -78,7 +79,8 @@ public final class SessionTimerButton: UIButton {
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
-        setupButton(radius: 115)
+        let scale = SizeDependent.instance.scale(230, persentage: 55)
+        setupButton(radius: scale * 115)
         
         let innerButtonImageView = UIImageView(forAutoLayout: ())
         addSubview(innerButtonImageView)
@@ -89,7 +91,7 @@ public final class SessionTimerButton: UIButton {
         
         let titleView = UILabel(forAutoLayout: ())
         titleView.numberOfLines = 0
-        let textSize = SizeDependent.instance.convertFont(42)
+        let textSize = 42 * scale
         let titleTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
             NSAttributedString.Key.font : UIFont.systemFont(ofSize: textSize, weight: .medium)]
@@ -106,12 +108,12 @@ public final class SessionTimerButton: UIButton {
         timerView.textAlignment = .center
         let timerTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
-            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 64, weight: .regular)]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 64 * scale, weight: .regular)]
             as [NSAttributedString.Key : Any]
         
         let text = NSMutableAttributedString(string: "00", attributes: timerTextAttributes)
-        text.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 32, weight: .regular), range: NSRange(location: 1, length: 1))
-        text.addAttribute(NSAttributedString.Key.baselineOffset, value: UIFont.systemFont(ofSize: 64, weight: .regular).xHeight - UIFont.systemFont(ofSize: 32, weight: .regular).xHeight, range: NSRange(location: 1, length: 1))
+        text.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 32 * scale, weight: .regular), range: NSRange(location: 1, length: 1))
+        text.addAttribute(NSAttributedString.Key.baselineOffset, value: UIFont.systemFont(ofSize: 64 * scale, weight: .regular).xHeight - UIFont.systemFont(ofSize: 32 * scale, weight: .regular).xHeight, range: NSRange(location: 1, length: 1))
         timerView.attributedText = text
         
         addSubview(timerView)
@@ -144,16 +146,19 @@ public final class SessionTimerButton: UIButton {
     }
     
     private func setTimeText() {
+        let scale = SizeDependent.instance.scale(230, persentage: 55)
+        let textSizeSmall = 32 * scale
+        let textSizeBig = 64 * scale
         let timerTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
-            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 64, weight: .regular)]
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: textSizeBig, weight: .regular)]
             as [NSAttributedString.Key : Any]
         
         let mins = time / 60
         let secs = time % 60
         let text = NSMutableAttributedString(string: "\(mins)\(secs)", attributes: timerTextAttributes)
-        text.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 32, weight: .regular), range: NSRange(location: String(mins).count, length: String(secs).count))
-        text.addAttribute(NSAttributedString.Key.baselineOffset, value: UIFont.systemFont(ofSize: 64, weight: .regular).xHeight - UIFont.systemFont(ofSize: 32, weight: .regular).xHeight, range: NSRange(location: String(mins).count, length: String(secs).count))
+        text.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: textSizeSmall, weight: .regular), range: NSRange(location: String(mins).count, length: String(secs).count))
+        text.addAttribute(NSAttributedString.Key.baselineOffset, value: UIFont.systemFont(ofSize: textSizeBig, weight: .regular).xHeight - UIFont.systemFont(ofSize: textSizeSmall, weight: .regular).xHeight, range: NSRange(location: String(mins).count, length: String(secs).count))
         timerView?.attributedText = text
     }
     
@@ -181,9 +186,9 @@ public final class SessionTimerButton: UIButton {
     }
     
     private func setupButton(radius: CGFloat) {
-        let r1 = SizeDependent.instance.convertPadding(radius)
-        let r2 = SizeDependent.instance.convertPadding(radius - 13)
-        let r3 = SizeDependent.instance.convertPadding(radius - 37)
+        let r1 = radius
+        let r2 = radius - SizeDependent.instance.convertPadding(13)
+        let r3 = radius - SizeDependent.instance.convertPadding(28)
         backgroundColor = .white
         layer.cornerRadius = r1
         addCircle(radius: r1, width: SizeDependent.instance.convertPadding(7), totalSize: 2 * r1)

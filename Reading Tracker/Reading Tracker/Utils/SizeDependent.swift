@@ -46,6 +46,38 @@ final class SizeDependent {
         }
     }
     
+    func convertSize(_ size: CGSize, persentage: CGFloat) -> CGSize {
+        let wpers = size.width / UIScreen.main.bounds.width
+        let hpers = size.height / UIScreen.main.bounds.width
+        let currentPers = max(wpers, hpers)
+        let scale = persentage / (currentPers * 100.0)
+        
+        if size.width == size.height {
+            let squared = size.width * scale
+            return CGSize(width: squared, height: squared)
+        }
+        
+        return CGSize(width: size.width * scale, height: size.height * scale)
+    }
+    
+    func scale(_ size: CGSize, persentage: CGFloat) -> CGFloat {
+        let wpers = size.width / UIScreen.main.bounds.width
+        let hpers = size.height / UIScreen.main.bounds.width
+        let currentPers = max(wpers, hpers)
+        let scale = persentage / (currentPers * 100.0)
+        
+        return scale
+    }
+    
+    func scale(_ dimen: CGFloat, persentage: CGFloat) -> CGFloat {
+        let wpers = dimen / UIScreen.main.bounds.width
+        let hpers = dimen / UIScreen.main.bounds.width
+        let currentPers = max(wpers, hpers)
+        let scale = persentage / (currentPers * 100.0)
+        
+        return scale
+    }
+    
     func convertPadding(_ padding: CGFloat) -> CGFloat {
         switch UIScreen.main.bounds.width {
         case 320:
