@@ -64,12 +64,15 @@ final class AboutViewController: UIViewController {
         
         let linkLabel = UILabel(forAutoLayout: ())
         linkLabel.numberOfLines = 0
-        let attrText = NSMutableAttributedString(string: "link", attributes: linkTextAttributes)
-        attrText.addAttribute(.underlineStyle, value: 1, range: NSRange(location: 0, length: attrText.length))
-        linkLabel.attributedText = attrText
+        
+        FirestoreManager.DBManager.getLink(completion: ({ link in
+            let attrText = NSMutableAttributedString(string: link, attributes: linkTextAttributes)
+            attrText.addAttribute(.underlineStyle, value: 1, range: NSRange(location: 0, length: attrText.length))
+            linkLabel.attributedText = attrText
+        }))
         
         view.addSubview(linkLabel)
-        linkLabel.autoPinEdge(.top, to: .bottom, of: descriptionLabel, withOffset: 16)
+        linkLabel.autoPinEdge(.top, to: .bottom, of: descriptionLabel, withOffset: 64)
         linkLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         linkLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         

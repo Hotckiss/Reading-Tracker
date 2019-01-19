@@ -301,6 +301,30 @@ final class FirestoreManager {
         }
     }
     
+    public func getLink(completion: ((String) -> Void)?) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        db.collection("form")
+            .document("link")
+            .getDocument {  (document, err) in
+                if let document = document, document.exists {
+                    let data = document.data()
+                    for (key, value) in data ?? [:] {
+                        if key == "link" {
+                            if let link = value as? String {
+                                let resultLink = link.replacingOccurrences(of: "*", with: uid)
+                                completion?(resultLink)
+                            }
+                        }
+                    }
+                } else {
+                    print("Document does not exist")
+                }
+        }
+    }
+    
     public func updateBook(book: BookModel, onCompleted: (() -> Void)?, onError: (() -> Void)?) {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
