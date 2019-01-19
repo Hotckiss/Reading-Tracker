@@ -101,10 +101,9 @@ class AuthorizationViewController: UIViewController {
         greetingImage.image = UIImage(named: "titleImage")
         
         view.addSubview(greetingImage)
-        greetingImage.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
-        greetingImage.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
-        greetingImage.autoSetDimension(.height, toSize: 161)
-        greetingImage.autoPinEdge(toSuperviewEdge: .top, withInset: 90)
+        greetingImage.autoSetDimensions(to: CGSize(width: 332, height: 166))
+        greetingImage.autoAlignAxis(toSuperviewAxis: .vertical)
+        greetingImage.autoPinEdge(toSuperviewEdge: .top, withInset: SizeDependent.instance.convertPadding(70))
         
         self.greetingImage = greetingImage
     }
