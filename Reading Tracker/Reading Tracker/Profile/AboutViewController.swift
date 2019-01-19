@@ -12,6 +12,7 @@ import Firebase
 
 final class AboutViewController: UIViewController {
     private var spinner: SpinnerView?
+    private var urlLink: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,21 +63,30 @@ final class AboutViewController: UIViewController {
             NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17)]
             as [NSAttributedString.Key : Any]
         
-        let linkLabel = UILabel(forAutoLayout: ())
-        linkLabel.numberOfLines = 0
+        let linkLabel = UIButton(forAutoLayout: ())
+        linkLabel.titleLabel?.lineBreakMode = .byWordWrapping
         
-        FirestoreManager.DBManager.getLink(completion: ({ link in
+        FirestoreManager.DBManager.getLink(completion: ({ [weak self] link in
             let attrText = NSMutableAttributedString(string: link, attributes: linkTextAttributes)
             attrText.addAttribute(.underlineStyle, value: 1, range: NSRange(location: 0, length: attrText.length))
-            linkLabel.attributedText = attrText
+            linkLabel.setAttributedTitle(attrText, for: [])
+            self?.urlLink = link
         }))
         
         view.addSubview(linkLabel)
         linkLabel.autoPinEdge(.top, to: .bottom, of: descriptionLabel, withOffset: 64)
         linkLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         linkLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+        linkLabel.addTarget(self, action: #selector(onLinkTap), for: .touchUpInside)
         
         setupSpinner()
+    }
+    
+    @objc private func onLinkTap() {
+        if let urlString = urlLink,
+            let url = URL(string: urlString) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
     }
     
     private func setupSpinner() {
