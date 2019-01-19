@@ -142,7 +142,7 @@ class RegistrationViewController: UIViewController/*, GIDSignInUIDelegate, FBSDK
         greetingImage.image = UIImage(named: "titleImage")
         
         view.addSubview(greetingImage)
-        greetingImage.autoSetDimensions(to: CGSize(width: 332, height: 166))
+        greetingImage.autoSetDimensions(to: CGSize(width: 312, height: 156))
         greetingImage.autoAlignAxis(toSuperviewAxis: .vertical)
         greetingImage.autoPinEdge(toSuperviewEdge: .top, withInset: SizeDependent.instance.convertPadding(70))
         
