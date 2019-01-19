@@ -86,8 +86,8 @@ final class MainViewController: UIViewController {
         mainTabBarController.tabBar.tintColor = .white
         if let items = mainTabBarController.tabBar.items {
             for item in items {
-                item.title = nil
-                item.imageInsets = .zero
+                item.title = ""
+                item.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
             }
         }
         addChild(mainTabBarController)

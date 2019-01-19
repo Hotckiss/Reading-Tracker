@@ -8,9 +8,9 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>camera use</string>
+	<string>Использовать камеру для сканирования штрих-кода или фотографии обложки книги</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>photo use</string>
+	<string>Выбрать фото обложки книги</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
