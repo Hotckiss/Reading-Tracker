@@ -58,6 +58,7 @@
 		2F7CE0642193892C00CFE6CF /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7CE0632193892C00CFE6CF /* Spinner.swift */; };
 		2F7CE0662194293700CFE6CF /* SessionTimerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7CE0652194293600CFE6CF /* SessionTimerButton.swift */; };
 		2F88314E21F32EA900416588 /* AlertDialogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88314D21F32EA900416588 /* AlertDialogHelper.swift */; };
+		2F88315021F3942600416588 /* TimerBackgroundHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88314F21F3942600416588 /* TimerBackgroundHelper.swift */; };
 		2FA1676021A890FF006E9712 /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA1675F21A890FF006E9712 /* SpinnerView.swift */; };
 		2FA1676221A963C1006E9712 /* OZONXMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA1676121A963C1006E9712 /* OZONXMLParser.swift */; };
 		2FA7E4CE21C1972E00B2A954 /* HandDateInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA7E4CD21C1972E00B2A954 /* HandDateInputView.swift */; };
@@ -167,6 +168,7 @@
 		2F7CE0632193892C00CFE6CF /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		2F7CE0652194293600CFE6CF /* SessionTimerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTimerButton.swift; sourceTree = "<group>"; };
 		2F88314D21F32EA900416588 /* AlertDialogHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertDialogHelper.swift; sourceTree = "<group>"; };
+		2F88314F21F3942600416588 /* TimerBackgroundHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerBackgroundHelper.swift; sourceTree = "<group>"; };
 		2FA1675F21A890FF006E9712 /* SpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
 		2FA1676121A963C1006E9712 /* OZONXMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OZONXMLParser.swift; sourceTree = "<group>"; };
 		2FA7E4CD21C1972E00B2A954 /* HandDateInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandDateInputView.swift; sourceTree = "<group>"; };
@@ -270,6 +272,7 @@
 				2F412CE021ABEF58007C491B /* SizeDependent.swift */,
 				2F43CB5421B9CBF00008B593 /* PluralRule.swift */,
 				2F88314D21F32EA900416588 /* AlertDialogHelper.swift */,
+				2F88314F21F3942600416588 /* TimerBackgroundHelper.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -880,6 +883,7 @@
 				2FC9562321AB44E900E52CE6 /* EditBookViewController.swift in Sources */,
 				2F43CB5321B9B7810008B593 /* SingleSessionViewController.swift in Sources */,
 				2F4C69A921E255B900EF7C7E /* APIManager.swift in Sources */,
+				2F88315021F3942600416588 /* TimerBackgroundHelper.swift in Sources */,
 				2FE6C5A521581BDE005A7A68 /* MainViewController.swift in Sources */,
 				2F30E3B921BC581700C1A562 /* BookSessionsViewController.swift in Sources */,
 				2F88314E21F32EA900416588 /* AlertDialogHelper.swift in Sources */,

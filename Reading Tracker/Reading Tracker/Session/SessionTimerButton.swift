@@ -8,8 +8,11 @@
 
 import Foundation
 import UIKit
+import RxSwift
 
 public final class SessionTimerButton: UIButton {
+    private var disposeBag = DisposeBag()
+    
     public var time: Int = 0
     public var startTime: Date?
     public var onStateChanged: ((ButtonState) -> Void)?
@@ -117,6 +120,18 @@ public final class SessionTimerButton: UIButton {
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(onTick), userInfo: nil, repeats: true)
         timer.invalidate()
         setupTimer()
+        
+        TimerBackgroundHelper
+            .timeInBackgroundObservable
+            .subscribe(onNext: ({ [weak self] backgroundTime in
+                guard let strongSelf = self else {
+                    return
+                }
+                if strongSelf.buttonState == .play {
+                    strongSelf.time += backgroundTime
+                }
+                strongSelf.setTimeText()
+        })).disposed(by: disposeBag)
     }
     
     @objc private func onTick() {
@@ -124,6 +139,10 @@ public final class SessionTimerButton: UIButton {
             time += 1
         }
         
+        setTimeText()
+    }
+    
+    private func setTimeText() {
         let timerTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
             NSAttributedString.Key.font : UIFont.systemFont(ofSize: 64, weight: .regular)]
