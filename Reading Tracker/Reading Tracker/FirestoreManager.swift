@@ -95,7 +95,7 @@ final class FirestoreManager {
                 var q = Questionarrie()
                 for (key, value) in data {
                     guard let stringValue = value as? String else {
-                        print("Document error format")
+                        print("Document error format in questionarrie")
                         onError?()
                         return
                     }
@@ -144,7 +144,7 @@ final class FirestoreManager {
                 var user = UserModel()
                 for (key, value) in data {
                     guard let stringValue = value as? String else {
-                        print("Document error format")
+                        print("Document error format in user profile")
                         onError?()
                         return
                     }
@@ -198,7 +198,10 @@ final class FirestoreManager {
             "is deleted": false,
             "author": book.author,
             "last updated": Timestamp(date: book.lastUpdated),
-            "type": book.type.rawValue
+            "type": book.type.rawValue,
+            "last page": book.lastReadPage,
+            "total seconds": 0,
+            "total pages": 0
             ]) { error in
                 if let error = error {
                     print("Error writing document: \(error.localizedDescription)")
@@ -230,26 +233,50 @@ final class FirestoreManager {
                         var book = BookModel()
                         book.id = id
                         for (key, value) in data {
+                            if key == "total seconds" {
+                                if let secs = value as? Int {
+                                    book.totalSeconds = secs
+                                }
+                                continue
+                            }
+                            
+                            if key == "total pages" {
+                                if let pages = value as? Int {
+                                    book.totalPages = pages
+                                }
+                                continue
+                            }
+                            
+                            if key == "last page" {
+                                if let page = value as? Int {
+                                    book.lastReadPage = page
+                                }
+                                continue
+                            }
+                            
                             if key == "last updated" {
                                 if let time = value as? Timestamp {
                                     book.lastUpdated = time.dateValue()
                                 }
                                 continue
                             }
+                            
                             if key == "pages count" {
                                 if let pagesCount = value as? Int {
                                     book.pagesCount = pagesCount
                                 }
                                 continue
                             }
+                            
                             if key == "is deleted" {
                                 if let isDeleted = value as? Bool {
                                     book.isDeleted = isDeleted
                                 }
                                 continue
                             }
+                            
                             guard let stringValue = value as? String else {
-                                print("Document error format")
+                                print("Document error format in library")
                                 onError?()
                                 return
                             }
@@ -274,6 +301,30 @@ final class FirestoreManager {
         }
     }
     
+    public func getLink(completion: ((String) -> Void)?) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        db.collection("form")
+            .document("link")
+            .getDocument {  (document, err) in
+                if let document = document, document.exists {
+                    let data = document.data()
+                    for (key, value) in data ?? [:] {
+                        if key == "link" {
+                            if let link = value as? String {
+                                let resultLink = link.replacingOccurrences(of: "*", with: uid)
+                                completion?(resultLink)
+                            }
+                        }
+                    }
+                } else {
+                    print("Document does not exist")
+                }
+        }
+    }
+    
     public func updateBook(book: BookModel, onCompleted: (() -> Void)?, onError: (() -> Void)?) {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
@@ -289,6 +340,36 @@ final class FirestoreManager {
                 "pages count": book.pagesCount,
                 "last updated": Timestamp(date: book.lastUpdated),
                 "type": book.type.rawValue
+            ], merge: true) { error in
+                if let error = error {
+                    print("Error writing document: \(error.localizedDescription)")
+                    onError?()
+                } else {
+                    print("Document successfully written!")
+                    onCompleted?()
+                }
+        }
+    }
+    
+    public func updateBookAfterSession(book: BookModel,
+                                       firstReadPage: Int,
+                                       lastReadPage: Int,
+                                       time: Int,
+                                       onCompleted: (() -> Void)?,
+                                       onError: (() -> Void)?) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        db.collection("books")
+            .document("libraries")
+            .collection(uid)
+            .document(book.id)
+            .setData([
+                "last page": lastReadPage,
+                "last updated": Timestamp(date: Date()),
+                "total seconds": book.totalSeconds + time,
+                "total pages": book.totalPages + (lastReadPage - firstReadPage)
             ], merge: true) { error in
                 if let error = error {
                     print("Error writing document: \(error.localizedDescription)")
@@ -334,7 +415,7 @@ final class FirestoreManager {
                     var url = ""
                     for (key, value) in data {
                         guard let stringValue = value as? String else {
-                            print("Document error format")
+                            print("Document error format in ozon")
                             onFail?()
                             return
                         }
@@ -494,7 +575,7 @@ final class FirestoreManager {
                         var session = UploadSessionModel(sessionId: document.documentID)
                         for (key, value) in data {
                             let onErrorClosure = {
-                                print("Document error format")
+                                print("Document error format in sessions")
                                 onError?()
                                 return
                             }

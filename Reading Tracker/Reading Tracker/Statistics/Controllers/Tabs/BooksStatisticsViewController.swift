@@ -93,8 +93,17 @@ final class BooksStatisticsViewController: UIViewController, UITableViewDelegate
             }
         }
         
-        keys = Array(summSessions.keys).sorted {
-            booksMap[$0]!.lastUpdated > booksMap[$1]!.lastUpdated
+        var canSort = true
+        for key in summSessions.keys {
+            if booksMap[key] == nil {
+                canSort = false
+            }
+        }
+        
+        if canSort {
+            keys = Array(summSessions.keys).sorted {
+                booksMap[$0]!.lastUpdated > booksMap[$1]!.lastUpdated
+            }
         }
 
         tableViewHeightConstraint?.constant = sessions.isEmpty ? 0 : CGFloat(groupedSessions.count * 118 + 3 * 42 + 118 * 2)

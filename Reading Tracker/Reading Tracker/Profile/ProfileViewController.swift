@@ -10,17 +10,6 @@ import Foundation
 import UIKit
 import Firebase
 
-public struct ProfileOption {
-    public let title: String
-    public let subtitle: String
-    
-    public init(title: String,
-                subtitle: String = "") {
-        self.title = title
-        self.subtitle = subtitle
-    }
-}
-
 final class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var onExit: (() -> Void)?
     private var spinner: SpinnerView?
@@ -33,11 +22,11 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setupNavigationBar()
+        setupSubviews()
         setupSpinner()
     }
     
-    private func setupNavigationBar() {
+    private func setupSubviews() {
         var bottomSpace: CGFloat = 49
         if #available(iOS 11.0, *) {
             bottomSpace += UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
@@ -76,9 +65,6 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         self.spinner = spinner
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return profileOptions.count
     }
@@ -95,81 +81,10 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
             let qVC = QuestionarreViewController()
             navigationController?.pushViewController(qVC, animated: true)
         } else if indexPath.row == 1 {
-            //let sVC = StatisticsViewController(books: booksStorage)
-            //navigationController?.pushViewController(sVC, animated: true)
+            let aVC = AboutViewController()
+            navigationController?.pushViewController(aVC, animated: true)
         } else if indexPath.row == 3 {
             onExit?()
-        }
-    }
-    
-    private class ProfileCell: UITableViewCell {
-        private var model: ProfileOption = ProfileOption(title: "")
-        private var titleLabel: UILabel?
-        private var subtitleLabel: UILabel?
-        
-        override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-            super.init(style: style, reuseIdentifier: reuseIdentifier)
-            backgroundColor = .white
-            selectionStyle = .none
-            setupSubviews()
-        }
-        
-        required init?(coder aDecoder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-        
-        private func setupSubviews() {
-            let titleLabel = UILabel(forAutoLayout: ())
-            
-            let titleTextAttributes = [
-                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .medium)]
-                as [NSAttributedString.Key : Any]
-            
-            titleLabel.attributedText = NSAttributedString(string: model.title, attributes: titleTextAttributes)
-            titleLabel.numberOfLines = 0
-            
-            contentView.addSubview(titleLabel)
-            
-            titleLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
-            titleLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
-            titleLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 30)
-            
-            let subtitleLabel = UILabel(forAutoLayout: ())
-            
-            let subtitleTextAttributes = [
-                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 16, weight: .regular)]
-                as [NSAttributedString.Key : Any]
-            
-            subtitleLabel.attributedText = NSAttributedString(string: model.subtitle, attributes: subtitleTextAttributes)
-            subtitleLabel.numberOfLines = 0
-            contentView.addSubview(subtitleLabel)
-            
-            subtitleLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
-            subtitleLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
-            subtitleLabel.autoPinEdge(toSuperviewEdge: .bottom, withInset: 30)
-            subtitleLabel.autoPinEdge(.top, to: .bottom, of: titleLabel, withOffset: 5)
-            
-            self.titleLabel = titleLabel
-            self.subtitleLabel = subtitleLabel
-        }
-        
-        func configure(model: ProfileOption) {
-            self.model = model
-            
-            let titleTextAttributes = [
-                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20, weight: .medium)]
-                as [NSAttributedString.Key : Any]
-            
-            let subtitleTextAttributes = [
-                NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
-                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 16, weight: .regular)]
-                as [NSAttributedString.Key : Any]
-            
-            titleLabel?.attributedText = NSAttributedString(string: model.title, attributes: titleTextAttributes)
-            subtitleLabel?.attributedText = NSAttributedString(string: model.subtitle, attributes: subtitleTextAttributes)
         }
     }
 }

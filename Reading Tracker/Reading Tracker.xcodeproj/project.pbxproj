@@ -57,6 +57,11 @@
 		2F71B32F218F965000E4E80F /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71B32E218F965000E4E80F /* ProfileViewController.swift */; };
 		2F7CE0642193892C00CFE6CF /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7CE0632193892C00CFE6CF /* Spinner.swift */; };
 		2F7CE0662194293700CFE6CF /* SessionTimerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7CE0652194293600CFE6CF /* SessionTimerButton.swift */; };
+		2F88314E21F32EA900416588 /* AlertDialogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88314D21F32EA900416588 /* AlertDialogHelper.swift */; };
+		2F88315021F3942600416588 /* TimerBackgroundHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88314F21F3942600416588 /* TimerBackgroundHelper.swift */; };
+		2F88315221F3A0E700416588 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88315121F3A0E700416588 /* AboutViewController.swift */; };
+		2F88315421F3A12C00416588 /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88315321F3A12C00416588 /* ProfileCell.swift */; };
+		2F88315621F3A15500416588 /* ProfileOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88315521F3A15500416588 /* ProfileOption.swift */; };
 		2FA1676021A890FF006E9712 /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA1675F21A890FF006E9712 /* SpinnerView.swift */; };
 		2FA1676221A963C1006E9712 /* OZONXMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA1676121A963C1006E9712 /* OZONXMLParser.swift */; };
 		2FA7E4CE21C1972E00B2A954 /* HandDateInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA7E4CD21C1972E00B2A954 /* HandDateInputView.swift */; };
@@ -165,6 +170,11 @@
 		2F71B32E218F965000E4E80F /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		2F7CE0632193892C00CFE6CF /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		2F7CE0652194293600CFE6CF /* SessionTimerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTimerButton.swift; sourceTree = "<group>"; };
+		2F88314D21F32EA900416588 /* AlertDialogHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertDialogHelper.swift; sourceTree = "<group>"; };
+		2F88314F21F3942600416588 /* TimerBackgroundHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerBackgroundHelper.swift; sourceTree = "<group>"; };
+		2F88315121F3A0E700416588 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+		2F88315321F3A12C00416588 /* ProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
+		2F88315521F3A15500416588 /* ProfileOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileOption.swift; sourceTree = "<group>"; };
 		2FA1675F21A890FF006E9712 /* SpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
 		2FA1676121A963C1006E9712 /* OZONXMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OZONXMLParser.swift; sourceTree = "<group>"; };
 		2FA7E4CD21C1972E00B2A954 /* HandDateInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandDateInputView.swift; sourceTree = "<group>"; };
@@ -267,6 +277,8 @@
 				2FC9561A21AB41EA00E52CE6 /* TextFieldDelegates.swift */,
 				2F412CE021ABEF58007C491B /* SizeDependent.swift */,
 				2F43CB5421B9CBF00008B593 /* PluralRule.swift */,
+				2F88314D21F32EA900416588 /* AlertDialogHelper.swift */,
+				2F88314F21F3942600416588 /* TimerBackgroundHelper.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -379,6 +391,9 @@
 			children = (
 				2F71B32E218F965000E4E80F /* ProfileViewController.swift */,
 				2FEB6A9221A343FE00334802 /* QuestionarreViewController.swift */,
+				2F88315121F3A0E700416588 /* AboutViewController.swift */,
+				2F88315321F3A12C00416588 /* ProfileCell.swift */,
+				2F88315521F3A15500416588 /* ProfileOption.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -841,6 +856,7 @@
 				2FC9562121AB44B500E52CE6 /* AddedBookView.swift in Sources */,
 				2F30E3BB21BC58ED00C1A562 /* BookSessionTimesCell.swift in Sources */,
 				2F074A1F21BAF227002146F6 /* SessionCell.swift in Sources */,
+				2F88315421F3A12C00416588 /* ProfileCell.swift in Sources */,
 				2FC9561D21AB43F900E52CE6 /* DropdownMenu.swift in Sources */,
 				2F1891D9215832210043BDCC /* AuthorizationViewController.swift in Sources */,
 				2F7CE0642193892C00CFE6CF /* Spinner.swift in Sources */,
@@ -877,8 +893,10 @@
 				2FC9562321AB44E900E52CE6 /* EditBookViewController.swift in Sources */,
 				2F43CB5321B9B7810008B593 /* SingleSessionViewController.swift in Sources */,
 				2F4C69A921E255B900EF7C7E /* APIManager.swift in Sources */,
+				2F88315021F3942600416588 /* TimerBackgroundHelper.swift in Sources */,
 				2FE6C5A521581BDE005A7A68 /* MainViewController.swift in Sources */,
 				2F30E3B921BC581700C1A562 /* BookSessionsViewController.swift in Sources */,
+				2F88314E21F32EA900416588 /* AlertDialogHelper.swift in Sources */,
 				2FFD1D032198BC6E00779459 /* PageTextField.swift in Sources */,
 				2F2A9D5321E294C900672E1A /* Result.swift in Sources */,
 				2F30E3B721BC45E700C1A562 /* CommentCell.swift in Sources */,
@@ -886,6 +904,7 @@
 				2F71B32C218F684900E4E80F /* LoginPasswordAuthorizationViewController.swift in Sources */,
 				2FAA8FB6216A21920011F59D /* NavigationBar.swift in Sources */,
 				2FED19A121748FE300AFFF99 /* StatisticsViewController.swift in Sources */,
+				2F88315621F3A15500416588 /* ProfileOption.swift in Sources */,
 				2F71B32A218F5CF000E4E80F /* LoginPasswordRegistrationViewController.swift in Sources */,
 				2F62C5E721C00A09002119EA /* SessionFinishModels.swift in Sources */,
 				2FE6C5A321581BDE005A7A68 /* AppDelegate.swift in Sources */,
@@ -902,6 +921,7 @@
 				2FAA8FB8216A32310011F59D /* RegistrationDraft.swift in Sources */,
 				2F3AA2AB21B31AA400CCE35D /* SessionsStatisticsViewController.swift in Sources */,
 				2F2A9D6421E4EC6E00672E1A /* EditSessionTimeViewController.swift in Sources */,
+				2F88315221F3A0E700416588 /* AboutViewController.swift in Sources */,
 				2F71B324218EFAFF00E4E80F /* RegistrationViewController.swift in Sources */,
 				2F0C7E2B219F0F7D00C28ECB /* FirebaseStorageManager.swift in Sources */,
 				2F3AA2AD21B31AB600CCE35D /* BooksStatisticsViewController.swift in Sources */,

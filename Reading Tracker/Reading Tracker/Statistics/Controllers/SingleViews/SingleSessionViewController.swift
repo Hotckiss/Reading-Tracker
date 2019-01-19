@@ -197,7 +197,7 @@ final class SingleSessionViewController: UIViewController {
     
     private func showEditDialog() {
         let title = "Запись о чтении"
-        let alert = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: title, message: nil, preferredStyle: AlertDialogHelper.alertStyle)
         alert.addAction(UIAlertAction(title: "Изменить время", style: .default, handler: ({ [weak self] _ in
             guard let strongSelf = self else {
                 return

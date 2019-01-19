@@ -231,7 +231,7 @@ final class EditBookViewController: UIViewController, UIImagePickerControllerDel
     }
     
     @objc private func onAddCover() {
-        let alert = UIAlertController(title: "Добавить фото обложки книги?", message: nil, preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Добавить фото обложки книги?", message: nil, preferredStyle: AlertDialogHelper.alertStyle)
         alert.addAction(UIAlertAction(title: "Галерея", style: .default, handler: ({ [weak self] _ in
             let imagePicker = UIImagePickerController()
             imagePicker.delegate = self

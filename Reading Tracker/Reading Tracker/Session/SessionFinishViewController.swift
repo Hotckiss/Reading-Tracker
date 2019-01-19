@@ -65,19 +65,25 @@ class SessionFinishViewController: UIViewController {
         
         let startPageTextField = PageTextField(frame: .zero)
         startPageTextField.configure(placeholder: "Начальная\nстраница")
-        
         view.addSubview(startPageTextField)
         startPageTextField.autoPinEdge(.right, to: .left, of: separatorLabel, withOffset: -20)
         startPageTextField.autoPinEdge(.top, to: .bottom, of: navBar, withOffset: SizeDependent.instance.convertPadding(40))
         startPageTextField.autoSetDimensions(to: CGSize(width: 86, height: 92))
+        startPageTextField.setup(value: model.bookInfo.lastReadPage)
         self.startPageTextField = startPageTextField
+        
         let finishPageTextField = PageTextField(frame: .zero)
         finishPageTextField.configure(placeholder: "Конечная\nстраница")
-        
         view.addSubview(finishPageTextField)
         finishPageTextField.autoPinEdge(.left, to: .right, of: separatorLabel, withOffset: 20)
         finishPageTextField.autoPinEdge(.top, to: .bottom, of: navBar, withOffset: SizeDependent.instance.convertPadding(40))
         finishPageTextField.autoSetDimensions(to: CGSize(width: 86, height: 92))
+        let autoTime = Int(round(Double(model.time) * model.bookInfo.averagePages))
+        var autoLastPage = model.bookInfo.lastReadPage + autoTime
+        if model.bookInfo.totalPages > 0 {
+            autoLastPage = min(model.bookInfo.pagesCount, autoLastPage)
+        }
+        finishPageTextField.setup(value: autoLastPage)
         self.finishPageTextField = finishPageTextField
         
         let commentTextField = RTTextField(padding: .zero)
@@ -119,10 +125,19 @@ class SessionFinishViewController: UIViewController {
     
     private func sendResults() {
         guard let start = startPageTextField?.page,
-            let finish = finishPageTextField?.page,
-            start < finish else {
-                self.showError()
+            let finish = finishPageTextField?.page else {
+                self.showError(reason: "Пожалуйста, ведите страницы")
                 return
+        }
+        
+        guard start <= finish else {
+            self.showError(reason: "Первая страница должна быть не более последней")
+            return
+        }
+        
+        guard (finish <= model.bookInfo.pagesCount) || (model.bookInfo.pagesCount == 0) else {
+            self.showError(reason: "Последняя страница превышает общее число страниц")
+            return
         }
         
         model.startPage = start
@@ -135,33 +150,42 @@ class SessionFinishViewController: UIViewController {
         model.readPlace = place
         model.comment = comment
         
+        let bookModel = model.bookInfo
+        let time = model.time
         FirestoreManager.DBManager.uploadSession(session: model,
                                                  completion: ({ [weak self] sessionId in
-                                                    self?.navigationController?.popViewController(animated: true)
-                                                    guard let model = self?.model else {
-                                                        return
-                                                    }
-                                                    
-                                                    let usm = UploadSessionModel(sessionId: sessionId,
-                                                                                 bookId: model.bookInfo.id,
-                                                                                 startPage: model.startPage,
-                                                                                 finishPage: model.finishPage,
-                                                                                 time: model.time,
-                                                                                 startTime: model.startTime,
-                                                                                 finishTime: model.finishTime,
-                                                                                 mood: mood,
-                                                                                 readPlace: place,
-                                                                                 comment: comment)
-                                                    
-                                                    self?.onCompleted?(usm)
+                                                    FirestoreManager
+                                                        .DBManager
+                                                        .updateBookAfterSession(book: bookModel,
+                                                                                firstReadPage: start,
+                                                                           lastReadPage: finish,
+                                                                           time: time,
+                                                                           onCompleted: ({
+                                                                            self?.navigationController?.popViewController(animated: true)
+                                                                            guard let model = self?.model else {
+                                                                                return
+                                                                            }
+                                                                            
+                                                                            let usm = UploadSessionModel(sessionId: sessionId,
+                                                                                                         bookId: model.bookInfo.id,
+                                                                                                         startPage: model.startPage,
+                                                                                                         finishPage: model.finishPage,
+                                                                                                         time: model.time,
+                                                                                                         startTime: model.startTime,
+                                                                                                         finishTime: model.finishTime,
+                                                                                                         mood: mood,
+                                                                                                         readPlace: place,
+                                                                                                         comment: comment)
+                                                                            
+                                                                            self?.onCompleted?(usm)
+                                                                           }),
+                                                                           onError: nil)
                                                  }),
-                                                 onError: ({
-                                                    //TODO alert, hide spinner
-                                                 }))
+                                                 onError: nil)
     }
     
-    private func showError() {
-        let alert = UIAlertController(title: "Ошибка!", message: "Пожалуйста, ведите страницы", preferredStyle: .alert)
+    private func showError(reason: String) {
+        let alert = UIAlertController(title: "Ошибка!", message: reason, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }

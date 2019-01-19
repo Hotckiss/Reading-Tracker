@@ -72,11 +72,32 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         }
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .white
-        setupNavigationBar()
+        
+        let navBar = NavigationBar()
+        navBar.configure(model: NavigationBarModel(title: "Книги"))
+        navBar.backgroundColor = UIColor(rgb: 0x2f5870)
+        view.addSubview(navBar)
+        navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
+        self.navBar = navBar
+        
+        let titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 24, weight: .regular)]
+            as [NSAttributedString.Key : Any]
+        let emptyLabel = UILabel(forAutoLayout: ())
+        emptyLabel.numberOfLines = 0
+        emptyLabel.textAlignment = .center
+        emptyLabel.attributedText = NSAttributedString(string: "Для начала, добавьте книги, которые сейчас читаете", attributes: titleTextAttributes)
+        view.addSubview(emptyLabel)
+        emptyLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        emptyLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+        emptyLabel.autoPinEdge(.top, to: .bottom, of: navBar, withOffset: 20)
+        self.emptyNavBar = emptyLabel
         
         let tableView = UITableView(forAutoLayout: ())
         view.addSubview(tableView)
-        tableViewTopConstraint = tableView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: UIApplication.shared.statusBarFrame.height + 4 + 32 + 4, left: 0, bottom: bottomSpace, right: 0))[0]
+        tableView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 0, bottom: bottomSpace, right: 0), excludingEdge: .top)
+        tableView.autoPinEdge(.top, to: .bottom, of: navBar)
         tableView.register(BookCell.self, forCellReuseIdentifier: "bookCell")
         tableView.tableFooterView = UIView()
         tableView.delegate = self
@@ -136,6 +157,25 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         update()
     }
     
+    public func updateBookAfterSession(usm: UploadSessionModel) {
+        var newFirstBook: BookModel?
+        
+        for i in 0..<books.count {
+            if books[i].id == usm.bookId {
+                books[i].lastUpdated = Date()
+                books[i].lastReadPage = usm.finishPage
+                books[i].totalPages += (usm.finishPage - usm.startPage)
+                books[i].totalSeconds += usm.time
+                newFirstBook = books[i]
+                books.remove(at: i)
+                break
+            }
+        }
+        if let book = newFirstBook {
+            pushBook(book: book)
+        }
+    }
+    
     public func pushBook(book: BookModel) {
         books.insert(book, at: 0)
         update()
@@ -150,12 +190,10 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
             emptyNavBar?.isHidden = false
             tableView?.isHidden = true
             line?.isHidden = false
-            tableViewTopConstraint?.constant = emptyNavBar?.frame.height ?? 97
         } else {
             emptyNavBar?.isHidden = true
             tableView?.isHidden = false
             line?.isHidden = true
-            tableViewTopConstraint?.constant = 60
         }
         books = booksList
         onBooksListUpdated?(booksList)
@@ -165,7 +203,7 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
     @objc private func addBook() {
         let title = "Добавить фото обложки книги?"
         let msg = "Добавить можно лишь информацию о книге, которую вы читаете: название, автор, обложка."
-        let alert = UIAlertController(title: title, message: msg, preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: title, message: msg, preferredStyle: AlertDialogHelper.alertStyle)
         alert.addAction(UIAlertAction(title: "Найти по штрих-коду", style: .default, handler: ({ [weak self] _ in
             let vc = BarcodeScannerViewController()
             vc.codeDelegate = self
@@ -292,29 +330,6 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         })
         
         return [deleteRowAction, moreRowAction]
-    }
-    
-    private func setupNavigationBar() {
-        let navBar = NavigationBar()
-        navBar.configure(model: NavigationBarModel(title: "Книги"))
-        navBar.backgroundColor = UIColor(rgb: 0x2f5870)
-        view.addSubview(navBar)
-        navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
-        self.navBar = navBar
-        
-        let titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 24, weight: .regular)]
-            as [NSAttributedString.Key : Any]
-        let emptyLabel = UILabel(forAutoLayout: ())
-        emptyLabel.numberOfLines = 0
-        emptyLabel.textAlignment = .center
-        emptyLabel.attributedText = NSAttributedString(string: "Для начала, добавьте книги, которые сейчас читаете", attributes: titleTextAttributes)
-        view.addSubview(emptyLabel)
-        emptyLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
-        emptyLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
-        emptyLabel.autoPinEdge(.top, to: .bottom, of: navBar, withOffset: 20)
-        self.emptyNavBar = emptyLabel
     }
     
     private func setupSpinner() {

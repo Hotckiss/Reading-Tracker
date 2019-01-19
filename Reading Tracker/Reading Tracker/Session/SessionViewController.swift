@@ -48,7 +48,7 @@ final class SessionViewController: UIViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .white
-        
+        let scale = SizeDependent.instance.scale(230, persentage: 55)
         var bottomSpace: CGFloat = 49
         if #available(iOS 11.0, *) {
             bottomSpace += UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
@@ -104,7 +104,7 @@ final class SessionViewController: UIViewController {
         handTimeInputButton.addTarget(self, action: #selector(onHandTimeTap), for:.touchUpInside)
         view.addSubview(handTimeInputButton)
         handTimeInputButton.autoAlignAxis(toSuperviewAxis: .vertical)
-        handTimeInputButton.autoPinEdge(.top, to: .bottom, of: bookCell, withOffset: SizeDependent.instance.convertPadding(20))
+        handTimeInputButton.autoPinEdge(.top, to: .bottom, of: bookCell, withOffset: 20 * scale)
         self.handTimeInputButton = handTimeInputButton
         
         let sessionButton = SessionTimerButton(frame: .zero)
@@ -112,9 +112,9 @@ final class SessionViewController: UIViewController {
             self?.finishButtonOverlay?.isHidden = !((self?.isAutomaticTimeCounterEnabled ?? true) && state == .start)
         }
         view.addSubview(sessionButton)
-        sessionButton.autoPinEdge(.top, to: .bottom, of: handTimeInputButton, withOffset: SizeDependent.instance.convertPadding(16))
+        sessionButton.autoPinEdge(.top, to: .bottom, of: handTimeInputButton, withOffset: 16 * scale)
         sessionButton.autoAlignAxis(toSuperviewAxis: .vertical)
-        sessionButton.autoSetDimensions(to: SizeDependent.instance.convertSize(CGSize(width: 230, height: 230)))
+        sessionButton.autoSetDimensions(to: SizeDependent.instance.convertSize(CGSize(width: 230, height: 230), persentage: 55.0))
         sessionButton.addTarget(self, action: #selector(onSessionButtonTap), for: .touchUpInside)
         sessionButton.buttonState = .start
         self.sessionButton = sessionButton
@@ -192,10 +192,10 @@ final class SessionViewController: UIViewController {
     private func updateTimeInput(isHand: Bool) {
         let style = NSMutableParagraphStyle()
         style.alignment = NSTextAlignment.center
-        
+        let scale = SizeDependent.instance.scale(230, persentage: 55)
         let handTimeInputButtonTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870),
-            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14, weight: .regular),
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14 * scale, weight: .regular),
             NSAttributedString.Key.paragraphStyle: style]
             as [NSAttributedString.Key : Any]
         handTimeInputButton?.setAttributedTitle(NSAttributedString(string: isHand ? "Вернуться к таймеру" : "Указать время вручную", attributes: handTimeInputButtonTextAttributes), for: [])
