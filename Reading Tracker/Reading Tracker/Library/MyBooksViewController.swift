@@ -308,25 +308,31 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
                 return
             }
             
-            FirestoreManager.DBManager.removeBook(book: strongSelf.books.filter({ !$0.isDeleted })[indexPath.row], onSuccess: ({
-                let oldBook = strongSelf.books.filter({ !$0.isDeleted })[indexpath.row]
-                for i in 0..<strongSelf.books.count {
-                    if strongSelf.books[i].id == oldBook.id {
-                        strongSelf.books[i].isDeleted = true
-                        break
+            let alert = UIAlertController(title: "Удалить книгу?", message: "Это действие отменить невозможно в рамках приложения. Статистика по книге сохранится.", preferredStyle: AlertDialogHelper.alertStyle)
+            alert.addAction(UIAlertAction(title: "Удалить", style: .destructive, handler: ({ _ in
+                FirestoreManager.DBManager.removeBook(book: strongSelf.books.filter({ !$0.isDeleted })[indexPath.row], onSuccess: ({
+                    let oldBook = strongSelf.books.filter({ !$0.isDeleted })[indexpath.row]
+                    for i in 0..<strongSelf.books.count {
+                        if strongSelf.books[i].id == oldBook.id {
+                            strongSelf.books[i].isDeleted = true
+                            break
+                        }
                     }
-                }
-                tableView.deleteRows(at: [indexPath], with: .automatic)
-                if indexPath.row == 0 {
-                    strongSelf.onBooksListUpdated?(strongSelf.books)
-                }
-                
-                if strongSelf.books.filter({ !$0.isDeleted }).isEmpty {
-                    strongSelf.update()
-                }
-            }), onError: ({
-                // show error?
-            }))
+                    tableView.deleteRows(at: [indexPath], with: .automatic)
+                    if indexPath.row == 0 {
+                        strongSelf.onBooksListUpdated?(strongSelf.books)
+                    }
+                    
+                    if strongSelf.books.filter({ !$0.isDeleted }).isEmpty {
+                        strongSelf.update()
+                    }
+                }), onError: ({
+                    // show error?
+                }))
+            })))
+            
+            alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
+            strongSelf.present(alert, animated: true, completion: nil)
         })
         
         return [deleteRowAction, moreRowAction]

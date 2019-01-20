@@ -88,8 +88,14 @@ final class SessionsStatisticsViewController: UIViewController, UITableViewDeleg
                 session = strongSelf.sessions[indexpath.row]
             }
             
-            FirestoreManager.DBManager.removeSession(sessionId: session.sessionId)
-            strongSelf.onDelete?(session)
+            let alert = UIAlertController(title: "Удалить сессию?", message: "Это действие отменить невозможно!", preferredStyle: AlertDialogHelper.alertStyle)
+            alert.addAction(UIAlertAction(title: "Удалить", style: .destructive, handler: ({ _ in
+                FirestoreManager.DBManager.removeSession(sessionId: session.sessionId)
+                strongSelf.onDelete?(session)
+            })))
+            
+            alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
+            strongSelf.present(alert, animated: true, completion: nil)
         })
         return [deleteRowAction]
     }
