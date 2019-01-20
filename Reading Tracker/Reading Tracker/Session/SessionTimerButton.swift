@@ -147,8 +147,6 @@ public final class SessionTimerButton: UIButton {
     
     private func setTimeText() {
         let scale = SizeDependent.instance.scale(230, persentage: 55)
-        let textSizeSmall = 32 * scale
-        let textSizeBig = 64 * scale
         let bigFont = UIFont(name: "Courier", size: 64 * scale)!
         let smallFont = UIFont(name: "Courier", size: 32 * scale)!
         let timerTextAttributes = [
@@ -158,9 +156,10 @@ public final class SessionTimerButton: UIButton {
         
         let mins = time / 60
         let secs = time % 60
-        let text = NSMutableAttributedString(string: "\(mins)\(secs)", attributes: timerTextAttributes)
-        text.addAttribute(NSAttributedString.Key.font, value: smallFont, range: NSRange(location: String(mins).count, length: String(secs).count))
-        text.addAttribute(NSAttributedString.Key.baselineOffset, value: bigFont.xHeight - smallFont.xHeight, range: NSRange(location: String(mins).count, length: String(secs).count))
+        let secsString = ((secs < 10) ? "0\(secs)" : String(secs))
+        let text = NSMutableAttributedString(string: "\(mins)\(secsString)", attributes: timerTextAttributes)
+        text.addAttribute(NSAttributedString.Key.font, value: smallFont, range: NSRange(location: String(mins).count, length: String(secsString).count))
+        text.addAttribute(NSAttributedString.Key.baselineOffset, value: bigFont.xHeight - smallFont.xHeight, range: NSRange(location: String(mins).count, length: String(secsString).count))
         timerView?.attributedText = text
     }
     
