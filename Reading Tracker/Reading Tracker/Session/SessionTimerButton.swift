@@ -108,12 +108,12 @@ public final class SessionTimerButton: UIButton {
         timerView.textAlignment = .center
         let timerTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
-            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 64 * scale, weight: .regular)]
+            NSAttributedString.Key.font : UIFont(name: "Courier", size: 64 * scale)!]
             as [NSAttributedString.Key : Any]
         
         let text = NSMutableAttributedString(string: "00", attributes: timerTextAttributes)
-        text.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 32 * scale, weight: .regular), range: NSRange(location: 1, length: 1))
-        text.addAttribute(NSAttributedString.Key.baselineOffset, value: UIFont.systemFont(ofSize: 64 * scale, weight: .regular).xHeight - UIFont.systemFont(ofSize: 32 * scale, weight: .regular).xHeight, range: NSRange(location: 1, length: 1))
+        text.addAttribute(NSAttributedString.Key.font, value: UIFont(name: "Courier", size: 32 * scale)!, range: NSRange(location: 1, length: 1))
+        text.addAttribute(NSAttributedString.Key.baselineOffset, value: UIFont(name: "Courier", size: 64 * scale)!.xHeight - UIFont(name: "Courier", size: 32 * scale)!.xHeight, range: NSRange(location: 1, length: 1))
         timerView.attributedText = text
         
         addSubview(timerView)
@@ -149,16 +149,18 @@ public final class SessionTimerButton: UIButton {
         let scale = SizeDependent.instance.scale(230, persentage: 55)
         let textSizeSmall = 32 * scale
         let textSizeBig = 64 * scale
+        let bigFont = UIFont(name: "Courier", size: 64 * scale)!
+        let smallFont = UIFont(name: "Courier", size: 32 * scale)!
         let timerTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor(rgb: 0xedaf97),
-            NSAttributedString.Key.font : UIFont.systemFont(ofSize: textSizeBig, weight: .regular)]
+            NSAttributedString.Key.font : bigFont]
             as [NSAttributedString.Key : Any]
         
         let mins = time / 60
         let secs = time % 60
         let text = NSMutableAttributedString(string: "\(mins)\(secs)", attributes: timerTextAttributes)
-        text.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: textSizeSmall, weight: .regular), range: NSRange(location: String(mins).count, length: String(secs).count))
-        text.addAttribute(NSAttributedString.Key.baselineOffset, value: UIFont.systemFont(ofSize: textSizeBig, weight: .regular).xHeight - UIFont.systemFont(ofSize: textSizeSmall, weight: .regular).xHeight, range: NSRange(location: String(mins).count, length: String(secs).count))
+        text.addAttribute(NSAttributedString.Key.font, value: smallFont, range: NSRange(location: String(mins).count, length: String(secs).count))
+        text.addAttribute(NSAttributedString.Key.baselineOffset, value: bigFont.xHeight - smallFont.xHeight, range: NSRange(location: String(mins).count, length: String(secs).count))
         timerView?.attributedText = text
     }
     
