@@ -27,7 +27,7 @@ final class SingleSessionViewController: UIViewController {
     
     private var pagesLabel: UILabel?
     
-    private var commentView: UIImageView?
+    //private var commentView: UIImageView?
     private var placeView: UIImageView?
     private var moodView: UIImageView?
     
@@ -306,7 +306,7 @@ final class SingleSessionViewController: UIViewController {
         var lastView: UIImageView?
         
         if let pagesView = pagesLabel {
-            commentView?.removeFromSuperview()
+            //commentView?.removeFromSuperview()
             placeView?.removeFromSuperview()
             moodView?.removeFromSuperview()
             
@@ -345,7 +345,7 @@ final class SingleSessionViewController: UIViewController {
             }
             
             if !sessionModel.comment.isEmpty {
-                let commentView = UIImageView(forAutoLayout: ())
+                /*let commentView = UIImageView(forAutoLayout: ())
                 commentView.image = UIImage(named: "commentIcon")
                 self.commentView = commentView
                 contentView.addSubview(commentView)
@@ -356,7 +356,7 @@ final class SingleSessionViewController: UIViewController {
                     commentView.autoPinEdge(.left, to: .right, of: last, withOffset: 16)
                 } else {
                     commentView.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
-                }
+                }*/
                 
                 self.commentLabel?.removeFromSuperview()
                 
@@ -364,7 +364,7 @@ final class SingleSessionViewController: UIViewController {
                 commentLabel.numberOfLines = 0
                 self.commentLabel = commentLabel
                 contentView.addSubview(commentLabel)
-                commentLabel.autoPinEdge(.top, to: .bottom, of: commentView, withOffset: 16)
+                commentLabel.autoPinEdge(.top, to: .bottom, of: lastView ?? pagesView, withOffset: 16)
                 commentLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
                 commentLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
                 commentLabel.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16)
