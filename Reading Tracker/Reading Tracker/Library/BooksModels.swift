@@ -81,7 +81,7 @@ public struct BookModel {
     
     public var averagePages: Double {
         if totalSeconds == 0 {
-            return 0
+            return 0.005
         } else {
             return Double(totalPages) / Double(totalSeconds)
         }

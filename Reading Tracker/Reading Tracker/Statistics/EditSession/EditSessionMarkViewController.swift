@@ -111,13 +111,24 @@ class EditSessionMarkViewController: UIViewController {
         lineView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         lineView.autoSetDimension(.height, toSize: 1)
         
-        let moodPollView = PollView(frame: .zero, title: "Эмоции от чтения", options: [UIImage(named: "very sad"), UIImage(named: "sad"), UIImage(named: "neutral"), UIImage(named: "happy"), UIImage(named: "very happy")])
+        let moodPollView = PollView(frame: .zero, title: "Эмоции от чтения", options:
+            [PollViewOption(image: UIImage(named: "very sad"), text: nil),
+             PollViewOption(image: UIImage(named: "sad"), text: nil),
+             PollViewOption(image: UIImage(named: "neutral"), text: nil),
+             PollViewOption(image: UIImage(named: "happy"), text: nil),
+             PollViewOption(image: UIImage(named: "very happy"), text: nil)
+            ])
         view.addSubview(moodPollView)
         moodPollView.autoAlignAxis(toSuperviewAxis: .vertical)
         moodPollView.autoPinEdge(.top, to: .bottom, of: lineView, withOffset: SizeDependent.instance.convertPadding(88))
         self.moodPollView = moodPollView
         
-        let placePollView = PollView(frame: .zero, title: "Место чтения", options: [UIImage(named: "home"), UIImage(named: "transport"), UIImage(named: "work"), UIImage(named: "third place")])
+        let placePollView = PollView(frame: .zero, title: "Место чтения", options:
+            [PollViewOption(image: UIImage(named: "home"), text: "Дом"),
+             PollViewOption(image: UIImage(named: "transport"), text: "Дорога"),
+             PollViewOption(image: UIImage(named: "work"), text: "Работа"),
+             PollViewOption(image: UIImage(named: "third place"), text: "Другое")
+            ])
         view.addSubview(placePollView)
         placePollView.autoAlignAxis(toSuperviewAxis: .vertical)
         placePollView.autoPinEdge(.top, to: .bottom, of: moodPollView, withOffset: SizeDependent.instance.convertPadding(88))

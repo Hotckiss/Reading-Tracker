@@ -9,11 +9,17 @@
 import Foundation
 import UIKit
 
+struct PollViewOption {
+    var image: UIImage?
+    var text: String?
+}
+
 class PollView: UIView {
     var result: Int?
     private var buttons: [IndexedButton] = []
+    private var labels: [UILabel] = []
     
-    init(frame: CGRect, title: String, options: [UIImage?]) {
+    init(frame: CGRect, title: String, options: [PollViewOption]) {
         super.init(frame: frame)
         
         let style = NSMutableParagraphStyle()
@@ -34,13 +40,12 @@ class PollView: UIView {
         
         var lastButton: UIButton?
         
-        for (index, image) in options.enumerated() {
+        for (index, option) in options.enumerated() {
             let button = IndexedButton(frame: .zero, index: index)
-            button.setImage(image?.withRenderingMode(.alwaysTemplate) , for: .normal)
+            button.setImage(option.image?.withRenderingMode(.alwaysTemplate) , for: .normal)
             button.imageView?.tintColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
             addSubview(button)
             button.autoPinEdge(.top, to: .bottom, of: titleLabel, withOffset: 10)
-            button.autoPinEdge(toSuperviewEdge: .bottom)
             button.addTarget(self, action: #selector(onTap(_:)), for: .touchUpInside)
             if let last = lastButton {
                 button.autoPinEdge(.left, to: .right, of: last, withOffset: 25)
@@ -49,6 +54,30 @@ class PollView: UIView {
             }
             buttons.append(button)
             lastButton = button
+            
+            var lastLabel: UILabel?
+            
+            if let text = option.text {
+                let textAttributes = [
+                    NSAttributedString.Key.foregroundColor : UIColor(rgb: 0x2f5870).withAlphaComponent(0.5),
+                    NSAttributedString.Key.font : UIFont.systemFont(ofSize: 11, weight: .regular)]
+                    as [NSAttributedString.Key : Any]
+                
+                let buttonLabel = UILabel(forAutoLayout: ())
+                buttonLabel.attributedText = NSAttributedString(string: text, attributes: textAttributes)
+                addSubview(buttonLabel)
+                if let last = lastLabel{
+                    buttonLabel.autoAlignAxis(.horizontal, toSameAxisOf: last)
+                } else {
+                    buttonLabel.autoPinEdge(.top, to: .bottom, of: button, withOffset: 4)
+                    lastLabel = buttonLabel
+                }
+                buttonLabel.autoPinEdge(toSuperviewEdge: .bottom)
+                buttonLabel.autoAlignAxis(.vertical, toSameAxisOf: button)
+                labels.append(buttonLabel)
+            } else {
+                button.autoPinEdge(toSuperviewEdge: .bottom)
+            }
         }
         
         if let last = lastButton {
@@ -60,8 +89,10 @@ class PollView: UIView {
         for (index, button) in buttons.enumerated() {
             if index == sender.index {
                 button.imageView?.tintColor = UIColor(rgb: 0x2f5870)
+                labels[index].textColor = UIColor(rgb: 0x2f5870)
             } else {
                 button.imageView?.tintColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
+                labels[index].textColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
             }
         }
         
@@ -73,8 +104,14 @@ class PollView: UIView {
         for (i, button) in buttons.enumerated() {
             if i == index {
                 button.imageView?.tintColor = UIColor(rgb: 0x2f5870)
+                if i < labels.count {
+                    labels[i].textColor = UIColor(rgb: 0x2f5870)
+                }
             } else {
                 button.imageView?.tintColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
+                if i < labels.count {
+                    labels[i].textColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
+                }
             }
         }
     }
