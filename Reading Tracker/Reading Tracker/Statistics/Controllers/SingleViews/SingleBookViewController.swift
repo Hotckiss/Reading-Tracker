@@ -136,14 +136,14 @@ final class SingleBookViewController: UIViewController {
         
         contentView.addSubview(attemptsLabel)
         attemptsLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
-        attemptsLabel.autoPinEdge(.top, to: .bottom, of: hrsNumLabel, withOffset: 16)
+        attemptsLabel.autoPinEdge(.top, to: .bottom, of: hrsNumLabel, withOffset: 4)
         
         let pagesLabel = UILabel(forAutoLayout: ())
         self.pagesLabel = pagesLabel
         
         contentView.addSubview(pagesLabel)
         pagesLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
-        pagesLabel.autoPinEdge(.top, to: .bottom, of: attemptsLabel, withOffset: 16)
+        pagesLabel.autoPinEdge(.top, to: .bottom, of: attemptsLabel, withOffset: 4)
         
         configure(summary: summary, sessionModels: sessionModels)
         setupSpinner()

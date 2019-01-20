@@ -149,7 +149,7 @@ final class SingleSessionViewController: UIViewController {
         }
         
         hrsNumLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
-        hrsNumLabel.autoPinEdge(.top, to: .bottom, of: dateLabel, withOffset: 16)
+        hrsNumLabel.autoPinEdge(.top, to: .bottom, of: dateLabel, withOffset: 8)
         hrsTextLabel.autoPinEdge(.left, to: .right, of: hrsNumLabel, withOffset: 4)
         minsNumLabel.autoPinEdge(.left, to: .right, of: hrsTextLabel, withOffset: 6)
         minsTextLabel.autoPinEdge(.left, to: .right, of: minsNumLabel, withOffset: 4)
@@ -162,7 +162,7 @@ final class SingleSessionViewController: UIViewController {
         
         contentView.addSubview(startTimeLabel)
         startTimeLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
-        startTimeLabel.autoPinEdge(.top, to: .bottom, of: hrsNumLabel, withOffset: 16)
+        startTimeLabel.autoPinEdge(.top, to: .bottom, of: hrsNumLabel, withOffset: 8)
         
         let separatorLabel = UILabel(forAutoLayout: ())
         
@@ -189,7 +189,7 @@ final class SingleSessionViewController: UIViewController {
         
         contentView.addSubview(pagesLabel)
         pagesLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
-        pagesLabel.autoPinEdge(.top, to: .bottom, of: startTimeLabel, withOffset: 16)
+        pagesLabel.autoPinEdge(.top, to: .bottom, of: startTimeLabel, withOffset: 4)
         
         configure(sessionModel: sessionModel)
         setupSpinner()
@@ -315,7 +315,7 @@ final class SingleSessionViewController: UIViewController {
                 moodView.image = UIImage(named: sessionModel.mood.rawValue)
                 self.moodView = moodView
                 contentView.addSubview(moodView)
-                moodView.autoPinEdge(.top, to: .bottom, of: pagesView, withOffset: 32)
+                moodView.autoPinEdge(.top, to: .bottom, of: pagesView, withOffset: 16)
                 moodView.autoSetDimensions(to: CGSize(width: 32, height: 32))
                 
                 if let last = lastView {
@@ -332,7 +332,7 @@ final class SingleSessionViewController: UIViewController {
                 placeView.image = UIImage(named: sessionModel.readPlace.rawValue)
                 self.placeView = placeView
                 contentView.addSubview(placeView)
-                placeView.autoPinEdge(.top, to: .bottom, of: pagesView, withOffset: 32)
+                placeView.autoPinEdge(.top, to: .bottom, of: pagesView, withOffset: 16)
                 placeView.autoSetDimensions(to: CGSize(width: 32, height: 32))
                 
                 if let last = lastView {
@@ -349,7 +349,7 @@ final class SingleSessionViewController: UIViewController {
                 commentView.image = UIImage(named: "commentIcon")
                 self.commentView = commentView
                 contentView.addSubview(commentView)
-                commentView.autoPinEdge(.top, to: .bottom, of: pagesView, withOffset: 32)
+                commentView.autoPinEdge(.top, to: .bottom, of: pagesView, withOffset: 16)
                 commentView.autoSetDimensions(to: CGSize(width: 32, height: 32))
                 
                 if let last = lastView {
