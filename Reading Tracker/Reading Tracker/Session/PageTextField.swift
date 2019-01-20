@@ -81,7 +81,8 @@ final class PageTextField: UIView, UITextFieldDelegate {
         bottomLine.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
         bottomLine.autoSetDimension(.height, toSize: 1)
         
-        topPlaceholder.isHidden = true
+        //topPlaceholder.isHidden = true
+        emptyPlaceholder.isHidden = true
         
         self.topPlaceholder = topPlaceholder
         self.textField = textField
@@ -106,22 +107,22 @@ final class PageTextField: UIView, UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let text = textField.text,
             text.count > 0 {
-            topPlaceholder.isHidden = false
-            emptyPlaceholder.isHidden = true
+            //topPlaceholder.isHidden = false
+            //emptyPlaceholder.isHidden = true
         } else {
-            topPlaceholder.isHidden = true
-            emptyPlaceholder.isHidden = false
+            //topPlaceholder.isHidden = true
+            //emptyPlaceholder.isHidden = false
         }
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        topPlaceholder.isHidden = false
-        emptyPlaceholder.isHidden = true
+        //topPlaceholder.isHidden = false
+        //emptyPlaceholder.isHidden = true
     }
     
     func setup(value: Int) {
-        topPlaceholder.isHidden = false
-        emptyPlaceholder.isHidden = true
+        //topPlaceholder.isHidden = false
+        //emptyPlaceholder.isHidden = true
         textField.text = String(value)
     }
     
