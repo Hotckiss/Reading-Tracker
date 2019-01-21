@@ -89,10 +89,14 @@ class PollView: UIView {
         for (index, button) in buttons.enumerated() {
             if index == sender.index {
                 button.imageView?.tintColor = UIColor(rgb: 0x2f5870)
-                labels[index].textColor = UIColor(rgb: 0x2f5870)
+                if index < labels.count {
+                    labels[index].textColor = UIColor(rgb: 0x2f5870)
+                }
             } else {
                 button.imageView?.tintColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
-                labels[index].textColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
+                if index < labels.count {
+                    labels[index].textColor = UIColor(rgb: 0x2f5870).withAlphaComponent(0.5)
+                }
             }
         }
         
