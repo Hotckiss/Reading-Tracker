@@ -219,7 +219,9 @@ class AuthorizationViewController: UIViewController {
     }
     
     @objc private func onRegisterButtonTapped() {
-        let vc = RegistrationViewController()
+        let vc = LoginPasswordRegistrationViewController()
         navigationController?.pushViewController(vc, animated: true)
+        //let vc = RegistrationViewController()
+        //navigationController?.pushViewController(vc, animated: true)
     }
 }
