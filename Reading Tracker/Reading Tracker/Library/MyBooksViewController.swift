@@ -74,7 +74,12 @@ BarcodeScannerCodeDelegate, BarcodeScannerErrorDelegate, BarcodeScannerDismissal
         view.backgroundColor = .white
         
         let navBar = NavigationBar()
-        navBar.configure(model: NavigationBarModel(title: "Книги"))
+        navBar.configure(model: NavigationBarModel(title: "Книги",
+                                                   backButtonText: "Help",
+                                                   onBackButtonPressed: ({ [weak self] in
+                                                    let vc = LibraryHelpViewController()
+                                                    self?.present(vc, animated: true)
+                                                   })))
         navBar.backgroundColor = UIColor(rgb: 0x2f5870)
         view.addSubview(navBar)
         navBar.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)

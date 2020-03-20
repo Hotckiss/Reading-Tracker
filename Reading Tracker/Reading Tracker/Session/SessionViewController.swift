@@ -56,6 +56,11 @@ final class SessionViewController: UIViewController {
         
         let navBar = NavigationBar()
         navBar.configure(model: NavigationBarModel(title: "Новая запись о чтении",
+                                                   backButtonText: "Help",
+                                                   onBackButtonPressed: ({ [weak self] in
+                                                    let vc = SessionHelpViewController()
+                                                    self?.present(vc, animated: true)
+                                                   }),
                                                    onFrontButtonPressed: ({
                                                     let alert = UIAlertController(title: "Сбросить сессию?", message: nil, preferredStyle: .alert)
                                                     alert.addAction(UIAlertAction(title: "Отмена", style: .default, handler: nil))

@@ -201,7 +201,13 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         view.backgroundColor = .white
         let navBar = NavigationBar()
         
-        navBar.configure(model: NavigationBarModel(title: "Статистика", onFrontButtonPressed: ({ [weak self] in
+        navBar.configure(model: NavigationBarModel(title: "Статистика",
+                                                   backButtonText: "Help",
+                                                   onBackButtonPressed: ({ [weak self] in
+                                                        let vc = StatisticsHelpViewController()
+                                                        self?.present(vc, animated: true)
+                                                   }),
+                                                   onFrontButtonPressed: ({ [weak self] in
             let profileVC = ProfileViewController()
             profileVC.onExit = self?.onExit
             self?.navigationController?.pushViewController(profileVC, animated: true)
@@ -245,7 +251,6 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
             closeButton.setAttributedTitle(NSAttributedString(string: "Закрыть", attributes: textAttributes), for: [])
             picker?.setCancelButton(UIBarButtonItem(customView: closeButton))
             picker?.show()
-            print("TODO: different time intervals")
         }
         
         view.addSubview(periodView)
