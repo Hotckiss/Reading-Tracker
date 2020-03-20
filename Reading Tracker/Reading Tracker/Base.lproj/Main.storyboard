@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -9,16 +13,44 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Reading_Tracker" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="center" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="titleBackground" translatesAutoresizingMaskIntoConstraints="NO" id="mjt-en-FoO">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="titleImage" translatesAutoresizingMaskIntoConstraints="NO" id="giV-iU-nuU">
+                                <rect key="frame" x="51" y="375.66666666666669" width="312" height="145.00000000000006"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="145" id="s3S-0C-omZ"/>
+                                    <constraint firstAttribute="width" constant="312" id="ys4-sj-GOg"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.18431372549019609" green="0.34509803921568627" blue="0.4392156862745098" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="mjt-en-FoO" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="BtI-5x-7mJ"/>
+                            <constraint firstItem="mjt-en-FoO" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Dyd-xd-wGl"/>
+                            <constraint firstItem="giV-iU-nuU" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Sml-ht-ZTG"/>
+                            <constraint firstItem="mjt-en-FoO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="XSQ-bf-gYm"/>
+                            <constraint firstItem="mjt-en-FoO" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Ybb-G5-IlH"/>
+                            <constraint firstItem="giV-iU-nuU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="iyn-te-jM6"/>
+                            <constraint firstItem="mjt-en-FoO" firstAttribute="bottom" secondItem="8bC-Xf-vdC" secondAttribute="bottom" id="jfZ-gK-LXg"/>
+                            <constraint firstItem="mjt-en-FoO" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailing" id="r1A-I5-XYZ"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="132" y="103.89805097451276"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="titleBackground" width="320" height="639"/>
+        <image name="titleImage" width="292.25" height="145.25"/>
+    </resources>
 </document>

@@ -1,0 +1,6 @@
+framework module Pods_Reading_Tracker {
+  umbrella header "Pods-Reading Tracker-umbrella.h"
+
+  export *
+  module * { export * }
+}

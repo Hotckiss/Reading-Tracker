@@ -1,0 +1,45 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '10.0'
+
+target 'Reading Tracker' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  pod 'PureLayout'
+  pod 'RxSwift'
+  pod 'Firebase/Core'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Storage'
+  pod 'Firebase/Database'
+  pod 'Firebase/Crash'
+  pod 'Firebase/Firestore'
+  pod 'FirebaseUI/Storage'
+  pod 'GoogleSignIn'
+  pod 'FBSDKCoreKit'
+  pod 'FBSDKLoginKit'
+  pod 'FBSDKShareKit'
+  pod 'TwitterKit'
+  pod 'VK-ios-sdk'
+  pod 'SDWebImage'
+  pod 'SDWebImage/GIF'
+  pod 'ActionSheetPicker-3.0'
+  pod 'BarcodeScanner'
+  pod 'SwiftyXMLParser'
+  pod 'Charts'
+  pod 'Alamofire'
+  pod 'SwiftyJSON'
+  pod 'Kingfisher'
+  pod 'IGListKit'
+  pod 'XCGLogger'
+  pod 'Anchorage'
+  target 'Reading TrackerTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'Reading TrackerUITests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
